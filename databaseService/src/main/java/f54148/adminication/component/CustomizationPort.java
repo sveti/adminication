@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class CustomizationPort implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
 	
 	//get the server port from the databaseService.yml
-	@Value("${server.port:}")
+	@Value("${server.port: 8080}")
 	public int serverPort;
 
 	//set the port
