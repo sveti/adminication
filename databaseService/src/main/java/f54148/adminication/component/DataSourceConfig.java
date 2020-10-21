@@ -22,10 +22,6 @@ public class DataSourceConfig {
 	
 	 @Bean
 	    public DataSource getDataSource() {
-		 	System.out.println("======info=======");
-		 	System.out.println(url);
-		 	System.out.println(username);
-		 	System.out.println(password);
 		 
 	        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
 	        dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
