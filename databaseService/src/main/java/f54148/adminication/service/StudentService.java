@@ -23,7 +23,7 @@ public class StudentService {
 		  return userList;
 		 }
 
-		 public Student getStudentById(Integer userId) {
+		 public Student getStudentById(Long userId) {
 		  Optional<Student> opUser = studentRepository.findById(userId);
 		  if (opUser.isPresent()) {
 		   return opUser.get();
@@ -48,7 +48,7 @@ public class StudentService {
 				  }
 				 }
 
-			 public boolean deleteParent(Integer userId) {
+			 public boolean deleteParent(Long userId) {
 			  if (studentRepository.findById(userId) != null) {
 				  studentRepository.deleteById(userId);
 			   return true;

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,23 +22,18 @@ public class Parent {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", referencedColumnName = "id")
+	@JsonManagedReference(value="parent")
 	private User user;
 	
-	@Column(nullable = false)
-	private String name;
-	
-	@Column(nullable = false)
-	private String lastName;
-	
-	@OneToMany(mappedBy="parent", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="parent", cascade = CascadeType.MERGE)
 	@JsonManagedReference
     private Collection<Student> children = new ArrayList<Student>();
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -50,22 +43,6 @@ public class Parent {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public Collection<Student> getChildren() {
@@ -83,11 +60,17 @@ public class Parent {
 
 	@Override
 	public String toString() {
-		return "Parent [id=" + id + ", user=" + user + ", name=" + name + ", lastName=" + lastName + ", children="
-				+ children + "]";
+		String result =  "Parent [id=" + id + ", user=" + user + ", children=" ;
+		
+		for(Student child: children) {
+			result+= child.getId() + " " + child.getUser().getName() + " " + child.getUser().getLastName() + "|";
+		}
+		
+		result+="]";
+		
+		return result;
 	}
-	
-	
+
 	
 
 }

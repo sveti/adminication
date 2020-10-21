@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import f54148.adminication.entity.User;
 
 
-public interface UserRepository extends CrudRepository<User, Integer>{
+public interface UserRepository extends CrudRepository<User, Long>{
 
 }

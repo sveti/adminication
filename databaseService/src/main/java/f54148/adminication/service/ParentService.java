@@ -21,22 +21,22 @@ public class ParentService {
 	@Autowired
 	private StudentRepository studentRepository;
 	
-	 public List<Parent> getParents() {
-		  List<Parent> userList = new ArrayList<>();
-		  parentRepository.findAll().forEach(userList::add);
-		  return userList;
+	 	public List<Parent> getParents() {
+		  List<Parent> parentsList = new ArrayList<>();
+		  parentRepository.findAll().forEach(parentsList::add);
+		  return parentsList;
 		 }
 
-		 public Parent getParentById(Integer userId) {
-		  Optional<Parent> opUser = parentRepository.findById(userId);
-		  if (opUser.isPresent()) {
-		   return opUser.get();
+	 	public Parent getParentById(Long parentId) {
+		  Optional<Parent> opParent = parentRepository.findById(parentId);
+		  if (opParent.isPresent()) {
+		   return opParent.get();
 		  } else {
 		   return null;
 		  }
 		 }
 		 
-		 public boolean addStudent(Integer parentId, Integer childId) {
+	 	public boolean addStudent(Long parentId, Long childId) {
 			  Optional<Parent> opParent = parentRepository.findById(parentId);
 			  Optional<Student> opChild = studentRepository.findById(childId);
 			  
@@ -53,25 +53,25 @@ public class ParentService {
 			  }
 			 }
 
-		 public boolean addParent(Parent user) {
-		  if (parentRepository.save(user) != null) {
+		 public boolean addParent(Parent parent) {
+		  if (parentRepository.save(parent) != null) {
 		   return true;
 		  } else {
 		   return false;
 		  }
 		 }
 		 
-		 public boolean updateParent(Parent user) {
-			  if (parentRepository.save(user) != null) {
+		 public boolean updateParent(Parent parent) {
+			  if (parentRepository.save(parent) != null) {
 			   return true;
 			  } else {
 			   return false;
 			  }
 			 }
 
-		 public boolean deleteParent(Integer userId) {
-		  if (parentRepository.findById(userId) != null) {
-			  parentRepository.deleteById(userId);
+		 public boolean deleteParent(Long parentId) {
+		  if (parentRepository.findById(parentId) != null) {
+			  parentRepository.deleteById(parentId);
 		   return true;
 		  } else {
 		   return false;

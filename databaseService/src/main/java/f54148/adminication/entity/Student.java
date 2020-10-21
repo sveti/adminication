@@ -1,7 +1,7 @@
 package f54148.adminication.entity;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,29 +20,20 @@ public class Student {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", referencedColumnName = "id")
+	@JsonManagedReference(value="student")
 	private User user;
 	
-	@Column(nullable = false)
-	private String name;
-	
-	@Column(nullable = false)
-	private String lastName;
-	
-	@ManyToOne(cascade={CascadeType.ALL})
+	@ManyToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "parent_id")
 	@JsonBackReference
 	private Parent parent;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public User getUser() {
@@ -53,24 +44,9 @@ public class Student {
 		this.user = user;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	public Parent getParent() {
-		return parent;
+		return parent;	
 	}
 
 	public void setParent(Parent parent) {
@@ -79,11 +55,9 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ", user=" + user + ", name=" + name + ", lastName=" + lastName + ", parent="
-				+ parent + "]";
+		return "Student [id=" + id + ", user=" + user + ", parent=" + parent.getId()+ parent.getUser().getName() + " " + parent.getUser().getLastName() + "]";
 	}
 
-	
 	
 	
 }

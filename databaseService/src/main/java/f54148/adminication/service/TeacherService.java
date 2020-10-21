@@ -24,7 +24,7 @@ public class TeacherService {
 		  return teachersList;
 		 }
 
-	public Teacher getTeacherById(Integer teacherId) {
+	public Teacher getTeacherById(Long teacherId) {
 		  Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
 		  if (opTeacher.isPresent()) {
 		   return opTeacher.get();
@@ -43,7 +43,7 @@ public class TeacherService {
 		  }
 		 }
 
-		 public boolean deleteTeacher(Integer teacherId) {
+		 public boolean deleteTeacher(Long teacherId) {
 		  if (teacherRepository.findById(teacherId) != null) {
 			  teacherRepository.deleteById(teacherId);
 		   return true;
