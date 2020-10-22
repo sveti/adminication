@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Parent;
@@ -34,19 +34,18 @@ public class ParentController {
 	    
 	  }
 	
-	@PostMapping(path="/addChild") 
-	  public @ResponseBody String addChild (@RequestParam Long parentId
-	      , @RequestParam Long childId) {
-
-		if(parentService.addStudent(parentId, childId)) {
-			return "Added Child";
+	@PutMapping(path="/updateP")
+	 public @ResponseBody String updateParent (@RequestBody Parent parent) {
+		
+		if(parentService.updateParent(parent)) {
+			return "Child adopted!";
 		}
 		else {
 			return "An error has occured";
 		}
 		
-
-	  }
+	}
+	
 	
 	
 	@GetMapping(path="/parent/{id}")

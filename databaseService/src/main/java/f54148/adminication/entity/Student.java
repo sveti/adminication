@@ -27,7 +27,7 @@ public class Student {
 	@JsonManagedReference(value="student")
 	private User user;
 	
-	@ManyToOne(cascade=CascadeType.MERGE)
+	@ManyToOne
 	@JoinColumn(name = "parent_id")
 	@JsonBackReference
 	private Parent parent;
@@ -53,6 +53,7 @@ public class Student {
 		this.parent = parent;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", user=" + user + ", parent=" + parent.getId()+ parent.getUser().getName() + " " + parent.getUser().getLastName() + "]";

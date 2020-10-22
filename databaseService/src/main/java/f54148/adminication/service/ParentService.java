@@ -36,22 +36,6 @@ public class ParentService {
 		  }
 		 }
 		 
-	 	public boolean addStudent(Long parentId, Long childId) {
-			  Optional<Parent> opParent = parentRepository.findById(parentId);
-			  Optional<Student> opChild = studentRepository.findById(childId);
-			  
-			  if (opParent.isPresent() && opChild.isPresent()) {
-				  Parent p =  opParent.get();
-				  Student s = opChild.get();
-				  p.addChild(s);
-				  s.setParent(p);
-				  parentRepository.save(p);
-				  studentRepository.save(s);
-				  return true;
-			  } else {
-			   return false;
-			  }
-			 }
 
 		 public boolean addParent(Parent parent) {
 		  if (parentRepository.save(parent) != null) {

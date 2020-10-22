@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -29,7 +28,7 @@ public class Parent {
 	@JsonManagedReference(value="parent")
 	private User user;
 	
-	@OneToMany(mappedBy="parent", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy="parent", cascade = CascadeType.ALL)
 	@JsonManagedReference
     private Collection<Student> children = new ArrayList<Student>();
 

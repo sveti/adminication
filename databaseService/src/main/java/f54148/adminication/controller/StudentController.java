@@ -5,29 +5,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.entity.Parent;
 import f54148.adminication.entity.Student;
-import f54148.adminication.entity.User;
-import f54148.adminication.service.ParentService;
 import f54148.adminication.service.StudentService;
-import f54148.adminication.service.UserService;
 
 
 @Controller
 public class StudentController {
 
-	@Autowired
-	private UserService userservice;
-	
 	@Autowired 
 	private StudentService studentService;
-	
-	@Autowired
-	private ParentService parentService;
+
 	
 	@PostMapping(path="/addS") 
 	  public @ResponseBody String addNewStudent (@RequestBody Student student) {
@@ -41,22 +34,15 @@ public class StudentController {
 	    
 	  }
 	
-	@PostMapping(path="/addParent")
-	 public @ResponseBody String addParentToChild (@RequestBody Student student) {
-		
-		if(studentService.addStudent(student)) {
-			parentService.updateParent(student.getParent());
-			return "Child adopted!";
-		}
-		else {
-			return "An error has occured";
-		}
-		
-	}
+	@GetMapping(path="student/{id}/parent")
+	 public @ResponseBody Parent getStudentParent(@PathVariable("id") Long studentId) {
+		Student s = studentService.getStudentById(studentId);
+	    return s.getParent();
+	    }
 	
-	@GetMapping(path="/student")
-	  public @ResponseBody Student getStudentById(@RequestParam Long studentId) {
-		System.out.println(studentService.getStudentById(studentId));
+	
+	@GetMapping(path="/student/{id}")
+	  public @ResponseBody Student getStudentById(@PathVariable("id") Long studentId) {
 	    return studentService.getStudentById(studentId);
 	    }
 	
