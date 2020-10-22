@@ -28,7 +28,7 @@ public class Parent {
 	@JsonManagedReference(value="parent")
 	private User user;
 	
-	@OneToMany(mappedBy="parent", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="parent", cascade = CascadeType.MERGE)
 	@JsonManagedReference
     private Collection<Student> children = new ArrayList<Student>();
 
