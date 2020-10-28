@@ -1,6 +1,8 @@
 package f54148.adminication.entity;
 
 
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
@@ -38,6 +40,23 @@ public class Teacher{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, user);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Teacher other = (Teacher) obj;
+		return Objects.equals(id, other.id) && Objects.equals(user, other.user);
 	}
 
 	@Override

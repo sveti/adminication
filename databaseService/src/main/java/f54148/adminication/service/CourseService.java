@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.Enrollment;
+import f54148.adminication.entity.Student;
 import f54148.adminication.repository.CourseRepository;
 
 @Service
@@ -56,7 +58,25 @@ public class CourseService {
 		   return false;
 		  }
 		 }
-	
+
+		public List<Student> getStudentsByCourseId(Long id) {
+			 Optional<Course> opCourse = courseRepository.findById(id);
+			  if (opCourse.isPresent()) {
+			   Course c = opCourse.get();
+			   
+			   List<Student> students = new ArrayList<Student>();
+			   
+			   for(Enrollment e : c.getEnrollments()) {
+				   students.add(e.getStudent());
+			   }
+			   return students;
+			   
+			  } else {
+			   return null;
+			  }
+		}
+
+
 
 	
 	

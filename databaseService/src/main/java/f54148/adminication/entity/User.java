@@ -1,5 +1,7 @@
 package f54148.adminication.entity;
 
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -160,6 +162,32 @@ public class User {
 
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+
+
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email, id, lastName, name, parent, password, role, student, teacher, username);
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(email, other.email) && Objects.equals(id, other.id)
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(name, other.name)
+				&& Objects.equals(parent, other.parent) && Objects.equals(password, other.password)
+				&& role == other.role && Objects.equals(student, other.student)
+				&& Objects.equals(teacher, other.teacher) && Objects.equals(username, other.username);
 	}
 
 

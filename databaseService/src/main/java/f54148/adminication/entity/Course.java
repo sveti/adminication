@@ -1,7 +1,6 @@
 package f54148.adminication.entity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -16,9 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "courses")
@@ -56,6 +56,10 @@ public class Course {
             inverseJoinColumns = {
                     @JoinColumn(name = "course_details_id", referencedColumnName = "id")})
 	 List<CourseDetails> details = new ArrayList<>();
+	
+	 @OneToMany(mappedBy = "course")
+	 @JsonManagedReference(value="enrollment_course")
+	 List<Enrollment> enrollments = new ArrayList<Enrollment>();
 
 	public Long getId() {
 		return id;
@@ -135,10 +139,19 @@ public class Course {
 		this.details.add(detail);
 		detail.courses.add(this);
 	}
-	
+
+	public List<Enrollment> getEnrollments() {
+		return enrollments;
+	}
+
+	public void setEnrollments(List<Enrollment> enrollments) {
+		this.enrollments = enrollments;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(details, duration, id, level, maxStudents, pricePerStudent, salaryPerChild, status, title);
+		return Objects.hash(details, duration, enrollments, id, level, maxStudents, pricePerStudent, salaryPerChild,
+				status, title);
 	}
 
 	@Override
@@ -151,8 +164,8 @@ public class Course {
 			return false;
 		Course other = (Course) obj;
 		return Objects.equals(details, other.details) && Objects.equals(duration, other.duration)
-				&& Objects.equals(id, other.id) && level == other.level
-				&& Objects.equals(maxStudents, other.maxStudents)
+				&& Objects.equals(enrollments, other.enrollments) && Objects.equals(id, other.id)
+				&& level == other.level && Objects.equals(maxStudents, other.maxStudents)
 				&& Objects.equals(pricePerStudent, other.pricePerStudent)
 				&& Objects.equals(salaryPerChild, other.salaryPerChild) && Objects.equals(status, other.status)
 				&& Objects.equals(title, other.title);
@@ -162,9 +175,10 @@ public class Course {
 	public String toString() {
 		return "Course [id=" + id + ", title=" + title + ", pricePerStudent=" + pricePerStudent + ", salaryPerChild="
 				+ salaryPerChild + ", maxStudents=" + maxStudents + ", status=" + status + ", level=" + level
-				+ ", duration=" + duration + ", details=" + details + "]";
+				+ ", duration=" + duration + ", details=" + details + ", enrollments=" + enrollments + "]";
 	}
-
+	
+	
 	
 
 }

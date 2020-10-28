@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetails;
 import f54148.adminication.repository.CourseDetailsRepository;
 
@@ -31,6 +32,15 @@ public class CourseDetailsService {
 		   return null;
 		  }
 		 }
+		 
+		public List<Course> getCourses(Long courseId){
+			Optional<CourseDetails> opcourseDetails = repo.findById(courseId);
+			  if (opcourseDetails.isPresent()) {
+			   return opcourseDetails.get().getCourses();
+			  } else {
+			   return null;
+			  }
+		}
 
 		 public boolean addCourseDetails(CourseDetails courseDetails) {
 		  if (repo.save(courseDetails) != null) {

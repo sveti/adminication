@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.Student;
 import f54148.adminication.service.CourseService;
 
 
@@ -48,6 +49,11 @@ public class CourseController {
 	@GetMapping(path="/course/{id}")
 	  public @ResponseBody Course getCourseById(@PathVariable("id") Long id) {
 	    return courseService.getCourseById(id);
+	    }
+	
+	@GetMapping(path="/course/{id}/students")
+	  public @ResponseBody List<Student> getStudentsByCourseId(@PathVariable("id") Long id) {
+	    return courseService.getStudentsByCourseId(id);
 	    }
 	
 	@GetMapping(path="/courses")

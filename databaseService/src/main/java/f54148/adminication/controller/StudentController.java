@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Parent;
 import f54148.adminication.entity.Student;
 import f54148.adminication.service.StudentService;
@@ -36,10 +37,14 @@ public class StudentController {
 	
 	@GetMapping(path="student/{id}/parent")
 	 public @ResponseBody Parent getStudentParent(@PathVariable("id") Long studentId) {
-		Student s = studentService.getStudentById(studentId);
-	    return s.getParent();
+		
+	    return studentService.getStudentById(studentId).getParent();
 	    }
 	
+	@GetMapping(path="student/{id}/courses")
+	 public @ResponseBody List<Course> getStudentCourses(@PathVariable("id") Long studentId) {
+	    return studentService.getCoursesStudentById(studentId);
+	    }
 	
 	@GetMapping(path="/student/{id}")
 	  public @ResponseBody Student getStudentById(@PathVariable("id") Long studentId) {

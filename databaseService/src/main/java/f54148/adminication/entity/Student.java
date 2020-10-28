@@ -1,5 +1,9 @@
 package f54148.adminication.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
@@ -8,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -31,6 +36,10 @@ public class Student {
 	@JoinColumn(name = "parent_id")
 	@JsonBackReference
 	private Parent parent;
+	
+	@OneToMany(mappedBy = "student")
+	@JsonManagedReference(value="enrollment_student")
+    List<Enrollment> enrollments = new ArrayList<Enrollment>();
 
 	public Long getId() {
 		return id;
@@ -54,6 +63,14 @@ public class Student {
 	}
 
 	
+	public List<Enrollment> getEnrollments() {
+		return enrollments;
+	}
+
+	public void setEnrollments(List<Enrollment> enrollments) {
+		this.enrollments = enrollments;
+	}
+
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", user=" + user + ", parent=" + parent.getId()+ parent.getUser().getName() + " " + parent.getUser().getLastName() + "]";

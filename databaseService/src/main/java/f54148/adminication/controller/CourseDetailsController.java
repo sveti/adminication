@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetails;
 import f54148.adminication.service.CourseDetailsService;
 
@@ -35,6 +36,11 @@ public class CourseDetailsController {
 	  public @ResponseBody CourseDetails getCourseById(@PathVariable("id") Long courseId) {
 	    return service.getCourseDetailsById(courseId);
 	    }
+	
+	@GetMapping(path="/courseDetail/{id}/courses")
+	public @ResponseBody List<Course> getAllCoursesByDetail(@PathVariable("id") Long courseId) {
+	    return service.getCourses(courseId);
+	  }
 	
 	@GetMapping(path="/courseDetails")
 	  public @ResponseBody List<CourseDetails> getAllCourses() {

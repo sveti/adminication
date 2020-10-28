@@ -2,6 +2,7 @@ package f54148.adminication.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -55,6 +56,26 @@ public class Parent {
 	public void addChild(Student child) {
 		this.children.add(child);
 		child.setParent(this);
+	}
+	
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(children, id, user);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Parent other = (Parent) obj;
+		return Objects.equals(children, other.children) && Objects.equals(id, other.id)
+				&& Objects.equals(user, other.user);
 	}
 
 	@Override

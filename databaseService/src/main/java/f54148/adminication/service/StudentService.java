@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.entity.Course;
+import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.StudentRepository;
 
@@ -17,15 +19,15 @@ public class StudentService {
 	private StudentRepository studentRepository;
 
 	public List<Student> getStudents() {
-		List<Student> userList = new ArrayList<>();
-		studentRepository.findAll().forEach(userList::add);
-		return userList;
+		List<Student> studentList = new ArrayList<>();
+		studentRepository.findAll().forEach(studentList::add);
+		return studentList;
 	}
 
-	public Student getStudentById(Long userId) {
-		Optional<Student> opUser = studentRepository.findById(userId);
-		if (opUser.isPresent()) {
-			return opUser.get();
+	public Student getStudentById(Long studentId) {
+		Optional<Student> opStudent = studentRepository.findById(studentId);
+		if (opStudent.isPresent()) {
+			return opStudent.get();
 		} else {
 			return null;
 		}
@@ -55,6 +57,23 @@ public class StudentService {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public List<Course> getCoursesStudentById(Long studentId) {
+		Optional<Student> opUser = studentRepository.findById(studentId);
+		if (opUser.isPresent()) {
+			Student s =  opUser.get();
+			List<Course> courses = new ArrayList<Course>();
+			for(Enrollment e :s.getEnrollments()) {
+				
+				courses.add(e.getCourse());
+				
+			}
+			return courses;
+			
+		} else {
+			return null;
 		}
 	}
 
