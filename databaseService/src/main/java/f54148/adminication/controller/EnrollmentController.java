@@ -33,7 +33,7 @@ public class EnrollmentController {
 	  }
 	
 	@PutMapping(path="/updateEnrollment")
-	  public @ResponseBody String updateCourse (@RequestBody Enrollment enrollment) {
+	  public @ResponseBody String updateEnrollment (@RequestBody Enrollment enrollment) {
 		
 		if(enrollmentservice.updateEnrollment(enrollment)) {
 			return "Updated enrollment";
@@ -45,7 +45,7 @@ public class EnrollmentController {
 	  }
 	
 	@GetMapping(path="/enrollment/{id}")
-	  public @ResponseBody Enrollment getCourseById(@PathVariable("id") Long id) {
+	  public @ResponseBody Enrollment getEnrollmentById(@PathVariable("id") Long id) {
 	    return enrollmentservice.getEnrollmentById(id);
 	    }
 	

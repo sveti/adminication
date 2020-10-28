@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Student;
+import f54148.adminication.entity.Teacher;
+import f54148.adminication.entity.Teaching;
 import f54148.adminication.repository.CourseRepository;
 
 @Service
@@ -70,6 +72,23 @@ public class CourseService {
 				   students.add(e.getStudent());
 			   }
 			   return students;
+			   
+			  } else {
+			   return null;
+			  }
+		}
+
+		public List<Teacher> getTeachersByCourseId(Long id) {
+			Optional<Course> opCourse = courseRepository.findById(id);
+			  if (opCourse.isPresent()) {
+			   Course c = opCourse.get();
+			   
+			   List<Teacher> teachers = new ArrayList<Teacher>();
+			   
+			   for(Teaching e : c.getTeaching()) {
+				   teachers.add(e.getTeacher());
+			   }
+			   return teachers;
 			   
 			  } else {
 			   return null;

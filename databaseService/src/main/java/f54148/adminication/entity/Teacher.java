@@ -1,6 +1,8 @@
 package f54148.adminication.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -10,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,6 +32,10 @@ public class Teacher{
 	@JsonManagedReference(value="teacher")
 	private User user;
 	
+	 @OneToMany(mappedBy = "teacher")
+	 @JsonManagedReference(value="teaching_teacher")
+	 List<Teaching> teaching = new ArrayList<Teaching>();
+	
 
 	public Long getId() {
 		return id;
@@ -41,10 +48,18 @@ public class Teacher{
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	public List<Teaching> getTeaching() {
+		return teaching;
+	}
+
+	public void setTeaching(List<Teaching> teaching) {
+		this.teaching = teaching;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, user);
+		return Objects.hash(id, teaching, user);
 	}
 
 	@Override
@@ -56,14 +71,15 @@ public class Teacher{
 		if (getClass() != obj.getClass())
 			return false;
 		Teacher other = (Teacher) obj;
-		return Objects.equals(id, other.id) && Objects.equals(user, other.user);
+		return Objects.equals(id, other.id) && Objects.equals(teaching, other.teaching)
+				&& Objects.equals(user, other.user);
 	}
 
 	@Override
 	public String toString() {
-		return "Teacher [id=" + id + ", user=" + user + "]";
+		return "Teacher [id=" + id + ", user=" + user + ", teaching=" + teaching + "]";
 	}
-
+	
 	
 	
 }

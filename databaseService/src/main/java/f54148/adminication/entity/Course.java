@@ -3,7 +3,6 @@ package f54148.adminication.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,9 +34,6 @@ public class Course {
 	private Double pricePerStudent;
 	
 	@Column(nullable = false)
-	private Double salaryPerChild;
-	
-	@Column(nullable = false)
 	private Integer maxStudents;
 	
 	@Column(nullable = false)
@@ -61,6 +57,11 @@ public class Course {
 	 @JsonManagedReference(value="enrollment_course")
 	 List<Enrollment> enrollments = new ArrayList<Enrollment>();
 
+	 @OneToMany(mappedBy = "course")
+	 @JsonManagedReference(value="teaching_course")
+	 List<Teaching> teaching = new ArrayList<Teaching>();
+	 
+	 
 	public Long getId() {
 		return id;
 	}
@@ -77,13 +78,6 @@ public class Course {
 		this.pricePerStudent = pricePerStudent;
 	}
 
-	public Double getSalaryPerChild() {
-		return salaryPerChild;
-	}
-
-	public void setSalaryPerChild(Double salaryPerChild) {
-		this.salaryPerChild = salaryPerChild;
-	}
 
 	public Integer getMaxStudents() {
 		return maxStudents;
@@ -148,10 +142,18 @@ public class Course {
 		this.enrollments = enrollments;
 	}
 
+	public List<Teaching> getTeaching() {
+		return teaching;
+	}
+
+	public void setTeaching(List<Teaching> teaching) {
+		this.teaching = teaching;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(details, duration, enrollments, id, level, maxStudents, pricePerStudent, salaryPerChild,
-				status, title);
+		return Objects.hash(details, duration, enrollments, id, level, maxStudents, pricePerStudent, status, teaching,
+				title);
 	}
 
 	@Override
@@ -166,17 +168,17 @@ public class Course {
 		return Objects.equals(details, other.details) && Objects.equals(duration, other.duration)
 				&& Objects.equals(enrollments, other.enrollments) && Objects.equals(id, other.id)
 				&& level == other.level && Objects.equals(maxStudents, other.maxStudents)
-				&& Objects.equals(pricePerStudent, other.pricePerStudent)
-				&& Objects.equals(salaryPerChild, other.salaryPerChild) && Objects.equals(status, other.status)
-				&& Objects.equals(title, other.title);
+				&& Objects.equals(pricePerStudent, other.pricePerStudent) && Objects.equals(status, other.status)
+				&& Objects.equals(teaching, other.teaching) && Objects.equals(title, other.title);
 	}
 
 	@Override
 	public String toString() {
-		return "Course [id=" + id + ", title=" + title + ", pricePerStudent=" + pricePerStudent + ", salaryPerChild="
-				+ salaryPerChild + ", maxStudents=" + maxStudents + ", status=" + status + ", level=" + level
-				+ ", duration=" + duration + ", details=" + details + ", enrollments=" + enrollments + "]";
+		return "Course [id=" + id + ", title=" + title + ", pricePerStudent=" + pricePerStudent + ", maxStudents="
+				+ maxStudents + ", status=" + status + ", level=" + level + ", duration=" + duration + ", details="
+				+ details + ", enrollments=" + enrollments + ", teaching=" + teaching + "]";
 	}
+
 	
 	
 	

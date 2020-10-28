@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.service.TeacherService;
 
@@ -36,6 +37,11 @@ public class TeacherController {
 	@GetMapping(path="/teacher/{id}")
 	  public @ResponseBody Teacher getTeacherById(@PathVariable("id") Long id) {
 	    return teacherService.getTeacherById(id);
+	    }
+	
+	@GetMapping(path="/teacher/{id}/courses")
+	  public @ResponseBody List<Course> getCoursesByTeacherId(@PathVariable("id") Long id) {
+	    return teacherService.getCoursesByTeacherId(id);
 	    }
 	
 	@GetMapping(path="/teachers")

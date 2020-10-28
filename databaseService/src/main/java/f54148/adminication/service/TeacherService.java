@@ -7,8 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Teacher;
-
+import f54148.adminication.entity.Teaching;
 import f54148.adminication.repository.TeacherRepository;
 
 @Service
@@ -62,6 +63,24 @@ public class TeacherService {
 				  } else {
 				   return false;
 				  }
+		}
+
+		public List<Course> getCoursesByTeacherId(Long teacherId) {
+			 Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
+			  if (opTeacher.isPresent()) {
+			   Teacher t =  opTeacher.get();
+			   
+			   List<Course> courses = new ArrayList<Course>();
+			   
+			   for(Teaching teach : t.getTeaching() ) {
+				   
+				   courses.add(teach.getCourse());
+			   }
+			   return courses;
+			   
+			  } else {
+			   return null;
+			  }
 		}
 	
 }
