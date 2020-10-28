@@ -18,6 +18,8 @@ public class TeacherService {
 	@Autowired
 	private TeacherRepository teacherRepository;
 	
+	@Autowired
+	private TeachingService teachingService;
 	
 	public List<Teacher> getTeachers() {
 		  List<Teacher> teachersList = new ArrayList<>();
@@ -81,6 +83,38 @@ public class TeacherService {
 			  } else {
 			   return null;
 			  }
+		}
+
+		public List<Course> getsubstituteCoursesByTeacherId(Long teacherId) {
+			
+			Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
+			  if (opTeacher.isPresent()) {
+			   Teacher t =  opTeacher.get();
+			   
+			   List<Course> courses = new ArrayList<Course>();
+			   
+			   for(Teaching teach : t.getSubstituting() ) {
+				   
+				   courses.add(teach.getCourse());
+			   }
+			   return courses;
+			   
+			  } else {
+			   return null;
+			  }
+		}
+
+		public List<Teacher> getSubstitutesByCourseId(Long courseId) {
+			
+			List<Teaching> teachings = teachingService.getTeachingsByCourseId(courseId);
+			
+			List<Teacher> substitutes =  new ArrayList<Teacher>();
+			
+			for(Teaching t : teachings) {
+				substitutes.add(t.getSubstitute());
+			}
+			
+			return substitutes;
 		}
 	
 }

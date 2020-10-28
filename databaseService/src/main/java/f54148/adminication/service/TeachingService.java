@@ -18,7 +18,7 @@ public class TeachingService {
 	private TeachingRepository teachingRepository;
 	
 	
-	 public List<Teaching> getTeachings() {
+		public List<Teaching> getTeachings() {
 		  List<Teaching> teachingList = new ArrayList<>();
 		  teachingRepository.findAll().forEach(teachingList::add);
 		  return teachingList;
@@ -32,6 +32,21 @@ public class TeachingService {
 		   return null;
 		  }
 		 }
+		 
+		 public List<Teaching> getTeachingsByCourseId(Long courseId){
+			 List<Teaching> teachings = getTeachings();
+			 
+			 List<Teaching> current = new ArrayList<Teaching>();
+			 
+			 for(Teaching t: teachings) {
+				 if(t.getCourse().getId()==courseId) {
+					 current.add(t);
+				 }
+			 }
+			 
+			 return current;
+			 
+			 }
 
 		 public boolean addTeaching(Teaching teaching) {
 		  if (teachingRepository.save(teaching) != null) {

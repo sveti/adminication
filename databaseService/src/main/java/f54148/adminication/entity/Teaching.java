@@ -27,6 +27,13 @@ public class Teaching {
 	@JsonBackReference(value="teaching_teacher")
     Teacher teacher;
 	
+	
+	@ManyToOne
+    @JoinColumn(name = "substitute_id")
+	@JsonBackReference(value="teaching_teacher_sub")
+    Teacher substitute;
+	
+	
 	@ManyToOne
     @JoinColumn(name = "course_id",nullable = false)
 	@JsonBackReference(value="teaching_course")
@@ -63,9 +70,17 @@ public class Teaching {
 		this.salaryPerStudent = salaryPerStudent;
 	}
 
+	public Teacher getSubstitute() {
+		return substitute;
+	}
+
+	public void setSubstitute(Teacher substitute) {
+		this.substitute = substitute;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(course, id, salaryPerStudent, teacher);
+		return Objects.hash(course, id, salaryPerStudent, substitute, teacher);
 	}
 
 	@Override
@@ -78,14 +93,16 @@ public class Teaching {
 			return false;
 		Teaching other = (Teaching) obj;
 		return Objects.equals(course, other.course) && Objects.equals(id, other.id)
-				&& Objects.equals(salaryPerStudent, other.salaryPerStudent) && Objects.equals(teacher, other.teacher);
+				&& Objects.equals(salaryPerStudent, other.salaryPerStudent)
+				&& Objects.equals(substitute, other.substitute) && Objects.equals(teacher, other.teacher);
 	}
 
 	@Override
 	public String toString() {
-		return "Teaching [id=" + id + ", teacher=" + teacher + ", course=" + course + ", salaryPerStudent="
-				+ salaryPerStudent + "]";
+		return "Teaching [id=" + id + ", teacher=" + teacher + ", substitute=" + substitute + ", course=" + course
+				+ ", salaryPerStudent=" + salaryPerStudent + "]";
 	}
+
 	
 	
 	

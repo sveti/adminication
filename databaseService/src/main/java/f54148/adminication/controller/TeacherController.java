@@ -44,6 +44,18 @@ public class TeacherController {
 	    return teacherService.getCoursesByTeacherId(id);
 	    }
 	
+	@GetMapping(path="/teacher/{id}/substituteCourses")
+	  public @ResponseBody List<Course> getsubstituteCoursesByTeacherId(@PathVariable("id") Long id) {
+	    return teacherService.getsubstituteCoursesByTeacherId(id);
+	    }
+	
+	@GetMapping(path="/teacher/substitutes/{courseId}")
+	  public @ResponseBody List<Teacher> getSubstitutesByCourseId(@PathVariable("courseId") Long courseId) {
+	    return teacherService.getSubstitutesByCourseId(courseId);
+	    }
+	
+	
+	
 	@GetMapping(path="/teachers")
 	  public @ResponseBody List<Teacher> getAllTeachers() {
 	    return teacherService.getTeachers();

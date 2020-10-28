@@ -36,6 +36,10 @@ public class Teacher{
 	 @JsonManagedReference(value="teaching_teacher")
 	 List<Teaching> teaching = new ArrayList<Teaching>();
 	
+	 @OneToMany(mappedBy = "substitute")
+	 @JsonManagedReference(value="teaching_teacher_sub")
+	 List<Teaching> substituting = new ArrayList<Teaching>();
+	 
 
 	public Long getId() {
 		return id;
@@ -57,9 +61,17 @@ public class Teacher{
 		this.teaching = teaching;
 	}
 
+	public List<Teaching> getSubstituting() {
+		return substituting;
+	}
+
+	public void setSubstituting(List<Teaching> substituting) {
+		this.substituting = substituting;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, teaching, user);
+		return Objects.hash(id, substituting, teaching, user);
 	}
 
 	@Override
@@ -71,15 +83,17 @@ public class Teacher{
 		if (getClass() != obj.getClass())
 			return false;
 		Teacher other = (Teacher) obj;
-		return Objects.equals(id, other.id) && Objects.equals(teaching, other.teaching)
-				&& Objects.equals(user, other.user);
+		return Objects.equals(id, other.id) && Objects.equals(substituting, other.substituting)
+				&& Objects.equals(teaching, other.teaching) && Objects.equals(user, other.user);
 	}
 
 	@Override
 	public String toString() {
-		return "Teacher [id=" + id + ", user=" + user + ", teaching=" + teaching + "]";
+		return "Teacher [id=" + id + ", user=" + user + ", teaching=" + teaching + ", substituting=" + substituting
+				+ "]";
 	}
-	
+
+
 	
 	
 }
