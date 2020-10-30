@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Parent;
-import f54148.adminication.entity.Student;
 
 import f54148.adminication.repository.ParentRepository;
 import f54148.adminication.repository.StudentRepository;
+
 
 @Service
 public class ParentService {
@@ -20,6 +20,7 @@ public class ParentService {
 	
 	@Autowired
 	private StudentRepository studentRepository;
+	
 	
 	 	public List<Parent> getParents() {
 		  List<Parent> parentsList = new ArrayList<>();

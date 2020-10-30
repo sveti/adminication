@@ -1,5 +1,6 @@
 package f54148.adminication.entity;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,32 +28,28 @@ public class Schedule {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(nullable = false)
-	private String dayOfTheWeek;
-
 	@Column(name = "start_time", columnDefinition = "TIME")
 	private LocalTime startTime;
 	
 	@Column(name = "end_time", columnDefinition = "TIME")
 	private LocalTime endTime;
 	
+	@Column(name = "start_date", columnDefinition = "DATE")
+	private LocalDate startDate;
+	
+	
 	@ManyToMany(targetEntity = Course.class,fetch = FetchType.EAGER,mappedBy = "courseSchedule")
 	@JsonIgnore
 	List<Course> scheduledCourses = new ArrayList<>();
+	
+	@ManyToMany(targetEntity = Event.class,mappedBy = "eventSchedule")
+	@JsonIgnore
+	List<Event> scheduledEvents = new ArrayList<>();
 
 	public Long getId() {
 		return id;
 	}
 	
-
-	public String getDayOfTheWeek() {
-		return dayOfTheWeek;
-	}
-
-	public void setDayOfTheWeek(String dayOfTheWeek) {
-		this.dayOfTheWeek = dayOfTheWeek;
-	}
-
 	public LocalTime getStartTime() {
 		return startTime;
 	}
@@ -80,11 +77,29 @@ public class Schedule {
 	}
 
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(dayOfTheWeek, endTime, id, scheduledCourses, startTime);
+	public List<Event> getScheduledEvents() {
+		return scheduledEvents;
 	}
 
+
+	public void setScheduledEvents(List<Event> scheduledEvents) {
+		this.scheduledEvents = scheduledEvents;
+	}
+
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(endTime, id, scheduledCourses, scheduledEvents, startDate, startTime);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -95,20 +110,19 @@ public class Schedule {
 		if (getClass() != obj.getClass())
 			return false;
 		Schedule other = (Schedule) obj;
-		return Objects.equals(dayOfTheWeek, other.dayOfTheWeek) && Objects.equals(endTime, other.endTime)
-				&& Objects.equals(id, other.id) && Objects.equals(scheduledCourses, other.scheduledCourses)
+		return Objects.equals(endTime, other.endTime) && Objects.equals(id, other.id)
+				&& Objects.equals(scheduledCourses, other.scheduledCourses)
+				&& Objects.equals(scheduledEvents, other.scheduledEvents) && Objects.equals(startDate, other.startDate)
 				&& Objects.equals(startTime, other.startTime);
 	}
 
-
 	@Override
 	public String toString() {
-		return "Schedule [id=" + id + ", dayOfTheWeek=" + dayOfTheWeek + ", startTime=" + startTime + ", endTime="
-				+ endTime + ", scheduledCourses=" + scheduledCourses + "]";
+		return "Schedule [id=" + id + ", startTime=" + startTime + ", endTime=" + endTime + ", startDate=" + startDate
+				+ ", scheduledCourses=" + scheduledCourses + ", scheduledEvents=" + scheduledEvents + "]";
 	}
 
+
 	
-
-
 }
 

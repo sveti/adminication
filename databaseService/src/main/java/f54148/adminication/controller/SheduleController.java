@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.entity.Course;
+import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.service.ScheduleService;
 
@@ -48,6 +50,17 @@ public class SheduleController {
 	  public @ResponseBody Schedule getScheduleById(@PathVariable("id") Long id) {
 	    return scheduleService.getScheduleById(id);
 	    }
+	
+	@GetMapping(path="/schedule/{id}/courses")
+	  public @ResponseBody List<Course> getCoursesbyScheduleId(@PathVariable("id") Long id) {
+	    return scheduleService.getCoursesbyScheduleId(id);
+	    }
+	
+	@GetMapping(path="/schedule/{id}/events")
+	  public @ResponseBody List<Event> getEventsbyScheduleId(@PathVariable("id") Long id) {
+	    return scheduleService.getEventsbyScheduleId(id);
+	    }
+	
 	
 	@GetMapping(path="/schedules")
 	  public @ResponseBody List<Schedule> getAllSchedules() {

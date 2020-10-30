@@ -63,7 +63,7 @@ public class CourseController {
 			pshedule.add(s);
 		}
 		
-		//add course to db
+		//add course to database
 		if(courseService.addCourse(course)) {
 			//add schedule and details and then persist
 			course.setCourseSchedule(pshedule);
@@ -76,6 +76,12 @@ public class CourseController {
 		}
 	    
 	  }
+	
+	@GetMapping(path="/courses")
+	  public @ResponseBody List<Course> getAllCourses() {
+	    return courseService.getCourses();
+	  }
+
 	
 	@PutMapping(path="/updateC")
 	  public @ResponseBody String updateCourse (@RequestBody Course course) {
@@ -103,9 +109,12 @@ public class CourseController {
 	    return courseService.getTeachersByCourseId(id);
 	    }
 	
-	@GetMapping(path="/courses")
-	  public @ResponseBody List<Course> getAllCourses() {
-	    return courseService.getCourses();
-	  }
+	@GetMapping(path="/course/{id}/schedule")
+	  public @ResponseBody List<Schedule> getScheduleByCourseId(@PathVariable("id") Long id) {
+	    return courseService.getScheduleByCourseId(id);
+	    }
+	
+	
+	
 
 }

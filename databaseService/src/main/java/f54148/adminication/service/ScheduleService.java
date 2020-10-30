@@ -1,12 +1,15 @@
 package f54148.adminication.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.entity.Course;
+import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.repository.ScheduleRepository;
 
@@ -56,4 +59,27 @@ public class ScheduleService {
 		   return false;
 		  }
 		 }
+
+		public List<Course> getCoursesbyScheduleId(Long scheduleId) {
+			Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
+			  if (opSchedule.isPresent()) {
+				List<Course> listWithoutDuplicates = new ArrayList<>(
+					      new HashSet<>(opSchedule.get().getScheduledCourses()));
+			   return listWithoutDuplicates;
+			  } else {
+			   return null;
+			  }
+		}
+
+		public List<Event> getEventsbyScheduleId(Long scheduleId) {
+			Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
+			  if (opSchedule.isPresent()) {
+				List<Event> listWithoutDuplicates = new ArrayList<>(
+					      new HashSet<>(opSchedule.get().getScheduledEvents()));
+			   return listWithoutDuplicates;
+			  } else {
+			   return null;
+			  }
+		}
+
 }

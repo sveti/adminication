@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Enrollment;
+import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.Teaching;
@@ -90,6 +91,15 @@ public class CourseService {
 			   }
 			   return teachers;
 			   
+			  } else {
+			   return null;
+			  }
+		}
+
+		public List<Schedule> getScheduleByCourseId(Long courseId) {
+			Optional<Course> opCourse = courseRepository.findById(courseId);
+			  if (opCourse.isPresent()) {
+			   return opCourse.get().getCourseSchedule();
 			  } else {
 			   return null;
 			  }
