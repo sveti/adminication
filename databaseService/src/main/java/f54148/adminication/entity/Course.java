@@ -45,7 +45,7 @@ public class Course {
 	@Column(nullable = false)
 	private Integer duration;
 	
-	@ManyToMany(targetEntity = CourseDetails.class,fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@ManyToMany(targetEntity = CourseDetails.class,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "course_has_coursedetails",
             joinColumns = {
                     @JoinColumn(name = "course_id", referencedColumnName = "id")},
@@ -60,6 +60,14 @@ public class Course {
 	 @OneToMany(mappedBy = "course")
 	 @JsonManagedReference(value="teaching_course")
 	 List<Teaching> teaching = new ArrayList<Teaching>();
+	 
+	 @ManyToMany(targetEntity = Schedule.class, cascade = CascadeType.ALL)
+	    @JoinTable(name = "course_has_schedule",
+	            joinColumns = {
+	                    @JoinColumn(name = "course_id", referencedColumnName = "id")},
+	            inverseJoinColumns = {
+	                    @JoinColumn(name = "schedule_id", referencedColumnName = "id")})
+	 List<Schedule> courseSchedule = new ArrayList<>();
 	 
 	 
 	public Long getId() {
@@ -150,10 +158,18 @@ public class Course {
 		this.teaching = teaching;
 	}
 
+	public List<Schedule> getCourseSchedule() {
+		return courseSchedule;
+	}
+
+	public void setCourseSchedule(List<Schedule> courseSchedule) {
+		this.courseSchedule = courseSchedule;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(details, duration, enrollments, id, level, maxStudents, pricePerStudent, status, teaching,
-				title);
+		return Objects.hash(courseSchedule, details, duration, enrollments, id, level, maxStudents, pricePerStudent,
+				status, teaching, title);
 	}
 
 	@Override
@@ -165,9 +181,10 @@ public class Course {
 		if (getClass() != obj.getClass())
 			return false;
 		Course other = (Course) obj;
-		return Objects.equals(details, other.details) && Objects.equals(duration, other.duration)
-				&& Objects.equals(enrollments, other.enrollments) && Objects.equals(id, other.id)
-				&& level == other.level && Objects.equals(maxStudents, other.maxStudents)
+		return Objects.equals(courseSchedule, other.courseSchedule) && Objects.equals(details, other.details)
+				&& Objects.equals(duration, other.duration) && Objects.equals(enrollments, other.enrollments)
+				&& Objects.equals(id, other.id) && level == other.level
+				&& Objects.equals(maxStudents, other.maxStudents)
 				&& Objects.equals(pricePerStudent, other.pricePerStudent) && Objects.equals(status, other.status)
 				&& Objects.equals(teaching, other.teaching) && Objects.equals(title, other.title);
 	}
@@ -176,9 +193,11 @@ public class Course {
 	public String toString() {
 		return "Course [id=" + id + ", title=" + title + ", pricePerStudent=" + pricePerStudent + ", maxStudents="
 				+ maxStudents + ", status=" + status + ", level=" + level + ", duration=" + duration + ", details="
-				+ details + ", enrollments=" + enrollments + ", teaching=" + teaching + "]";
+				+ details + ", enrollments=" + enrollments + ", teaching=" + teaching + ", courseSchedule="
+				+ courseSchedule + "]";
 	}
 
+	
 	
 	
 	

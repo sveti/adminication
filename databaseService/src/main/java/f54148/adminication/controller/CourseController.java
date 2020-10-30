@@ -1,5 +1,6 @@
 package f54148.adminication.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.CourseDetails;
+import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
 import f54148.adminication.entity.Teacher;
+import f54148.adminication.service.CourseDetailsService;
 import f54148.adminication.service.CourseService;
+import f54148.adminication.service.ScheduleService;
 
 
 @Controller
@@ -22,12 +27,49 @@ public class CourseController {
 	
 	@Autowired 
 	private CourseService courseService;
+
+	@Autowired 
+	private CourseDetailsService cdService;
+	
+	@Autowired 
+	private ScheduleService sService;
 	
 	@PostMapping(path="/addC")
 	  public @ResponseBody String addNewCourse (@RequestBody Course course) {
 		
+		//get schedule and courses from passed argument
+		List<Schedule>shedule = course.getCourseSchedule();
+		List<CourseDetails>details = course.getDetails();
+		
+		List<Schedule>pshedule = new ArrayList<Schedule>();
+		List<CourseDetails>pdetails = new ArrayList<CourseDetails>();
+		
+		course.setCourseSchedule(null);
+		course.setDetails(null);
+		
+		//persist details first 
+		for(CourseDetails cd : details) {
+			if(cd.getId()==null) {
+				cdService.addCourseDetails(cd);
+			}
+			pdetails.add(cd);
+		}
+			
+		//persist schedule
+		for(Schedule s : shedule) {
+			if(s.getId()==null) {
+				sService.addSchedule(s);
+			}
+			pshedule.add(s);
+		}
+		
+		//add course to db
 		if(courseService.addCourse(course)) {
-			return "Saved course";
+			//add schedule and details and then persist
+			course.setCourseSchedule(pshedule);
+			course.setDetails(pdetails);
+			updateCourse(course);
+			return "Added course!";
 		}
 		else {
 			return "An error has occured";
