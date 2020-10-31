@@ -114,7 +114,9 @@ public class CourseController {
 	    return courseService.getScheduleByCourseId(id);
 	    }
 	
-	
-	
+	@GetMapping(path="/course/{id}/students/waiting")
+	  public @ResponseBody List<Student> getStudentsWaitingByCourseId(@PathVariable("id") Long id) {
+	    return courseService.getStudentsWaitingByCourseId(id);
+	    }
 
 }

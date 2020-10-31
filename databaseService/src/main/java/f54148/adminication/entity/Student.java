@@ -51,6 +51,10 @@ public class Student {
 	@JsonManagedReference(value="eventwaitinglist_student")
     List<EventWaitingList> eventWaitingList = new ArrayList<EventWaitingList>();
 	
+	@OneToMany(mappedBy = "student")
+	@JsonManagedReference(value="coursewaitinglist_student")
+    List<CourseWaitingList> courseWaitingList = new ArrayList<CourseWaitingList>();
+	
 	
 
 	public Long getId() {
@@ -99,9 +103,17 @@ public class Student {
 		this.events = events;
 	}
 
+	public List<CourseWaitingList> getCourseWaitingList() {
+		return courseWaitingList;
+	}
+
+	public void setCourseWaitingList(List<CourseWaitingList> courseWaitingList) {
+		this.courseWaitingList = courseWaitingList;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(enrollments, eventWaitingList, events, id, parent, user);
+		return Objects.hash(courseWaitingList, enrollments, eventWaitingList, events, id, parent, user);
 	}
 
 	@Override
@@ -113,7 +125,8 @@ public class Student {
 		if (getClass() != obj.getClass())
 			return false;
 		Student other = (Student) obj;
-		return Objects.equals(enrollments, other.enrollments)
+		return Objects.equals(courseWaitingList, other.courseWaitingList)
+				&& Objects.equals(enrollments, other.enrollments)
 				&& Objects.equals(eventWaitingList, other.eventWaitingList) && Objects.equals(events, other.events)
 				&& Objects.equals(id, other.id) && Objects.equals(parent, other.parent)
 				&& Objects.equals(user, other.user);
@@ -122,11 +135,11 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", user=" + user + ", parent=" + parent + ", enrollments=" + enrollments
-				+ ", events=" + events + ", eventWaitingList=" + eventWaitingList + "]";
+				+ ", events=" + events + ", eventWaitingList=" + eventWaitingList + ", courseWaitingList="
+				+ courseWaitingList + "]";
 	}
 
 	
-
 	
 
 	

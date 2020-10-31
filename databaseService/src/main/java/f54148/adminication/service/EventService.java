@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventWaitingList;
+import f54148.adminication.entity.Student;
 import f54148.adminication.repository.EventRepository;
 
 @Service
@@ -68,4 +69,22 @@ public class EventService {
 			  }
 			 
 		 }
+
+		public List<Student> getStudentsWaitingByEventId(Long eventId) {
+			 Optional<Event> opEvent = eventRepository.findById(eventId);
+			  if (opEvent.isPresent()) {
+				  Event e =  opEvent.get();
+				  
+				  List<Student> students = new ArrayList<Student>();
+				  
+				  for(EventWaitingList ew : e.getWaitingList()) {
+					  students.add(ew.getStudent());
+				  }
+				  
+				  return students;
+				  
+			  } else {
+			   return null;
+			  }
+		}
 }

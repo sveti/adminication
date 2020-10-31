@@ -72,6 +72,10 @@ public class Course {
                         "course_id", "schedule_id" }))
 	 List<Schedule> courseSchedule = new ArrayList<>();
 	 
+	@OneToMany(mappedBy = "course")
+	@JsonManagedReference(value="coursewaitinglist_course")
+	List<CourseWaitingList> courseWaitingList = new ArrayList<CourseWaitingList>();
+	 
 	 
 	public Long getId() {
 		return id;
@@ -169,10 +173,18 @@ public class Course {
 		this.courseSchedule = courseSchedule;
 	}
 
+	public List<CourseWaitingList> getCourseWaitingList() {
+		return courseWaitingList;
+	}
+
+	public void setCourseWaitingList(List<CourseWaitingList> courseWaitingList) {
+		this.courseWaitingList = courseWaitingList;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(courseSchedule, details, duration, enrollments, id, level, maxStudents, pricePerStudent,
-				status, teaching, title);
+		return Objects.hash(courseSchedule, courseWaitingList, details, duration, enrollments, id, level, maxStudents,
+				pricePerStudent, status, teaching, title);
 	}
 
 	@Override
@@ -184,7 +196,8 @@ public class Course {
 		if (getClass() != obj.getClass())
 			return false;
 		Course other = (Course) obj;
-		return Objects.equals(courseSchedule, other.courseSchedule) && Objects.equals(details, other.details)
+		return Objects.equals(courseSchedule, other.courseSchedule)
+				&& Objects.equals(courseWaitingList, other.courseWaitingList) && Objects.equals(details, other.details)
 				&& Objects.equals(duration, other.duration) && Objects.equals(enrollments, other.enrollments)
 				&& Objects.equals(id, other.id) && level == other.level
 				&& Objects.equals(maxStudents, other.maxStudents)
@@ -197,12 +210,10 @@ public class Course {
 		return "Course [id=" + id + ", title=" + title + ", pricePerStudent=" + pricePerStudent + ", maxStudents="
 				+ maxStudents + ", status=" + status + ", level=" + level + ", duration=" + duration + ", details="
 				+ details + ", enrollments=" + enrollments + ", teaching=" + teaching + ", courseSchedule="
-				+ courseSchedule + "]";
+				+ courseSchedule + ", courseWaitingList=" + courseWaitingList + "]";
 	}
 
-	
-	
-	
+
 	
 
 }

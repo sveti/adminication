@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventWaitingList;
@@ -53,7 +54,7 @@ public class StudentService {
 
 	}
 
-	public boolean deleteParent(Long userId) {
+	public boolean deleteStudent(Long userId) {
 		if (studentRepository.findById(userId) != null) {
 			studentRepository.deleteById(userId);
 			return true;
@@ -98,6 +99,21 @@ public class StudentService {
 				events.add(e.getEvent());
 			}
 			return events;
+			
+		} else {
+			return null;
+		}
+	}
+
+	public List<Course> getStudentWaitingCourses(Long studentId) {
+		Optional<Student> opUser = studentRepository.findById(studentId);
+		if (opUser.isPresent()) {
+			Student s =  opUser.get();
+			List<Course> courses = new ArrayList<Course>();
+			for(CourseWaitingList c :s.getCourseWaitingList()) {
+				courses.add(c.getCourse());
+			}
+			return courses;
 			
 		} else {
 			return null;

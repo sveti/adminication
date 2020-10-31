@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Schedule;
+import f54148.adminication.entity.Student;
 import f54148.adminication.service.EventService;
 import f54148.adminication.service.ScheduleService;
 
@@ -68,6 +69,11 @@ public class EventController {
 	@GetMapping(path="/event/{id}")
 	  public @ResponseBody Event getEventById(@PathVariable("id") Long id) {
 	    return eventService.getEventById(id);
+	    }
+	
+	@GetMapping(path="/event/{id}/waiting")
+	  public @ResponseBody List<Student> getStudentsWaitingByEventId(@PathVariable("id") Long id) {
+	    return eventService.getStudentsWaitingByEventId(id);
 	    }
 	
 	@GetMapping(path="/events")

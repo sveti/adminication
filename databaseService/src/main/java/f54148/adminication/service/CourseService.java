@@ -1,6 +1,7 @@
 package f54148.adminication.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
@@ -100,6 +102,32 @@ public class CourseService {
 			Optional<Course> opCourse = courseRepository.findById(courseId);
 			  if (opCourse.isPresent()) {
 			   return opCourse.get().getCourseSchedule();
+			  } else {
+			   return null;
+			  }
+		}
+
+		public Collection<CourseWaitingList> getCourseWaitingList(Long courseId) {
+			Optional<Course> opCourse = courseRepository.findById(courseId);
+			  if (opCourse.isPresent()) {
+			   return opCourse.get().getCourseWaitingList();
+			  } else {
+			   return null;
+			  }
+		}
+
+		public List<Student> getStudentsWaitingByCourseId(Long courseId) {
+			Optional<Course> opCourse = courseRepository.findById(courseId);
+			  if (opCourse.isPresent()) {
+			   Course c =  opCourse.get();
+			   
+			   List<Student> students = new ArrayList<Student>();
+			   
+			   for(CourseWaitingList cw : c.getCourseWaitingList()) {
+				   students.add(cw.getStudent());
+			   }
+			   
+			   return students;
 			  } else {
 			   return null;
 			  }

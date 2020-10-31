@@ -86,6 +86,11 @@ public class StudentController {
 	    return studentService.getStudentWaitingEvents(studentId);
 	    }
 	
+	@GetMapping(path="student/{id}/courses/waiting")
+	 public @ResponseBody List<Course> getStudentWaitingCourses(@PathVariable("id") Long studentId) {
+	    return studentService.getStudentWaitingCourses(studentId);
+	    }
+	
 
 
 

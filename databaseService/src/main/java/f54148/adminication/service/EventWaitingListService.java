@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventWaitingList;
 import f54148.adminication.entity.Student;
-import f54148.adminication.repository.EventRepository;
 import f54148.adminication.repository.EventWaitingListRepository;
 
 @Service
@@ -21,6 +20,9 @@ public class EventWaitingListService {
 	
 	@Autowired
 	private EventService eventService;
+	
+	@Autowired 
+	private StudentService studentService;
 
 	
 	 public List<EventWaitingList> getEventWaitingLists() {
@@ -55,12 +57,24 @@ public class EventWaitingListService {
 			 }
 
 		 public boolean deleteEventWaitingList(Long eventWaitingListId) {
-		  if (eventWaitingListRepository.findById(eventWaitingListId) != null) {
-			  eventWaitingListRepository.deleteById(eventWaitingListId);
-		   return true;
-		  } else {
-		   return false;
-		  }
+			 Optional<EventWaitingList> opEventWaitingList = eventWaitingListRepository.findById(eventWaitingListId);
+			  if (opEventWaitingList.isPresent()) {
+				  EventWaitingList ew = opEventWaitingList.get();			  
+	
+				  Student s = ew.getStudent();
+				  s.getEventWaitingList().remove(ew);
+				  studentService.updateStudent(s);
+				  
+				  Event e = ew.getEvent();
+				  e.getWaitingList().remove(ew);
+				  eventService.updateEvent(e);
+				  
+				  eventWaitingListRepository.deleteById(eventWaitingListId);
+				  
+			   return true;
+			  } else {
+			   return false;
+			  }
 		 }
 
 		public Student getFirstStudentInQueue(Long eventId) {
