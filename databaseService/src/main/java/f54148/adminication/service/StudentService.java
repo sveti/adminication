@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Enrollment;
+import f54148.adminication.entity.Event;
+import f54148.adminication.entity.EventWaitingList;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.StudentRepository;
 
@@ -71,6 +73,31 @@ public class StudentService {
 				
 			}
 			return courses;
+			
+		} else {
+			return null;
+		}
+	}
+
+	public List<Event> getEventsStudentById(Long studentId) {
+		Optional<Student> opStudent = studentRepository.findById(studentId);
+		if (opStudent.isPresent()) {
+			return opStudent.get().getEvents();
+			
+		} else {
+			return null;
+		}
+	}
+
+	public List<Event> getStudentWaitingEvents(Long studentId) {
+		Optional<Student> opUser = studentRepository.findById(studentId);
+		if (opUser.isPresent()) {
+			Student s =  opUser.get();
+			List<Event> events = new ArrayList<Event>();
+			for(EventWaitingList e :s.getEventWaitingList()) {
+				events.add(e.getEvent());
+			}
+			return events;
 			
 		} else {
 			return null;

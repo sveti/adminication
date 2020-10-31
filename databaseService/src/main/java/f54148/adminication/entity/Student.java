@@ -2,6 +2,7 @@ package f54148.adminication.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 
@@ -10,12 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -39,6 +42,16 @@ public class Student {
 	@OneToMany(mappedBy = "student")
 	@JsonManagedReference(value="enrollment_student")
     List<Enrollment> enrollments = new ArrayList<Enrollment>();
+	
+	@ManyToMany(targetEntity = Event.class,mappedBy = "eventStudents")
+	@JsonIgnore
+	List<Event> events = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "student")
+	@JsonManagedReference(value="eventwaitinglist_student")
+    List<EventWaitingList> eventWaitingList = new ArrayList<EventWaitingList>();
+	
+	
 
 	public Long getId() {
 		return id;
@@ -70,10 +83,51 @@ public class Student {
 		this.enrollments = enrollments;
 	}
 
+	public List<EventWaitingList> getEventWaitingList() {
+		return eventWaitingList;
+	}
+
+	public void setEventWaitingList(List<EventWaitingList> eventWaitingList) {
+		this.eventWaitingList = eventWaitingList;
+	}
+
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(enrollments, eventWaitingList, events, id, parent, user);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Student other = (Student) obj;
+		return Objects.equals(enrollments, other.enrollments)
+				&& Objects.equals(eventWaitingList, other.eventWaitingList) && Objects.equals(events, other.events)
+				&& Objects.equals(id, other.id) && Objects.equals(parent, other.parent)
+				&& Objects.equals(user, other.user);
+	}
+
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ", user=" + user + ", parent=" + parent.getId()+ parent.getUser().getName() + " " + parent.getUser().getLastName() + "]";
+		return "Student [id=" + id + ", user=" + user + ", parent=" + parent + ", enrollments=" + enrollments
+				+ ", events=" + events + ", eventWaitingList=" + eventWaitingList + "]";
 	}
+
+	
+
+	
 
 	
 	

@@ -33,6 +33,7 @@ public class Parent {
 	@JsonManagedReference
     private Collection<Student> children = new ArrayList<Student>();
 
+
 	public Long getId() {
 		return id;
 	}
@@ -57,8 +58,6 @@ public class Parent {
 		this.children.add(child);
 		child.setParent(this);
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -80,16 +79,10 @@ public class Parent {
 
 	@Override
 	public String toString() {
-		String result =  "Parent [id=" + id + ", user=" + user + ", children=" ;
-		
-		for(Student child: children) {
-			result+= child.getId() + " " + child.getUser().getName() + " " + child.getUser().getLastName() + "|";
-		}
-		
-		result+="]";
-		
-		return result;
+		return "Parent [id=" + id + ", user=" + user + ", children=" + children + "]";
 	}
+
+	
 
 	
 

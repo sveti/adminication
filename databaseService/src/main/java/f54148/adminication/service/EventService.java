@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Event;
+import f54148.adminication.entity.EventWaitingList;
 import f54148.adminication.repository.EventRepository;
 
 @Service
@@ -57,4 +58,14 @@ public class EventService {
 		  }
 		 }
 
+		 public List<EventWaitingList> getEventWaitingList(Long eventId){
+			 
+			 Optional<Event> opEvent = eventRepository.findById(eventId);
+			  if (opEvent.isPresent()) {
+			   return opEvent.get().getWaitingList();
+			  } else {
+			   return null;
+			  }
+			 
+		 }
 }

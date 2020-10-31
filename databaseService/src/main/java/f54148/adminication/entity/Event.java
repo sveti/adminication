@@ -14,8 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "events")
@@ -53,7 +56,20 @@ public class Event {
             uniqueConstraints = @UniqueConstraint(columnNames = {
                     "event_id", "schedule_id" }))
 	List<Schedule> eventSchedule = new ArrayList<>();
-
+	
+	@ManyToMany(targetEntity = Student.class, cascade = CascadeType.ALL)
+    @JoinTable(name = "event_has_students",
+            joinColumns = {
+                    @JoinColumn(name = "event_id", referencedColumnName = "id")},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "student_id", referencedColumnName = "id")})
+	List<Student> eventStudents = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "event")
+	@JsonManagedReference(value="eventwaitinglist_event")
+    List<EventWaitingList> waitingList = new ArrayList<EventWaitingList>();
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -114,9 +130,26 @@ public class Event {
 		this.eventSchedule = eventSchedule;
 	}
 
+	public List<EventWaitingList> getWaitingList() {
+		return waitingList;
+	}
+
+	public void setWaitingList(List<EventWaitingList> waitingList) {
+		this.waitingList = waitingList;
+	}
+
+	public List<Student> getEventStudents() {
+		return eventStudents;
+	}
+
+	public void setEventStudents(List<Student> eventStudents) {
+		this.eventStudents = eventStudents;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, eventSchedule, id, maxAge, maxNumberOfPeople, minAge, status, title);
+		return Objects.hash(description, eventSchedule, eventStudents, id, maxAge, maxNumberOfPeople, minAge, status,
+				title, waitingList);
 	}
 
 	@Override
@@ -129,18 +162,21 @@ public class Event {
 			return false;
 		Event other = (Event) obj;
 		return Objects.equals(description, other.description) && Objects.equals(eventSchedule, other.eventSchedule)
-				&& Objects.equals(id, other.id) && Objects.equals(maxAge, other.maxAge)
-				&& Objects.equals(maxNumberOfPeople, other.maxNumberOfPeople) && Objects.equals(minAge, other.minAge)
-				&& Objects.equals(status, other.status) && Objects.equals(title, other.title);
+				&& Objects.equals(eventStudents, other.eventStudents) && Objects.equals(id, other.id)
+				&& Objects.equals(maxAge, other.maxAge) && Objects.equals(maxNumberOfPeople, other.maxNumberOfPeople)
+				&& Objects.equals(minAge, other.minAge) && Objects.equals(status, other.status)
+				&& Objects.equals(title, other.title) && Objects.equals(waitingList, other.waitingList);
 	}
 
 	@Override
 	public String toString() {
 		return "Event [id=" + id + ", title=" + title + ", minAge=" + minAge + ", maxAge=" + maxAge
 				+ ", maxNumberOfPeople=" + maxNumberOfPeople + ", status=" + status + ", description=" + description
-				+ ", eventSchedule=" + eventSchedule + "]";
+				+ ", eventSchedule=" + eventSchedule + ", eventStudents=" + eventStudents + ", waitingList="
+				+ waitingList + "]";
 	}
 
+	
 	
 	
 	
