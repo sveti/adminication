@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import f54148.adminication.entity.Teaching;
 
-public interface TeachingRepository extends CrudRepository<Teaching, Long>{
+public interface TeachingRepository extends CrudRepository<Teaching, Long> {
 
 }

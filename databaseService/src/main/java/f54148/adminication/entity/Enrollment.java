@@ -16,28 +16,27 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "enrollments")
 public class Enrollment {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@ManyToOne
-    @JoinColumn(name = "student_id",nullable = false)
-	@JsonBackReference(value="enrollment_student")
-    Student student;
-	
+	@JoinColumn(name = "student_id", nullable = false)
+	@JsonBackReference(value = "enrollment_student")
+	Student student;
+
 	@ManyToOne
-    @JoinColumn(name = "course_id",nullable = false)
-	@JsonBackReference(value="enrollment_course")
-    Course course;
-	
+	@JoinColumn(name = "course_id", nullable = false)
+	@JsonBackReference(value = "enrollment_course")
+	Course course;
+
 	@Column
 	int grade;
 
 	public Long getId() {
 		return id;
 	}
-
 
 	public Student getStudent() {
 		return student;
@@ -63,13 +62,10 @@ public class Enrollment {
 		this.grade = grade;
 	}
 
-	
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(course, grade, id, student);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -84,13 +80,9 @@ public class Enrollment {
 				&& Objects.equals(student, other.student);
 	}
 
-
 	@Override
 	public String toString() {
 		return "Enrollment [id=" + id + ", student=" + student + ", course=" + course + ", grade=" + grade + "]";
 	}
-	
-	
 
-	
 }

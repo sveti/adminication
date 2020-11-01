@@ -11,23 +11,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
-public class CourseDetails {
-	
+@Table(name = "course_details")
+public class CourseDetail {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String description;
-	
-	 @ManyToMany(targetEntity = Course.class,fetch = FetchType.LAZY,mappedBy = "details")
-	 @JsonIgnore
-	 List<Course> courses = new ArrayList<>();
+
+	@ManyToMany(targetEntity = Course.class, fetch = FetchType.LAZY, mappedBy = "details")
+	@JsonIgnore
+	List<Course> courses = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -66,7 +67,7 @@ public class CourseDetails {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CourseDetails other = (CourseDetails) obj;
+		CourseDetail other = (CourseDetail) obj;
 		return Objects.equals(courses, other.courses) && Objects.equals(description, other.description)
 				&& Objects.equals(id, other.id);
 	}
@@ -75,9 +76,5 @@ public class CourseDetails {
 	public String toString() {
 		return "CourseDetails [id=" + id + ", description=" + description + ", courses=" + courses + "]";
 	}
-
-	
-	
-	
 
 }

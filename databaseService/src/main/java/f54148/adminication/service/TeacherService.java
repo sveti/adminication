@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.Teaching;
 import f54148.adminication.repository.TeacherRepository;
@@ -17,104 +18,108 @@ public class TeacherService {
 
 	@Autowired
 	private TeacherRepository teacherRepository;
-	
+
 	@Autowired
 	private TeachingService teachingService;
-	
+
 	public List<Teacher> getTeachers() {
-		  List<Teacher> teachersList = new ArrayList<>();
-		  teacherRepository.findAll().forEach(teachersList::add);
-		  return teachersList;
-		 }
+		List<Teacher> teachersList = new ArrayList<>();
+		teacherRepository.findAll().forEach(teachersList::add);
+		return teachersList;
+	}
 
 	public Teacher getTeacherById(Long teacherId) {
-		  Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
-		  if (opTeacher.isPresent()) {
-		   return opTeacher.get();
-		  } else {
-		   return null;
-		  }
-		 }
-	
-	
-	
+		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
+		if (opTeacher.isPresent()) {
+			return opTeacher.get();
+		} else {
+			return null;
+		}
+	}
+
 	public boolean addTeacher(Teacher teacher) {
-		  if (teacherRepository.save(teacher) != null) {
-		   return true;
-		  } else {
-		   return false;
-		  }
-		 }
-
-		 public boolean deleteTeacher(Long teacherId) {
-		  if (teacherRepository.findById(teacherId) != null) {
-			  teacherRepository.deleteById(teacherId);
-		   return true;
-		  } else {
-		   return false;
-		  }
-		 }
-		 
-		 
-		 
-		 
-		 public boolean updateTeacher(Teacher t) {
-			 if (teacherRepository.save(t)!= null) {
-				 
-				   return true;
-				  } else {
-				   return false;
-				  }
+		if (teacherRepository.save(teacher) != null) {
+			return true;
+		} else {
+			return false;
 		}
+	}
 
-		public List<Course> getCoursesByTeacherId(Long teacherId) {
-			 Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
-			  if (opTeacher.isPresent()) {
-			   Teacher t =  opTeacher.get();
-			   
-			   List<Course> courses = new ArrayList<Course>();
-			   
-			   for(Teaching teach : t.getTeaching() ) {
-				   
-				   courses.add(teach.getCourse());
-			   }
-			   return courses;
-			   
-			  } else {
-			   return null;
-			  }
+	public boolean deleteTeacher(Long teacherId) {
+		if (teacherRepository.findById(teacherId) != null) {
+			teacherRepository.deleteById(teacherId);
+			return true;
+		} else {
+			return false;
 		}
+	}
 
-		public List<Course> getsubstituteCoursesByTeacherId(Long teacherId) {
-			
-			Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
-			  if (opTeacher.isPresent()) {
-			   Teacher t =  opTeacher.get();
-			   
-			   List<Course> courses = new ArrayList<Course>();
-			   
-			   for(Teaching teach : t.getSubstituting() ) {
-				   
-				   courses.add(teach.getCourse());
-			   }
-			   return courses;
-			   
-			  } else {
-			   return null;
-			  }
+	public boolean updateTeacher(Teacher t) {
+		if (teacherRepository.save(t) != null) {
+
+			return true;
+		} else {
+			return false;
 		}
+	}
 
-		public List<Teacher> getSubstitutesByCourseId(Long courseId) {
-			
-			List<Teaching> teachings = teachingService.getTeachingsByCourseId(courseId);
-			
-			List<Teacher> substitutes =  new ArrayList<Teacher>();
-			
-			for(Teaching t : teachings) {
-				substitutes.add(t.getSubstitute());
+	public List<Course> getCoursesByTeacherId(Long teacherId) {
+		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
+		if (opTeacher.isPresent()) {
+			Teacher t = opTeacher.get();
+
+			List<Course> courses = new ArrayList<Course>();
+
+			for (Teaching teach : t.getTeaching()) {
+
+				courses.add(teach.getCourse());
 			}
-			
-			return substitutes;
+			return courses;
+
+		} else {
+			return null;
 		}
-	
+	}
+
+	public List<Course> getsubstituteCoursesByTeacherId(Long teacherId) {
+
+		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
+		if (opTeacher.isPresent()) {
+			Teacher t = opTeacher.get();
+
+			List<Course> courses = new ArrayList<Course>();
+
+			for (Teaching teach : t.getSubstituting()) {
+
+				courses.add(teach.getCourse());
+			}
+			return courses;
+
+		} else {
+			return null;
+		}
+	}
+
+	public List<Teacher> getSubstitutesByCourseId(Long courseId) {
+
+		List<Teaching> teachings = teachingService.getTeachingsByCourseId(courseId);
+
+		List<Teacher> substitutes = new ArrayList<Teacher>();
+
+		for (Teaching t : teachings) {
+			substitutes.add(t.getSubstitute());
+		}
+
+		return substitutes;
+	}
+
+	public List<Lesson> getLessonsByTeacherId(Long teacherId) {
+		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
+		if (opTeacher.isPresent()) {
+			return opTeacher.get().getLessons();
+		} else {
+			return null;
+		}
+	}
+
 }

@@ -23,60 +23,58 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "courses")
 public class Course {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String title;
-	
+
 	@Column(nullable = false)
 	private Double pricePerStudent;
-	
+
 	@Column(nullable = false)
 	private Integer maxStudents;
-	
+
 	@Column(nullable = false)
 	private String status;
-	
+
 	@Column(nullable = false)
 	private Level level;
-	
+
 	@Column(nullable = false)
 	private Integer duration;
-	
-	@ManyToMany(targetEntity = CourseDetails.class,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "course_has_coursedetails",
-            joinColumns = {
-                    @JoinColumn(name = "course_id", referencedColumnName = "id")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "course_details_id", referencedColumnName = "id")})
-	 List<CourseDetails> details = new ArrayList<>();
-	
-	 @OneToMany(mappedBy = "course")
-	 @JsonManagedReference(value="enrollment_course")
-	 List<Enrollment> enrollments = new ArrayList<Enrollment>();
 
-	 @OneToMany(mappedBy = "course")
-	 @JsonManagedReference(value="teaching_course")
-	 List<Teaching> teaching = new ArrayList<Teaching>();
-	 
-	 @ManyToMany(targetEntity = Schedule.class, cascade = CascadeType.ALL)
-	    @JoinTable(name = "course_has_schedule",
-	            joinColumns = {
-	                    @JoinColumn(name = "course_id", referencedColumnName = "id")},
-	            inverseJoinColumns = {
-	                    @JoinColumn(name = "schedule_id", referencedColumnName = "id")},
-	            uniqueConstraints = @UniqueConstraint(columnNames = {
-                        "course_id", "schedule_id" }))
-	 List<Schedule> courseSchedule = new ArrayList<>();
-	 
+	@ManyToMany(targetEntity = CourseDetail.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "course_has_coursedetails", joinColumns = {
+			@JoinColumn(name = "course_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "course_details_id", referencedColumnName = "id") })
+	List<CourseDetail> details = new ArrayList<>();
+
 	@OneToMany(mappedBy = "course")
-	@JsonManagedReference(value="coursewaitinglist_course")
+	@JsonManagedReference(value = "enrollment_course")
+	List<Enrollment> enrollments = new ArrayList<Enrollment>();
+
+	@OneToMany(mappedBy = "course")
+	@JsonManagedReference(value = "teaching_course")
+	List<Teaching> teaching = new ArrayList<Teaching>();
+
+	@ManyToMany(targetEntity = Schedule.class, cascade = CascadeType.ALL)
+	@JoinTable(name = "course_has_schedule", joinColumns = {
+			@JoinColumn(name = "course_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "schedule_id", referencedColumnName = "id") }, uniqueConstraints = @UniqueConstraint(columnNames = {
+							"course_id", "schedule_id" }))
+	List<Schedule> courseSchedule = new ArrayList<>();
+
+	@OneToMany(mappedBy = "course")
+	@JsonManagedReference(value = "coursewaitinglist_course")
 	List<CourseWaitingList> courseWaitingList = new ArrayList<CourseWaitingList>();
-	 
-	 
+
+	@OneToMany(mappedBy = "course")
+	@JsonManagedReference(value = "lesson_course")
+	List<Lesson> lessons = new ArrayList<Lesson>();
+
 	public Long getId() {
 		return id;
 	}
@@ -92,7 +90,6 @@ public class Course {
 	public void setPricePerStudent(Double pricePerStudent) {
 		this.pricePerStudent = pricePerStudent;
 	}
-
 
 	public Integer getMaxStudents() {
 		return maxStudents;
@@ -134,17 +131,15 @@ public class Course {
 		this.title = title;
 	}
 
-	
-	
-	public List<CourseDetails> getDetails() {
+	public List<CourseDetail> getDetails() {
 		return details;
 	}
 
-	public void setDetails(List<CourseDetails> details) {
+	public void setDetails(List<CourseDetail> details) {
 		this.details = details;
 	}
 
-	public void addDetail(CourseDetails detail) {
+	public void addDetail(CourseDetail detail) {
 		this.details.add(detail);
 		detail.courses.add(this);
 	}
@@ -181,10 +176,18 @@ public class Course {
 		this.courseWaitingList = courseWaitingList;
 	}
 
+	public List<Lesson> getLessons() {
+		return lessons;
+	}
+
+	public void setLessons(List<Lesson> lessons) {
+		this.lessons = lessons;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(courseSchedule, courseWaitingList, details, duration, enrollments, id, level, maxStudents,
-				pricePerStudent, status, teaching, title);
+		return Objects.hash(courseSchedule, courseWaitingList, details, duration, enrollments, id, lessons, level,
+				maxStudents, pricePerStudent, status, teaching, title);
 	}
 
 	@Override
@@ -199,7 +202,7 @@ public class Course {
 		return Objects.equals(courseSchedule, other.courseSchedule)
 				&& Objects.equals(courseWaitingList, other.courseWaitingList) && Objects.equals(details, other.details)
 				&& Objects.equals(duration, other.duration) && Objects.equals(enrollments, other.enrollments)
-				&& Objects.equals(id, other.id) && level == other.level
+				&& Objects.equals(id, other.id) && Objects.equals(lessons, other.lessons) && level == other.level
 				&& Objects.equals(maxStudents, other.maxStudents)
 				&& Objects.equals(pricePerStudent, other.pricePerStudent) && Objects.equals(status, other.status)
 				&& Objects.equals(teaching, other.teaching) && Objects.equals(title, other.title);
@@ -210,10 +213,7 @@ public class Course {
 		return "Course [id=" + id + ", title=" + title + ", pricePerStudent=" + pricePerStudent + ", maxStudents="
 				+ maxStudents + ", status=" + status + ", level=" + level + ", duration=" + duration + ", details="
 				+ details + ", enrollments=" + enrollments + ", teaching=" + teaching + ", courseSchedule="
-				+ courseSchedule + ", courseWaitingList=" + courseWaitingList + "]";
+				+ courseSchedule + ", courseWaitingList=" + courseWaitingList + ", lessons=" + lessons + "]";
 	}
-
-
-	
 
 }

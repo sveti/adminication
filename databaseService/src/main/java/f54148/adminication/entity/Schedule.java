@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
@@ -27,29 +26,28 @@ public class Schedule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column(name = "start_time", columnDefinition = "TIME")
 	private LocalTime startTime;
-	
+
 	@Column(name = "end_time", columnDefinition = "TIME")
 	private LocalTime endTime;
-	
+
 	@Column(name = "start_date", columnDefinition = "DATE")
 	private LocalDate startDate;
-	
-	
-	@ManyToMany(targetEntity = Course.class,fetch = FetchType.EAGER,mappedBy = "courseSchedule")
+
+	@ManyToMany(targetEntity = Course.class, fetch = FetchType.EAGER, mappedBy = "courseSchedule")
 	@JsonIgnore
 	List<Course> scheduledCourses = new ArrayList<>();
-	
-	@ManyToMany(targetEntity = Event.class,mappedBy = "eventSchedule")
+
+	@ManyToMany(targetEntity = Event.class, mappedBy = "eventSchedule")
 	@JsonIgnore
 	List<Event> scheduledEvents = new ArrayList<>();
 
 	public Long getId() {
 		return id;
 	}
-	
+
 	public LocalTime getStartTime() {
 		return startTime;
 	}
@@ -66,31 +64,25 @@ public class Schedule {
 		this.endTime = endTime;
 	}
 
-
 	public List<Course> getScheduledCourses() {
 		return scheduledCourses;
 	}
-
 
 	public void setScheduledCourses(List<Course> scheduledCourses) {
 		this.scheduledCourses = scheduledCourses;
 	}
 
-
 	public List<Event> getScheduledEvents() {
 		return scheduledEvents;
 	}
-
 
 	public void setScheduledEvents(List<Event> scheduledEvents) {
 		this.scheduledEvents = scheduledEvents;
 	}
 
-
 	public LocalDate getStartDate() {
 		return startDate;
 	}
-
 
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
@@ -122,7 +114,4 @@ public class Schedule {
 				+ ", scheduledCourses=" + scheduledCourses + ", scheduledEvents=" + scheduledEvents + "]";
 	}
 
-
-	
 }
-

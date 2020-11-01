@@ -24,38 +24,36 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "students")
 public class Student {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-	@JsonManagedReference(value="student")
+	@JoinColumn(name = "userId", referencedColumnName = "id")
+	@JsonManagedReference(value = "student")
 	private User user;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
 	@JsonBackReference
 	private Parent parent;
-	
+
 	@OneToMany(mappedBy = "student")
-	@JsonManagedReference(value="enrollment_student")
-    List<Enrollment> enrollments = new ArrayList<Enrollment>();
-	
-	@ManyToMany(targetEntity = Event.class,mappedBy = "eventStudents")
+	@JsonManagedReference(value = "enrollment_student")
+	List<Enrollment> enrollments = new ArrayList<Enrollment>();
+
+	@ManyToMany(targetEntity = Event.class, mappedBy = "eventStudents")
 	@JsonIgnore
 	List<Event> events = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "student")
-	@JsonManagedReference(value="eventwaitinglist_student")
-    List<EventWaitingList> eventWaitingList = new ArrayList<EventWaitingList>();
-	
+	@JsonManagedReference(value = "eventwaitinglist_student")
+	List<EventWaitingList> eventWaitingList = new ArrayList<EventWaitingList>();
+
 	@OneToMany(mappedBy = "student")
-	@JsonManagedReference(value="coursewaitinglist_student")
-    List<CourseWaitingList> courseWaitingList = new ArrayList<CourseWaitingList>();
-	
-	
+	@JsonManagedReference(value = "coursewaitinglist_student")
+	List<CourseWaitingList> courseWaitingList = new ArrayList<CourseWaitingList>();
 
 	public Long getId() {
 		return id;
@@ -69,16 +67,14 @@ public class Student {
 		this.user = user;
 	}
 
-
 	public Parent getParent() {
-		return parent;	
+		return parent;
 	}
 
 	public void setParent(Parent parent) {
 		this.parent = parent;
 	}
 
-	
 	public List<Enrollment> getEnrollments() {
 		return enrollments;
 	}
@@ -139,9 +135,4 @@ public class Student {
 				+ courseWaitingList + "]";
 	}
 
-	
-	
-
-	
-	
 }

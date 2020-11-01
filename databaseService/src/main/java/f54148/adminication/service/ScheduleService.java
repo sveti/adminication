@@ -15,71 +15,88 @@ import f54148.adminication.repository.ScheduleRepository;
 
 @Service
 public class ScheduleService {
-	
+
 	@Autowired
 	private ScheduleRepository scheduleRepository;
 
-	
-	 public List<Schedule> getSchedules() {
-		  List<Schedule> scheduleList = new ArrayList<>();
-		  scheduleRepository.findAll().forEach(scheduleList::add);
-		  return scheduleList;
-		 }
+	@Autowired
+	private CourseService courseService;
 
-		 public Schedule getScheduleById(Long scheduleId) {
-		  Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
-		  if (opSchedule.isPresent()) {
-		   return opSchedule.get();
-		  } else {
-		   return null;
-		  }
-		 }
+	@Autowired
+	private EventService eventService;
 
-		 public boolean addSchedule(Schedule schedule) {
-		  if (scheduleRepository.save(schedule) != null) {
-		   return true;
-		  } else {
-		   return false;
-		  }
-		 }
-		 
-		 public boolean updateSchedule(Schedule schedule) {
-			  if (scheduleRepository.save(schedule) != null) {
-			   return true;
-			  } else {
-			   return false;
-			  }
-			 }
+	public List<Schedule> getSchedules() {
+		List<Schedule> scheduleList = new ArrayList<>();
+		scheduleRepository.findAll().forEach(scheduleList::add);
+		return scheduleList;
+	}
 
-		 public boolean deleteSchedule(Long scheduleId) {
-		  if (scheduleRepository.findById(scheduleId) != null) {
-			  scheduleRepository.deleteById(scheduleId);
-		   return true;
-		  } else {
-		   return false;
-		  }
-		 }
-
-		public List<Course> getCoursesbyScheduleId(Long scheduleId) {
-			Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
-			  if (opSchedule.isPresent()) {
-				List<Course> listWithoutDuplicates = new ArrayList<>(
-					      new HashSet<>(opSchedule.get().getScheduledCourses()));
-			   return listWithoutDuplicates;
-			  } else {
-			   return null;
-			  }
+	public Schedule getScheduleById(Long scheduleId) {
+		Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
+		if (opSchedule.isPresent()) {
+			return opSchedule.get();
+		} else {
+			return null;
 		}
+	}
 
-		public List<Event> getEventsbyScheduleId(Long scheduleId) {
-			Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
-			  if (opSchedule.isPresent()) {
-				List<Event> listWithoutDuplicates = new ArrayList<>(
-					      new HashSet<>(opSchedule.get().getScheduledEvents()));
-			   return listWithoutDuplicates;
-			  } else {
-			   return null;
-			  }
+	public boolean addSchedule(Schedule schedule) {
+		if (scheduleRepository.save(schedule) != null) {
+			return true;
+		} else {
+			return false;
 		}
+	}
+
+	public boolean updateSchedule(Schedule schedule) {
+		if (scheduleRepository.save(schedule) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean deleteSchedule(Long scheduleId) {
+		Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
+		if (opSchedule.isPresent()) {
+
+			Schedule schedule = opSchedule.get();
+
+			for (Course c : schedule.getScheduledCourses()) {
+				c.getCourseSchedule().remove(schedule);
+				courseService.updateCourse(c);
+			}
+
+			for (Event e : schedule.getScheduledEvents()) {
+				e.getEventSchedule().remove(schedule);
+				eventService.updateEvent(e);
+			}
+			scheduleRepository.deleteById(scheduleId);
+			return true;
+
+		} else {
+			return false;
+		}
+	}
+
+	public List<Course> getCoursesbyScheduleId(Long scheduleId) {
+		Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
+		if (opSchedule.isPresent()) {
+			List<Course> listWithoutDuplicates = new ArrayList<>(new HashSet<>(opSchedule.get().getScheduledCourses()));
+			return listWithoutDuplicates;
+		} else {
+			return null;
+		}
+	}
+
+	public List<Event> getEventsbyScheduleId(Long scheduleId) {
+		Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
+		if (opSchedule.isPresent()) {
+			List<Event> listWithoutDuplicates = new ArrayList<>(new HashSet<>(opSchedule.get().getScheduledEvents()));
+			return listWithoutDuplicates;
+		} else {
+			return null;
+		}
+	}
 
 }

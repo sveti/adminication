@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 //a class to get the custom port for this microservice from the configuration server
 @Component
 public class CustomizationPort implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
-	
-	//get the server port from the databaseService.yml
+
+	// get the server port from the databaseService.yml
 	@Value("${server.port: 8080}")
 	public int serverPort;
 
-	//set the port
+	// set the port
 	@Override
 	public void customize(ConfigurableServletWebServerFactory server) {
 		server.setPort(serverPort);

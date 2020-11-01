@@ -23,53 +23,47 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "events")
 public class Event {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String title;
-		
+
 	@Column
 	private Integer minAge;
-	
+
 	@Column
 	private Integer maxAge;
-	
+
 	@Column(nullable = false)
 	private Integer maxNumberOfPeople;
-	
+
 	@Column(nullable = false)
 	private String status;
-	
-	@Lob 
-	@Column(name="description", length=1023)
+
+	@Lob
+	@Column(name = "description", length = 1023)
 	private String description;
-	
+
 	@ManyToMany(targetEntity = Schedule.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "event_has_schedule",
-            joinColumns = {
-                    @JoinColumn(name = "event_id", referencedColumnName = "id")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "schedule_id", referencedColumnName = "id")},
-            uniqueConstraints = @UniqueConstraint(columnNames = {
-                    "event_id", "schedule_id" }))
+	@JoinTable(name = "event_has_schedule", joinColumns = {
+			@JoinColumn(name = "event_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "schedule_id", referencedColumnName = "id") }, uniqueConstraints = @UniqueConstraint(columnNames = {
+							"event_id", "schedule_id" }))
 	List<Schedule> eventSchedule = new ArrayList<>();
-	
+
 	@ManyToMany(targetEntity = Student.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "event_has_students",
-            joinColumns = {
-                    @JoinColumn(name = "event_id", referencedColumnName = "id")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "student_id", referencedColumnName = "id")})
+	@JoinTable(name = "event_has_students", joinColumns = {
+			@JoinColumn(name = "event_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "student_id", referencedColumnName = "id") })
 	List<Student> eventStudents = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "event")
-	@JsonManagedReference(value="eventwaitinglist_event")
-    List<EventWaitingList> waitingList = new ArrayList<EventWaitingList>();
-	
-	
+	@JsonManagedReference(value = "eventwaitinglist_event")
+	List<EventWaitingList> waitingList = new ArrayList<EventWaitingList>();
+
 	public Long getId() {
 		return id;
 	}
@@ -175,11 +169,5 @@ public class Event {
 				+ ", eventSchedule=" + eventSchedule + ", eventStudents=" + eventStudents + ", waitingList="
 				+ waitingList + "]";
 	}
-
-	
-	
-	
-	
-
 
 }

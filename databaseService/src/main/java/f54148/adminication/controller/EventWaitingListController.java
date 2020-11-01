@@ -18,58 +18,54 @@ import f54148.adminication.service.EventWaitingListService;
 
 @Controller
 public class EventWaitingListController {
-	
-	@Autowired 
+
+	@Autowired
 	private EventWaitingListService eventWaitingListService;
 
-	@PostMapping(path="/addEventWaitingList")
-	  public @ResponseBody String addNewEventWaitingList (@RequestBody EventWaitingList eventWaitingList) {
-		
-		if(eventWaitingListService.addEventWaitingList(eventWaitingList)) {
+	@PostMapping(path = "/addEventWaitingList")
+	public @ResponseBody String addNewEventWaitingList(@RequestBody EventWaitingList eventWaitingList) {
+
+		if (eventWaitingListService.addEventWaitingList(eventWaitingList)) {
 			return "Saved eventWaitingList";
-		}
-		else {
+		} else {
 			return "An error has occured";
 		}
-	    
-	  }
-	
-	@PutMapping(path="/updateEventWaitingList")
-	  public @ResponseBody String updateEventWaitingList (@RequestBody EventWaitingList eventWaitingList) {
-		
-		if(eventWaitingListService.addEventWaitingList(eventWaitingList)) {
+
+	}
+
+	@PutMapping(path = "/updateEventWaitingList")
+	public @ResponseBody String updateEventWaitingList(@RequestBody EventWaitingList eventWaitingList) {
+
+		if (eventWaitingListService.addEventWaitingList(eventWaitingList)) {
 			return "Updated eventWaitingList";
-		}
-		else {
+		} else {
 			return "An error has occured";
 		}
-	    
-	  }
-	
-	@GetMapping(path="/eventWaitingList/{id}")
-	  public @ResponseBody EventWaitingList getEventWaitingListById(@PathVariable("id") Long id) {
-	    return eventWaitingListService.getEventWaitingListById(id);
-	    }
-	
-	@GetMapping(path="/eventWaitingLists")
-	  public @ResponseBody List<EventWaitingList> getAllEventWaitingLists() {
-	    return eventWaitingListService.getEventWaitingLists();
-	  }
 
-	@GetMapping(path="/eventWaitingList/{eventId}/firstInQueue")
-	  public @ResponseBody Student getFirstStudentInQueue(@PathVariable("eventId") Long eventId) {
-	    return eventWaitingListService.getFirstStudentInQueue(eventId);
-	  }
-	
-	@DeleteMapping(path="/eventWaitingList/{id}")
+	}
+
+	@GetMapping(path = "/eventWaitingList/{id}")
+	public @ResponseBody EventWaitingList getEventWaitingListById(@PathVariable("id") Long id) {
+		return eventWaitingListService.getEventWaitingListById(id);
+	}
+
+	@GetMapping(path = "/eventWaitingLists")
+	public @ResponseBody List<EventWaitingList> getAllEventWaitingLists() {
+		return eventWaitingListService.getEventWaitingLists();
+	}
+
+	@GetMapping(path = "/eventWaitingList/{eventId}/firstInQueue")
+	public @ResponseBody Student getFirstStudentInQueue(@PathVariable("eventId") Long eventId) {
+		return eventWaitingListService.getFirstStudentInQueue(eventId);
+	}
+
+	@DeleteMapping(path = "/eventWaitingList/{id}")
 	public @ResponseBody String deteleEventWaiting(@PathVariable("id") Long eventWaitingListId) {
-		if(eventWaitingListService.deleteEventWaitingList(eventWaitingListId)) {
+		if (eventWaitingListService.deleteEventWaitingList(eventWaitingListId)) {
 			return "Deleted eventWaitingList";
-		}
-		else {
+		} else {
 			return "An error has occured";
 		}
-	   }
+	}
 
-		
 }

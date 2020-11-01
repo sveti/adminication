@@ -1,6 +1,5 @@
 package f54148.adminication.entity;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,28 +17,30 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
 @Entity
 @Table(name = "teachers")
-public class Teacher{
-	
+public class Teacher {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-	@JsonManagedReference(value="teacher")
+	@JoinColumn(name = "userId", referencedColumnName = "id")
+	@JsonManagedReference(value = "teacher")
 	private User user;
-	
-	 @OneToMany(mappedBy = "teacher")
-	 @JsonManagedReference(value="teaching_teacher")
-	 List<Teaching> teaching = new ArrayList<Teaching>();
-	
-	 @OneToMany(mappedBy = "substitute")
-	 @JsonManagedReference(value="teaching_teacher_sub")
-	 List<Teaching> substituting = new ArrayList<Teaching>();
-	 
+
+	@OneToMany(mappedBy = "teacher")
+	@JsonManagedReference(value = "teaching_teacher")
+	List<Teaching> teaching = new ArrayList<Teaching>();
+
+	@OneToMany(mappedBy = "substitute")
+	@JsonManagedReference(value = "teaching_teacher_sub")
+	List<Teaching> substituting = new ArrayList<Teaching>();
+
+	@OneToMany(mappedBy = "teacher")
+	@JsonManagedReference(value = "lesson_teacher")
+	List<Lesson> lessons = new ArrayList<Lesson>();
 
 	public Long getId() {
 		return id;
@@ -69,9 +70,17 @@ public class Teacher{
 		this.substituting = substituting;
 	}
 
+	public List<Lesson> getLessons() {
+		return lessons;
+	}
+
+	public void setLessons(List<Lesson> lessons) {
+		this.lessons = lessons;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, substituting, teaching, user);
+		return Objects.hash(id, lessons, substituting, teaching, user);
 	}
 
 	@Override
@@ -83,17 +92,15 @@ public class Teacher{
 		if (getClass() != obj.getClass())
 			return false;
 		Teacher other = (Teacher) obj;
-		return Objects.equals(id, other.id) && Objects.equals(substituting, other.substituting)
-				&& Objects.equals(teaching, other.teaching) && Objects.equals(user, other.user);
+		return Objects.equals(id, other.id) && Objects.equals(lessons, other.lessons)
+				&& Objects.equals(substituting, other.substituting) && Objects.equals(teaching, other.teaching)
+				&& Objects.equals(user, other.user);
 	}
 
 	@Override
 	public String toString() {
 		return "Teacher [id=" + id + ", user=" + user + ", teaching=" + teaching + ", substituting=" + substituting
-				+ "]";
+				+ ", lessons=" + lessons + "]";
 	}
 
-
-	
-	
 }

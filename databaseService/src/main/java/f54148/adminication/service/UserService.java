@@ -12,50 +12,48 @@ import f54148.adminication.repository.UserRepository;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
-	
-	 public List<User> getUsers() {
-		  List<User> userList = new ArrayList<>();
-		  userRepository.findAll().forEach(userList::add);
-		  return userList;
-		 }
 
-		 public User getUserById(Long userId) {
-		  Optional<User> opUser = userRepository.findById(userId);
-		  if (opUser.isPresent()) {
-		   return opUser.get();
-		  } else {
-		   return null;
-		  }
-		 }
+	public List<User> getUsers() {
+		List<User> userList = new ArrayList<>();
+		userRepository.findAll().forEach(userList::add);
+		return userList;
+	}
 
-		 public boolean addUser(User user) {
-		  if (userRepository.save(user) != null) {
-		   return true;
-		  } else {
-		   return false;
-		  }
-		 }
-		 
-		 public boolean updateUser(User user) {
-			  if (userRepository.save(user) != null) {
-			   return true;
-			  } else {
-			   return false;
-			  }
-			 }
+	public User getUserById(Long userId) {
+		Optional<User> opUser = userRepository.findById(userId);
+		if (opUser.isPresent()) {
+			return opUser.get();
+		} else {
+			return null;
+		}
+	}
 
-		 public boolean deleteUser(Long userId) {
-		  if (userRepository.findById(userId) != null) {
-		   userRepository.deleteById(userId);
-		   return true;
-		  } else {
-		   return false;
-		  }
-		 }
-	
+	public boolean addUser(User user) {
+		if (userRepository.save(user) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean updateUser(User user) {
+		if (userRepository.save(user) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean deleteUser(Long userId) {
+		if (userRepository.findById(userId) != null) {
+			userRepository.deleteById(userId);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }

@@ -45,7 +45,7 @@ public class StudentService {
 	}
 
 	public boolean updateStudent(Student student) {
-		
+
 		if (studentRepository.save(student) != null) {
 			return true;
 		} else {
@@ -66,15 +66,15 @@ public class StudentService {
 	public List<Course> getCoursesStudentById(Long studentId) {
 		Optional<Student> opUser = studentRepository.findById(studentId);
 		if (opUser.isPresent()) {
-			Student s =  opUser.get();
+			Student s = opUser.get();
 			List<Course> courses = new ArrayList<Course>();
-			for(Enrollment e :s.getEnrollments()) {
-				
+			for (Enrollment e : s.getEnrollments()) {
+
 				courses.add(e.getCourse());
-				
+
 			}
 			return courses;
-			
+
 		} else {
 			return null;
 		}
@@ -84,7 +84,7 @@ public class StudentService {
 		Optional<Student> opStudent = studentRepository.findById(studentId);
 		if (opStudent.isPresent()) {
 			return opStudent.get().getEvents();
-			
+
 		} else {
 			return null;
 		}
@@ -93,13 +93,13 @@ public class StudentService {
 	public List<Event> getStudentWaitingEvents(Long studentId) {
 		Optional<Student> opUser = studentRepository.findById(studentId);
 		if (opUser.isPresent()) {
-			Student s =  opUser.get();
+			Student s = opUser.get();
 			List<Event> events = new ArrayList<Event>();
-			for(EventWaitingList e :s.getEventWaitingList()) {
+			for (EventWaitingList e : s.getEventWaitingList()) {
 				events.add(e.getEvent());
 			}
 			return events;
-			
+
 		} else {
 			return null;
 		}
@@ -108,13 +108,13 @@ public class StudentService {
 	public List<Course> getStudentWaitingCourses(Long studentId) {
 		Optional<Student> opUser = studentRepository.findById(studentId);
 		if (opUser.isPresent()) {
-			Student s =  opUser.get();
+			Student s = opUser.get();
 			List<Course> courses = new ArrayList<Course>();
-			for(CourseWaitingList c :s.getCourseWaitingList()) {
+			for (CourseWaitingList c : s.getCourseWaitingList()) {
 				courses.add(c.getCourse());
 			}
 			return courses;
-			
+
 		} else {
 			return null;
 		}

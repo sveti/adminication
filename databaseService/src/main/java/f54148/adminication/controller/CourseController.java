@@ -13,110 +13,112 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Course;
-import f54148.adminication.entity.CourseDetails;
+import f54148.adminication.entity.CourseDetail;
+import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
 import f54148.adminication.entity.Teacher;
-import f54148.adminication.service.CourseDetailsService;
+import f54148.adminication.service.CourseDetailService;
 import f54148.adminication.service.CourseService;
 import f54148.adminication.service.ScheduleService;
 
-
 @Controller
 public class CourseController {
-	
-	@Autowired 
+
+	@Autowired
 	private CourseService courseService;
 
-	@Autowired 
-	private CourseDetailsService cdService;
-	
-	@Autowired 
+	@Autowired
+	private CourseDetailService cdService;
+
+	@Autowired
 	private ScheduleService sService;
-	
-	@PostMapping(path="/addC")
-	  public @ResponseBody String addNewCourse (@RequestBody Course course) {
-		
-		//get schedule and courses from passed argument
-		List<Schedule>shedule = course.getCourseSchedule();
-		List<CourseDetails>details = course.getDetails();
-		
-		List<Schedule>pshedule = new ArrayList<Schedule>();
-		List<CourseDetails>pdetails = new ArrayList<CourseDetails>();
-		
+
+	@PostMapping(path = "/addCourse")
+	public @ResponseBody String addNewCourse(@RequestBody Course course) {
+
+		// get schedule and courses from passed argument
+		List<Schedule> shedule = course.getCourseSchedule();
+		List<CourseDetail> details = course.getDetails();
+
+		List<Schedule> pshedule = new ArrayList<Schedule>();
+		List<CourseDetail> pdetails = new ArrayList<CourseDetail>();
+
 		course.setCourseSchedule(null);
 		course.setDetails(null);
-		
-		//persist details first 
-		for(CourseDetails cd : details) {
-			if(cd.getId()==null) {
-				cdService.addCourseDetails(cd);
+
+		// persist details first
+		for (CourseDetail cd : details) {
+			if (cd.getId() == null) {
+				cdService.addCourseDetail(cd);
 			}
 			pdetails.add(cd);
 		}
-			
-		//persist schedule
-		for(Schedule s : shedule) {
-			if(s.getId()==null) {
+
+		// persist schedule
+		for (Schedule s : shedule) {
+			if (s.getId() == null) {
 				sService.addSchedule(s);
 			}
 			pshedule.add(s);
 		}
-		
-		//add course to database
-		if(courseService.addCourse(course)) {
-			//add schedule and details and then persist
+
+		// add course to database
+		if (courseService.addCourse(course)) {
+			// add schedule and details and then persist
 			course.setCourseSchedule(pshedule);
 			course.setDetails(pdetails);
 			updateCourse(course);
 			return "Added course!";
-		}
-		else {
+		} else {
 			return "An error has occured";
 		}
-	    
-	  }
-	
-	@GetMapping(path="/courses")
-	  public @ResponseBody List<Course> getAllCourses() {
-	    return courseService.getCourses();
-	  }
 
-	
-	@PutMapping(path="/updateC")
-	  public @ResponseBody String updateCourse (@RequestBody Course course) {
-		
-		if(courseService.addCourse(course)) {
+	}
+
+	@GetMapping(path = "/courses")
+	public @ResponseBody List<Course> getAllCourses() {
+		return courseService.getCourses();
+	}
+
+	@PutMapping(path = "/updateCourse")
+	public @ResponseBody String updateCourse(@RequestBody Course course) {
+
+		if (courseService.addCourse(course)) {
 			return "Updated course";
-		}
-		else {
+		} else {
 			return "An error has occured";
 		}
-	    
-	  }
-	
-	@GetMapping(path="/course/{id}")
-	  public @ResponseBody Course getCourseById(@PathVariable("id") Long id) {
-	    return courseService.getCourseById(id);
-	    }
-	
-	@GetMapping(path="/course/{id}/students")
-	  public @ResponseBody List<Student> getStudentsByCourseId(@PathVariable("id") Long id) {
-	    return courseService.getStudentsByCourseId(id);
-	    }
-	@GetMapping(path="/course/{id}/teachers")
-	  public @ResponseBody List<Teacher> getTeachersByCourseId(@PathVariable("id") Long id) {
-	    return courseService.getTeachersByCourseId(id);
-	    }
-	
-	@GetMapping(path="/course/{id}/schedule")
-	  public @ResponseBody List<Schedule> getScheduleByCourseId(@PathVariable("id") Long id) {
-	    return courseService.getScheduleByCourseId(id);
-	    }
-	
-	@GetMapping(path="/course/{id}/students/waiting")
-	  public @ResponseBody List<Student> getStudentsWaitingByCourseId(@PathVariable("id") Long id) {
-	    return courseService.getStudentsWaitingByCourseId(id);
-	    }
 
+	}
+
+	@GetMapping(path = "/course/{id}")
+	public @ResponseBody Course getCourseById(@PathVariable("id") Long id) {
+		return courseService.getCourseById(id);
+	}
+
+	@GetMapping(path = "/course/{id}/students")
+	public @ResponseBody List<Student> getStudentsByCourseId(@PathVariable("id") Long id) {
+		return courseService.getStudentsByCourseId(id);
+	}
+
+	@GetMapping(path = "/course/{id}/teachers")
+	public @ResponseBody List<Teacher> getTeachersByCourseId(@PathVariable("id") Long id) {
+		return courseService.getTeachersByCourseId(id);
+	}
+
+	@GetMapping(path = "/course/{id}/schedule")
+	public @ResponseBody List<Schedule> getScheduleByCourseId(@PathVariable("id") Long id) {
+		return courseService.getScheduleByCourseId(id);
+	}
+
+	@GetMapping(path = "/course/{id}/students/waiting")
+	public @ResponseBody List<Student> getStudentsWaitingByCourseId(@PathVariable("id") Long id) {
+		return courseService.getStudentsWaitingByCourseId(id);
+	}
+
+	@GetMapping(path = "/course/{id}/lessons")
+	public @ResponseBody List<Lesson> getLessonsByCourseId(@PathVariable("id") Long id) {
+		return courseService.getLessonsByCourseId(id);
+	}
 }

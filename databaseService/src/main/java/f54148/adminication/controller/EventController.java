@@ -20,65 +20,62 @@ import f54148.adminication.service.ScheduleService;
 
 @Controller
 public class EventController {
-	
-	
-	@Autowired 
+
+	@Autowired
 	private EventService eventService;
-	
-	@Autowired 
+
+	@Autowired
 	private ScheduleService scheduleService;
 
-	@PostMapping(path="/addEvent")
-	  public @ResponseBody String addNewEvent (@RequestBody Event event) {
-		
-		List<Schedule>schedules = new ArrayList<Schedule>();
-		
-		for(Schedule s: event.getEventSchedule()) {
-			
-			if(s.getId()==null) {
+	@PostMapping(path = "/addEvent")
+	public @ResponseBody String addNewEvent(@RequestBody Event event) {
+
+		List<Schedule> schedules = new ArrayList<Schedule>();
+
+		for (Schedule s : event.getEventSchedule()) {
+
+			if (s.getId() == null) {
 				scheduleService.addSchedule(s);
-			}		
+			}
 			schedules.add(s);
 		}
-		
+
 		event.setEventSchedule(null);
-		
-		if(eventService.addEvent(event)) {
+
+		if (eventService.addEvent(event)) {
 			event.setEventSchedule(schedules);
 			updateEvent(event);
 			return "Saved event";
-		}
-		else {
+		} else {
 			return "An error has occured";
 		}
-	    
-	  }
-	
-	@PutMapping(path="/updateEvent")
-	  public @ResponseBody String updateEvent (@RequestBody Event event) {
-		
-		if(eventService.addEvent(event)) {
+
+	}
+
+	@PutMapping(path = "/updateEvent")
+	public @ResponseBody String updateEvent(@RequestBody Event event) {
+
+		if (eventService.addEvent(event)) {
 			return "Updated event";
-		}
-		else {
+		} else {
 			return "An error has occured";
 		}
-	    
-	  }
-	
-	@GetMapping(path="/event/{id}")
-	  public @ResponseBody Event getEventById(@PathVariable("id") Long id) {
-	    return eventService.getEventById(id);
-	    }
-	
-	@GetMapping(path="/event/{id}/waiting")
-	  public @ResponseBody List<Student> getStudentsWaitingByEventId(@PathVariable("id") Long id) {
-	    return eventService.getStudentsWaitingByEventId(id);
-	    }
-	
-	@GetMapping(path="/events")
-	  public @ResponseBody List<Event> getAllEvents() {
-	    return eventService.getEvents();
-	  }
+
+	}
+
+	@GetMapping(path = "/event/{id}")
+	public @ResponseBody Event getEventById(@PathVariable("id") Long id) {
+		return eventService.getEventById(id);
+	}
+
+	@GetMapping(path = "/event/{id}/waiting")
+	public @ResponseBody List<Student> getStudentsWaitingByEventId(@PathVariable("id") Long id) {
+		return eventService.getStudentsWaitingByEventId(id);
+	}
+
+	@GetMapping(path = "/events")
+	public @ResponseBody List<Event> getAllEvents() {
+		return eventService.getEvents();
+	}
 
 }

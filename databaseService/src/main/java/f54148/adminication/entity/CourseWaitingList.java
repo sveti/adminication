@@ -16,23 +16,22 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "course_waiting_lists")
-public class CourseWaitingList  implements Comparable<CourseWaitingList>{
+public class CourseWaitingList implements Comparable<CourseWaitingList> {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@ManyToOne
-    @JoinColumn(name = "course_id",nullable = false)
-	@JsonBackReference(value="coursewaitinglist_course")
-    Course course;
-		
+	@JoinColumn(name = "course_id", nullable = false)
+	@JsonBackReference(value = "coursewaitinglist_course")
+	Course course;
+
 	@ManyToOne
-    @JoinColumn(name = "student_id",nullable = false)
-	@JsonBackReference(value="coursewaitinglist_student")
-    Student student;
-	
+	@JoinColumn(name = "student_id", nullable = false)
+	@JsonBackReference(value = "coursewaitinglist_student")
+	Student student;
+
 	@Column(name = "signed", columnDefinition = "DATETIME")
 	private LocalDateTime signed;
 
@@ -92,8 +91,5 @@ public class CourseWaitingList  implements Comparable<CourseWaitingList>{
 	public int compareTo(CourseWaitingList other) {
 		return this.getSigned().compareTo(other.getSigned());
 	}
-	
-	
-	
-	
+
 }

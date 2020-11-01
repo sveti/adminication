@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,44 +17,49 @@ import f54148.adminication.service.EnrollmentService;
 
 @Controller
 public class EnrollmentController {
-	
+
 	@Autowired
 	EnrollmentService enrollmentservice;
-	
-	@PostMapping(path="/enrollment")
-	  public @ResponseBody String addEnrollment (@RequestBody Enrollment enrollment) {
-		
-		if(enrollmentservice.addEnrollment(enrollment)) {
-			return "Enrolled";
-		}
-		else {
-			return "An error has occured";
-		}
-	    
-	  }
-	
-	@PutMapping(path="/updateEnrollment")
-	  public @ResponseBody String updateEnrollment (@RequestBody Enrollment enrollment) {
-		
-		if(enrollmentservice.updateEnrollment(enrollment)) {
-			return "Updated enrollment";
-		}
-		else {
-			return "An error has occured";
-		}
-	    
-	  }
-	
-	@GetMapping(path="/enrollment/{id}")
-	  public @ResponseBody Enrollment getEnrollmentById(@PathVariable("id") Long id) {
-	    return enrollmentservice.getEnrollmentById(id);
-	    }
-	
-	@GetMapping(path="/enrollments")
-	  public @ResponseBody List<Enrollment> getAllEnrollments() {
-	    return enrollmentservice.getEnrollments();
-	  }
 
-	
+	@PostMapping(path = "/addEnrollment")
+	public @ResponseBody String addEnrollment(@RequestBody Enrollment enrollment) {
+
+		if (enrollmentservice.addEnrollment(enrollment)) {
+			return "Enrolled";
+		} else {
+			return "An error has occured";
+		}
+
+	}
+
+	@PutMapping(path = "/updateEnrollment")
+	public @ResponseBody String updateEnrollment(@RequestBody Enrollment enrollment) {
+
+		if (enrollmentservice.updateEnrollment(enrollment)) {
+			return "Updated enrollment";
+		} else {
+			return "An error has occured";
+		}
+
+	}
+
+	@GetMapping(path = "/enrollment/{id}")
+	public @ResponseBody Enrollment getEnrollmentById(@PathVariable("id") Long id) {
+		return enrollmentservice.getEnrollmentById(id);
+	}
+
+	@DeleteMapping(path = "/enrollment/{id}")
+	public @ResponseBody String deleteEnrollmentById(@PathVariable("id") Long id) {
+		if (enrollmentservice.deleteEnrollment(id)) {
+			return "Deleted enrollment!";
+		} else {
+			return "An error has occured!";
+		}
+	}
+
+	@GetMapping(path = "/enrollments")
+	public @ResponseBody List<Enrollment> getAllEnrollments() {
+		return enrollmentservice.getEnrollments();
+	}
 
 }

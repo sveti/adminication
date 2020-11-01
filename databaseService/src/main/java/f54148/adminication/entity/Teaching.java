@@ -17,28 +17,25 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "teaching")
 public class Teaching {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@ManyToOne
-    @JoinColumn(name = "teacher_id",nullable = false)
-	@JsonBackReference(value="teaching_teacher")
-    Teacher teacher;
-	
-	
+	@JoinColumn(name = "teacher_id", nullable = false)
+	@JsonBackReference(value = "teaching_teacher")
+	Teacher teacher;
+
 	@ManyToOne
-    @JoinColumn(name = "substitute_id")
-	@JsonBackReference(value="teaching_teacher_sub")
-    Teacher substitute;
-	
-	
+	@JoinColumn(name = "substitute_id")
+	@JsonBackReference(value = "teaching_teacher_sub")
+	Teacher substitute;
+
 	@ManyToOne
-    @JoinColumn(name = "course_id",nullable = false)
-	@JsonBackReference(value="teaching_course")
-    Course course;
-	
+	@JoinColumn(name = "course_id", nullable = false)
+	@JsonBackReference(value = "teaching_course")
+	Course course;
+
 	@Column(nullable = false)
 	private Double salaryPerStudent;
 
@@ -103,7 +100,4 @@ public class Teaching {
 				+ ", salaryPerStudent=" + salaryPerStudent + "]";
 	}
 
-	
-	
-	
 }

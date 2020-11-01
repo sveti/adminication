@@ -1,7 +1,7 @@
 package f54148.adminication.entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -19,20 +19,19 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "parents")
 public class Parent {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-	@JsonManagedReference(value="parent")
-	private User user;
-	
-	@OneToMany(mappedBy="parent", cascade = CascadeType.MERGE)
-	@JsonManagedReference
-    private Collection<Student> children = new ArrayList<Student>();
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "userId", referencedColumnName = "id")
+	@JsonManagedReference(value = "parent")
+	private User user;
+
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<Student> children = new ArrayList<Student>();
 
 	public Long getId() {
 		return id;
@@ -46,14 +45,14 @@ public class Parent {
 		this.user = user;
 	}
 
-	public Collection<Student> getChildren() {
+	public List<Student> getChildren() {
 		return children;
 	}
 
-	public void setChildren(Collection<Student> children) {
+	public void setChildren(List<Student> children) {
 		this.children = children;
 	}
-	
+
 	public void addChild(Student child) {
 		this.children.add(child);
 		child.setParent(this);
@@ -81,9 +80,5 @@ public class Parent {
 	public String toString() {
 		return "Parent [id=" + id + ", user=" + user + ", children=" + children + "]";
 	}
-
-	
-
-	
 
 }

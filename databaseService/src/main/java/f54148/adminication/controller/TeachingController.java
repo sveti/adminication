@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,43 +17,49 @@ import f54148.adminication.service.TeachingService;
 
 @Controller
 public class TeachingController {
-	
+
 	@Autowired
 	TeachingService teachingservice;
-	
-	@PostMapping(path="/teaching")
-	  public @ResponseBody String addTeaching (@RequestBody Teaching teaching) {
-		
-		if(teachingservice.addTeaching(teaching)) {
-			return "Added teaching";
-		}
-		else {
-			return "An error has occured";
-		}
-	    
-	  }
-	
-	@PutMapping(path="/updateTeaching")
-	  public @ResponseBody String updateTeaching (@RequestBody Teaching teaching) {
-		
-		if(teachingservice.updateTeaching(teaching)) {
-			return "Updated teaching";
-		}
-		else {
-			return "An error has occured";
-		}
-	    
-	  }
-	
-	@GetMapping(path="/teaching/{id}")
-	  public @ResponseBody Teaching getTeachingById(@PathVariable("id") Long id) {
-	    return teachingservice.getTeachingById(id);
-	    }
-	
-	@GetMapping(path="/teachings")
-	  public @ResponseBody List<Teaching> getAllTeachings() {
-	    return teachingservice.getTeachings();
-	  }
 
+	@PostMapping(path = "/addTeaching")
+	public @ResponseBody String addTeaching(@RequestBody Teaching teaching) {
+
+		if (teachingservice.addTeaching(teaching)) {
+			return "Added teaching";
+		} else {
+			return "An error has occured";
+		}
+
+	}
+
+	@PutMapping(path = "/updateTeaching")
+	public @ResponseBody String updateTeaching(@RequestBody Teaching teaching) {
+
+		if (teachingservice.updateTeaching(teaching)) {
+			return "Updated teaching";
+		} else {
+			return "An error has occured";
+		}
+
+	}
+
+	@GetMapping(path = "/teaching/{id}")
+	public @ResponseBody Teaching getTeachingById(@PathVariable("id") Long id) {
+		return teachingservice.getTeachingById(id);
+	}
+
+	@DeleteMapping(path = "/teaching/{id}")
+	public @ResponseBody String deleteTeachingById(@PathVariable("id") Long id) {
+		if (teachingservice.deleteTeaching(id)) {
+			return "Deleted teaching!";
+		} else {
+			return "An error has occured";
+		}
+	}
+
+	@GetMapping(path = "/teachings")
+	public @ResponseBody List<Teaching> getAllTeachings() {
+		return teachingservice.getTeachings();
+	}
 
 }
