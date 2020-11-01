@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
+import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
@@ -137,6 +138,15 @@ public class CourseService {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
 		if (opCourse.isPresent()) {
 			return opCourse.get().getLessons();
+		} else {
+			return null;
+		}
+	}
+
+	public List<File> getFilesByCourseId(Long courseId) {
+		Optional<Course> opCourse = courseRepository.findById(courseId);
+		if (opCourse.isPresent()) {
+			return opCourse.get().getFiles();
 		} else {
 			return null;
 		}

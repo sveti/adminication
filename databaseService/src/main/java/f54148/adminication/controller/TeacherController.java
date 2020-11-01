@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.service.TeacherService;
@@ -57,6 +58,11 @@ public class TeacherController {
 	@GetMapping(path = "/teacher/{id}/lessons")
 	public @ResponseBody List<Lesson> getLessonsByTeacherId(@PathVariable("id") Long id) {
 		return teacherService.getLessonsByTeacherId(id);
+	}
+	
+	@GetMapping(path = "/teacher/{id}/files")
+	public @ResponseBody List<File> getFilesyTeacherId(@PathVariable("id") Long id) {
+		return teacherService.getFilesyTeacherId(id);
 	}
 
 	@GetMapping(path = "/teacher/{id}/substituteCourses")

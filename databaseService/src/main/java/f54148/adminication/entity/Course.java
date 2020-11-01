@@ -74,6 +74,10 @@ public class Course {
 	@OneToMany(mappedBy = "course")
 	@JsonManagedReference(value = "lesson_course")
 	List<Lesson> lessons = new ArrayList<Lesson>();
+	
+	@OneToMany(mappedBy = "course")
+	@JsonManagedReference(value = "file_course")
+	List<File> files = new ArrayList<File>();
 
 	public Long getId() {
 		return id;
@@ -183,11 +187,20 @@ public class Course {
 	public void setLessons(List<Lesson> lessons) {
 		this.lessons = lessons;
 	}
+	
+	
+	public List<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(courseSchedule, courseWaitingList, details, duration, enrollments, id, lessons, level,
-				maxStudents, pricePerStudent, status, teaching, title);
+		return Objects.hash(courseSchedule, courseWaitingList, details, duration, enrollments, files, id, lessons,
+				level, maxStudents, pricePerStudent, status, teaching, title);
 	}
 
 	@Override
@@ -202,7 +215,8 @@ public class Course {
 		return Objects.equals(courseSchedule, other.courseSchedule)
 				&& Objects.equals(courseWaitingList, other.courseWaitingList) && Objects.equals(details, other.details)
 				&& Objects.equals(duration, other.duration) && Objects.equals(enrollments, other.enrollments)
-				&& Objects.equals(id, other.id) && Objects.equals(lessons, other.lessons) && level == other.level
+				&& Objects.equals(files, other.files) && Objects.equals(id, other.id)
+				&& Objects.equals(lessons, other.lessons) && level == other.level
 				&& Objects.equals(maxStudents, other.maxStudents)
 				&& Objects.equals(pricePerStudent, other.pricePerStudent) && Objects.equals(status, other.status)
 				&& Objects.equals(teaching, other.teaching) && Objects.equals(title, other.title);
@@ -213,7 +227,10 @@ public class Course {
 		return "Course [id=" + id + ", title=" + title + ", pricePerStudent=" + pricePerStudent + ", maxStudents="
 				+ maxStudents + ", status=" + status + ", level=" + level + ", duration=" + duration + ", details="
 				+ details + ", enrollments=" + enrollments + ", teaching=" + teaching + ", courseSchedule="
-				+ courseSchedule + ", courseWaitingList=" + courseWaitingList + ", lessons=" + lessons + "]";
+				+ courseSchedule + ", courseWaitingList=" + courseWaitingList + ", lessons=" + lessons + ", files="
+				+ files + "]";
 	}
+
+	
 
 }

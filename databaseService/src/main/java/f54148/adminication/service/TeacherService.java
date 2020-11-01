@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.Teaching;
@@ -117,6 +118,15 @@ public class TeacherService {
 		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
 		if (opTeacher.isPresent()) {
 			return opTeacher.get().getLessons();
+		} else {
+			return null;
+		}
+	}
+
+	public List<File> getFilesyTeacherId(Long teacherId) {
+		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
+		if (opTeacher.isPresent()) {
+			return opTeacher.get().getFiles();
 		} else {
 			return null;
 		}

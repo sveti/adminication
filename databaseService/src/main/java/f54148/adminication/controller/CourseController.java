@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
+import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
@@ -110,6 +111,11 @@ public class CourseController {
 	@GetMapping(path = "/course/{id}/schedule")
 	public @ResponseBody List<Schedule> getScheduleByCourseId(@PathVariable("id") Long id) {
 		return courseService.getScheduleByCourseId(id);
+	}
+	
+	@GetMapping(path = "/course/{id}/files")
+	public @ResponseBody List<File> getFilesByCourseId(@PathVariable("id") Long id) {
+		return courseService.getFilesByCourseId(id);
 	}
 	
 	@GetMapping(path = "/course/{id}/students/waiting")

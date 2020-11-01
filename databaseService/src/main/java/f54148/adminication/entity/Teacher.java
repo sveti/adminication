@@ -41,6 +41,10 @@ public class Teacher {
 	@OneToMany(mappedBy = "teacher")
 	@JsonManagedReference(value = "lesson_teacher")
 	List<Lesson> lessons = new ArrayList<Lesson>();
+	
+	@OneToMany(mappedBy = "teacher")
+	@JsonManagedReference(value = "file_teacher")
+	List<File> files = new ArrayList<File>();
 
 	public Long getId() {
 		return id;
@@ -77,10 +81,18 @@ public class Teacher {
 	public void setLessons(List<Lesson> lessons) {
 		this.lessons = lessons;
 	}
+	
+	public List<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, lessons, substituting, teaching, user);
+		return Objects.hash(files, id, lessons, substituting, teaching, user);
 	}
 
 	@Override
@@ -92,15 +104,17 @@ public class Teacher {
 		if (getClass() != obj.getClass())
 			return false;
 		Teacher other = (Teacher) obj;
-		return Objects.equals(id, other.id) && Objects.equals(lessons, other.lessons)
-				&& Objects.equals(substituting, other.substituting) && Objects.equals(teaching, other.teaching)
-				&& Objects.equals(user, other.user);
+		return Objects.equals(files, other.files) && Objects.equals(id, other.id)
+				&& Objects.equals(lessons, other.lessons) && Objects.equals(substituting, other.substituting)
+				&& Objects.equals(teaching, other.teaching) && Objects.equals(user, other.user);
 	}
 
 	@Override
 	public String toString() {
 		return "Teacher [id=" + id + ", user=" + user + ", teaching=" + teaching + ", substituting=" + substituting
-				+ ", lessons=" + lessons + "]";
+				+ ", lessons=" + lessons + ", files=" + files + "]";
 	}
+
+	
 
 }
