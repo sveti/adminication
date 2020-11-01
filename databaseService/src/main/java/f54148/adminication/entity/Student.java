@@ -54,6 +54,10 @@ public class Student {
 	@OneToMany(mappedBy = "student")
 	@JsonManagedReference(value = "coursewaitinglist_student")
 	List<CourseWaitingList> courseWaitingList = new ArrayList<CourseWaitingList>();
+	
+	@OneToMany(mappedBy = "student")
+	@JsonManagedReference(value = "attendance_student")
+	List<Attendance> attendances = new ArrayList<Attendance>();
 
 	public Long getId() {
 		return id;
@@ -107,9 +111,17 @@ public class Student {
 		this.courseWaitingList = courseWaitingList;
 	}
 
+	public List<Attendance> getAttendances() {
+		return attendances;
+	}
+
+	public void setAttendances(List<Attendance> attendances) {
+		this.attendances = attendances;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(courseWaitingList, enrollments, eventWaitingList, events, id, parent, user);
+		return Objects.hash(attendances, courseWaitingList, enrollments, eventWaitingList, events, id, parent, user);
 	}
 
 	@Override
@@ -121,7 +133,8 @@ public class Student {
 		if (getClass() != obj.getClass())
 			return false;
 		Student other = (Student) obj;
-		return Objects.equals(courseWaitingList, other.courseWaitingList)
+		return Objects.equals(attendances, other.attendances)
+				&& Objects.equals(courseWaitingList, other.courseWaitingList)
 				&& Objects.equals(enrollments, other.enrollments)
 				&& Objects.equals(eventWaitingList, other.eventWaitingList) && Objects.equals(events, other.events)
 				&& Objects.equals(id, other.id) && Objects.equals(parent, other.parent)
@@ -132,7 +145,8 @@ public class Student {
 	public String toString() {
 		return "Student [id=" + id + ", user=" + user + ", parent=" + parent + ", enrollments=" + enrollments
 				+ ", events=" + events + ", eventWaitingList=" + eventWaitingList + ", courseWaitingList="
-				+ courseWaitingList + "]";
+				+ courseWaitingList + ", attendances=" + attendances + "]";
 	}
 
+	
 }

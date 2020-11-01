@@ -1,6 +1,8 @@
 package f54148.adminication.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -11,9 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "lessons")
@@ -39,6 +43,10 @@ public class Lesson {
 	@Lob
 	@Column(name = "description", length = 1023)
 	private String description;
+	
+	@OneToMany(mappedBy = "lesson")
+	@JsonManagedReference(value = "attendance_lesson")
+	List<Attendance> attendances = new ArrayList<Attendance>();
 
 	public Long getId() {
 		return id;
@@ -80,9 +88,17 @@ public class Lesson {
 		this.description = description;
 	}
 
+	public List<Attendance> getAttendances() {
+		return attendances;
+	}
+
+	public void setAttendances(List<Attendance> attendances) {
+		this.attendances = attendances;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(course, date, description, id, teacher);
+		return Objects.hash(attendances, course, date, description, id, teacher);
 	}
 
 	@Override
@@ -94,15 +110,17 @@ public class Lesson {
 		if (getClass() != obj.getClass())
 			return false;
 		Lesson other = (Lesson) obj;
-		return Objects.equals(course, other.course) && Objects.equals(date, other.date)
-				&& Objects.equals(description, other.description) && Objects.equals(id, other.id)
-				&& Objects.equals(teacher, other.teacher);
+		return Objects.equals(attendances, other.attendances) && Objects.equals(course, other.course)
+				&& Objects.equals(date, other.date) && Objects.equals(description, other.description)
+				&& Objects.equals(id, other.id) && Objects.equals(teacher, other.teacher);
 	}
 
 	@Override
 	public String toString() {
 		return "Lesson [id=" + id + ", course=" + course + ", teacher=" + teacher + ", date=" + date + ", description="
-				+ description + "]";
+				+ description + ", attendances=" + attendances + "]";
 	}
+
+	
 
 }

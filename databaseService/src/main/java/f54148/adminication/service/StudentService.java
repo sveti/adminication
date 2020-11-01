@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
@@ -114,6 +115,16 @@ public class StudentService {
 				courses.add(c.getCourse());
 			}
 			return courses;
+
+		} else {
+			return null;
+		}
+	}
+
+	public List<Attendance> getStudentAttendances(Long studentId) {
+		Optional<Student> opStudent = studentRepository.findById(studentId);
+		if (opStudent.isPresent()) {
+			return opStudent.get().getAttendances();
 
 		} else {
 			return null;

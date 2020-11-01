@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Lesson;
+import f54148.adminication.entity.Student;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.repository.LessonRepository;
 
@@ -72,6 +74,50 @@ public class LessonService {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public List<Attendance> getAttendancesByLessonId(Long lessonId) {
+		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
+		if (opLesson.isPresent()) {
+			return opLesson.get().getAttendances();
+		} else {
+			return null;
+		}
+	}
+
+	public List<Student> getPresentAttendancesByLessonId(Long lessonId) {
+		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
+		if (opLesson.isPresent()) {
+			List<Attendance> allAttendances = opLesson.get().getAttendances();
+			List<Student> students = new ArrayList<Student>();
+			
+			for(Attendance a: allAttendances) {
+				if(a.isAttended()) {
+					students.add(a.getStudent());
+				}
+			}
+			return students;
+		} else {
+			return null;
+		}	
+		
+	}
+
+	public List<Student> getMissingAttendancesByLessonId(Long lessonId) {
+		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
+		if (opLesson.isPresent()) {
+			List<Attendance> allAttendances = opLesson.get().getAttendances();
+			List<Student> students = new ArrayList<Student>();
+			
+			for(Attendance a: allAttendances) {
+				if(!a.isAttended()) {
+					students.add(a.getStudent());
+				}
+			}
+			return students;
+		} else {
+			return null;
 		}
 	}
 

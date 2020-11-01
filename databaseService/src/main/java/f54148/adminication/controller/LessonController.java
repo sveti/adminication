@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Lesson;
+import f54148.adminication.entity.Student;
 import f54148.adminication.service.LessonService;
 
 @Controller
@@ -48,7 +50,21 @@ public class LessonController {
 	public @ResponseBody Lesson getLessonById(@PathVariable("id") Long id) {
 		return lessonservice.getLessonById(id);
 	}
+	
+	@GetMapping(path = "/lesson/{id}/attendances")
+	public @ResponseBody List<Attendance> getAttendancesByLessonId(@PathVariable("id") Long id) {
+		return lessonservice.getAttendancesByLessonId(id);
+	}
+	
+	@GetMapping(path = "/lesson/{id}/attendances/present")
+	public @ResponseBody List<Student> getPresentAttendancesByLessonId(@PathVariable("id") Long id) {
+		return lessonservice.getPresentAttendancesByLessonId(id);
+	}
 
+	@GetMapping(path = "/lesson/{id}/attendances/missing")
+	public @ResponseBody List<Student> getMissingAttendancesByLessonId(@PathVariable("id") Long id) {
+		return lessonservice.getMissingAttendancesByLessonId(id);
+	}
 	@DeleteMapping(path = "/lesson/{id}")
 	public @ResponseBody String deleteLessonById(@PathVariable("id") Long id) {
 		if (lessonservice.deleteLesson(id)) {

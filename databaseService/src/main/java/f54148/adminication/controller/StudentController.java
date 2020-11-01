@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Parent;
@@ -87,6 +88,11 @@ public class StudentController {
 	@GetMapping(path = "student/{id}/events")
 	public @ResponseBody List<Event> getStudentEvents(@PathVariable("id") Long studentId) {
 		return studentService.getEventsStudentById(studentId);
+	}
+	
+	@GetMapping(path = "student/{id}/attendances")
+	public @ResponseBody List<Attendance> getStudentAttendances(@PathVariable("id") Long studentId) {
+		return studentService.getStudentAttendances(studentId);
 	}
 
 	@GetMapping(path = "student/{id}/events/waiting")
