@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.entity.Draft;
+import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.User;
 
 import f54148.adminication.service.UserService;
@@ -49,6 +51,21 @@ public class UserController {
 	@GetMapping(path = "/user/{id}")
 	public @ResponseBody User getUser(@PathVariable("id") Long id) {
 		return userService.getUserById(id);
+	}
+	
+	@GetMapping(path = "/user/{id}/notificationsReceived")
+	public @ResponseBody List<Notification> getNotificationsReceivedByUser(@PathVariable("id") Long id) {
+		return userService.getNotificationsReceivedByUser(id);
+	}
+	
+	@GetMapping(path = "/user/{id}/notificationsSend")
+	public @ResponseBody List<Notification> getNotificationsSendByUser(@PathVariable("id") Long id) {
+		return userService.getNotificationsSendByUser(id);
+	}
+	
+	@GetMapping(path = "/user/{id}/drafts")
+	public @ResponseBody List<Draft> getDraftsByUser(@PathVariable("id") Long id) {
+		return userService.getDraftsByUser(id);
 	}
 
 }

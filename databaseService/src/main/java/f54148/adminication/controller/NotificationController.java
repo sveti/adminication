@@ -48,6 +48,10 @@ public class NotificationController {
 	public @ResponseBody List<Notification> getAllNotifications() {
 		return notificationService.getNotifications();
 	}
+	@GetMapping(path = "/notifications/admin")
+	public @ResponseBody List<Notification> getAllNotificationsFromAdmin() {
+		return notificationService.getAllNotificationsFromAdmin();
+	}
 
 	@GetMapping(path = "/notification/{id}")
 	public @ResponseBody Notification getNotification(@PathVariable("id") Long id) {

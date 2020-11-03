@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.entity.Draft;
+import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.User;
 import f54148.adminication.repository.UserRepository;
 
@@ -15,6 +17,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private NotificationService notificationService;
 
 	public List<User> getUsers() {
 		List<User> userList = new ArrayList<>();
@@ -53,6 +58,28 @@ public class UserService {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public List<Notification> getNotificationsReceivedByUser(Long userId) {
+		Optional<User> opUser = userRepository.findById(userId);
+		if (opUser.isPresent()) {
+			return opUser.get().getNotificationsReceived();
+		} else {
+			return null;
+		}
+	}
+
+	public List<Notification> getNotificationsSendByUser(Long id) {
+		return notificationService.getNotificationsSendByUserID(id);
+	}
+
+	public List<Draft> getDraftsByUser(Long userId) {
+		Optional<User> opUser = userRepository.findById(userId);
+		if (opUser.isPresent()) {
+			return opUser.get().getDrafts();
+		} else {
+			return null;
 		}
 	}
 
