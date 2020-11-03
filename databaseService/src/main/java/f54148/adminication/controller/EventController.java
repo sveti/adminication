@@ -67,6 +67,11 @@ public class EventController {
 	public @ResponseBody Event getEventById(@PathVariable("id") Long id) {
 		return eventService.getEventById(id);
 	}
+	
+	@GetMapping(path = "/event/{id}/students")
+	public @ResponseBody List<Student> getStudentsByEventId(@PathVariable("id") Long id) {
+		return eventService.getStudentsByEventId(id);
+	}
 
 	@GetMapping(path = "/event/{id}/waiting")
 	public @ResponseBody List<Student> getStudentsWaitingByEventId(@PathVariable("id") Long id) {

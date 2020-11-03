@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,6 +31,16 @@ public class UserController {
 		}
 	}
 
+	@PutMapping(path = "/updateUser")
+		public @ResponseBody String updateUser(@RequestBody User user) {
+
+			if (userService.addUser(user)) {
+				return "Updated user";
+			} else {
+				return "A problem has occured";
+			}
+		}
+	
 	@GetMapping(path = "/users")
 	public @ResponseBody List<User> getAllUsers() {
 		return userService.getUsers();

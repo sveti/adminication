@@ -12,6 +12,7 @@ import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Event;
+import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.EventWaitingList;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.StudentRepository;
@@ -84,7 +85,14 @@ public class StudentService {
 	public List<Event> getEventsStudentById(Long studentId) {
 		Optional<Student> opStudent = studentRepository.findById(studentId);
 		if (opStudent.isPresent()) {
-			return opStudent.get().getEvents();
+			List<Event> events = new ArrayList<Event>();
+			
+			for(EventSignUp es:opStudent.get().getEventsSignedUp()) {
+				
+				events.add(es.getEvent());
+			}
+			
+			return events;
 
 		} else {
 			return null;

@@ -54,11 +54,9 @@ public class Event {
 							"event_id", "schedule_id" }))
 	List<Schedule> eventSchedule = new ArrayList<>();
 
-	@ManyToMany(targetEntity = Student.class, cascade = CascadeType.ALL)
-	@JoinTable(name = "event_has_students", joinColumns = {
-			@JoinColumn(name = "event_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "student_id", referencedColumnName = "id") })
-	List<Student> eventStudents = new ArrayList<>();
+	@OneToMany(mappedBy = "event")
+	@JsonManagedReference(value = "event_sign_up_event")
+	List<EventSignUp> eventSignedUps = new ArrayList<>();
 
 	@OneToMany(mappedBy = "event")
 	@JsonManagedReference(value = "eventwaitinglist_event")
@@ -132,17 +130,17 @@ public class Event {
 		this.waitingList = waitingList;
 	}
 
-	public List<Student> getEventStudents() {
-		return eventStudents;
+	public List<EventSignUp> getEventSignedUps() {
+		return eventSignedUps;
 	}
 
-	public void setEventStudents(List<Student> eventStudents) {
-		this.eventStudents = eventStudents;
+	public void setEventSignedUps(List<EventSignUp> eventSignedUps) {
+		this.eventSignedUps = eventSignedUps;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, eventSchedule, eventStudents, id, maxAge, maxNumberOfPeople, minAge, status,
+		return Objects.hash(description, eventSchedule, eventSignedUps, id, maxAge, maxNumberOfPeople, minAge, status,
 				title, waitingList);
 	}
 
@@ -156,7 +154,7 @@ public class Event {
 			return false;
 		Event other = (Event) obj;
 		return Objects.equals(description, other.description) && Objects.equals(eventSchedule, other.eventSchedule)
-				&& Objects.equals(eventStudents, other.eventStudents) && Objects.equals(id, other.id)
+				&& Objects.equals(eventSignedUps, other.eventSignedUps) && Objects.equals(id, other.id)
 				&& Objects.equals(maxAge, other.maxAge) && Objects.equals(maxNumberOfPeople, other.maxNumberOfPeople)
 				&& Objects.equals(minAge, other.minAge) && Objects.equals(status, other.status)
 				&& Objects.equals(title, other.title) && Objects.equals(waitingList, other.waitingList);
@@ -166,8 +164,10 @@ public class Event {
 	public String toString() {
 		return "Event [id=" + id + ", title=" + title + ", minAge=" + minAge + ", maxAge=" + maxAge
 				+ ", maxNumberOfPeople=" + maxNumberOfPeople + ", status=" + status + ", description=" + description
-				+ ", eventSchedule=" + eventSchedule + ", eventStudents=" + eventStudents + ", waitingList="
+				+ ", eventSchedule=" + eventSchedule + ", eventSignedUps=" + eventSignedUps + ", waitingList="
 				+ waitingList + "]";
 	}
+
+	
 
 }

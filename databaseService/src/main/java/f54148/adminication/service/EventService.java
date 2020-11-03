@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Event;
+import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.EventWaitingList;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.EventRepository;
@@ -78,6 +79,24 @@ public class EventService {
 
 			for (EventWaitingList ew : e.getWaitingList()) {
 				students.add(ew.getStudent());
+			}
+
+			return students;
+
+		} else {
+			return null;
+		}
+	}
+
+	public List<Student> getStudentsByEventId(Long eventId) {
+		Optional<Event> opEvent = eventRepository.findById(eventId);
+		if (opEvent.isPresent()) {
+			Event e = opEvent.get();
+
+			List<Student> students = new ArrayList<Student>();
+
+			for (EventSignUp es : e.getEventSignedUps()) {
+				students.add(es.getStudent());
 			}
 
 			return students;
