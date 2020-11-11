@@ -1,119 +1,61 @@
 package f54148.adminication.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "teachers")
-public class Teacher {
+@PrimaryKeyJoinColumn
+//teachers extends user
+public class Teacher extends User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "userId", referencedColumnName = "id")
-	@JsonManagedReference(value = "teacher")
-	private User user;
+	//id -> от user
+	//@id + no и с fk
+	
+//	@Id
+//	private Long id;
+	
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@MapsId
+//	@JoinColumn(name = "userId", referencedColumnName = "id")
+//	@JsonManagedReference(value = "teacher")
+//	private User user;
 
 	@OneToMany(mappedBy = "teacher")
 	@JsonManagedReference(value = "teaching_teacher")
-	List<Teaching> teaching = new ArrayList<Teaching>();
+	private Set<Teaching> teaching = new HashSet<Teaching>();
 
 	@OneToMany(mappedBy = "substitute")
 	@JsonManagedReference(value = "teaching_teacher_sub")
-	List<Teaching> substituting = new ArrayList<Teaching>();
+	private Set<Teaching> substituting = new HashSet<Teaching>();
 
 	@OneToMany(mappedBy = "teacher")
 	@JsonManagedReference(value = "lesson_teacher")
-	List<Lesson> lessons = new ArrayList<Lesson>();
+	private Set<Lesson> lessons = new HashSet<Lesson>();
 	
 	@OneToMany(mappedBy = "teacher")
 	@JsonManagedReference(value = "file_teacher")
-	List<File> files = new ArrayList<File>();
+	private Set<File> files = new HashSet<File>();
 
-	public Long getId() {
-		return id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public List<Teaching> getTeaching() {
-		return teaching;
-	}
-
-	public void setTeaching(List<Teaching> teaching) {
-		this.teaching = teaching;
-	}
-
-	public List<Teaching> getSubstituting() {
-		return substituting;
-	}
-
-	public void setSubstituting(List<Teaching> substituting) {
-		this.substituting = substituting;
-	}
-
-	public List<Lesson> getLessons() {
-		return lessons;
-	}
-
-	public void setLessons(List<Lesson> lessons) {
-		this.lessons = lessons;
-	}
 	
-	public List<File> getFiles() {
-		return files;
-	}
-
-	public void setFiles(List<File> files) {
-		this.files = files;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(files, id, lessons, substituting, teaching, user);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Teacher other = (Teacher) obj;
-		return Objects.equals(files, other.files) && Objects.equals(id, other.id)
-				&& Objects.equals(lessons, other.lessons) && Objects.equals(substituting, other.substituting)
-				&& Objects.equals(teaching, other.teaching) && Objects.equals(user, other.user);
-	}
-
-	@Override
-	public String toString() {
-		return "Teacher [id=" + id + ", user=" + user + ", teaching=" + teaching + ", substituting=" + substituting
-				+ ", lessons=" + lessons + ", files=" + files + "]";
-	}
 
 	
 

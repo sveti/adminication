@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Draft;
@@ -14,13 +14,18 @@ import f54148.adminication.repository.DraftRepository;
 @Service
 public class DraftService {
 	
-	@Autowired
-	private DraftRepository draftRepository;
-	
-	
-	@Autowired
-	private UserService userService;
+	private final DraftRepository draftRepository;
 
+	private final UserService userService;
+	
+	public DraftService(DraftRepository draftRepository,@Lazy UserService userService) {
+		super();
+		this.draftRepository = draftRepository;
+		this.userService = userService;
+	}
+
+	
+	
 	public List<Draft> getDrafts() {
 		List<Draft> draftList = new ArrayList<>();
 		draftRepository.findAll().forEach(draftList::add);
@@ -66,12 +71,5 @@ public class DraftService {
 			return false;
 		}
 	}
-
-
-
-
-
-	
-	
 
 }

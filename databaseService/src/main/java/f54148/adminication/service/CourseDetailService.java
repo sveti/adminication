@@ -3,22 +3,30 @@ package f54148.adminication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.repository.CourseDetailRepository;
 
+
 @Service
 public class CourseDetailService {
 
-	@Autowired
-	private CourseDetailRepository repo;
 
-	@Autowired
-	private CourseService courseService;
+	private final CourseDetailRepository repo;
+	private final CourseService courseService;
+	
+	
+
+	public CourseDetailService(CourseDetailRepository repo, @Lazy CourseService courseService) {
+		super();
+		this.repo = repo;
+		this.courseService = courseService;
+	}
 
 	public List<CourseDetail> getCourseDetails() {
 		List<CourseDetail> courseDetailsList = new ArrayList<>();
@@ -35,7 +43,7 @@ public class CourseDetailService {
 		}
 	}
 
-	public List<Course> getCourses(Long courseId) {
+	public Set<Course> getCourses(Long courseId) {
 		Optional<CourseDetail> opcourseDetails = repo.findById(courseId);
 		if (opcourseDetails.isPresent()) {
 			return opcourseDetails.get().getCourses();

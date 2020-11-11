@@ -1,10 +1,12 @@
 package f54148.adminication.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Attendance;
@@ -17,14 +19,21 @@ import f54148.adminication.repository.LessonRepository;
 @Service
 public class LessonService {
 
-	@Autowired
-	private LessonRepository lessonRepository;
+	private final LessonRepository lessonRepository;
 
-	@Autowired
-	private TeacherService teacherService;
+	private final TeacherService teacherService;
 
-	@Autowired
-	private CourseService courseService;
+	private final CourseService courseService;
+	
+	
+
+	public LessonService(LessonRepository lessonRepository, @Lazy TeacherService teacherService,
+			 @Lazy CourseService courseService) {
+		super();
+		this.lessonRepository = lessonRepository;
+		this.teacherService = teacherService;
+		this.courseService = courseService;
+	}
 
 	public List<Lesson> getLessons() {
 		List<Lesson> lessonList = new ArrayList<>();
@@ -77,7 +86,7 @@ public class LessonService {
 		}
 	}
 
-	public List<Attendance> getAttendancesByLessonId(Long lessonId) {
+	public Set<Attendance> getAttendancesByLessonId(Long lessonId) {
 		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
 		if (opLesson.isPresent()) {
 			return opLesson.get().getAttendances();
@@ -86,11 +95,11 @@ public class LessonService {
 		}
 	}
 
-	public List<Student> getPresentAttendancesByLessonId(Long lessonId) {
+	public Set<Student> getPresentAttendancesByLessonId(Long lessonId) {
 		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
 		if (opLesson.isPresent()) {
-			List<Attendance> allAttendances = opLesson.get().getAttendances();
-			List<Student> students = new ArrayList<Student>();
+			Set<Attendance> allAttendances = opLesson.get().getAttendances();
+			Set<Student> students = new HashSet<Student>();
 			
 			for(Attendance a: allAttendances) {
 				if(a.isAttended()) {
@@ -104,11 +113,11 @@ public class LessonService {
 		
 	}
 
-	public List<Student> getMissingAttendancesByLessonId(Long lessonId) {
+	public Set<Student> getMissingAttendancesByLessonId(Long lessonId) {
 		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
 		if (opLesson.isPresent()) {
-			List<Attendance> allAttendances = opLesson.get().getAttendances();
-			List<Student> students = new ArrayList<Student>();
+			Set<Attendance> allAttendances = opLesson.get().getAttendances();
+			Set<Student> students = new HashSet<Student>();
 			
 			for(Attendance a: allAttendances) {
 				if(!a.isAttended()) {

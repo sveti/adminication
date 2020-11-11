@@ -1,12 +1,13 @@
 package f54148.adminication.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,9 +18,21 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "events")
 public class Event {
@@ -28,21 +41,28 @@ public class Event {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(nullable = false)
+	@NotBlank
+	@Column
 	private String title;
 
+	@NotNull
+    @Min(1)
 	@Column
 	private Integer minAge;
 
+	@NotNull
 	@Column
 	private Integer maxAge;
 
-	@Column(nullable = false)
+	@NotNull
+    @Min(1)
+	@Column
 	private Integer maxNumberOfPeople;
+	
+	@Enumerated(EnumType.ORDINAL)
+	private CourseStatus status;
 
-	@Column(nullable = false)
-	private String status;
-
+	@NotNull
 	@Lob
 	@Column(name = "description", length = 1023)
 	private String description;
@@ -52,122 +72,16 @@ public class Event {
 			@JoinColumn(name = "event_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "schedule_id", referencedColumnName = "id") }, uniqueConstraints = @UniqueConstraint(columnNames = {
 							"event_id", "schedule_id" }))
-	List<Schedule> eventSchedule = new ArrayList<>();
+	private Set<Schedule> eventSchedule = new HashSet<>();
 
 	@OneToMany(mappedBy = "event")
 	@JsonManagedReference(value = "event_sign_up_event")
-	List<EventSignUp> eventSignedUps = new ArrayList<>();
+	private Set<EventSignUp> eventSignedUps = new HashSet<>();
 
 	@OneToMany(mappedBy = "event")
 	@JsonManagedReference(value = "eventwaitinglist_event")
-	List<EventWaitingList> waitingList = new ArrayList<EventWaitingList>();
+	private Set<EventWaitingList> waitingList = new HashSet<EventWaitingList>();
 
-	public Long getId() {
-		return id;
-	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public Integer getMinAge() {
-		return minAge;
-	}
-
-	public void setMinAge(Integer minAge) {
-		this.minAge = minAge;
-	}
-
-	public Integer getMaxAge() {
-		return maxAge;
-	}
-
-	public void setMaxAge(Integer maxAge) {
-		this.maxAge = maxAge;
-	}
-
-	public Integer getMaxNumberOfPeople() {
-		return maxNumberOfPeople;
-	}
-
-	public void setMaxNumberOfPeople(Integer maxNumberOfPeople) {
-		this.maxNumberOfPeople = maxNumberOfPeople;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public List<Schedule> getEventSchedule() {
-		return eventSchedule;
-	}
-
-	public void setEventSchedule(List<Schedule> eventSchedule) {
-		this.eventSchedule = eventSchedule;
-	}
-
-	public List<EventWaitingList> getWaitingList() {
-		return waitingList;
-	}
-
-	public void setWaitingList(List<EventWaitingList> waitingList) {
-		this.waitingList = waitingList;
-	}
-
-	public List<EventSignUp> getEventSignedUps() {
-		return eventSignedUps;
-	}
-
-	public void setEventSignedUps(List<EventSignUp> eventSignedUps) {
-		this.eventSignedUps = eventSignedUps;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(description, eventSchedule, eventSignedUps, id, maxAge, maxNumberOfPeople, minAge, status,
-				title, waitingList);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Event other = (Event) obj;
-		return Objects.equals(description, other.description) && Objects.equals(eventSchedule, other.eventSchedule)
-				&& Objects.equals(eventSignedUps, other.eventSignedUps) && Objects.equals(id, other.id)
-				&& Objects.equals(maxAge, other.maxAge) && Objects.equals(maxNumberOfPeople, other.maxNumberOfPeople)
-				&& Objects.equals(minAge, other.minAge) && Objects.equals(status, other.status)
-				&& Objects.equals(title, other.title) && Objects.equals(waitingList, other.waitingList);
-	}
-
-	@Override
-	public String toString() {
-		return "Event [id=" + id + ", title=" + title + ", minAge=" + minAge + ", maxAge=" + maxAge
-				+ ", maxNumberOfPeople=" + maxNumberOfPeople + ", status=" + status + ", description=" + description
-				+ ", eventSchedule=" + eventSchedule + ", eventSignedUps=" + eventSignedUps + ", waitingList="
-				+ waitingList + "]";
-	}
-
-	
 
 }

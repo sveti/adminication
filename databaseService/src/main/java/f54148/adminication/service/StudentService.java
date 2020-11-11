@@ -3,8 +3,8 @@ package f54148.adminication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Attendance;
@@ -16,12 +16,13 @@ import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.EventWaitingList;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.StudentRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class StudentService {
 
-	@Autowired
-	private StudentRepository studentRepository;
+	private final StudentRepository studentRepository;
 
 	public List<Student> getStudents() {
 		List<Student> studentList = new ArrayList<>();
@@ -129,7 +130,7 @@ public class StudentService {
 		}
 	}
 
-	public List<Attendance> getStudentAttendances(Long studentId) {
+	public Set<Attendance> getStudentAttendances(Long studentId) {
 		Optional<Student> opStudent = studentRepository.findById(studentId);
 		if (opStudent.isPresent()) {
 			return opStudent.get().getAttendances();

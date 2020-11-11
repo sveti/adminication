@@ -1,15 +1,17 @@
 package f54148.adminication.controller;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Event;
@@ -19,18 +21,23 @@ import f54148.adminication.service.EventService;
 import f54148.adminication.service.ScheduleService;
 
 @Controller
+@RequestMapping("/events")
 public class EventController {
 
-	@Autowired
-	private EventService eventService;
+	private final EventService eventService;
 
-	@Autowired
-	private ScheduleService scheduleService;
+	private final ScheduleService scheduleService;
+	
+	public EventController(EventService eventService,@Lazy ScheduleService scheduleService) {
+		super();
+		this.eventService = eventService;
+		this.scheduleService = scheduleService;
+	}
 
 	@PostMapping(path = "/addEvent")
 	public @ResponseBody String addNewEvent(@RequestBody Event event) {
 
-		List<Schedule> schedules = new ArrayList<Schedule>();
+		Set<Schedule> schedules = new HashSet<Schedule>();
 
 		for (Schedule s : event.getEventSchedule()) {
 
@@ -66,6 +73,10 @@ public class EventController {
 	@GetMapping(path = "/event/{id}")
 	public @ResponseBody Event getEventById(@PathVariable("id") Long id) {
 		return eventService.getEventById(id);
+	}
+	@GetMapping(path = "/event/{id}/schedule")
+	public @ResponseBody Set<Schedule> getScheduleByEventId(@PathVariable("id") Long id) {
+		return eventService.getScheduleByEventId(id);
 	}
 	
 	@GetMapping(path = "/event/{id}/students")

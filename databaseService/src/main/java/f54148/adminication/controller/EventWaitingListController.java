@@ -2,7 +2,6 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,17 +9,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventWaitingList;
 import f54148.adminication.entity.Student;
 import f54148.adminication.service.EventWaitingListService;
+import lombok.AllArgsConstructor;
 
 @Controller
+@AllArgsConstructor
+@RequestMapping("/events/eventWaitingLists")
 public class EventWaitingListController {
 
-	@Autowired
-	private EventWaitingListService eventWaitingListService;
+	private final EventWaitingListService eventWaitingListService;
 
 	@PostMapping(path = "/addEventWaitingList")
 	public @ResponseBody String addNewEventWaitingList(@RequestBody EventWaitingList eventWaitingList) {
@@ -48,6 +51,16 @@ public class EventWaitingListController {
 	public @ResponseBody EventWaitingList getEventWaitingListById(@PathVariable("id") Long id) {
 		return eventWaitingListService.getEventWaitingListById(id);
 	}
+	@GetMapping(path = "/eventWaitingList/{id}/student")
+	public @ResponseBody Student getStudentByEventWaitingListId(@PathVariable("id") Long id) {
+		return eventWaitingListService.getStudentByEventWaitingListId(id);
+	}
+
+	@GetMapping(path = "/eventWaitingList/{id}/event")
+	public @ResponseBody Event getEventByEventWaitingListId(@PathVariable("id") Long id) {
+		return eventWaitingListService.getEventByEventWaitingListId(id);
+	}
+
 
 	@GetMapping(path = "/eventWaitingLists")
 	public @ResponseBody List<EventWaitingList> getAllEventWaitingLists() {

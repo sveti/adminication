@@ -4,26 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Draft;
 import f54148.adminication.entity.Notification;
-import f54148.adminication.entity.Role;
 import f54148.adminication.entity.User;
 import f54148.adminication.repository.NotificationRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class NotificationService {
 
-	@Autowired
-	private NotificationRepository notificationRepository;
+	private final NotificationRepository notificationRepository;
 
-	@Autowired
-	private DraftService draftService;
+	private final DraftService draftService;
 
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
+	
 
 	public List<Notification> getNotifications() {
 		List<Notification> notificationList = new ArrayList<>();
@@ -76,21 +74,6 @@ public class NotificationService {
 		}
 	}
 
-	public List<Notification> getAllNotificationsFromAdmin() {
-		List<Notification> notificationList = getNotifications();
-
-		List<Notification> fromAdmin = new ArrayList<Notification>();
-
-		for (Notification n : notificationList) {
-
-			if (n.getDraft().getSender().getRole() == Role.ROLE_ADMIN) {
-				fromAdmin.add(n);
-			}
-
-		}
-		return fromAdmin;
-	}
-
 	public List<Notification> getNotificationsSendByUserID(Long id) {
 		List<Notification> notificationList = getNotifications();
 
@@ -105,5 +88,7 @@ public class NotificationService {
 		}
 		return fromUser;
 	}
+
+
 
 }

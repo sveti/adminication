@@ -1,8 +1,8 @@
 package f54148.adminication.controller;
 
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,20 +10,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.service.ScheduleService;
+import lombok.AllArgsConstructor;
 
 @Controller
+@AllArgsConstructor
+@RequestMapping("/schedules")
 public class SheduleController {
 
-	@Autowired
-	private ScheduleService scheduleService;
+	private final ScheduleService scheduleService;
 
-	@PostMapping(path = "/addShedule")
+	@PostMapping(path = "/addSchedule")
 	public @ResponseBody String addNewSchedule(@RequestBody Schedule schedule) {
 
 		if (scheduleService.addSchedule(schedule)) {
@@ -34,7 +37,7 @@ public class SheduleController {
 
 	}
 
-	@PutMapping(path = "/updateShedule")
+	@PutMapping(path = "/updateSchedule")
 	public @ResponseBody String updateSchedule(@RequestBody Schedule schedule) {
 
 		if (scheduleService.addSchedule(schedule)) {
@@ -60,12 +63,12 @@ public class SheduleController {
 	}
 
 	@GetMapping(path = "/schedule/{id}/courses")
-	public @ResponseBody List<Course> getCoursesbyScheduleId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Course> getCoursesbyScheduleId(@PathVariable("id") Long id) {
 		return scheduleService.getCoursesbyScheduleId(id);
 	}
 
 	@GetMapping(path = "/schedule/{id}/events")
-	public @ResponseBody List<Event> getEventsbyScheduleId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Event> getEventsbyScheduleId(@PathVariable("id") Long id) {
 		return scheduleService.getEventsbyScheduleId(id);
 	}
 

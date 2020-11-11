@@ -1,6 +1,7 @@
 package f54148.adminication.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Parent;
@@ -16,6 +18,7 @@ import f54148.adminication.entity.Student;
 import f54148.adminication.service.ParentService;
 
 @Controller
+@RequestMapping("/parents")
 public class ParentController {
 
 	@Autowired
@@ -49,7 +52,7 @@ public class ParentController {
 	}
 
 	@GetMapping(path = "/parent/{id}/children")
-	public @ResponseBody List<Student> getChildrenByParentId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Student> getChildrenByParentId(@PathVariable("id") Long id) {
 		return parentService.getChildrenByParentId(id);
 	}
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Event;
@@ -15,14 +15,22 @@ import f54148.adminication.repository.EventSignUpRepository;
 @Service
 public class EventSignUpService {
 	
-	@Autowired
-	private EventSignUpRepository eventSignUpRepository;
+	
+	private final EventSignUpRepository eventSignUpRepository;
 
-	@Autowired
-	private EventService eventService;
+	private final EventService eventService;
 
-	@Autowired
-	private StudentService studentService;
+	private final StudentService studentService;
+	
+	
+
+	public EventSignUpService(EventSignUpRepository eventSignUpRepository,@Lazy EventService eventService,
+			@Lazy StudentService studentService) {
+		super();
+		this.eventSignUpRepository = eventSignUpRepository;
+		this.eventService = eventService;
+		this.studentService = studentService;
+	}
 
 	public List<EventSignUp> getEventSignUps() {
 		List<EventSignUp> eventSignUpList = new ArrayList<>();

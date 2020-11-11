@@ -1,7 +1,6 @@
 package f54148.adminication.entity;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,9 +10,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "event_sign_ups")
 public class EventSignUp {
@@ -22,73 +31,21 @@ public class EventSignUp {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "event_id", nullable = false)
 	@JsonBackReference(value = "event_sign_up_event")
-	Event event;
+	private Event event;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "student_id", nullable = false)
 	@JsonBackReference(value = "event_sign_up_student")
-	Student student;
+	private Student student;
 
+	@NotNull
 	@Column(name = "signed", columnDefinition = "DATETIME")
 	private LocalDateTime signed;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Event getEvent() {
-		return event;
-	}
-
-	public void setEvent(Event event) {
-		this.event = event;
-	}
-
-	public Student getStudent() {
-		return student;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
-	}
-
-	public LocalDateTime getSigned() {
-		return signed;
-	}
-
-	public void setSigned(LocalDateTime signed) {
-		this.signed = signed;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(event, id, signed, student);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		EventSignUp other = (EventSignUp) obj;
-		return Objects.equals(event, other.event) && Objects.equals(id, other.id)
-				&& Objects.equals(signed, other.signed) && Objects.equals(student, other.student);
-	}
-
-	@Override
-	public String toString() {
-		return "EventSignUp [id=" + id + ", event=" + event + ", student=" + student + ", signed=" + signed + "]";
-	}
 	
 	
 }

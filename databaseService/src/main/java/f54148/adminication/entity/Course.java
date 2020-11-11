@@ -1,25 +1,40 @@
 package f54148.adminication.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -28,208 +43,64 @@ public class Course {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(nullable = false)
+	@NotBlank
+	@Column
 	private String title;
 
-	@Column(nullable = false)
+	@NotNull
+	@DecimalMin("0.01")
+	@Column
 	private Double pricePerStudent;
 
-	@Column(nullable = false)
+
+	@NotNull
+    @Min(1)
+	@Column
 	private Integer maxStudents;
 
-	@Column(nullable = false)
-	private String status;
+    @Enumerated(EnumType.ORDINAL)
+    private CourseStatus status;
 
-	@Column(nullable = false)
+    @Enumerated(EnumType.ORDINAL)
 	private Level level;
 
-	@Column(nullable = false)
+    @NotNull
+	@Column
 	private Integer duration;
+	
 
-	@ManyToMany(targetEntity = CourseDetail.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(targetEntity = CourseDetail.class, cascade = CascadeType.ALL)
 	@JoinTable(name = "course_has_coursedetails", joinColumns = {
 			@JoinColumn(name = "course_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "course_details_id", referencedColumnName = "id") })
-	List<CourseDetail> details = new ArrayList<>();
+	private Set<CourseDetail> details = new HashSet<>();
 
 	@OneToMany(mappedBy = "course")
 	@JsonManagedReference(value = "enrollment_course")
-	List<Enrollment> enrollments = new ArrayList<Enrollment>();
+	private Set<Enrollment> enrollments = new HashSet<Enrollment>();
 
 	@OneToMany(mappedBy = "course")
 	@JsonManagedReference(value = "teaching_course")
-	List<Teaching> teaching = new ArrayList<Teaching>();
+	private Set<Teaching> teaching = new HashSet<Teaching>();
 
 	@ManyToMany(targetEntity = Schedule.class, cascade = CascadeType.ALL)
 	@JoinTable(name = "course_has_schedule", joinColumns = {
 			@JoinColumn(name = "course_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "schedule_id", referencedColumnName = "id") }, uniqueConstraints = @UniqueConstraint(columnNames = {
 							"course_id", "schedule_id" }))
-	List<Schedule> courseSchedule = new ArrayList<>();
+	private Set<Schedule> courseSchedule = new HashSet<>();
 
 	@OneToMany(mappedBy = "course")
 	@JsonManagedReference(value = "coursewaitinglist_course")
-	List<CourseWaitingList> courseWaitingList = new ArrayList<CourseWaitingList>();
+	private Set<CourseWaitingList> courseWaitingList = new HashSet<CourseWaitingList>();
 
 	@OneToMany(mappedBy = "course")
 	@JsonManagedReference(value = "lesson_course")
-	List<Lesson> lessons = new ArrayList<Lesson>();
+	private Set<Lesson> lessons = new HashSet<Lesson>();
 	
 	@OneToMany(mappedBy = "course")
 	@JsonManagedReference(value = "file_course")
-	List<File> files = new ArrayList<File>();
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Double getPricePerStudent() {
-		return pricePerStudent;
-	}
-
-	public void setPricePerStudent(Double pricePerStudent) {
-		this.pricePerStudent = pricePerStudent;
-	}
-
-	public Integer getMaxStudents() {
-		return maxStudents;
-	}
-
-	public void setMaxStudents(Integer maxStudents) {
-		this.maxStudents = maxStudents;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Level getLevel() {
-		return level;
-	}
-
-	public void setLevel(Level level) {
-		this.level = level;
-	}
-
-	public Integer getDuration() {
-		return duration;
-	}
-
-	public void setDuration(Integer duration) {
-		this.duration = duration;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public List<CourseDetail> getDetails() {
-		return details;
-	}
-
-	public void setDetails(List<CourseDetail> details) {
-		this.details = details;
-	}
-
-	public void addDetail(CourseDetail detail) {
-		this.details.add(detail);
-		detail.courses.add(this);
-	}
-
-	public List<Enrollment> getEnrollments() {
-		return enrollments;
-	}
-
-	public void setEnrollments(List<Enrollment> enrollments) {
-		this.enrollments = enrollments;
-	}
-
-	public List<Teaching> getTeaching() {
-		return teaching;
-	}
-
-	public void setTeaching(List<Teaching> teaching) {
-		this.teaching = teaching;
-	}
-
-	public List<Schedule> getCourseSchedule() {
-		return courseSchedule;
-	}
-
-	public void setCourseSchedule(List<Schedule> courseSchedule) {
-		this.courseSchedule = courseSchedule;
-	}
-
-	public List<CourseWaitingList> getCourseWaitingList() {
-		return courseWaitingList;
-	}
-
-	public void setCourseWaitingList(List<CourseWaitingList> courseWaitingList) {
-		this.courseWaitingList = courseWaitingList;
-	}
-
-	public List<Lesson> getLessons() {
-		return lessons;
-	}
-
-	public void setLessons(List<Lesson> lessons) {
-		this.lessons = lessons;
-	}
-	
-	
-	public List<File> getFiles() {
-		return files;
-	}
-
-	public void setFiles(List<File> files) {
-		this.files = files;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(courseSchedule, courseWaitingList, details, duration, enrollments, files, id, lessons,
-				level, maxStudents, pricePerStudent, status, teaching, title);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Course other = (Course) obj;
-		return Objects.equals(courseSchedule, other.courseSchedule)
-				&& Objects.equals(courseWaitingList, other.courseWaitingList) && Objects.equals(details, other.details)
-				&& Objects.equals(duration, other.duration) && Objects.equals(enrollments, other.enrollments)
-				&& Objects.equals(files, other.files) && Objects.equals(id, other.id)
-				&& Objects.equals(lessons, other.lessons) && level == other.level
-				&& Objects.equals(maxStudents, other.maxStudents)
-				&& Objects.equals(pricePerStudent, other.pricePerStudent) && Objects.equals(status, other.status)
-				&& Objects.equals(teaching, other.teaching) && Objects.equals(title, other.title);
-	}
-
-	@Override
-	public String toString() {
-		return "Course [id=" + id + ", title=" + title + ", pricePerStudent=" + pricePerStudent + ", maxStudents="
-				+ maxStudents + ", status=" + status + ", level=" + level + ", duration=" + duration + ", details="
-				+ details + ", enrollments=" + enrollments + ", teaching=" + teaching + ", courseSchedule="
-				+ courseSchedule + ", courseWaitingList=" + courseWaitingList + ", lessons=" + lessons + ", files="
-				+ files + "]";
-	}
+	private Set<File> files = new HashSet<File>();
 
 	
 

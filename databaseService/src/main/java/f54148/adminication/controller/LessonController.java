@@ -2,8 +2,8 @@
 package f54148.adminication.controller;
 
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,18 +11,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Student;
 import f54148.adminication.service.LessonService;
+import lombok.AllArgsConstructor;
 
 @Controller
+@AllArgsConstructor
+@RequestMapping("/courses/lessons")
 public class LessonController {
 
-	@Autowired
-	LessonService lessonservice;
+	private final LessonService lessonservice;
 
 	@PostMapping(path = "/addLesson")
 	public @ResponseBody String addLesson(@RequestBody Lesson lesson) {
@@ -52,17 +55,17 @@ public class LessonController {
 	}
 	
 	@GetMapping(path = "/lesson/{id}/attendances")
-	public @ResponseBody List<Attendance> getAttendancesByLessonId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Attendance> getAttendancesByLessonId(@PathVariable("id") Long id) {
 		return lessonservice.getAttendancesByLessonId(id);
 	}
 	
 	@GetMapping(path = "/lesson/{id}/attendances/present")
-	public @ResponseBody List<Student> getPresentAttendancesByLessonId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Student> getPresentAttendancesByLessonId(@PathVariable("id") Long id) {
 		return lessonservice.getPresentAttendancesByLessonId(id);
 	}
 
 	@GetMapping(path = "/lesson/{id}/attendances/missing")
-	public @ResponseBody List<Student> getMissingAttendancesByLessonId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Student> getMissingAttendancesByLessonId(@PathVariable("id") Long id) {
 		return lessonservice.getMissingAttendancesByLessonId(id);
 	}
 	@DeleteMapping(path = "/lesson/{id}")

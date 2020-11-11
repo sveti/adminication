@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Event;
@@ -15,14 +15,21 @@ import f54148.adminication.repository.EventWaitingListRepository;
 @Service
 public class EventWaitingListService {
 
-	@Autowired
-	private EventWaitingListRepository eventWaitingListRepository;
+	private final EventWaitingListRepository eventWaitingListRepository;
 
-	@Autowired
-	private EventService eventService;
+	private final EventService eventService;
 
-	@Autowired
-	private StudentService studentService;
+	private final StudentService studentService;
+	
+	
+
+	public EventWaitingListService(EventWaitingListRepository eventWaitingListRepository,@Lazy EventService eventService,
+			@Lazy StudentService studentService) {
+		super();
+		this.eventWaitingListRepository = eventWaitingListRepository;
+		this.eventService = eventService;
+		this.studentService = studentService;
+	}
 
 	public List<EventWaitingList> getEventWaitingLists() {
 		List<EventWaitingList> eventWaitingListList = new ArrayList<>();
@@ -78,9 +85,26 @@ public class EventWaitingListService {
 
 	public Student getFirstStudentInQueue(Long eventId) {
 
-		// Questionable life choices
 		return eventService.getEventWaitingList(eventId).stream().sorted().findFirst().get().getStudent();
 
+	}
+
+	public Student getStudentByEventWaitingListId(Long eventWaitingListId) {
+		Optional<EventWaitingList> opEventWaitingList = eventWaitingListRepository.findById(eventWaitingListId);
+		if (opEventWaitingList.isPresent()) {
+			return opEventWaitingList.get().getStudent();
+		} else {
+			return null;
+		}
+	}
+
+	public Event getEventByEventWaitingListId(Long eventWaitingListId) {
+		Optional<EventWaitingList> opEventWaitingList = eventWaitingListRepository.findById(eventWaitingListId);
+		if (opEventWaitingList.isPresent()) {
+			return opEventWaitingList.get().getEvent();
+		} else {
+			return null;
+		}
 	}
 
 }

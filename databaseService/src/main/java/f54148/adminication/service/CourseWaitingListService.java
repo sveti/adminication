@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
@@ -15,14 +15,21 @@ import f54148.adminication.repository.CourseWaitingListRepository;
 @Service
 public class CourseWaitingListService {
 
-	@Autowired
-	private CourseWaitingListRepository courseWaitingListRepository;
+	private final CourseWaitingListRepository courseWaitingListRepository;
 
-	@Autowired
-	private CourseService courseService;
+	private final CourseService courseService;
 
-	@Autowired
-	private StudentService studentService;
+	private final StudentService studentService;
+	
+	
+
+	public CourseWaitingListService(CourseWaitingListRepository courseWaitingListRepository,
+			@Lazy CourseService courseService,@Lazy StudentService studentService) {
+		super();
+		this.courseWaitingListRepository = courseWaitingListRepository;
+		this.courseService = courseService;
+		this.studentService = studentService;
+	}
 
 	public List<CourseWaitingList> getCourseWaitingLists() {
 		List<CourseWaitingList> courseWaitingListList = new ArrayList<>();
@@ -78,9 +85,26 @@ public class CourseWaitingListService {
 
 	public Student getFirstStudentInQueue(Long courseId) {
 
-		// Questionable life choices
 		return courseService.getCourseWaitingList(courseId).stream().sorted().findFirst().get().getStudent();
 
+	}
+
+	public Student getStudentByCourseWaitingListId(Long courseWaitingListId) {
+		Optional<CourseWaitingList> opCourseWaitingList = courseWaitingListRepository.findById(courseWaitingListId);
+		if (opCourseWaitingList.isPresent()) {
+			return opCourseWaitingList.get().getStudent();
+		} else {
+			return null;
+		}
+	}
+
+	public Course getCourseByCourseWaitingListId(Long courseWaitingListId) {
+		Optional<CourseWaitingList> opCourseWaitingList = courseWaitingListRepository.findById(courseWaitingListId);
+		if (opCourseWaitingList.isPresent()) {
+			return opCourseWaitingList.get().getCourse();
+		} else {
+			return null;
+		}
 	}
 
 }

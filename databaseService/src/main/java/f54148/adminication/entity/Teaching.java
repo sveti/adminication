@@ -1,7 +1,5 @@
 package f54148.adminication.entity;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +8,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "teaching")
 public class Teaching {
@@ -21,83 +30,26 @@ public class Teaching {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "teacher_id", nullable = false)
 	@JsonBackReference(value = "teaching_teacher")
-	Teacher teacher;
+	private Teacher teacher;
 
 	@ManyToOne
 	@JoinColumn(name = "substitute_id")
 	@JsonBackReference(value = "teaching_teacher_sub")
-	Teacher substitute;
+	private Teacher substitute;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "course_id", nullable = false)
 	@JsonBackReference(value = "teaching_course")
-	Course course;
+	private Course course;
 
-	@Column(nullable = false)
+	@NotNull
+	@DecimalMin("0.01")
+	@Column
 	private Double salaryPerStudent;
-
-	public Long getId() {
-		return id;
-	}
-
-	public Teacher getTeacher() {
-		return teacher;
-	}
-
-	public void setTeacher(Teacher teacher) {
-		this.teacher = teacher;
-	}
-
-	public Course getCourse() {
-		return course;
-	}
-
-	public void setCourse(Course course) {
-		this.course = course;
-	}
-
-	public Double getSalaryPerStudent() {
-		return salaryPerStudent;
-	}
-
-	public void setSalaryPerStudent(Double salaryPerStudent) {
-		this.salaryPerStudent = salaryPerStudent;
-	}
-
-	public Teacher getSubstitute() {
-		return substitute;
-	}
-
-	public void setSubstitute(Teacher substitute) {
-		this.substitute = substitute;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(course, id, salaryPerStudent, substitute, teacher);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Teaching other = (Teaching) obj;
-		return Objects.equals(course, other.course) && Objects.equals(id, other.id)
-				&& Objects.equals(salaryPerStudent, other.salaryPerStudent)
-				&& Objects.equals(substitute, other.substitute) && Objects.equals(teacher, other.teacher);
-	}
-
-	@Override
-	public String toString() {
-		return "Teaching [id=" + id + ", teacher=" + teacher + ", substitute=" + substitute + ", course=" + course
-				+ ", salaryPerStudent=" + salaryPerStudent + "]";
-	}
 
 }

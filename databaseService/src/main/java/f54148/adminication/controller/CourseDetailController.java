@@ -1,25 +1,28 @@
 package f54148.adminication.controller;
 
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.service.CourseDetailService;
+import lombok.AllArgsConstructor;
 
 @Controller
+@AllArgsConstructor
+@RequestMapping("/courses/courseDetails")
 public class CourseDetailController {
 
-	@Autowired
-	CourseDetailService service;
+	private final CourseDetailService service;
 
 	@PostMapping(path = "/addCourseDetail")
 	public @ResponseBody String addNewCourseDetail(@RequestBody CourseDetail courseDetails) {
@@ -47,7 +50,7 @@ public class CourseDetailController {
 	}
 
 	@GetMapping(path = "/courseDetail/{id}/courses")
-	public @ResponseBody List<Course> getAllCoursesByDetail(@PathVariable("id") Long courseDetailsId) {
+	public @ResponseBody Set<Course> getAllCoursesByDetail(@PathVariable("id") Long courseDetailsId) {
 		return service.getCourses(courseDetailsId);
 	}
 

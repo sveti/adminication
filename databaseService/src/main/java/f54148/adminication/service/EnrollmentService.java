@@ -4,25 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.EnrollmentRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class EnrollmentService {
 
-	@Autowired
-	private EnrollmentRepository enrollmentRepository;
+	
+	private final EnrollmentRepository enrollmentRepository;
 
-	@Autowired
-	private StudentService studentService;
+	private final StudentService studentService;
 
-	@Autowired
-	private CourseService courseService;
+	private final CourseService courseService;
 
 	public List<Enrollment> getEnrollments() {
 		List<Enrollment> enrollmentList = new ArrayList<>();
@@ -73,6 +72,24 @@ public class EnrollmentService {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public Student getStudentByEnrollmentById(Long enrollmentId) {
+		Optional<Enrollment> opEnrollment = enrollmentRepository.findById(enrollmentId);
+		if (opEnrollment.isPresent()) {
+			return opEnrollment.get().getStudent();
+		} else {
+			return null;
+		}
+	}
+
+	public Course getCourseByEnrollmentById(Long enrollmentId) {
+		Optional<Enrollment> opEnrollment = enrollmentRepository.findById(enrollmentId);
+		if (opEnrollment.isPresent()) {
+			return opEnrollment.get().getCourse();
+		} else {
+			return null;
 		}
 	}
 

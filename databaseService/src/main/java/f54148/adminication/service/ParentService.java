@@ -3,18 +3,20 @@ package f54148.adminication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Parent;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.ParentRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class ParentService {
-	@Autowired
-	private ParentRepository parentRepository;
+
+	private final ParentRepository parentRepository;
 
 	public List<Parent> getParents() {
 		List<Parent> parentsList = new ArrayList<>();
@@ -56,7 +58,7 @@ public class ParentService {
 		}
 	}
 
-	public List<Student> getChildrenByParentId(Long parentId) {
+	public Set<Student> getChildrenByParentId(Long parentId) {
 		Optional<Parent> opParent = parentRepository.findById(parentId);
 		if (opParent.isPresent()) {
 			return opParent.get().getChildren();

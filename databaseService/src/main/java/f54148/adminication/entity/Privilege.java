@@ -3,9 +3,8 @@ package f54148.adminication.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,20 +24,26 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "course_details")
-public class CourseDetail {
+@Table(name = "priviledges")
+public class Privilege {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
+	private long id;
+	
 	@NotBlank
-	@Column
-	private String description;
-
-	@ManyToMany(targetEntity = Course.class, fetch = FetchType.LAZY, mappedBy = "details")
+	private String hasAccess;
+	
+	@ManyToMany(mappedBy = "privileges",cascade = CascadeType.ALL)
 	@JsonIgnore
-	private Set<Course> courses = new HashSet<>();
+    private Set<Role> roles = new HashSet<Role>();
 
-
+	public Privilege(@NotBlank String hasAccess) {
+		super();
+		this.hasAccess = hasAccess;
+		this.roles = new HashSet<Role>();
+	}
+	
+	
+	
 }

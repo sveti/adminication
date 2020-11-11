@@ -1,14 +1,15 @@
 package f54148.adminication.controller;
 
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Attendance;
@@ -18,28 +19,23 @@ import f54148.adminication.entity.Parent;
 import f54148.adminication.entity.Student;
 import f54148.adminication.service.ParentService;
 import f54148.adminication.service.StudentService;
-import f54148.adminication.service.UserService;
+import lombok.AllArgsConstructor;
+
 
 @Controller
+@AllArgsConstructor
+@RequestMapping("/students")
 public class StudentController {
 
-	@Autowired
-	private StudentService studentService;
+	private final StudentService studentService;
 
-	@Autowired
-	private ParentService parentService;
+	private final ParentService parentService;
 
-	@Autowired
-	private UserService userService;
 
 	@PostMapping(path = "/addStudent")
 	public @ResponseBody String addNewStudent(@RequestBody Student student) {
 
-		if (student.getParent() != null && student.getParent().getId() == null) {
-
-			if (student.getParent().getUser().getId() == null) {
-				userService.addUser(student.getParent().getUser());
-			}
+		if (student.getParent() != null && parentService.getParentById(student.getParent().getId()) == null) {
 
 			parentService.addParent(student.getParent());
 
@@ -91,7 +87,7 @@ public class StudentController {
 	}
 	
 	@GetMapping(path = "student/{id}/attendances")
-	public @ResponseBody List<Attendance> getStudentAttendances(@PathVariable("id") Long studentId) {
+	public @ResponseBody Set<Attendance> getStudentAttendances(@PathVariable("id") Long studentId) {
 		return studentService.getStudentAttendances(studentId);
 	}
 

@@ -5,24 +5,31 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Student;
-import f54148.adminication.entity.Attendance;
 import f54148.adminication.repository.AttendanceRepository;
 
 @Service
 public class AttendanceService {
 	
-	@Autowired
-	private AttendanceRepository attendanceRepository;
+	private final AttendanceRepository attendanceRepository;
 
-	@Autowired
-	private StudentService studentService;
+	private final StudentService studentService;
 
-	@Autowired
-	private LessonService lessonService;
+	private final LessonService lessonService;
+	
+
+	public AttendanceService(AttendanceRepository attendanceRepository, @Lazy StudentService studentService,
+			@Lazy LessonService lessonService) {
+		super();
+		this.attendanceRepository = attendanceRepository;
+		this.studentService = studentService;
+		this.lessonService = lessonService;
+	}
 
 	public List<Attendance> getAttendances() {
 		List<Attendance> attendanceList = new ArrayList<>();

@@ -10,17 +10,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 
 import f54148.adminication.entity.File;
 import f54148.adminication.service.FileService;
+import lombok.AllArgsConstructor;
 
 @Controller
+@AllArgsConstructor
+@RequestMapping("/files")
 public class FileController {
 	
-	@Autowired
-	FileService fileservice;
+	private FileService fileservice;
 
 	@PostMapping(path = "/addFile")
 	public @ResponseBody String addFile(@RequestBody File file) {

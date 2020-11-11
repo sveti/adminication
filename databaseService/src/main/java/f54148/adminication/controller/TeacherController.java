@@ -1,14 +1,15 @@
 package f54148.adminication.controller;
 
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Course;
@@ -16,12 +17,15 @@ import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.service.TeacherService;
+import lombok.AllArgsConstructor;
 
 @Controller
+@AllArgsConstructor
+@RequestMapping("/teachers")
 public class TeacherController {
 
-	@Autowired
-	private TeacherService teacherService;
+	
+	private final TeacherService teacherService;
 
 	@PostMapping(path = "/addTeacher")
 	public @ResponseBody String addNewTeacher(@RequestBody Teacher teacher) {
@@ -56,12 +60,12 @@ public class TeacherController {
 	}
 
 	@GetMapping(path = "/teacher/{id}/lessons")
-	public @ResponseBody List<Lesson> getLessonsByTeacherId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Lesson> getLessonsByTeacherId(@PathVariable("id") Long id) {
 		return teacherService.getLessonsByTeacherId(id);
 	}
 	
 	@GetMapping(path = "/teacher/{id}/files")
-	public @ResponseBody List<File> getFilesyTeacherId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<File> getFilesyTeacherId(@PathVariable("id") Long id) {
 		return teacherService.getFilesyTeacherId(id);
 	}
 

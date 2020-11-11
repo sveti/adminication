@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
@@ -16,14 +17,22 @@ import f54148.adminication.repository.ScheduleRepository;
 @Service
 public class ScheduleService {
 
-	@Autowired
-	private ScheduleRepository scheduleRepository;
 
-	@Autowired
-	private CourseService courseService;
+	private final ScheduleRepository scheduleRepository;
 
-	@Autowired
-	private EventService eventService;
+	private final CourseService courseService;
+
+	private final EventService eventService;
+	
+	
+
+	public ScheduleService(ScheduleRepository scheduleRepository, @Lazy CourseService courseService,
+			@Lazy EventService eventService) {
+		super();
+		this.scheduleRepository = scheduleRepository;
+		this.courseService = courseService;
+		this.eventService = eventService;
+	}
 
 	public List<Schedule> getSchedules() {
 		List<Schedule> scheduleList = new ArrayList<>();
@@ -79,21 +88,19 @@ public class ScheduleService {
 		}
 	}
 
-	public List<Course> getCoursesbyScheduleId(Long scheduleId) {
+	public Set<Course> getCoursesbyScheduleId(Long scheduleId) {
 		Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
 		if (opSchedule.isPresent()) {
-			List<Course> listWithoutDuplicates = new ArrayList<>(new HashSet<>(opSchedule.get().getScheduledCourses()));
-			return listWithoutDuplicates;
+			return opSchedule.get().getScheduledCourses();
 		} else {
 			return null;
 		}
 	}
 
-	public List<Event> getEventsbyScheduleId(Long scheduleId) {
+	public Set<Event> getEventsbyScheduleId(Long scheduleId) {
 		Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
 		if (opSchedule.isPresent()) {
-			List<Event> listWithoutDuplicates = new ArrayList<>(new HashSet<>(opSchedule.get().getScheduledEvents()));
-			return listWithoutDuplicates;
+			return opSchedule.get().getScheduledEvents();
 		} else {
 			return null;
 		}

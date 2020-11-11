@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
@@ -14,14 +15,23 @@ import f54148.adminication.repository.FileRepository;
 
 @Service
 public class FileService {
-	@Autowired
-	private FileRepository fileRepository;
 
-	@Autowired
-	private TeacherService teacherService;
+	private final FileRepository fileRepository;
 
-	@Autowired
-	private CourseService courseService;
+
+	private final TeacherService teacherService;
+
+
+	private final CourseService courseService;
+	
+	
+
+	public FileService(FileRepository fileRepository,@Lazy TeacherService teacherService, @Lazy CourseService courseService) {
+		super();
+		this.fileRepository = fileRepository;
+		this.teacherService = teacherService;
+		this.courseService = courseService;
+	}
 
 	public List<File> getFiles() {
 		List<File> fileList = new ArrayList<>();

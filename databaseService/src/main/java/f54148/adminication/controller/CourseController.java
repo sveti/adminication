@@ -1,15 +1,16 @@
 package f54148.adminication.controller;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Course;
@@ -22,28 +23,29 @@ import f54148.adminication.entity.Teacher;
 import f54148.adminication.service.CourseDetailService;
 import f54148.adminication.service.CourseService;
 import f54148.adminication.service.ScheduleService;
+import lombok.AllArgsConstructor;
 
 @Controller
+@AllArgsConstructor
+@RequestMapping("/courses")
 public class CourseController {
 
-	@Autowired
-	private CourseService courseService;
+	
+	private final CourseService courseService;
 
-	@Autowired
-	private CourseDetailService cdService;
+	private final CourseDetailService cdService;
 
-	@Autowired
-	private ScheduleService sService;
+	private final ScheduleService sService;
 
 	@PostMapping(path = "/addCourse")
 	public @ResponseBody String addNewCourse(@RequestBody Course course) {
 
 		// get schedule and courses from passed argument
-		List<Schedule> shedule = course.getCourseSchedule();
-		List<CourseDetail> details = course.getDetails();
+		Set<Schedule> shedule = course.getCourseSchedule();
+		Set<CourseDetail> details = course.getDetails();
 
-		List<Schedule> pshedule = new ArrayList<Schedule>();
-		List<CourseDetail> pdetails = new ArrayList<CourseDetail>();
+		Set<Schedule> pshedule = new HashSet<Schedule>();
+		Set<CourseDetail> pdetails = new HashSet<CourseDetail>();
 
 		course.setCourseSchedule(null);
 		course.setDetails(null);
@@ -92,10 +94,16 @@ public class CourseController {
 		}
 
 	}
+	
 
 	@GetMapping(path = "/course/{id}")
 	public @ResponseBody Course getCourseById(@PathVariable("id") Long id) {
 		return courseService.getCourseById(id);
+	}
+	
+	@GetMapping(path = "/course/{id}/courseDetails")
+	public @ResponseBody Set<CourseDetail> getCourseDetailsByCourseId(@PathVariable("id") Long id) {
+		return courseService.getCourseDetailsByCourseId(id);
 	}
 
 	@GetMapping(path = "/course/{id}/students")
@@ -107,14 +115,19 @@ public class CourseController {
 	public @ResponseBody List<Teacher> getTeachersByCourseId(@PathVariable("id") Long id) {
 		return courseService.getTeachersByCourseId(id);
 	}
+	
+	@GetMapping(path = "/course/{id}/substitutes")
+	public @ResponseBody List<Teacher> getSubstitutesByCourseId(@PathVariable("id") Long id) {
+		return courseService.getSubstitutesByCourseId(id);
+	}
 
 	@GetMapping(path = "/course/{id}/schedule")
-	public @ResponseBody List<Schedule> getScheduleByCourseId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Schedule> getScheduleByCourseId(@PathVariable("id") Long id) {
 		return courseService.getScheduleByCourseId(id);
 	}
 	
 	@GetMapping(path = "/course/{id}/files")
-	public @ResponseBody List<File> getFilesByCourseId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<File> getFilesByCourseId(@PathVariable("id") Long id) {
 		return courseService.getFilesByCourseId(id);
 	}
 	
@@ -124,7 +137,7 @@ public class CourseController {
 	}
 
 	@GetMapping(path = "/course/{id}/lessons")
-	public @ResponseBody List<Lesson> getLessonsByCourseId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Lesson> getLessonsByCourseId(@PathVariable("id") Long id) {
 		return courseService.getLessonsByCourseId(id);
 	}
 }

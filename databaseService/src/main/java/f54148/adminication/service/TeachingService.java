@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
@@ -15,14 +15,20 @@ import f54148.adminication.repository.TeachingRepository;
 @Service
 public class TeachingService {
 
-	@Autowired
-	private TeachingRepository teachingRepository;
+	private final TeachingRepository teachingRepository;
 
-	@Autowired
-	private CourseService courseService;
+	private final CourseService courseService;
 
-	@Autowired
-	private TeacherService teacherService;
+	private final TeacherService teacherService;
+	
+
+	public TeachingService(TeachingRepository teachingRepository,@Lazy CourseService courseService,
+			@Lazy TeacherService teacherService) {
+		super();
+		this.teachingRepository = teachingRepository;
+		this.courseService = courseService;
+		this.teacherService = teacherService;
+	}
 
 	public List<Teaching> getTeachings() {
 		List<Teaching> teachingList = new ArrayList<>();

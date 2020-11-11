@@ -3,8 +3,9 @@ package f54148.adminication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
@@ -17,11 +18,15 @@ import f54148.adminication.repository.TeacherRepository;
 @Service
 public class TeacherService {
 
-	@Autowired
-	private TeacherRepository teacherRepository;
+	private final TeacherRepository teacherRepository;
 
-	@Autowired
-	private TeachingService teachingService;
+	private final TeachingService teachingService;
+	
+	public TeacherService(TeacherRepository teacherRepository,@Lazy TeachingService teachingService) {
+		super();
+		this.teacherRepository = teacherRepository;
+		this.teachingService = teachingService;
+	}
 
 	public List<Teacher> getTeachers() {
 		List<Teacher> teachersList = new ArrayList<>();
@@ -114,7 +119,7 @@ public class TeacherService {
 		return substitutes;
 	}
 
-	public List<Lesson> getLessonsByTeacherId(Long teacherId) {
+	public Set<Lesson> getLessonsByTeacherId(Long teacherId) {
 		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
 		if (opTeacher.isPresent()) {
 			return opTeacher.get().getLessons();
@@ -123,7 +128,7 @@ public class TeacherService {
 		}
 	}
 
-	public List<File> getFilesyTeacherId(Long teacherId) {
+	public Set<File> getFilesyTeacherId(Long teacherId) {
 		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
 		if (opTeacher.isPresent()) {
 			return opTeacher.get().getFiles();

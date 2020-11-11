@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.File;
@@ -18,12 +19,14 @@ import f54148.adminication.entity.Student;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.Teaching;
 import f54148.adminication.repository.CourseRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class CourseService {
 
-	@Autowired
-	private CourseRepository courseRepository;
+
+	private final CourseRepository courseRepository;
 
 	public List<Course> getCourses() {
 		List<Course> courseList = new ArrayList<>();
@@ -99,7 +102,7 @@ public class CourseService {
 		}
 	}
 
-	public List<Schedule> getScheduleByCourseId(Long courseId) {
+	public Set<Schedule> getScheduleByCourseId(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
 		if (opCourse.isPresent()) {
 			return opCourse.get().getCourseSchedule();
@@ -134,7 +137,7 @@ public class CourseService {
 		}
 	}
 
-	public List<Lesson> getLessonsByCourseId(Long courseId) {
+	public Set<Lesson> getLessonsByCourseId(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
 		if (opCourse.isPresent()) {
 			return opCourse.get().getLessons();
@@ -143,10 +146,39 @@ public class CourseService {
 		}
 	}
 
-	public List<File> getFilesByCourseId(Long courseId) {
+	public Set<File> getFilesByCourseId(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
 		if (opCourse.isPresent()) {
 			return opCourse.get().getFiles();
+		} else {
+			return null;
+		}
+	}
+
+	public Set<CourseDetail> getCourseDetailsByCourseId(Long courseId) {
+		Optional<Course> opCourse = courseRepository.findById(courseId);
+		if (opCourse.isPresent()) {
+			return opCourse.get().getDetails();
+		} else {
+			return null;
+		}
+	}
+
+	public List<Teacher> getSubstitutesByCourseId(Long id) {
+		Optional<Course> opCourse = courseRepository.findById(id);
+		if (opCourse.isPresent()) {
+			Course c = opCourse.get();
+
+			List<Teacher> teachers = new ArrayList<Teacher>();
+
+			for (Teaching e : c.getTeaching()) {
+				//if the teaching has a substitute add the sub teacher to the list
+				if(e.getSubstitute()!= null) {
+					teachers.add(e.getSubstitute());
+				}
+			}
+			return teachers;
+
 		} else {
 			return null;
 		}

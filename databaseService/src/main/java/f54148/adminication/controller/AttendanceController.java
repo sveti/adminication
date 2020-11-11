@@ -10,16 +10,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.service.AttendanceService;
+import lombok.AllArgsConstructor;
 
 @Controller
+@AllArgsConstructor
+@RequestMapping("/courses/attendances")
 public class AttendanceController {
-	
-	@Autowired
-	AttendanceService attendanceservice;
+	private final AttendanceService attendanceservice;
 
 	@PostMapping(path = "/addAttendance")
 	public @ResponseBody String addAttendance(@RequestBody Attendance attendance) {

@@ -3,21 +3,23 @@ package f54148.adminication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.EventWaitingList;
+import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.EventRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class EventService {
 
-	@Autowired
-	private EventRepository eventRepository;
+	private final EventRepository eventRepository;
 
 	public List<Event> getEvents() {
 		List<Event> eventList = new ArrayList<>();
@@ -59,7 +61,7 @@ public class EventService {
 		}
 	}
 
-	public List<EventWaitingList> getEventWaitingList(Long eventId) {
+	public Set<EventWaitingList> getEventWaitingList(Long eventId) {
 
 		Optional<Event> opEvent = eventRepository.findById(eventId);
 		if (opEvent.isPresent()) {
@@ -101,6 +103,15 @@ public class EventService {
 
 			return students;
 
+		} else {
+			return null;
+		}
+	}
+
+	public Set<Schedule> getScheduleByEventId(Long eventId) {
+		Optional<Event> opEvent = eventRepository.findById(eventId);
+		if (opEvent.isPresent()) {
+			return opEvent.get().getEventSchedule();
 		} else {
 			return null;
 		}
