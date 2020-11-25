@@ -2,6 +2,8 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
+import javax.validation.constraints.Min;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.TestUserDTO;
 import f54148.adminication.entity.Draft;
 import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.Role;
@@ -49,11 +52,21 @@ public class UserController {
 	public @ResponseBody List<User> getAllUsers() {
 		return userService.getUsers();
 	}
+	
+	@GetMapping(path = "/test/{id}")
+	public @ResponseBody TestUserDTO getTestDTOByUsername(@PathVariable("id") @Min(1) Long id) {
+		return userService.getTestDTOUser(id);
+	}
 
 	@GetMapping(path = "/user/{id}")
-	public @ResponseBody User getUser(@PathVariable("id") Long id) {
+	public @ResponseBody User getUser(@PathVariable("id") @Min(1) Long id) {
 		return userService.getUserById(id);
 	}
+	@GetMapping(path = "/{username}")
+	public @ResponseBody User getUserByUsername(@PathVariable("username") String username) {
+		return userService.getUserByUsername(username);
+	}
+	
 	@GetMapping(path = "/user/{id}/role")
 	public @ResponseBody Role getUserRole(@PathVariable("id") Long id) {
 		return userService.getUserRole(id);

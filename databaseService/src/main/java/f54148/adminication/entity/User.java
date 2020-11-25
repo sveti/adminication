@@ -38,16 +38,24 @@ public class User extends BaseEntity{
 	private String email;
 	
 	@NotBlank
-	@Size(min = 5, max = 50, message="Min 5, Max 50")
+	@Size(min = 5, message="Min 5")
 	private String password;
 	
-	//@Enumerated-> 1, 2, 3... -> за статус 
-	//за ролята виж role 
-	//many to one
+	@Column(columnDefinition="tinyint(1) default 1")
+    private boolean isAccountNonExpired;
+
+    @Column(columnDefinition="tinyint(1) default 1")
+    private boolean isAccountNonLocked;
+
+    @Column(columnDefinition="tinyint(1) default 1")
+    private boolean isCredentialsNonExpired;
+
+    @Column(columnDefinition="tinyint(1) default 1")
+    private boolean isEnabled;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "role_id", nullable = false)
-	//@JsonBackReference(value = "role_user")
 	private Role role;
 
 	@NotBlank

@@ -21,13 +21,12 @@ public class DataSourceConfig {
 
 	@Bean
 	public DataSource getDataSource() {
-
-		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-		dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-		dataSourceBuilder.url(url);
-		dataSourceBuilder.username(username);
-		dataSourceBuilder.password(password);
-		return dataSourceBuilder.build();
+		return DataSourceBuilder.create()
+				.driverClassName("com.mysql.cj.jdbc.Driver")
+				.username(username)
+				.password(password)
+				.url(url)
+				.build();
 	}
 	
 	

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Attendance;
@@ -23,6 +25,7 @@ import lombok.AllArgsConstructor;
 public class StudentService {
 
 	private final StudentRepository studentRepository;
+	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
 
 	public List<Student> getStudents() {
 		List<Student> studentList = new ArrayList<>();
@@ -40,6 +43,9 @@ public class StudentService {
 	}
 
 	public boolean addStudent(Student user) {
+		
+		user.setPassword(encoder.encode(user.getPassword()));
+		
 		if (studentRepository.save(user) != null) {
 			return true;
 		} else {
@@ -139,5 +145,5 @@ public class StudentService {
 			return null;
 		}
 	}
-
+	
 }

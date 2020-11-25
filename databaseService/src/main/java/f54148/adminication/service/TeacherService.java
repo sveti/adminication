@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Course;
@@ -21,6 +23,8 @@ public class TeacherService {
 	private final TeacherRepository teacherRepository;
 
 	private final TeachingService teachingService;
+	
+	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
 	
 	public TeacherService(TeacherRepository teacherRepository,@Lazy TeachingService teachingService) {
 		super();
@@ -44,6 +48,9 @@ public class TeacherService {
 	}
 
 	public boolean addTeacher(Teacher teacher) {
+		
+		teacher.setPassword(encoder.encode(teacher.getPassword()));
+		
 		if (teacherRepository.save(teacher) != null) {
 			return true;
 		} else {

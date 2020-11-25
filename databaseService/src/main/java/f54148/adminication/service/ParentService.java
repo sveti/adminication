@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Parent;
@@ -17,6 +19,7 @@ import lombok.AllArgsConstructor;
 public class ParentService {
 
 	private final ParentRepository parentRepository;
+	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
 
 	public List<Parent> getParents() {
 		List<Parent> parentsList = new ArrayList<>();
@@ -34,6 +37,9 @@ public class ParentService {
 	}
 
 	public boolean addParent(Parent parent) {
+		
+		parent.setPassword(encoder.encode(parent.getPassword()));
+		
 		if (parentRepository.save(parent) != null) {
 			return true;
 		} else {
@@ -66,5 +72,12 @@ public class ParentService {
 			return null;
 		}
 	}
+	
+	public String encodePassword(String pass) {
+		
+		return encoder.encode(pass);
+		
+	}
+
 
 }

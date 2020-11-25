@@ -1,6 +1,7 @@
 package f54148.adminication.controller;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,17 @@ public class ParentController {
 
 	@PostMapping(path = "/addParent")
 	public @ResponseBody String addNewParent(@RequestBody Parent parent) {
+		
+	//for password encryption
+		for(Student s: parent.getChildren()) {
+			
+			if(s.getId()==0) {
+				
+				s.setPassword(parentService.encodePassword(s.getPassword()));
+				
+			}
+			
+		}
 
 		if (parentService.addParent(parent)) {
 			return "Saved parent";
