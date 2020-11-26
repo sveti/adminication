@@ -25,17 +25,6 @@ import lombok.ToString;
 //teachers extends user
 public class Teacher extends User {
 
-	//id -> от user
-	//@id + no и с fk
-	
-//	@Id
-//	private Long id;
-	
-//	@OneToOne(cascade = CascadeType.ALL)
-//	@MapsId
-//	@JoinColumn(name = "userId", referencedColumnName = "id")
-//	@JsonManagedReference(value = "teacher")
-//	private User user;
 
 	@OneToMany(mappedBy = "teacher")
 	@JsonManagedReference(value = "teaching_teacher")

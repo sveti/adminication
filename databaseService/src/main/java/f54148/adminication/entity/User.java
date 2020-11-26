@@ -59,11 +59,11 @@ public class User extends BaseEntity{
 	private Role role;
 
 	@NotBlank
-    @Size(min = 5, max = 50, message="Min 5, Max 50")
+    @Size(min = 1, max = 50, message="Min 1, Max 50")
 	private String name;
 
 	@NotBlank
-    @Size(min = 5, max = 50, message="Min 5, Max 50")
+    @Size(min = 1, max = 50, message="Min 1, Max 50")
 	private String lastName;
 
 	

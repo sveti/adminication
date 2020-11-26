@@ -4,12 +4,14 @@ import java.util.List;
 
 import javax.validation.constraints.Min;
 
-import f54148.adminication.dto.UserDTO;
+import f54148.adminication.dto.CreateUserDTO;
 
 public interface UserService {
 	
-	List<UserDTO> getUsers();
+	List<CreateUserDTO> getUsers();
 	
-	UserDTO getUser(@Min(1) long id);
+	CreateUserDTO getUser(@Min(1) long id);
+	
+	String createUser(CreateUserDTO userDTO);
 
 }

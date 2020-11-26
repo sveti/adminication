@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import f54148.adminication.dto.TestUserDTO;
+import f54148.adminication.dto.CreateUserDTO;
 import f54148.adminication.entity.Draft;
 import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.Role;
@@ -30,6 +30,18 @@ public class UserController {
 
 	@PostMapping(path = "/addUser")
 	public @ResponseBody String addUser(@RequestBody User user) {
+
+		if (userService.addUser(user)) {
+			return "Saved user";
+		} else {
+			return "A problem has occured";
+		}
+	}
+	
+	@PostMapping(path = "/add")
+	public @ResponseBody String addUser(@RequestBody CreateUserDTO userDTO) {
+		
+		User user = userService.convertToUser(userDTO);
 
 		if (userService.addUser(user)) {
 			return "Saved user";
@@ -54,7 +66,7 @@ public class UserController {
 	}
 	
 	@GetMapping(path = "/test/{id}")
-	public @ResponseBody TestUserDTO getTestDTOByUsername(@PathVariable("id") @Min(1) Long id) {
+	public @ResponseBody CreateUserDTO getTestDTOByUsername(@PathVariable("id") @Min(1) Long id) {
 		return userService.getTestDTOUser(id);
 	}
 
