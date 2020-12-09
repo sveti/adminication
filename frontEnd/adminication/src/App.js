@@ -3,38 +3,58 @@ import './App.css';
 
 import {getUsers,getUser} from './services/userService'
 
+import Navbar from './components/Header/Navbar.jsx'
+import WelcomeScreen from './components/Header/WelcomeScreen';
+import ScrollToTop from '../node_modules/react-scroll-up'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons'
+
 class App extends Component {
   state = {
     isLoading: true,
-    users: []
+    users: [],
+    srollClicked:false,
   };
 
   async componentDidMount() {
-
+    window.addEventListener('scroll', this.handleScroll);
     const { data } = await getUsers();
     this.setState({ users: data, isLoading: false });
   }
 
-  render() {
-    const {users, isLoading} = this.state;
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
 
-    if (isLoading) {
-      return <p>Loading...</p>;
+  handleScroll = () =>{
+    if(window.pageYOffset<100){
+      this.setState({srollClicked:false});
     }
+  }
+
+  handleClick = () =>{
+
+    this.setState({srollClicked:true});
+
+  }
+
+  render() {
+    const {users, isLoading,srollClicked} = this.state;
+
+    // if (isLoading) {
+    //   return <p>Loading...</p>;
+    // }
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <div className="App-intro">
-            <h2>users</h2>
-              {users.map(users =>
-              <div key={users.id}>
-                {users.username}
-              </div>
-            )}
-                
-              </div>
-        </header>
+      <div className="App" >
+        <div className="navContainer">
+          <Navbar scrollClicked={srollClicked}></Navbar>
+        </div>
+        
+        <WelcomeScreen></WelcomeScreen>
+        <ScrollToTop id="scrollToTop" showUnder={700} duration={2000}>
+        <FontAwesomeIcon className="styledButtonUp" icon={faArrowAltCircleUp} onClick={this.handleClick}/>
+          </ScrollToTop>
       </div>
     );
   }
