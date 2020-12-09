@@ -124,7 +124,17 @@ class Navbar extends React.Component {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href={url}>
-                  Link
+                  My courses
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href={url}>
+                  Attendances
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href={url}>
+                  Statistics
                 </a>
               </li>
             </ul>

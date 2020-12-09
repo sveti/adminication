@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -65,7 +67,9 @@ public class User extends BaseEntity{
 	@NotBlank
     @Size(min = 1, max = 50, message="Min 1, Max 50")
 	private String lastName;
-
+	
+    @Enumerated(EnumType.ORDINAL)
+	private Gender gender;
 	
 	@OneToMany(mappedBy = "sender")
 	@JsonManagedReference(value = "draft_sender")

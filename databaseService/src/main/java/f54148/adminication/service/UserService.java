@@ -6,16 +6,14 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.CreateUserDTO;
 import f54148.adminication.entity.Draft;
+import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.Role;
 import f54148.adminication.entity.User;
-import f54148.adminication.exceptions.DuplicateUserException;
 import f54148.adminication.exceptions.UserNotFoundException;
 import f54148.adminication.repository.UserRepository;
 
@@ -139,6 +137,12 @@ public class UserService {
 		u.setCredentialsNonExpired(true);
 		u.setEnabled(true);
 		u.setRole(roleService.getRoleByName("ROLE_ADMIN"));
+		if(userDTO.getGender()==0) {
+			u.setGender(Gender.MALE);
+		}
+		else {
+			u.setGender(Gender.FEMALE);
+		}
 				
 		return u;
 	}

@@ -12,14 +12,14 @@ import { faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons'
 class App extends Component {
   state = {
     isLoading: true,
-    users: [],
+    user: {},
     srollClicked:false,
   };
 
   async componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
-    const { data } = await getUsers();
-    this.setState({ users: data, isLoading: false });
+    const { data } = await getUser(1);
+    this.setState({ user: data, isLoading: false });
   }
 
   componentWillUnmount() {
@@ -39,11 +39,12 @@ class App extends Component {
   }
 
   render() {
-    const {users, isLoading,srollClicked} = this.state;
+    const {user, isLoading,srollClicked} = this.state;
 
     // if (isLoading) {
     //   return <p>Loading...</p>;
     // }
+
 
     return (
       <div className="App" >
@@ -51,7 +52,7 @@ class App extends Component {
           <Navbar scrollClicked={srollClicked}></Navbar>
         </div>
         
-        <WelcomeScreen></WelcomeScreen>
+        <WelcomeScreen name={user.name} lastName={user.lastName} gender={user.gender}></WelcomeScreen>
         <ScrollToTop id="scrollToTop" showUnder={700} duration={2000}>
         <FontAwesomeIcon className="styledButtonUp" icon={faArrowAltCircleUp} onClick={this.handleClick}/>
           </ScrollToTop>

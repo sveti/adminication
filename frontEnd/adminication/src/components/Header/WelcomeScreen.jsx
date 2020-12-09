@@ -1,17 +1,24 @@
 import React from "react";
 
 import "./welcomeScreen.css";
-import Logo from "./../../assets/images/teacher.svg";
+import LogoFemale from "./../../assets/images/teacherFemale.svg";
+import LogoMale from "./../../assets/images/teacherMale.svg";
 import Content from "./Content";
 import { Link } from "react-scroll";
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({ name, lastName, gender }) => {
   return (
     <main>
       <section id="WelcomeScreen" className="welcome">
         <div>
-          <img src={Logo} alt="logo" className="welcome--logo" />
-          <p className="welcomeMessage">Welcome,!</p>
+          <img
+            src={gender === "MALE" ? LogoMale : LogoFemale}
+            alt="logo"
+            className="welcome--logo"
+          />
+          <p className="welcomeMessage">
+            Welcome,{name} {lastName}!
+          </p>
 
           <Link
             activeClass="active"
