@@ -1,6 +1,8 @@
 import React from "react";
 import "./navbar.css";
 import Logo from "./../../assets/images/adminication.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faChevronCircleDown } from "@fortawesome/free-solid-svg-icons";
 
 class Navbar extends React.Component {
   listener = null;
@@ -104,7 +106,7 @@ class Navbar extends React.Component {
             Adminication teacher
           </a>
           <button
-            className="navbar-toggler"
+            className="navbar-toggler collapsed position-relative"
             type="button"
             data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -112,7 +114,9 @@ class Navbar extends React.Component {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon"></span>
+            <span> </span>
+            <span> </span>
+            <span> </span>
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
