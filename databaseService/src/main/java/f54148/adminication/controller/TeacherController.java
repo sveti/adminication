@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.CreateUserDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
+import f54148.adminication.entity.User;
 import f54148.adminication.service.TeacherService;
 import lombok.AllArgsConstructor;
 
@@ -37,10 +39,36 @@ public class TeacherController {
 		}
 
 	}
+
+	@PostMapping(path = "/add")
+	public @ResponseBody String addUser(@RequestBody CreateUserDTO userDTO) {
+		
+		Teacher teacher = teacherService.convertToTeacher(userDTO);
+
+		if (teacherService.addTeacher(teacher)) {
+			return "Saved teacher";
+		} else {
+			return "A problem has occured";
+		}
+	}
+	
 	
 	@PutMapping(path = "/updateTeacher")
 	public @ResponseBody String updateTeacher(@RequestBody Teacher teacher) {
 
+		if (teacherService.updateTeacher(teacher)) {
+			return "Updated teacher";
+		} else {
+			return "An error has occured";
+		}
+		
+	}
+	
+	@PutMapping(path = "/edit")
+	public @ResponseBody String editTeacher(@RequestBody CreateUserDTO userDTO) {
+
+		Teacher teacher = teacherService.convertToTeacher(userDTO);
+		
 		if (teacherService.updateTeacher(teacher)) {
 			return "Updated teacher";
 		} else {
@@ -53,6 +81,7 @@ public class TeacherController {
 	public @ResponseBody Teacher getTeacherById(@PathVariable("id") Long id) {
 		return teacherService.getTeacherById(id);
 	}
+
 
 	@GetMapping(path = "/teacher/{id}/courses")
 	public @ResponseBody List<Course> getCoursesByTeacherId(@PathVariable("id") Long id) {

@@ -64,16 +64,18 @@ public class UserController {
 	public @ResponseBody List<User> getAllUsers() {
 		return userService.getUsers();
 	}
-	
-	@GetMapping(path = "/test/{id}")
-	public @ResponseBody CreateUserDTO getTestDTOByUsername(@PathVariable("id") @Min(1) Long id) {
-		return userService.getTestDTOUser(id);
-	}
 
 	@GetMapping(path = "/user/{id}")
 	public @ResponseBody User getUser(@PathVariable("id") @Min(1) Long id) {
 		return userService.getUserById(id);
 	}
+	
+	@GetMapping(path = "/createUserDTO/{id}")
+	public @ResponseBody CreateUserDTO getCreateUserDTO(@PathVariable("id") @Min(1) Long id) {
+		return userService.convertToCreateUserDTO(userService.getUserById(id));
+	}
+	
+	
 	@GetMapping(path = "/{username}")
 	public @ResponseBody User getUserByUsername(@PathVariable("username") String username) {
 		return userService.getUserByUsername(username);
@@ -82,6 +84,11 @@ public class UserController {
 	@GetMapping(path = "/user/{id}/role")
 	public @ResponseBody Role getUserRole(@PathVariable("id") Long id) {
 		return userService.getUserRole(id);
+	}
+	
+	@GetMapping(path = "/user/{id}/roleName")
+	public @ResponseBody String getUserRoleName(@PathVariable("id") Long id) {
+		return userService.getUserRole(id).getName();
 	}
 	
 	@GetMapping(path = "/user/{id}/notificationsReceived")

@@ -27,13 +27,14 @@ public class UserService {
 	
 	private final RoleService roleService;
 	
-	 private final ModelMapper modelMapper = new ModelMapper();
+	 private final ModelMapper modelMapper;
 
-	public UserService(UserRepository userRepository, @Lazy NotificationService notificationService, RoleService roleService) {
+	public UserService(UserRepository userRepository, @Lazy NotificationService notificationService, RoleService roleService, ModelMapper modelMapper) {
 		super();
 		this.userRepository = userRepository;
 		this.roleService = roleService;
 		this.notificationService = notificationService;
+		this.modelMapper = modelMapper;
 		
 	}
 
@@ -127,7 +128,10 @@ public class UserService {
 		}
 	}
 	public CreateUserDTO convertToCreateUserDTO(User user) {
-        return modelMapper.map(user, CreateUserDTO.class);
+		
+		CreateUserDTO create =  modelMapper.map(user, CreateUserDTO.class);
+		return create;
+        
     }
 	
 	public User convertToUser(CreateUserDTO userDTO) {
@@ -137,19 +141,9 @@ public class UserService {
 		u.setCredentialsNonExpired(true);
 		u.setEnabled(true);
 		u.setRole(roleService.getRoleByName("ROLE_ADMIN"));
-		if(userDTO.getGender()==0) {
-			u.setGender(Gender.MALE);
-		}
-		else {
-			u.setGender(Gender.FEMALE);
-		}
-				
+
 		return u;
 	}
 	
-	public CreateUserDTO getTestDTOUser(long id){
-		return modelMapper.map(userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Invalid user Id: " + id)), CreateUserDTO.class);	
-	}
 
 }

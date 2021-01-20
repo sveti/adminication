@@ -5,7 +5,17 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  z-index: 9999 !important;
 }
+
+.navbar.student {
+  background-color: #359fc1;
+}
+
+.navbar.teacher {
+  background-color: #d2c04e;
+}
+
 .scrolled {
   display: block !important;
   position: fixed !important;
@@ -27,12 +37,15 @@ header.navbar.scrolled {
   animation: swing 1s ease-in-out;
 }
 .topNavbar {
-  background-color: transparent;
   animation: fadeIn 0.5s ease-in-out;
 }
-.navbar,
-.topNavbar {
+
+.topNavbar.teacher {
   border: 2px solid #d2c04e;
+}
+
+.topNavbar.student {
+  border: 2px solid #359fc1;
 }
 
 .logo {
@@ -113,4 +126,13 @@ header.navbar.scrolled a:hover {
   -o-transform: rotate(-135deg);
   transform: rotate(-135deg);
   opacity: 0.9;
+}
+
+@media screen and (max-width: 350px) {
+  #mainMenu {
+    padding: 0px;
+  }
+  .navbar-brand {
+    font-size: 1rem !important;
+  }
 }

@@ -1,0 +1,63 @@
+.content {
+  margin: 6rem 10% 0 10%;
+  box-sizing: border-box;
+  min-height: 100vh;
+  background-color: white;
+  position: relative;
+  top: 100px;
+}
+
+.userImage {
+  max-height: 25vh;
+}
+
+.wrapper {
+  background-color: #e74c3c;
+  padding: 3rem;
+  border-radius: 40px;
+  -webkit-box-shadow: 5px 5px 18px 5px rgba(118, 118, 118, 0.31);
+  box-shadow: 5px 5px 18px 5px rgba(118, 118, 118, 0.31);
+}
+
+.info-group {
+  font-size: 1.2rem;
+}
+
+.textSection {
+  text-align: left;
+}
+
+.userData {
+  display: inline-block;
+  color: #fff;
+}
+.identity {
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.editButton {
+  background: #1a396b;
+  color: #fff;
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+.editButton:hover {
+  background: #1a4791;
+}
+
+.editIcon {
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 991px) {
+  .textSection {
+    text-align: center;
+    padding-top: 2rem;
+  }
+}

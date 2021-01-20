@@ -1,7 +1,12 @@
 package f54148.adminication.entity;
 
-public enum CourseStatus {
+import java.io.Serializable;
+
+public enum CourseStatus implements Serializable {
 	
 	UPCOMMING, STARTED, ENDED, POSTPONED, CANCELED;
 
+	public String getCourseStatus() {
+		return this.name();
+	}
 }

@@ -1,0 +1,23 @@
+.table {
+  margin-top: 5rem;
+}
+.title {
+  color: #1a396b;
+  margin: 3rem;
+}
+Th {
+  color: #e74c3c;
+}
+
+.noBorder {
+  border-top: none !important;
+}
+
+@media screen and (max-width: 40em) {
+  .responsiveTable tbody tr {
+    border: 1px solid #1a396b;
+  }
+  .responsiveTable td .tdBefore {
+    color: #e74c3c;
+  }
+}

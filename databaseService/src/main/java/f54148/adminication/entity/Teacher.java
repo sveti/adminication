@@ -25,7 +25,6 @@ import lombok.ToString;
 //teachers extends user
 public class Teacher extends User {
 
-
 	@OneToMany(mappedBy = "teacher")
 	@JsonManagedReference(value = "teaching_teacher")
 	private Set<Teaching> teaching = new HashSet<Teaching>();
@@ -41,8 +40,6 @@ public class Teacher extends User {
 	@OneToMany(mappedBy = "teacher")
 	@JsonManagedReference(value = "file_teacher")
 	private Set<File> files = new HashSet<File>();
-
-	
 
 	
 

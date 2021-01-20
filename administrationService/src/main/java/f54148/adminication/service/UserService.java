@@ -14,4 +14,6 @@ public interface UserService {
 	
 	String createUser(CreateUserDTO userDTO);
 
+	String getUserRole(@Min(1) Long id);
+
 }

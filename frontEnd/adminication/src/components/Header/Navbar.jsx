@@ -87,6 +87,8 @@ class Navbar extends React.Component {
       navBarClasses.push("removeNavbar");
     }
 
+    navBarClasses.push(this.props.role.toLowerCase().split("_")[1]);
+
     return (
       <header className={navBarClasses.join(" ")} id="mainMenu">
         <nav className="navbar navbar-expand-lg">

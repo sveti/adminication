@@ -15,6 +15,12 @@ export function getUser(userId) {
   return http.get(usersUrl(userId));
 }
 
+export function getUserRole(userId) {
+  return http.get(usersUrl(userId)+'/role');
+}
+
+
+
 // export function saveMovie(movie) {
 //   if (movie._id) {
 //     const body = { ...movie };

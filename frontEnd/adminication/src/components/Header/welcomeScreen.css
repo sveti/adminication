@@ -1,6 +1,4 @@
 .welcome {
-  background-color: #d2c04e;
-  background-image: url("../../assets/images/background.png");
   background-attachment: fixed;
   background-size: cover;
   line-height: 1.8;
@@ -10,11 +8,22 @@
   align-items: center;
   text-align: center;
 }
-.welcome--logo {
+
+.welcome.student {
+  background-image: url("../../assets/images/studentBackground.png");
+  background-color: #2b7fa2;
+}
+
+.welcome.teacher {
+  background-image: url("../../assets/images/teacherBackground.png");
+  background-color: #d2c04e;
+}
+
+.welcomeLogo {
   width: 10rem;
 }
 
-.welcome__cta-primary {
+.welcomeButton {
   background: #e74c3c;
   color: #fff;
   margin-top: 1rem;

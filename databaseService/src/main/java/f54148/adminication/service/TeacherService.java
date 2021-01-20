@@ -5,16 +5,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.CreateUserDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.File;
+import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.Teaching;
+import f54148.adminication.entity.User;
 import f54148.adminication.repository.TeacherRepository;
 
 @Service
@@ -22,14 +26,18 @@ public class TeacherService {
 
 	private final TeacherRepository teacherRepository;
 
-	private final TeachingService teachingService;
+	private final TeachingService teachingService;	
 	
-	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
+	private final ModelMapper modelMapper;
 	
-	public TeacherService(TeacherRepository teacherRepository,@Lazy TeachingService teachingService) {
+	private final RoleService roleService;
+	
+	public TeacherService(TeacherRepository teacherRepository,@Lazy TeachingService teachingService, @Lazy RoleService roleService,ModelMapper modelMapper) {
 		super();
 		this.teacherRepository = teacherRepository;
 		this.teachingService = teachingService;
+		this.roleService = roleService;
+		this.modelMapper = modelMapper;
 	}
 
 	public List<Teacher> getTeachers() {
@@ -48,8 +56,6 @@ public class TeacherService {
 	}
 
 	public boolean addTeacher(Teacher teacher) {
-		
-		teacher.setPassword(encoder.encode(teacher.getPassword()));
 		
 		if (teacherRepository.save(teacher) != null) {
 			return true;
@@ -142,6 +148,17 @@ public class TeacherService {
 		} else {
 			return null;
 		}
+	}
+
+	public Teacher convertToTeacher(CreateUserDTO userDTO) {
+		Teacher t = modelMapper.map(userDTO, Teacher.class);		
+		t.setAccountNonExpired(true);
+		t.setAccountNonLocked(true);
+		t.setCredentialsNonExpired(true);
+		t.setEnabled(true);
+		t.setRole(roleService.getRoleByName("ROLE_TEACHER"));
+
+		return t;
 	}
 
 }

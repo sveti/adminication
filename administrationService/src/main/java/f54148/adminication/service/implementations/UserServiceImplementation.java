@@ -34,7 +34,7 @@ public class UserServiceImplementation implements UserService{
 	@Override
 	public CreateUserDTO getUser(@Min(1) long id) {
 		
-		CreateUserDTO user = restTemplate.getForObject("http://databaseService/users/user/{id}",CreateUserDTO.class, id);
+		CreateUserDTO user = restTemplate.getForObject("http://databaseService/users/createUserDTO/{id}",CreateUserDTO.class, id);
 		return user;
 	}
 
@@ -45,6 +45,12 @@ public class UserServiceImplementation implements UserService{
 		
 		String result = restTemplate.postForObject("http://databaseService/users/add", userDTO, String.class);
 		return result;
+	}
+
+	@Override
+	public String getUserRole(@Min(1) Long id) {
+		String role = restTemplate.getForObject("http://databaseService/users/user/{id}/roleName",String.class, id);
+		return role;
 	}
 
 }

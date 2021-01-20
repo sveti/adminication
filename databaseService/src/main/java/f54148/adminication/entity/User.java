@@ -55,7 +55,6 @@ public class User extends BaseEntity{
     @Column(columnDefinition="tinyint(1) default 1")
     private boolean isEnabled;
 	
-	
 	@ManyToOne
 	@JoinColumn(name = "role_id", nullable = false)
 	private Role role;
