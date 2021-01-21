@@ -2,9 +2,6 @@ body {
   min-height: 100vh;
   display: flex;
   font-weight: 400;
-  background: #12c2e9;
-  background: -webkit-linear-gradient(to right, #05cdff, #d2c04e, #e74c3c);
-  background: linear-gradient(to right, #05cdff, #d2c04e, #e74c3c);
 }
 
 body,
@@ -78,9 +75,6 @@ html,
 }
 
 @media screen and (max-width: 800px) {
-  .logo {
-    width: 6rem;
-  }
   .inner {
     height: 80vh;
     padding: 30px;

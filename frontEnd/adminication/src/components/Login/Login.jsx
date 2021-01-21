@@ -9,8 +9,11 @@ export default class Login extends Component {
   };
 
   render() {
+    //change body color from the gradient
+    document.body.style =
+      "background: linear-gradient(to right, #05cdff, #d2c04e, #e74c3c)";
     return (
-      <div className="container login">
+      <div className="container ">
         <div className="row">
           <div className="col-12">
             <div className="outer">

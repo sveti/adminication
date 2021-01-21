@@ -1,8 +1,7 @@
 import React from "react";
-import Logo from "./../assets/images/adminication.svg";
 import "./content.css";
 import UserProfile from "./UserProfile";
-import CourseTable from "./CoursesTable";
+import CourseTable from "./Courses/CoursesTable";
 const Content = ({ givenId, user, avatar }) => {
   return (
     <div className="content">

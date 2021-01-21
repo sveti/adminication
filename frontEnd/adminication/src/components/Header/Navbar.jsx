@@ -1,24 +1,31 @@
 import React from "react";
 import "./navbar.css";
 import Logo from "./../../assets/images/adminication.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faChevronCircleDown } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 class Navbar extends React.Component {
-  listener = null;
   state = {
     nav: false,
     removeNav: false,
     height: 100,
     oldScroll: 0,
-    url: "",
+    id: this.props.user.id,
+    stickyNav: false,
   };
+
   componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
-    this.setState({
-      height:
+    let height;
+    if (this.state.stickyNav === false) {
+      height =
         document.getElementById("WelcomeScreen").clientHeight -
-        document.getElementById("mainMenu").clientHeight,
+        document.getElementById("mainMenu").clientHeight;
+      window.addEventListener("scroll", this.handleScroll);
+    } else {
+      height = 0;
+    }
+
+    this.setState({
+      height,
     });
   }
 
@@ -33,6 +40,14 @@ class Navbar extends React.Component {
     });
     return check;
   }
+
+  stickyMenu = () => {
+    this.setState({ stickyNav: true });
+  };
+
+  dynamicMenu = () => {
+    this.setState({ stickyNav: false });
+  };
 
   handleScroll = () => {
     const { height } = this.state;
@@ -75,24 +90,27 @@ class Navbar extends React.Component {
     }
   };
   render() {
-    const { nav, removeNav, url } = this.state;
-
+    const { nav, removeNav, id, stickyNav } = this.state;
     let navBarClasses = ["navbar"];
-    if (nav) {
-      navBarClasses.push("scrolled");
+    if (stickyNav) {
+      navBarClasses.push("fixed-top");
     } else {
-      navBarClasses.push("topNavbar");
-    }
-    if (removeNav) {
-      navBarClasses.push("removeNavbar");
+      if (nav) {
+        navBarClasses.push("scrolled");
+      } else {
+        navBarClasses.push("topNavbar");
+      }
+      if (removeNav) {
+        navBarClasses.push("removeNavbar");
+      }
     }
 
-    navBarClasses.push(this.props.role.toLowerCase().split("_")[1]);
+    navBarClasses.push(this.props.user.role.toLowerCase().split("_")[1]);
 
     return (
       <header className={navBarClasses.join(" ")} id="mainMenu">
         <nav className="navbar navbar-expand-lg">
-          <a className="navbar-brand" href={url}>
+          <Link className="navbar-brand" to={"/home/" + id}>
             <img
               src={Logo}
               width="30"
@@ -106,7 +124,7 @@ class Navbar extends React.Component {
               loading="lazy"
             />
             Adminication teacher
-          </a>
+          </Link>
           <button
             className="navbar-toggler collapsed position-relative"
             type="button"
@@ -124,24 +142,37 @@ class Navbar extends React.Component {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
-                <a className="nav-link" href={url}>
-                  Home <span className="sr-only">(current)</span>
-                </a>
+                <Link
+                  className="nav-link"
+                  to={"/home/" + id}
+                  onClick={this.dynamicMenu}
+                >
+                  Home<span className="sr-only">(current)</span>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href={url}>
+                <Link
+                  className="nav-link"
+                  to={{
+                    pathname: "/courses",
+                    state: {
+                      user: this.props.user,
+                    },
+                  }}
+                  onClick={this.stickyMenu}
+                >
                   My courses
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href={url}>
+                <Link className="nav-link" to={"/attendaces/"}>
                   Attendances
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href={url}>
+                <Link className="nav-link" to={"/statistics/"}>
                   Statistics
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
