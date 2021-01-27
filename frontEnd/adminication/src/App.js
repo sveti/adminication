@@ -3,6 +3,7 @@ import { Route, Redirect, Switch, withRouter } from "react-router-dom";
 
 import "./App.css";
 import CoursesPage from "./components/Courses/CoursesPage";
+import Course from "./components/Courses/Course";
 import NotFound from "./components/notFound";
 import IndexPage from "./components/IndexPage";
 import Login from "./components/Login/Login";
@@ -13,6 +14,7 @@ import ScrollToTop from "react-scroll-up";
 import { getUser, getUserRole } from "./services/userService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleUp } from "@fortawesome/free-solid-svg-icons";
+import LessonsPage from "./components/Courses/Lessons/LessonsPage";
 
 class App extends Component {
   state = {
@@ -22,7 +24,7 @@ class App extends Component {
   };
 
   async loadUser() {
-    const id = 1;
+    const id = window.location.pathname.split("/")[2];
     const { data } = await getUser(id);
     let role = await getUserRole(id);
     data.role = role.data;
@@ -32,7 +34,7 @@ class App extends Component {
   loginRequest = (event) => {
     event.preventDefault();
     this.loadUser();
-    this.props.history.push("/home/1");
+    this.props.history.push("/home/11");
     this.forceUpdate();
   };
 
@@ -75,7 +77,16 @@ class App extends Component {
                   <IndexPage {...params} user={user}></IndexPage>
                 )}
               />
-              <Route path="/courses" component={CoursesPage} />
+              <Route path="/courses/:id" component={Course} />
+              <Route
+                path="/courses"
+                render={() => (
+                  <CoursesPage id={this.state.user.id}></CoursesPage>
+                )}
+              />
+
+              <Route path="/lessons/:courseId" component={LessonsPage} />
+
               <Redirect from="/" exact to="/login" />
               <Route path="/not-found" component={NotFound} />
               <Redirect to="/not-found" />

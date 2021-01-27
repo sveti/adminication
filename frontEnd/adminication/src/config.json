@@ -1,5 +1,6 @@
 {
     "gateway": "http://localhost:8090",
-    "administrationServiceName":"administrationService"
+    "administrationServiceName":"administrationService",
+    "educationServiceName":"educationService"
   }
   

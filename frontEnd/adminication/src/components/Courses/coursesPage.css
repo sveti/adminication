@@ -1,0 +1,11 @@
+.coursesTableContainer {
+  margin: 4rem;
+  padding: 0px 1rem;
+}
+
+@media screen and (max-width: 800px) {
+  .coursesTableContainer {
+    margin: 1rem;
+    padding: 10px 10px;
+  }
+}

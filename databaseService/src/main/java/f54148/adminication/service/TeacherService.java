@@ -7,18 +7,14 @@ import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.CreateUserDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.File;
-import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.Teaching;
-import f54148.adminication.entity.User;
 import f54148.adminication.repository.TeacherRepository;
 
 @Service

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.CreateUserDTO;
 import f54148.adminication.entity.Draft;
-import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.Role;
 import f54148.adminication.entity.User;

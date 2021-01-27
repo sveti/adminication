@@ -1,9 +1,9 @@
 .table {
-  margin-top: 5rem;
+  margin-top: 8rem;
 }
 .title {
   color: #1a396b;
-  margin: 3rem;
+  margin: 3rem 0;
 }
 Th {
   color: #e74c3c;
@@ -20,4 +20,15 @@ Th {
   .responsiveTable td .tdBefore {
     color: #e74c3c;
   }
+}
+.editButton.details {
+  margin-top: 0px;
+}
+.editButton.lessons {
+  margin-top: 0px;
+  background-color: #e74c3c;
+}
+.editButton.lessons:hover {
+  margin-top: 0px;
+  background-color: #c43c2c;
 }

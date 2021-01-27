@@ -17,7 +17,6 @@ import f54148.adminication.entity.Course;
 import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
-import f54148.adminication.entity.User;
 import f54148.adminication.service.TeacherService;
 import lombok.AllArgsConstructor;
 

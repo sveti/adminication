@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.CourseWithDetailsDTO;
+import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.entity.File;
@@ -115,6 +118,7 @@ public class CourseController {
 	public @ResponseBody List<Teacher> getTeachersByCourseId(@PathVariable("id") Long id) {
 		return courseService.getTeachersByCourseId(id);
 	}
+
 	
 	@GetMapping(path = "/course/{id}/substitutes")
 	public @ResponseBody List<Teacher> getSubstitutesByCourseId(@PathVariable("id") Long id) {
@@ -140,4 +144,42 @@ public class CourseController {
 	public @ResponseBody Set<Lesson> getLessonsByCourseId(@PathVariable("id") Long id) {
 		return courseService.getLessonsByCourseId(id);
 	}
+	
+	@GetMapping(path = "/upcomming/{idCourse}")
+	public @ResponseBody UpcommingCourseDTO getUpcommingCourseDTOById(@PathVariable("idCourse") Long idCourse) {
+		
+		return courseService.getUpcommingCourseDTOById(idCourse);
+	}
+	
+	@GetMapping(path = "/started/{idCourse}")
+	public @ResponseBody StartedCourseDTO getStartedCourseDTOById(@PathVariable("idCourse") Long idCourse) {
+		
+		return courseService.getStartedCourseDTOById(idCourse);
+	}
+	
+	@GetMapping(path = "/{idTeacher}/upcomming")
+	public @ResponseBody List<UpcommingCourseDTO> getUpcommingCoursesDTOByTeacherId(@PathVariable("idTeacher") Long idTeacher) {
+		
+		return courseService.getUpcommingCoursesDTOByTeacherId(idTeacher);
+	}
+	
+	@GetMapping(path = "/{idTeacher}/started")
+	public @ResponseBody List<StartedCourseDTO> getStartedCourseDTOByTeacherId(@PathVariable("idTeacher") Long idTeacher) {
+		
+		return courseService.getStartedCourseDTOByTeacherId(idTeacher);
+	}
+	
+	@GetMapping(path = "/{idTeacher}/sub/started")
+	public @ResponseBody List<StartedCourseDTO> getSubStartedCourseDTOByTeacherId(@PathVariable("idTeacher") Long idTeacher) {
+		
+		return courseService.getSubStartedCourseDTOByTeacherId(idTeacher);
+	}
+	
+	@GetMapping(path = "/details/{idCourse}")
+	public @ResponseBody CourseWithDetailsDTO getCourseWithDetailsDTOById(@PathVariable("idCourse") Long idCourse) {
+		
+		return courseService.getCourseWithDetailsDTO(idCourse);
+	}
+	
+	
 }

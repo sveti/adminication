@@ -1,0 +1,42 @@
+.singleCourse {
+  margin: 7rem 2rem 1rem 2rem;
+  padding: 2rem;
+  background-color: #2b7fa2 !important;
+}
+.customBadges {
+  margin-right: 10px;
+  background-color: #e74c3c;
+}
+
+.dataLabel {
+  text-align: right;
+  font-weight: bold;
+}
+
+.courseData {
+  text-align: left;
+  color: #fff;
+}
+
+.courseTitle {
+  margin: 2rem 0;
+  font-weight: bold;
+  color: #fff;
+}
+
+.courseData > p {
+  margin-bottom: 0px;
+}
+
+@media screen and (max-width: 768px) {
+  .singleCourse {
+    margin: 5rem 10px 10px 10px;
+  }
+  .courseData {
+    text-align: center;
+  }
+  .dataLabel {
+    text-align: center;
+    margin: 10px 0;
+  }
+}

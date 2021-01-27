@@ -6,10 +6,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.CourseWithDetailsDTO;
+import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
+import f54148.adminication.entity.CourseStatus;
 import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.File;
@@ -27,6 +32,8 @@ public class CourseService {
 
 
 	private final CourseRepository courseRepository;
+	private final TeacherService teacherService;
+	private final ModelMapper modelMapper;
 
 	public List<Course> getCourses() {
 		List<Course> courseList = new ArrayList<>();
@@ -183,5 +190,95 @@ public class CourseService {
 			return null;
 		}
 	}
+	
+	public List<Course> getCoursesByStatusAndTeacherId(CourseStatus cs, Long idTeacher){
+		
+		List<Course> courses = teacherService.getCoursesByTeacherId(idTeacher);
+		
+		List<Course> filtered = new ArrayList<Course>();
+		
+		for(Course c: courses) {
+			
+			if(c.getStatus() == cs) {
+				
+				filtered.add(c);
+			}
+			
+		}
+		return filtered;
+	}
 
+	public UpcommingCourseDTO convertToUpcommingCourseDTO(Course course) {
+		UpcommingCourseDTO upcomming =  modelMapper.map(course, UpcommingCourseDTO.class);
+		return upcomming;
+        
+    }
+
+	public UpcommingCourseDTO getUpcommingCourseDTOById(Long idCourse) {
+		
+		return convertToUpcommingCourseDTO( getCourseById(idCourse));
+	}
+
+	public List<UpcommingCourseDTO> getUpcommingCoursesDTOByTeacherId(Long idTeacher) {
+		
+		List<Course> courses = getCoursesByStatusAndTeacherId(CourseStatus.UPCOMMING,idTeacher);
+		
+		List<UpcommingCourseDTO> upcommingList = new ArrayList<UpcommingCourseDTO>();
+		
+		for(Course c: courses) {
+			
+			upcommingList.add(convertToUpcommingCourseDTO(c));
+
+		}
+		
+		return upcommingList;
+	}
+	
+	
+	public CourseWithDetailsDTO convertToCourseWithDetailsDTO(Course c) {
+		CourseWithDetailsDTO courseWithDetails =  modelMapper.map(c, CourseWithDetailsDTO.class);
+		return courseWithDetails;
+	}
+	
+	public CourseWithDetailsDTO getCourseWithDetailsDTO(Long idCourse ) {
+		
+		return convertToCourseWithDetailsDTO( getCourseById(idCourse));
+	}
+	
+	public StartedCourseDTO convertToStartedCourseDTO(Course c) {
+		StartedCourseDTO startedCourse =  modelMapper.map(c, StartedCourseDTO.class);
+		return startedCourse;
+	}
+	
+	public StartedCourseDTO getStartedCourseDTOById(Long idCourse ) {
+		
+		return convertToStartedCourseDTO( getCourseById(idCourse));
+	}
+
+	public List<StartedCourseDTO> getStartedCourseDTOByTeacherId(Long idTeacher) {
+		List<Course> courses = getCoursesByStatusAndTeacherId(CourseStatus.STARTED,idTeacher);
+		
+		List<StartedCourseDTO> startedList = new ArrayList<StartedCourseDTO>();
+		
+		for(Course c: courses) {
+			
+			startedList.add(convertToStartedCourseDTO(c));
+			
+		}
+		
+		return startedList;
+	}
+
+	public List<StartedCourseDTO> getSubStartedCourseDTOByTeacherId(Long idTeacher) {
+		List <Course> courses = teacherService.getsubstituteCoursesByTeacherId(idTeacher);
+		List<StartedCourseDTO> startedList = new ArrayList<StartedCourseDTO>();
+		for(Course c: courses) {
+			if(c.getStatus()==CourseStatus.STARTED)
+			startedList.add(convertToStartedCourseDTO(c));
+			
+		}
+		return startedList;
+	}
+	
+	
 }

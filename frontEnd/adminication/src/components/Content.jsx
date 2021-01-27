@@ -1,7 +1,6 @@
 import React from "react";
 import "./content.css";
 import UserProfile from "./UserProfile";
-import CourseTable from "./Courses/CoursesTable";
 const Content = ({ givenId, user, avatar }) => {
   return (
     <div className="content">
@@ -11,7 +10,6 @@ const Content = ({ givenId, user, avatar }) => {
           user={user}
           avatar={avatar}
         ></UserProfile>
-        <CourseTable message={"Upcomming courses"}></CourseTable>
       </div>
     </div>
   );
