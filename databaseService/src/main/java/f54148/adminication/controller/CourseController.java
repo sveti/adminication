@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
@@ -182,4 +183,9 @@ public class CourseController {
 	}
 	
 	
+	@GetMapping(path = "/{idCourse}/students")
+	public @ResponseBody List<StudentAttendanceDTO> StudentAttendanceDTObyCourseId(@PathVariable("idCourse") Long idCourse) {
+		
+		return courseService.getStudentAttendanceDTOOfCourse(idCourse);
+	}
 }

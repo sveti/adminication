@@ -1,0 +1,32 @@
+.accordion {
+  border: none !important;
+}
+.accordion .accordion-item .title {
+  background-color: #d2c04e !important;
+  color: #1a396b !important;
+  font-weight: bold;
+}
+.accordion .accordion-item.active .title {
+  background-color: #eedd6d !important;
+}
+
+@media screen and (max-width: 768px) {
+  .lessonsAccordion {
+    margin: 1rem 10px;
+  }
+}
+.addLessonForm {
+  margin: 3rem 2rem;
+  text-align: left;
+}
+.lessonsOfCourseContainer {
+  margin: 8rem 2rem 2rem 2rem;
+}
+.lessonsAccordion {
+  margin: 2rem;
+}
+
+.lessonContent {
+  padding: 2rem;
+  text-align: left;
+}

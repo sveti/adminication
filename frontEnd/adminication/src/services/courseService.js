@@ -21,3 +21,7 @@ export function getUpcommingCourse(idCourse) {
 export function getCourseWithDetails(idCourse) {
   return http.get(apiEndpoint + "details/" + idCourse);
 }
+
+export function getStudentsByCourseId(idCourse) {
+  return http.get(apiEndpoint + idCourse + "/students");
+}

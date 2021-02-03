@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.service.CourseService;
+import f54148.adminication.service.StudentService;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -22,6 +24,7 @@ import lombok.AllArgsConstructor;
 public class CourseController {
 
 	private final CourseService courseService;
+	private final StudentService studentService;
 	
 	@GetMapping(path = "/upcomming/{courseId}")
 	public @ResponseBody UpcommingCourseDTO getUpcommingCourseById(@PathVariable("courseId") @Min(1) Long courseId) {
@@ -51,6 +54,11 @@ public class CourseController {
 	@GetMapping(path = "/{teacherId}/sub/started")
 	public @ResponseBody List<StartedCourseDTO> getSubStartedCoursesByTeacherId(@PathVariable("teacherId") @Min(1) Long teacherId) {
 		return courseService.getSubStartedCoursesByTeacherId(teacherId);
+	}
+	
+	@GetMapping(path = "/{courseId}/students")
+	public @ResponseBody List<StudentAttendanceDTO> getStudentAttendanceDTOByCourseId(@PathVariable("courseId") @Min(1) Long courseId) {
+		return studentService.getStudentsOfCourse(courseId);
 	}
 	
 }

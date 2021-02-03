@@ -21,7 +21,7 @@ export default function UpcommingCoursesTable(props) {
 
   return (
     <div className="table">
-      <div className="title">
+      <div className="coursesTitle">
         <h2>{props.message}</h2>
       </div>
       <Table>

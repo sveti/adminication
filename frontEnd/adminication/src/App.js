@@ -14,6 +14,7 @@ import ScrollToTop from "react-scroll-up";
 import { getUser, getUserRole } from "./services/userService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleUp } from "@fortawesome/free-solid-svg-icons";
+import LessonsOfCoursePage from "./components/Courses/Lessons/LessonsOfCoursePage";
 import LessonsPage from "./components/Courses/Lessons/LessonsPage";
 
 class App extends Component {
@@ -24,7 +25,8 @@ class App extends Component {
   };
 
   async loadUser() {
-    const id = window.location.pathname.split("/")[2];
+    //const id = window.location.pathname.split("/")[2];
+    const id = 11;
     const { data } = await getUser(id);
     let role = await getUserRole(id);
     data.role = role.data;
@@ -85,7 +87,16 @@ class App extends Component {
                 )}
               />
 
-              <Route path="/lessons/:courseId" component={LessonsPage} />
+              <Route
+                path="/lessons/:courseId"
+                render={(params) => (
+                  <LessonsOfCoursePage {...params}></LessonsOfCoursePage>
+                )}
+              />
+              <Route
+                path="/lessons"
+                render={(params) => <LessonsPage {...params}></LessonsPage>}
+              />
 
               <Redirect from="/" exact to="/login" />
               <Route path="/not-found" component={NotFound} />

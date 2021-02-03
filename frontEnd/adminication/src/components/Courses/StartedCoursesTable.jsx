@@ -7,7 +7,7 @@ import "./upcommingCoursesTable.css";
 export default function StartedCoursesTable(props) {
   return (
     <div className="table">
-      <div className="title">
+      <div className="coursesTitle">
         <h2>{props.message}</h2>
       </div>
       <Table>
@@ -40,7 +40,15 @@ export default function StartedCoursesTable(props) {
                   })}
                 </Td>
                 <Td>
-                  <Link to={"/lessons/" + course.id}>
+                  <Link
+                    to={{
+                      pathname: "/lessons/" + course.id,
+                      lessonProps: {
+                        courseId: course.id,
+                        teacherId: 11,
+                      },
+                    }}
+                  >
                     <button className="editButton lessons">Lessons</button>
                   </Link>
                 </Td>

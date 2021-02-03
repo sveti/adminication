@@ -110,7 +110,11 @@ class Navbar extends React.Component {
     return (
       <header className={navBarClasses.join(" ")} id="mainMenu">
         <nav className="navbar navbar-expand-lg">
-          <Link className="navbar-brand" to={"/home/" + id}>
+          <Link
+            className="navbar-brand"
+            to={"/home/" + id}
+            onClick={this.dynamicMenu}
+          >
             <img
               src={Logo}
               width="30"
@@ -165,8 +169,17 @@ class Navbar extends React.Component {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to={"/attendaces/"}>
-                  Attendances
+                <Link
+                  className="nav-link"
+                  to={{
+                    pathname: "/lessons",
+                    lessonProps: {
+                      teacherId: 11,
+                    },
+                  }}
+                  onClick={this.stickyMenu}
+                >
+                  Lessons
                 </Link>
               </li>
               <li className="nav-item">

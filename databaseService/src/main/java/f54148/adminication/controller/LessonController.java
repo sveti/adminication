@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.LessonDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Student;
@@ -54,6 +55,23 @@ public class LessonController {
 		return lessonservice.getLessonById(id);
 	}
 	
+
+	@GetMapping(path = "/{id}/display")
+	public @ResponseBody LessonDTO getLessonDTOById(@PathVariable("id") Long id) {
+		return lessonservice.getLessonDTOById(id);
+	}
+	
+	@PostMapping(path = "/add")
+	public @ResponseBody String addLessonDTO(@RequestBody LessonDTO lessonDTO) {
+		if( lessonservice.addLessonDTO(lessonDTO)) {
+			return "Saved lesson successfully!";
+		}
+		else {
+			return "An error has occured!";
+		}
+	}
+	
+	
 	@GetMapping(path = "/lesson/{id}/attendances")
 	public @ResponseBody Set<Attendance> getAttendancesByLessonId(@PathVariable("id") Long id) {
 		return lessonservice.getAttendancesByLessonId(id);
@@ -81,5 +99,12 @@ public class LessonController {
 	public @ResponseBody List<Lesson> getAllLessons() {
 		return lessonservice.getLessons();
 	}
+	
+	@GetMapping(path = "/{idTeacher}/{idCourse}")
+	public @ResponseBody List<LessonDTO> getLessonsByTeacherIdAndCourseId(@PathVariable("idTeacher") Long idTeacher,@PathVariable("idCourse") Long idCourse) {
+		return lessonservice.getLessonsByTeacherIdAndCourseId(idTeacher,idCourse);
+	}
+	
+	
 
 }

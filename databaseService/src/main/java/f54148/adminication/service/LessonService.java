@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.LessonDTO;
+import f54148.adminication.dto.StudentAttendanceDTO;
+import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Lesson;
@@ -25,20 +29,33 @@ public class LessonService {
 
 	private final CourseService courseService;
 	
-	
+	private final ModelMapper modelMapper;
 
 	public LessonService(LessonRepository lessonRepository, @Lazy TeacherService teacherService,
-			 @Lazy CourseService courseService) {
+			 @Lazy CourseService courseService,ModelMapper modelMapper) {
 		super();
 		this.lessonRepository = lessonRepository;
 		this.teacherService = teacherService;
 		this.courseService = courseService;
+		this.modelMapper = modelMapper;
 	}
 
 	public List<Lesson> getLessons() {
 		List<Lesson> lessonList = new ArrayList<>();
 		lessonRepository.findAll().forEach(lessonList::add);
 		return lessonList;
+	}
+	
+	public List<Lesson> getLessonsByCourseId(Long courseID) {
+		List<Lesson> lessonList = new ArrayList<>();
+		lessonRepository.findAll().forEach(lessonList::add);
+		List<Lesson> filtered = new ArrayList<>();
+		for(Lesson l: lessonList) {
+			if(l.getCourse().getId()==courseID) {
+				filtered.add(l);
+			}
+		}
+		return filtered;
 	}
 
 	public Lesson getLessonById(Long lessonId) {
@@ -129,5 +146,37 @@ public class LessonService {
 			return null;
 		}
 	}
+	
+	public LessonDTO convertToLessonDTO(Lesson lesson) {
+		LessonDTO lessonDTO =  modelMapper.map(lesson, LessonDTO.class);
+		return lessonDTO;
+	}
+	
+	public Lesson convertToLesson(LessonDTO lessonDTO) {
+		Lesson lesson =  modelMapper.map(lessonDTO, Lesson.class);
+		return lesson;
+	}
+	
+	
+	public LessonDTO getLessonDTOById(Long lessonId) {
+		return convertToLessonDTO(getLessonById(lessonId));
+	}
+
+	public boolean addLessonDTO(LessonDTO lessonDTO) {
+		return addLesson(convertToLesson(lessonDTO));
+	}
+	
+	public List<LessonDTO> getLessonsByTeacherIdAndCourseId(Long teacherId, Long courseId){
+		
+		List<Lesson> allCourseLessons = getLessonsByCourseId(courseId);
+		List<LessonDTO> filtered = new ArrayList<>();
+		for(Lesson l : allCourseLessons) {
+			if(l.getTeacher().getId()==teacherId) {
+				filtered.add(convertToLessonDTO(l));
+			}
+		}
+		return filtered;
+	}
+	
 
 }

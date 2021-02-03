@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
@@ -280,5 +281,22 @@ public class CourseService {
 		return startedList;
 	}
 	
+	public StudentAttendanceDTO convertToStudentAttendanceDTO(Student student) {
+		
+		StudentAttendanceDTO studentDTO =  modelMapper.map(student, StudentAttendanceDTO.class);
+		return studentDTO;
+	}
+	
+	public List<StudentAttendanceDTO> getStudentAttendanceDTOOfCourse(Long courseId){
+		List<Student> students = getStudentsByCourseId(courseId);
+		List<StudentAttendanceDTO> studentsDTO = new ArrayList<>();
+		
+		for(Student s: students) {
+			studentsDTO.add(convertToStudentAttendanceDTO(s));
+		}
+		
+		return studentsDTO;
+		
+	}
 	
 }
