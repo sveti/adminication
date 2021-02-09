@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
+import f54148.adminication.service.AttendanceService;
 import f54148.adminication.service.LessonService;
 import lombok.AllArgsConstructor;
 
@@ -22,7 +24,7 @@ import lombok.AllArgsConstructor;
 public class LessonController {
 
 	private final LessonService lessonService;
-	
+	private final AttendanceService attedanceService;
 
 	@GetMapping(path = "/{lessonId}")
 	public @ResponseBody LessonDTO getLessonDTOById(@PathVariable("lessonId") @Min(1) Long lessonId) {
@@ -39,4 +41,9 @@ public class LessonController {
 		return lessonService.addLesson(lessonDTO);
 	}
 
+	@GetMapping(path = "/{lessonId}/attendance")
+	public @ResponseBody List<AttendanceDTO> getAttendanceDTOByLessonId(@PathVariable("lessonId") @Min(1) Long lessonId) {
+		return attedanceService.getAttendancesOfLesson(lessonId);
+	}
+	
 }

@@ -1,37 +1,32 @@
 import React, { Component } from "react";
 import { getLessonsByTeacherIdAndCourseId } from "../../../services/lessonService";
-import { getStudentsByCourseId } from "../../../services/courseService";
+import {
+  getStudentsByCourseId,
+  getAttendanceByCourseId,
+} from "../../../services/courseService";
 import AddLesson from "./AddLesson";
 import LessonsList from "./LessonsList";
 import "./lessons.css";
+
+import { dynamicSort } from "../../../common/helper";
 
 class LessonsOfCoursePage extends Component {
   state = {
     teacherId: this.props.location.lessonProps.teacherId,
     courseId: this.props.location.lessonProps.courseId,
-    lessons: [],
-    students: [],
+    lessons: null,
+    students: null,
+    attendances: null,
   };
 
-  dynamicSort(property) {
-    var sortOrder = 1;
-    if (property[0] === "-") {
-      sortOrder = -1;
-      property = property.substr(1);
-    }
-    return function (a, b) {
-      /* next line works with strings and numbers,
-       * and you may want to customize it to your needs
-       */
-      var result =
-        a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-      return result * sortOrder;
-    };
+  async loadAttendaces() {
+    const { data } = await getAttendanceByCourseId(this.state.courseId);
+    this.setState({ attendances: data });
   }
 
   async loadStudents() {
     const { data } = await getStudentsByCourseId(this.state.courseId);
-    this.setState({ students: data.sort(this.dynamicSort("username")) });
+    this.setState({ students: data.sort(dynamicSort("username")) });
   }
 
   async loadLessons() {
@@ -49,15 +44,21 @@ class LessonsOfCoursePage extends Component {
   componentDidMount = () => {
     this.loadLessons();
     this.loadStudents();
+    this.loadAttendaces();
   };
 
   render() {
-    const { teacherId, courseId, lessons, students } = this.state;
+    const { teacherId, courseId, lessons, students, attendances } = this.state;
+
     let lessonsList = null;
 
-    if (lessons) {
+    if (lessons && attendances) {
       lessonsList = (
-        <LessonsList lessons={lessons} students={students}></LessonsList>
+        <LessonsList
+          lessons={lessons}
+          students={students}
+          attendances={attendances}
+        ></LessonsList>
       );
     }
 

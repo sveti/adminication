@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
-import f54148.adminication.dto.CreateUserDTO;
+import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.service.UserService;
 import lombok.AllArgsConstructor;
 
@@ -22,35 +22,18 @@ public class UserServiceImplementation implements UserService{
 	
     private final RestTemplate restTemplate;
 	
-	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();;
     
 	@Override
-	public List<CreateUserDTO> getUsers() {
+	public List<DisplayUserDTO> getUsers() {
 		
-		CreateUserDTO users[] = restTemplate.getForObject("http://databaseService/users/users",CreateUserDTO[].class);
+		DisplayUserDTO users[] = restTemplate.getForObject("http://databaseService/users/users",DisplayUserDTO[].class);
 		return Arrays.asList(users);
 	}
 
 	@Override
-	public CreateUserDTO getUser(@Min(1) long id) {
+	public DisplayUserDTO getUser(@Min(1) long id) {
 		
-		CreateUserDTO user = restTemplate.getForObject("http://databaseService/users/createUserDTO/{id}",CreateUserDTO.class, id);
+		DisplayUserDTO user = restTemplate.getForObject("http://databaseService/users/displayUserDTO/{id}",DisplayUserDTO.class, id);
 		return user;
 	}
-
-	@Override
-	public String createUser(CreateUserDTO userDTO) {
-		
-		userDTO.setPassword(encoder.encode(userDTO.getPassword()));
-		
-		String result = restTemplate.postForObject("http://databaseService/users/add", userDTO, String.class);
-		return result;
-	}
-
-	@Override
-	public String getUserRole(@Min(1) Long id) {
-		String role = restTemplate.getForObject("http://databaseService/users/user/{id}/roleName",String.class, id);
-		return role;
-	}
-
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import f54148.adminication.dto.CreateUserDTO;
+import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.service.UserService;
 import lombok.AllArgsConstructor;
 
@@ -24,23 +24,13 @@ public class UserController {
 	private final UserService userService;
 	
 	@GetMapping(path = "/")
-	public @ResponseBody List<CreateUserDTO> getUsers() {
+	public @ResponseBody List<DisplayUserDTO> getUsers() {
 		return userService.getUsers();
 	}
 	
 	@GetMapping(path = "/{id}")
-	public @ResponseBody CreateUserDTO getUser(@PathVariable("id") @Min(1) Long id) {
+	public @ResponseBody DisplayUserDTO getDisplayUserDTO(@PathVariable("id") @Min(1) Long id) {
 		return userService.getUser(id);
-	}
-	
-	@GetMapping(path = "/{id}/role")
-	public @ResponseBody String getUserRole(@PathVariable("id") @Min(1) Long id) {
-		return userService.getUserRole(id);
-	}
-	
-	@PostMapping(path = "/addUser")
-	public @ResponseBody String createUser(@RequestBody CreateUserDTO userDTO) {
-		return userService.createUser(userDTO);
 	}
 	
 }

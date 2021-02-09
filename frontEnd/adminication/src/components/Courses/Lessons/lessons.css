@@ -30,3 +30,64 @@
   padding: 2rem;
   text-align: left;
 }
+
+.absent {
+  color: #e74c3c;
+}
+.present {
+  color: #4fd1bd;
+}
+.notMarked {
+  color: #888;
+}
+
+.absent,
+.present,
+.notMarked {
+  font-size: 1.5rem;
+}
+
+TR.alternate:nth-child(2) {
+  border-top: 1px solid #eedd6d;
+  border-bottom: 1px solid #eedd6d;
+}
+
+TD {
+  padding: 10px;
+}
+.editButtonContainer {
+  text-align: right;
+}
+
+.saveButton:hover {
+  background: #d13c2c;
+}
+.saveButton {
+  background: #e74c3c;
+  color: #fff;
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 800px) {
+  .lessonsOfCourseContainer {
+    margin: 4rem 1rem;
+    padding: 2px;
+  }
+  .lessonContent {
+    padding: 10px;
+  }
+  .lessonsAccordion {
+    margin: 0px;
+  }
+
+  .accordion .accordion-item.active .panel {
+    max-height: fit-content !important;
+  }
+  .table {
+    margin-top: 3rem;
+  }
+}

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import f54148.adminication.dto.CreateUserDTO;
+import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.service.TeacherService;
 import lombok.AllArgsConstructor;
 
@@ -23,19 +23,6 @@ public class TeacherController {
 	
 private final TeacherService teacherService;
 	
-	@GetMapping(path = "/")
-	public @ResponseBody List<CreateUserDTO> getUsers() {
-		return teacherService.getTeachers();
-	}
-	
-	@GetMapping(path = "/{id}")
-	public @ResponseBody CreateUserDTO getUser(@PathVariable("id") @Min(1) Long id) {
-		return teacherService.getTeacher(id);
-	}
-	
-	@PostMapping(path = "/add")
-	public @ResponseBody String createUser(@RequestBody CreateUserDTO userDTO) {
-		return teacherService.createTeacher(userDTO);
-	}
+
 
 }

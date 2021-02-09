@@ -105,7 +105,7 @@ class Navbar extends React.Component {
       }
     }
 
-    navBarClasses.push(this.props.user.role.toLowerCase().split("_")[1]);
+    navBarClasses.push(this.props.user.roleName.toLowerCase().split("_")[1]);
 
     return (
       <header className={navBarClasses.join(" ")} id="mainMenu">

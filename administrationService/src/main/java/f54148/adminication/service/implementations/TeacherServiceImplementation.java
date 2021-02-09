@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
-import f54148.adminication.dto.CreateUserDTO;
+import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.service.TeacherService;
 import lombok.AllArgsConstructor;
 
@@ -24,25 +24,5 @@ public class TeacherServiceImplementation implements TeacherService {
 		
 	 private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
 
-	@Override
-	public List<CreateUserDTO> getTeachers() {
-		CreateUserDTO teachers[] = restTemplate.getForObject("http://databaseService/teachers/teachers",CreateUserDTO[].class);
-		return Arrays.asList(teachers);
-	}
-
-	@Override
-	public CreateUserDTO getTeacher(@Min(1) long id) {
-		CreateUserDTO user = restTemplate.getForObject("http://databaseService/teachers/teacher/{id}",CreateUserDTO.class, id);
-		return user;
-	}
-
-	@Override
-	public String createTeacher(CreateUserDTO teacherDTO) {
-		
-		teacherDTO.setPassword(encoder.encode(teacherDTO.getPassword()));
-		
-		String result = restTemplate.postForObject("http://databaseService/teachers/add", teacherDTO, String.class);
-		return result;
-	};
 
 }

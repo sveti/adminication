@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.service.AttendanceService;
 import lombok.AllArgsConstructor;
@@ -61,6 +62,17 @@ public class AttendanceController {
 	@GetMapping(path = "/attendances")
 	public @ResponseBody List<Attendance> getAllAttendances() {
 		return attendanceservice.getAttendances();
+	}
+	
+	@PostMapping(path = "/update")
+	public @ResponseBody String updateAttendances(@RequestBody List<AttendanceDTO> attendances) {
+
+		if (attendanceservice.updateAttendaces(attendances)) {
+			return "Successfully updated attendances!";
+		} else {
+			return "An error has occured!";
+		}
+
 	}
 
 }

@@ -8,6 +8,8 @@ import {
   getSubStartedCoursesOfTeacher,
 } from "../../services/courseService";
 
+import { dynamicSort } from "../../common/helper";
+
 class CoursesPage extends Component {
   state = {
     id: this.props.id,
@@ -18,17 +20,17 @@ class CoursesPage extends Component {
 
   async loadSubStartedCourses() {
     const { data } = await getSubStartedCoursesOfTeacher(this.state.id);
-    this.setState({ subStartedCourses: data });
+    this.setState({ subStartedCourses: data.sort(dynamicSort("id")) });
   }
 
   async loadStartedCourses() {
     const { data } = await getStartedCoursesOfTeacher(this.state.id);
-    this.setState({ startedCourses: data });
+    this.setState({ startedCourses: data.sort(dynamicSort("id")) });
   }
 
   async loadupCommingCourses() {
     const { data } = await getUpcommingCoursesOfTeacher(this.state.id);
-    this.setState({ upCommingCourses: data });
+    this.setState({ upCommingCourses: data.sort(dynamicSort("id")) });
   }
 
   componentDidMount = () => {

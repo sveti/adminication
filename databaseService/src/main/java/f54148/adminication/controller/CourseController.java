@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
@@ -26,6 +27,7 @@ import f54148.adminication.entity.Student;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.service.CourseDetailService;
 import f54148.adminication.service.CourseService;
+import f54148.adminication.service.LessonService;
 import f54148.adminication.service.ScheduleService;
 import lombok.AllArgsConstructor;
 
@@ -40,6 +42,8 @@ public class CourseController {
 	private final CourseDetailService cdService;
 
 	private final ScheduleService sService;
+	
+	private final LessonService lessonService;
 
 	@PostMapping(path = "/addCourse")
 	public @ResponseBody String addNewCourse(@RequestBody Course course) {
@@ -188,4 +192,12 @@ public class CourseController {
 		
 		return courseService.getStudentAttendanceDTOOfCourse(idCourse);
 	}
+	
+	@GetMapping(path = "/{idCourse}/attendance")
+	public @ResponseBody List<AttendanceDTO> getAttendanceDTOByLessonId(@PathVariable("idCourse") Long idCourse) {
+		return lessonService.getAttendanceDTOOfCourse(idCourse);
+	}
+	
+
+	
 }

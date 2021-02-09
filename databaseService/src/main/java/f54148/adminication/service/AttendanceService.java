@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Student;
@@ -21,13 +23,16 @@ public class AttendanceService {
 
 	private final LessonService lessonService;
 	
+	private final ModelMapper modelMapper;
+	
 
 	public AttendanceService(AttendanceRepository attendanceRepository, @Lazy StudentService studentService,
-			@Lazy LessonService lessonService) {
+			@Lazy LessonService lessonService, ModelMapper modelMapper) {
 		super();
 		this.attendanceRepository = attendanceRepository;
 		this.studentService = studentService;
 		this.lessonService = lessonService;
+		this.modelMapper = modelMapper;
 	}
 
 	public List<Attendance> getAttendances() {
@@ -80,5 +85,35 @@ public class AttendanceService {
 			return false;
 		}
 	}
+	
+	public Attendance convertToAttendance(AttendanceDTO attDTO) {
+		Attendance attendace =  modelMapper.map(attDTO, Attendance.class);
+		return attendace;
+	
+	}
+	
+	public boolean updateAttendaces(List<AttendanceDTO> attendaceDto) {
+		List <Attendance> att = new ArrayList<>();
+		
+		for(AttendanceDTO dto: attendaceDto) {
+			
+			att.add(convertToAttendance(dto));
+		
+		}
+		
+		try {
+			for(Attendance a: att) {
+				updateAttendance(a);
+			}
+			return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
+		
+		
+	}
+	
+	
 
 }

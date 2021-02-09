@@ -78,7 +78,4 @@ public class User extends BaseEntity{
 	@JsonManagedReference(value = "notification_recipient")
 	private List<Notification> notificationsReceived = new ArrayList<Notification>();
 	
-	
-	
-
 }

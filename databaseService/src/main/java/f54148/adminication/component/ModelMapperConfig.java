@@ -7,13 +7,14 @@ import java.util.List;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 import f54148.adminication.dto.CourseWithDetailsDTO;
-import f54148.adminication.dto.CreateUserDTO;
+import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
@@ -21,54 +22,48 @@ import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Teacher;
+import f54148.adminication.entity.User;
 import f54148.adminication.service.CourseService;
 import f54148.adminication.service.RoleService;
+import lombok.AllArgsConstructor;
 
 @Configuration
 public class ModelMapperConfig {
 	
-	@Autowired
-	RoleService roleService;
+	private final CourseService courseService;
 	
-	@Autowired
-	CourseService courseService;
 	
-	 @Bean
+	 public ModelMapperConfig(@Lazy CourseService courseService) {
+		super();
+		this.courseService = courseService;
+	}
+
+	@Bean
 	    public ModelMapper modelMapper() {
 		 	ModelMapper modelMapper = new ModelMapper();
+		 	
+		 	modelMapper.addMappings(convertUserToCreateUserDTO);
+		 	
 		 	modelMapper.addConverter(convertCoursetoUpcommingCourseDTO);
 		 	modelMapper.addConverter(convertCoursetoCourseWithDetailsDTO);
 		 	modelMapper.addConverter(convertCoursetoStartedCourseDTO);
 		 	
-		 	modelMapper.typeMap(CreateUserDTO.class, Teacher.class)
-            .addMappings(mapper -> mapper.using(convertStringToGender).map(CreateUserDTO::getGender, Teacher::setGender));
-		 	modelMapper.typeMap(Teacher.class, CreateUserDTO.class)
-            .addMappings(mapper -> mapper.using(convertGenderToString).map(Teacher::getGender, CreateUserDTO::setGender));
-	        return modelMapper;
+		 	return modelMapper;
 	    }
-	 
-
-	Converter<String, Gender> convertStringToGender = new Converter<String, Gender>()
-	    {
-	        public Gender convert(MappingContext<String, Gender> context)
-	        {
-	            if(context.getSource() =="MALE") {
-	            	return Gender.MALE;
-	            }
-	            else {
-	            	return Gender.FEMALE;
-	            }
-	        }
-	    };
 	    
-		Converter<Gender, String> convertGenderToString = new Converter<Gender, String>()
+	    PropertyMap<User, DisplayUserDTO> convertUserToCreateUserDTO = new PropertyMap<User, DisplayUserDTO>()
 	    {
-	        public String convert(MappingContext<Gender, String> context)
-	        {
-	            return context.getSource()==Gender.MALE?"MALE":"FEMALE";
-	        }
+		 protected void configure() {
+				if(source.getGender()==Gender.MALE) {
+					map().setGender("MALE");
+			 	}
+			 	else {
+			 		map().setGender("FEMALE");
+			 	}
+			    
+			  }
 	    };
-	
+
 	    Converter<Course, UpcommingCourseDTO> convertCoursetoUpcommingCourseDTO = new Converter<Course, UpcommingCourseDTO>()
 	    {
 	        public UpcommingCourseDTO convert(MappingContext<Course, UpcommingCourseDTO> context)
@@ -180,5 +175,8 @@ public class ModelMapperConfig {
 	            return destination;
 	        }
 	    };
+	    
+	
+
 }
 

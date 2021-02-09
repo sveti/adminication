@@ -4,14 +4,8 @@ import java.util.List;
 
 import javax.validation.constraints.Min;
 
-import f54148.adminication.dto.CreateUserDTO;
+import f54148.adminication.dto.DisplayUserDTO;
 
 public interface TeacherService {
 	
-	List<CreateUserDTO> getTeachers();
-	
-	CreateUserDTO getTeacher(@Min(1) long id);
-	
-	String createTeacher(CreateUserDTO teacherDTO);
-
 }

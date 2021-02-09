@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Lesson;
@@ -105,6 +106,10 @@ public class LessonController {
 		return lessonservice.getLessonsByTeacherIdAndCourseId(idTeacher,idCourse);
 	}
 	
+	@GetMapping(path = "/{idLesson}/attendance")
+	public @ResponseBody List<AttendanceDTO> getAttendanceDTOByLessonId(@PathVariable("idLesson") Long idLesson) {
+		return lessonservice.getAttandancesOfLesson(idLesson);
+	}
 	
 
 }

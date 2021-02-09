@@ -1,18 +1,19 @@
 package f54148.adminication.service;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
-import f54148.adminication.dto.StudentAttendanceDTO;
-import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Lesson;
@@ -49,13 +50,10 @@ public class LessonService {
 	public List<Lesson> getLessonsByCourseId(Long courseID) {
 		List<Lesson> lessonList = new ArrayList<>();
 		lessonRepository.findAll().forEach(lessonList::add);
-		List<Lesson> filtered = new ArrayList<>();
-		for(Lesson l: lessonList) {
-			if(l.getCourse().getId()==courseID) {
-				filtered.add(l);
-			}
-		}
-		return filtered;
+		lessonList.stream().filter(lesson->lesson.getCourse().getId()==courseID).collect(Collectors.toList());
+		
+		
+		return lessonList;
 	}
 
 	public Lesson getLessonById(Long lessonId) {
@@ -178,5 +176,39 @@ public class LessonService {
 		return filtered;
 	}
 	
+	public AttendanceDTO convertToAttendanceDTO(Attendance a) {
+		AttendanceDTO attendanceDTO =  modelMapper.map(a, AttendanceDTO.class);
+		return attendanceDTO;
+	}
+	
 
+	
+	public List<AttendanceDTO> getAttandancesOfLesson(Long lessonId){
+		
+		Set<Attendance> at = getAttendancesByLessonId(lessonId);
+		
+		List<AttendanceDTO> attDTO = new ArrayList<>();
+		
+		for(Attendance a: at) {
+			attDTO.add(convertToAttendanceDTO(a));
+		}
+		
+		return attDTO;
+		
+	}
+	
+	public List<AttendanceDTO> getAttendanceDTOOfCourse(Long courseId){
+		
+		List<Lesson> lessons = getLessonsByCourseId(courseId);
+		
+		List<AttendanceDTO> attDTO = new ArrayList<>();
+		
+		for(Lesson l: lessons) {
+			attDTO.addAll(getAttandancesOfLesson(l.getId()));
+		}
+		
+		return attDTO;
+	}
+	
+	
 }

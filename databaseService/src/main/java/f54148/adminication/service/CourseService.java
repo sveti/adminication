@@ -287,6 +287,18 @@ public class CourseService {
 		return studentDTO;
 	}
 	
+	public List<StudentAttendanceDTO> getStudentAttendanceDTOOfLesson(Long courseId){
+		List<Student> students = getStudentsByCourseId(courseId);
+		List<StudentAttendanceDTO> studentsDTO = new ArrayList<>();
+		
+		for(Student s: students) {
+			studentsDTO.add(convertToStudentAttendanceDTO(s));
+		}
+		
+		return studentsDTO;
+		
+	}
+	
 	public List<StudentAttendanceDTO> getStudentAttendanceDTOOfCourse(Long courseId){
 		List<Student> students = getStudentsByCourseId(courseId);
 		List<StudentAttendanceDTO> studentsDTO = new ArrayList<>();
@@ -298,5 +310,6 @@ public class CourseService {
 		return studentsDTO;
 		
 	}
+	
 	
 }

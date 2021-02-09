@@ -1,5 +1,6 @@
 package f54148.adminication.dto;
 
+import f54148.adminication.entity.Gender;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateUserDTO {
+public class DisplayUserDTO {
 	
 	private long id;
 	private String username;
@@ -16,4 +17,5 @@ public class CreateUserDTO {
 	private String name;
 	private String lastName;
 	private String gender;
+	private String roleName;
 }

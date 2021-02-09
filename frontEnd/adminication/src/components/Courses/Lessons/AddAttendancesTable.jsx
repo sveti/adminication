@@ -10,26 +10,22 @@ import {
 
 import { updateAttendances } from "../../../services/attendanceService";
 
-class AttendanceTable extends Component {
+class AddAttendesTable extends Component {
   state = {
     courseId: this.props.courseId,
     students: this.props.students,
-    attendances: this.props.attendances,
-    buttonText: "Edit",
-    buttonIcon: faEdit,
-    buttonClasses: "editButton",
-    mode: "display",
+    attendances: [],
+    buttonText: "Save",
+    buttonIcon: faSave,
+    buttonClasses: "saveButton",
+    mode: "save",
     updateMessage: "",
     errorMessage: "",
   };
 
-  handleMarked = (attendance) => {
-    attendance.attended = !attendance.attended;
-    let attendances = [...this.state.attendances];
-    attendances = attendances.filter((at) => at.id !== attendance.id);
-    attendances.push(attendance);
-
-    this.setState({ attendances: attendances });
+  handleClick = (attended, studentId) => {
+    console.log(attended);
+    console.log(studentId);
   };
 
   getAttendance = (attendance) => {
@@ -58,37 +54,7 @@ class AttendanceTable extends Component {
     }
   };
 
-  editAttendance = () => {
-    const { buttonText } = this.state;
-    if (buttonText === "Edit") {
-      this.setState({
-        buttonText: "Save",
-        buttonIcon: faSave,
-        buttonClasses: "saveButton",
-        mode: "save",
-      });
-    } else {
-      this.setState({
-        buttonText: "Edit",
-        buttonIcon: faEdit,
-        buttonClasses: "editButton",
-        mode: "display",
-      });
-
-      updateAttendances(this.state.attendances).then(
-        (response) => {
-          console.log(response);
-          this.setState({ updateMessage: response.data, errorMessage: "" });
-        },
-        (error) => {
-          this.setState({
-            updateMessage: "",
-            errorMessage: error.response.data.error,
-          });
-        }
-      );
-    }
-  };
+  getIconForAttendance = () => {};
 
   render() {
     const {
@@ -98,6 +64,7 @@ class AttendanceTable extends Component {
       buttonClasses,
       updateMessage,
       errorMessage,
+      mode,
     } = this.state;
 
     let updateDiv,
@@ -138,9 +105,24 @@ class AttendanceTable extends Component {
                     <Td>{s.username}</Td>
                     <Td>{s.name + " " + s.lastName}</Td>
                     <Td>
-                      {this.getAttendance(
-                        attendances.find((x) => x.studentId === s.id)
-                      )}
+                      <button
+                        className="btn"
+                        onClick={() => this.handleClick(true, s.id)}
+                      >
+                        <FontAwesomeIcon
+                          className="notMarked"
+                          icon={faCheckCircle}
+                        />
+                      </button>
+                      <button
+                        className="btn"
+                        onClick={() => this.handleClick(false, s.id)}
+                      >
+                        <FontAwesomeIcon
+                          className="notMarked"
+                          icon={faTimesCircle}
+                        />
+                      </button>
                     </Td>
                   </Tr>
                 );
@@ -165,4 +147,4 @@ class AttendanceTable extends Component {
   }
 }
 
-export default AttendanceTable;
+export default AddAttendesTable;

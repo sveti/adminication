@@ -31,9 +31,9 @@ class TeacherIndex extends Component {
     const { user } = this.state;
 
     let avatar;
-    if (user.role === "ROLE_TEACHER") {
+    if (user.roleName === "ROLE_TEACHER") {
       avatar = user.gender === "MALE" ? LogoTeacherM : LogoTeacherF;
-    } else if (user.role === "ROLE_STUDENT") {
+    } else if (user.roleName === "ROLE_STUDENT") {
       avatar = user.gender === "MALE" ? LogoStudentM : LogoStudentF;
     }
 
@@ -42,7 +42,7 @@ class TeacherIndex extends Component {
         <WelcomeScreen
           name={user.name}
           lastName={user.lastName}
-          role={user.role}
+          roleName={user.roleName}
           avatar={avatar}
         ></WelcomeScreen>
         <Content givenId="mainContent" user={user} avatar={avatar}></Content>

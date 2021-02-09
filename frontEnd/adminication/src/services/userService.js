@@ -1,7 +1,7 @@
 import http from "./httpService";
-import { gateway,administrationServiceName } from "../config.json";
+import { gateway, administrationServiceName } from "../config.json";
 
-const apiEndpoint = gateway+'/'+administrationServiceName + "/users/";
+const apiEndpoint = gateway + "/" + administrationServiceName + "/users/";
 
 function usersUrl(id) {
   return `${apiEndpoint}${id}`;
@@ -14,12 +14,6 @@ export function getUsers() {
 export function getUser(userId) {
   return http.get(usersUrl(userId));
 }
-
-export function getUserRole(userId) {
-  return http.get(usersUrl(userId)+'/role');
-}
-
-
 
 // export function saveMovie(movie) {
 //   if (movie._id) {

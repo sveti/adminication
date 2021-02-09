@@ -9,7 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import f54148.adminication.dto.CreateUserDTO;
+import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
@@ -146,7 +146,7 @@ public class TeacherService {
 		}
 	}
 
-	public Teacher convertToTeacher(CreateUserDTO userDTO) {
+	public Teacher convertToTeacher(DisplayUserDTO userDTO) {
 		Teacher t = modelMapper.map(userDTO, Teacher.class);		
 		t.setAccountNonExpired(true);
 		t.setAccountNonLocked(true);

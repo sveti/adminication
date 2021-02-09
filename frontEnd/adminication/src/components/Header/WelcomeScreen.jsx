@@ -4,12 +4,12 @@ import "./welcomeScreen.css";
 
 import { Link } from "react-scroll";
 
-const WelcomeScreen = ({ name, lastName, role, avatar }) => {
+const WelcomeScreen = ({ name, lastName, roleName, avatar }) => {
   return (
     <div>
       <section
         id="WelcomeScreen"
-        className={"welcome " + role.toLowerCase().split("_")[1]}
+        className={"welcome " + roleName.toLowerCase().split("_")[1]}
       >
         <div>
           <img alt="logo" className="welcomeLogo" src={avatar} />

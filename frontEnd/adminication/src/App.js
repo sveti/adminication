@@ -11,7 +11,7 @@ import Navbar from "./components/Header/Navbar";
 
 import ScrollToTop from "react-scroll-up";
 
-import { getUser, getUserRole } from "./services/userService";
+import { getUser } from "./services/userService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleUp } from "@fortawesome/free-solid-svg-icons";
 import LessonsOfCoursePage from "./components/Courses/Lessons/LessonsOfCoursePage";
@@ -28,8 +28,6 @@ class App extends Component {
     //const id = window.location.pathname.split("/")[2];
     const id = 11;
     const { data } = await getUser(id);
-    let role = await getUserRole(id);
-    data.role = role.data;
     this.setState({ user: data, isAuthenticated: true });
   }
 

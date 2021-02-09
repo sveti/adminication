@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
-import f54148.adminication.dto.LessonDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.service.StudentService;
 import lombok.AllArgsConstructor;

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateUserDTO {
+public class DisplayUserDTO {
 	
 	private long id;
 	private String username;
@@ -16,4 +16,5 @@ public class CreateUserDTO {
 	private String name;
 	private String lastName;
 	private String gender;
+	private String roleName;
 }
