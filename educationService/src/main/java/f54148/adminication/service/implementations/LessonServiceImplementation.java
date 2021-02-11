@@ -5,12 +5,18 @@ import java.util.List;
 
 import javax.validation.constraints.Min;
 
+import org.apache.tomcat.jni.Global;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
 import f54148.adminication.dto.LessonDTO;
+import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 import f54148.adminication.service.LessonService;
 import lombok.AllArgsConstructor;
 
@@ -35,6 +41,15 @@ public class LessonServiceImplementation implements LessonService{
 	@Override
 	public String addLesson(LessonDTO lesson) {
 		ResponseEntity<String> response = restTemplate.postForEntity("http://databaseService/courses/lessons/add", lesson, String.class);
+		return response.getBody();
+	}
+
+	@Override
+	public String updateLessonDescription(UpdateLessonDescriptionDTO updateLessonDTO) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<UpdateLessonDescriptionDTO> requestEntity = new HttpEntity<>(updateLessonDTO, headers);
+		ResponseEntity<String> response = restTemplate.exchange("http://databaseService/courses/lessons/updateDescription", HttpMethod.PUT,requestEntity,String.class);
 		return response.getBody();
 	}
 

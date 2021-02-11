@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.validation.constraints.Min;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +39,16 @@ public class AttendanceServiceImplementation implements AttendanceService {
 
 	@Override
 	public String updateAttendances(List<AttendanceDTO> attendances) {
-		 ResponseEntity<String> response = restTemplate.postForEntity("http://databaseService/courses/attendances/update",attendances,String.class);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<List<AttendanceDTO>> requestEntity = new HttpEntity<>(attendances, headers);
+		ResponseEntity<String> response = restTemplate.exchange("http://databaseService/courses/attendances/update", HttpMethod.PUT,requestEntity,String.class);
+		return response.getBody();
+	}
+
+	@Override
+	public String addAttendances(List<AttendanceDTO> attendances) {
+		 ResponseEntity<String> response = restTemplate.postForEntity("http://databaseService/courses/attendances/add",attendances,String.class);
 		return response.getBody();
 	}
 	

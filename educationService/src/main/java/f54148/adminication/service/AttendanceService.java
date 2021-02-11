@@ -11,5 +11,5 @@ public interface AttendanceService {
 	List<AttendanceDTO> getAttendancesOfLesson(@Min(1) long idLesson);
 	List<AttendanceDTO> getAttendancesOfCourse(@Min(1) long idCourse);
 	String updateAttendances(List<AttendanceDTO> attendances);
-	
+	String addAttendances(List<AttendanceDTO> attendances);
 }

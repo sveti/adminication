@@ -19,22 +19,23 @@ class AddLesson extends Component {
         // console.log(error.response.data);
         // console.log(error.response.status);
         // console.log(error.response.headers);
-        that.setState({ error: error.response.data.error });
+        that.setState({ error: error.response.data.error, success: "" });
       } else if (error.request) {
         // The request was made but no response was received
         // console.log(error.request);
         that.setState({
           error: "An error occured saving your lesson! Try again later",
+          success: "",
         });
       } else {
         // Something happened in setting up the request that triggered an Error
         // console.log("Error", error.message);
-        that.setState({ error: error.message });
+        that.setState({ success: "", error: error.message });
       }
     });
 
     if (response.status === 200) {
-      this.setState({ success: response.data });
+      this.setState({ error: "", success: response.data });
       this.props.onAddedLesson();
     }
   }
@@ -43,12 +44,17 @@ class AddLesson extends Component {
     e.preventDefault();
     const date = this.date.value;
     const description = this.description.value;
-    let lesson = {};
-    lesson.teacherId = this.state.teacherId;
-    lesson.courseId = this.state.courseId;
-    lesson.date = date;
-    lesson.description = description;
-    this.addLesson(lesson);
+
+    if (description.length < 1) {
+      this.setState({ error: "Please enter a lesson description!" });
+    } else {
+      let lesson = {};
+      lesson.teacherId = this.state.teacherId;
+      lesson.courseId = this.state.courseId;
+      lesson.date = date;
+      lesson.description = description;
+      this.addLesson(lesson);
+    }
   };
 
   getTodaysDate = () => {
@@ -68,14 +74,14 @@ class AddLesson extends Component {
     let successMessage = null;
     if (!this.isEmpty(error)) {
       errorMessage = (
-        <div className="alert alert-danger mt-3" role="alert">
+        <div className="alert alert-danger mt-3 errorMessage" role="alert">
           {error}
         </div>
       );
     }
     if (success) {
       successMessage = (
-        <div className="alert alert-success mt-3" role="alert">
+        <div className="alert alert-success mt-3 successMessage" role="alert">
           {success}
         </div>
       );
@@ -83,6 +89,8 @@ class AddLesson extends Component {
 
     return (
       <div className="addLessonForm">
+        {errorMessage}
+        {successMessage}
         <h2>Add Lesson</h2>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
@@ -109,8 +117,6 @@ class AddLesson extends Component {
             Submit
           </button>
         </form>
-        {errorMessage}
-        {successMessage}
       </div>
     );
   }

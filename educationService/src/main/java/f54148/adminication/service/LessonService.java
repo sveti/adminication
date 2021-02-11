@@ -5,9 +5,12 @@ import java.util.List;
 import javax.validation.constraints.Min;
 
 import f54148.adminication.dto.LessonDTO;
+import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 
 public interface LessonService {
 	LessonDTO getLessonDTO(@Min(1) long idLesson);
 	List<LessonDTO> getLessonsByTeacherIdAndCourseId(@Min(1) long idTeacher,@Min(1) long idCourse);
 	String addLesson(LessonDTO lesson);
+	String updateLessonDescription(UpdateLessonDescriptionDTO updateLessonDTO);
+
 }

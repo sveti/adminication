@@ -114,6 +114,27 @@ public class AttendanceService {
 		
 	}
 	
+	public boolean addAttendances(List<AttendanceDTO> attendaceDto) {
+		List <Attendance> att = new ArrayList<>();
+		
+		for(AttendanceDTO dto: attendaceDto) {
+			
+			att.add(convertToAttendance(dto));
+		}
+		
+		try {
+			for(Attendance a: att) {
+				addAttendance(a);
+			}
+			return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
+		
+		
+	}
+	
 	
 
 }

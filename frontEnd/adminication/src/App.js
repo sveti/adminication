@@ -14,8 +14,11 @@ import ScrollToTop from "react-scroll-up";
 import { getUser } from "./services/userService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleUp } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer } from "react-toastify";
 import LessonsOfCoursePage from "./components/Courses/Lessons/LessonsOfCoursePage";
 import LessonsPage from "./components/Courses/Lessons/LessonsPage";
+
+import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
   state = {
@@ -108,6 +111,7 @@ class App extends Component {
                 onClick={this.handleClick}
               />
             </ScrollToTop>
+            <ToastContainer />
           </main>
         </div>
       );

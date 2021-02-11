@@ -2,6 +2,7 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,4 +25,9 @@ public class AttendanceController {
 		return attendanceService.updateAttendances(attendances);
 	}
 
+	
+	@PostMapping(path = "/add")
+	public @ResponseBody String addAttendances(@RequestBody List<AttendanceDTO> attendances) {
+		return attendanceService.addAttendances(attendances);
+	}
 }

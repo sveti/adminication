@@ -48,14 +48,14 @@ class LessonsOfCoursePage extends Component {
   };
 
   render() {
-    const { teacherId, courseId, lessons, students, attendances } = this.state;
+    const { teacherId, courseId, students, attendances } = this.state;
 
     let lessonsList = null;
 
-    if (lessons && attendances) {
+    if (this.state.lessons && attendances) {
       lessonsList = (
         <LessonsList
-          lessons={lessons}
+          lessons={this.state.lessons}
           students={students}
           attendances={attendances}
         ></LessonsList>

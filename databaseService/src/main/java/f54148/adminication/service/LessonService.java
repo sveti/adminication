@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
+import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Lesson;
@@ -50,9 +51,7 @@ public class LessonService {
 	public List<Lesson> getLessonsByCourseId(Long courseID) {
 		List<Lesson> lessonList = new ArrayList<>();
 		lessonRepository.findAll().forEach(lessonList::add);
-		lessonList.stream().filter(lesson->lesson.getCourse().getId()==courseID).collect(Collectors.toList());
-		
-		
+		lessonList.removeIf(lesson->lesson.getCourse().getId()!=courseID);
 		return lessonList;
 	}
 
@@ -210,5 +209,13 @@ public class LessonService {
 		return attDTO;
 	}
 	
+	public boolean updateLessonDescription(UpdateLessonDescriptionDTO dto) {
+		
+		Lesson l = getLessonById(dto.getId());
+		l.setDescription(dto.getDescription());
+		
+		return updateLesson(l);
+		
+	}
 	
 }

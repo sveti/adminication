@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
+import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Student;
@@ -111,5 +112,15 @@ public class LessonController {
 		return lessonservice.getAttandancesOfLesson(idLesson);
 	}
 	
+	@PutMapping(path="/updateDescription")
+	public @ResponseBody String updateLessonDescription(@RequestBody UpdateLessonDescriptionDTO dto) {
+		
+		if(lessonservice.updateLessonDescription(dto)) {
+			return "Successfully updated description!";
+		}
+		else {
+			return "An error has occured";
+		}
+	}
 
 }

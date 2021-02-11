@@ -64,11 +64,22 @@ public class AttendanceController {
 		return attendanceservice.getAttendances();
 	}
 	
-	@PostMapping(path = "/update")
+	@PutMapping(path = "/update")
 	public @ResponseBody String updateAttendances(@RequestBody List<AttendanceDTO> attendances) {
 
 		if (attendanceservice.updateAttendaces(attendances)) {
 			return "Successfully updated attendances!";
+		} else {
+			return "An error has occured!";
+		}
+
+	}
+	
+	@PostMapping(path = "/add")
+	public @ResponseBody String addAttendances(@RequestBody List<AttendanceDTO> attendances) {
+
+		if (attendanceservice.addAttendances(attendances)) {
+			return "Successfully added attendances!";
 		} else {
 			return "An error has occured!";
 		}

@@ -7,6 +7,7 @@ import javax.validation.constraints.Min;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
+import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 import f54148.adminication.service.AttendanceService;
 import f54148.adminication.service.LessonService;
 import lombok.AllArgsConstructor;
@@ -46,4 +48,10 @@ public class LessonController {
 		return attedanceService.getAttendancesOfLesson(lessonId);
 	}
 	
+	@PutMapping(path = "/updateDescription")
+	public @ResponseBody String updateDescription(@RequestBody UpdateLessonDescriptionDTO updateLessonDTO) {
+		System.out.println("=========Controller=======");
+		System.out.println(updateLessonDTO);
+		return lessonService.updateLessonDescription(updateLessonDTO);
+	}
 }

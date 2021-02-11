@@ -37,28 +37,32 @@ class AttendanceTable extends Component {
 
     if (attendance.attended) {
       return (
-        <FontAwesomeIcon
-          className="present"
-          icon={faCheckCircle}
+        <button
+          className="btn"
           onClick={
             mode === "save" ? () => this.handleMarked(attendance) : undefined
           }
-        />
+          disabled={mode === "save" ? false : true}
+        >
+          <FontAwesomeIcon className="present" icon={faCheckCircle} />
+        </button>
       );
     } else {
       return (
-        <FontAwesomeIcon
-          className="absent"
-          icon={faTimesCircle}
+        <button
+          className="btn"
           onClick={
             mode === "save" ? () => this.handleMarked(attendance) : undefined
           }
-        />
+          disabled={mode === "save" ? false : true}
+        >
+          <FontAwesomeIcon className="absent" icon={faTimesCircle} />
+        </button>
       );
     }
   };
 
-  editAttendance = () => {
+  updateButton = () => {
     const { buttonText } = this.state;
     if (buttonText === "Edit") {
       this.setState({
@@ -74,11 +78,15 @@ class AttendanceTable extends Component {
         buttonClasses: "editButton",
         mode: "display",
       });
+    }
+  };
 
+  editAttendance = () => {
+    if (this.state.mode === "save") {
       updateAttendances(this.state.attendances).then(
         (response) => {
-          console.log(response);
           this.setState({ updateMessage: response.data, errorMessage: "" });
+          this.updateButton();
         },
         (error) => {
           this.setState({
@@ -87,6 +95,8 @@ class AttendanceTable extends Component {
           });
         }
       );
+    } else {
+      this.updateButton();
     }
   };
 
@@ -99,7 +109,6 @@ class AttendanceTable extends Component {
       updateMessage,
       errorMessage,
     } = this.state;
-
     let updateDiv,
       errorDiv = null;
 

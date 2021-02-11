@@ -13,3 +13,7 @@ export function getLessonsByTeacherIdAndCourseId(idTeacher, idCourse) {
 export function saveLesson(lesson) {
   return http.post(apiEndpoint + "add", lesson);
 }
+
+export function updateLessonDescription(lesson) {
+  return http.put(apiEndpoint + "updateDescription", lesson);
+}
