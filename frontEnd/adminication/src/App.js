@@ -111,7 +111,17 @@ class App extends Component {
                 onClick={this.handleClick}
               />
             </ScrollToTop>
-            <ToastContainer />
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
           </main>
         </div>
       );

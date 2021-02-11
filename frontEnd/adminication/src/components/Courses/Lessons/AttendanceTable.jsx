@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { updateAttendances } from "../../../services/attendanceService";
+import { toast } from "react-toastify";
 
 class AttendanceTable extends Component {
   state = {
@@ -19,8 +20,6 @@ class AttendanceTable extends Component {
     buttonIcon: faEdit,
     buttonClasses: "editButton",
     mode: "display",
-    updateMessage: "",
-    errorMessage: "",
   };
 
   handleMarked = (attendance) => {
@@ -85,13 +84,26 @@ class AttendanceTable extends Component {
     if (this.state.mode === "save") {
       updateAttendances(this.state.attendances).then(
         (response) => {
-          this.setState({ updateMessage: response.data, errorMessage: "" });
+          toast.success(response.data, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
           this.updateButton();
         },
         (error) => {
-          this.setState({
-            updateMessage: "",
-            errorMessage: error.response.data.error,
+          toast.error(error.response.data.error, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
           });
         }
       );
@@ -101,31 +113,7 @@ class AttendanceTable extends Component {
   };
 
   render() {
-    const {
-      attendances,
-      buttonText,
-      buttonIcon,
-      buttonClasses,
-      updateMessage,
-      errorMessage,
-    } = this.state;
-    let updateDiv,
-      errorDiv = null;
-
-    if (updateMessage) {
-      updateDiv = (
-        <div className="alert alert-success mt-3" role="alert">
-          {updateMessage}
-        </div>
-      );
-    }
-    if (errorMessage) {
-      errorDiv = (
-        <div className="alert alert-danger mt-3" role="alert">
-          {errorMessage}
-        </div>
-      );
-    }
+    const { attendances, buttonText, buttonIcon, buttonClasses } = this.state;
 
     return (
       <div>
@@ -166,8 +154,6 @@ class AttendanceTable extends Component {
               {buttonText}
             </button>
           </div>
-          {updateDiv}
-          {errorDiv}
         </div>
       </div>
     );

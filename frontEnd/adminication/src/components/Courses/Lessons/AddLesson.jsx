@@ -1,41 +1,62 @@
 import React, { Component } from "react";
 import { saveLesson } from "../../../services/lessonService";
 import "./lessons.css";
+import { toast } from "react-toastify";
 
 class AddLesson extends Component {
   state = {
     teacherId: this.props.teacherId,
     courseId: this.props.courseId,
-    error: {},
-    success: null,
   };
 
   async addLesson(lesson) {
-    let that = this;
-
     const response = await saveLesson(lesson).catch(function (error) {
       if (error.response) {
         // Request made and server responded
-        // console.log(error.response.data);
-        // console.log(error.response.status);
-        // console.log(error.response.headers);
-        that.setState({ error: error.response.data.error, success: "" });
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else if (error.request) {
         // The request was made but no response was received
-        // console.log(error.request);
-        that.setState({
-          error: "An error occured saving your lesson! Try again later",
-          success: "",
+        toast.error("An error occured saving your lesson! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         });
       } else {
         // Something happened in setting up the request that triggered an Error
-        // console.log("Error", error.message);
-        that.setState({ success: "", error: error.message });
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     });
 
     if (response.status === 200) {
-      this.setState({ error: "", success: response.data });
+      toast.success(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       this.props.onAddedLesson();
     }
   }
@@ -46,7 +67,15 @@ class AddLesson extends Component {
     const description = this.description.value;
 
     if (description.length < 1) {
-      this.setState({ error: "Please enter a lesson description!" });
+      toast.error("Please enter a lesson description!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       let lesson = {};
       lesson.teacherId = this.state.teacherId;
@@ -68,29 +97,8 @@ class AddLesson extends Component {
   };
 
   render() {
-    const { error, success } = this.state;
-
-    let errorMessage = null;
-    let successMessage = null;
-    if (!this.isEmpty(error)) {
-      errorMessage = (
-        <div className="alert alert-danger mt-3 errorMessage" role="alert">
-          {error}
-        </div>
-      );
-    }
-    if (success) {
-      successMessage = (
-        <div className="alert alert-success mt-3 successMessage" role="alert">
-          {success}
-        </div>
-      );
-    }
-
     return (
       <div className="addLessonForm">
-        {errorMessage}
-        {successMessage}
         <h2>Add Lesson</h2>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">

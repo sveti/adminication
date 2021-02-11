@@ -12,6 +12,7 @@ import {
   addAttendances,
   updateAttendances,
 } from "../../../services/attendanceService";
+import { toast } from "react-toastify";
 
 class AddAttendesTable extends Component {
   state = {
@@ -19,8 +20,6 @@ class AddAttendesTable extends Component {
     students: this.props.students,
     lessonId: this.props.lessonId,
     attendances: [],
-    successMessage: "",
-    errorMessage: "",
     visualAttended: [],
     buttonText: "Save",
     buttonIcon: faSave,
@@ -82,10 +81,6 @@ class AddAttendesTable extends Component {
     const { notSaved, attendances, students, mode } = this.state;
 
     if (students.length === attendances.length) {
-      this.setState({
-        errorMessage: "",
-      });
-
       if (mode === "save") {
         if (notSaved) {
           addAttendances(this.state.attendances).then(
@@ -95,9 +90,16 @@ class AddAttendesTable extends Component {
                 response.data !== "An error has occured!"
               ) {
                 this.setState({
-                  successMessage: response.data,
-                  errorMessage: "",
                   notSaved: false,
+                });
+                toast.success(response.data, {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
                 });
                 this.updateButton();
               } else {
@@ -108,9 +110,14 @@ class AddAttendesTable extends Component {
               }
             },
             (error) => {
-              this.setState({
-                successMessage: "",
-                errorMessage: error.response.data.error,
+              toast.error(error.response.data.error, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
               });
             }
           );
@@ -118,16 +125,28 @@ class AddAttendesTable extends Component {
           updateAttendances(this.state.attendances).then(
             (response) => {
               this.setState({
-                successMessage: response.data,
-                errorMessage: "",
                 notSaved: false,
+              });
+              toast.success(response.data, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
               });
               this.updateButton();
             },
             (error) => {
-              this.setState({
-                successMessage: "",
-                errorMessage: error.response.data.error,
+              toast.error(error.response.data.error, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
               });
             }
           );
@@ -136,8 +155,14 @@ class AddAttendesTable extends Component {
         this.updateButton();
       }
     } else {
-      this.setState({
-        errorMessage: "Please fill in the attendances of all of the students!",
+      toast.error("Please fill in the attendances of all of the students!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
       });
     }
   };
@@ -147,30 +172,10 @@ class AddAttendesTable extends Component {
       buttonText,
       buttonIcon,
       buttonClasses,
-      successMessage,
-      errorMessage,
       visualAttended,
       addAttendance,
       mode,
     } = this.state;
-
-    let updateDiv,
-      errorDiv = null;
-
-    if (successMessage.length > 0) {
-      updateDiv = (
-        <div className="alert alert-success mt-3" role="alert">
-          {successMessage}
-        </div>
-      );
-    }
-    if (errorMessage.length > 0) {
-      errorDiv = (
-        <div className="alert alert-danger mt-3" role="alert">
-          {errorMessage}
-        </div>
-      );
-    }
 
     return (
       <div>
@@ -252,8 +257,6 @@ class AddAttendesTable extends Component {
                 {buttonText}
               </button>
             </div>
-            {updateDiv}
-            {errorDiv}
           </div>
         ) : null}
       </div>

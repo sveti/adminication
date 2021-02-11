@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Accordion, AccordionItem } from "react-light-accordion";
 import "react-light-accordion/demo/css/index.css";
 import AddAttendesTable from "./AddAttendancesTable";
@@ -12,7 +12,7 @@ export default function LessonsList(props) {
   return (
     <div className="lessonsAccordion">
       <Accordion atomic={true}>
-        {lessons.map((lesson, index) => {
+        {lessons.map((lesson) => {
           return attendances.filter((a) => a.lessonId === lesson.id).length >
             0 ? (
             <AccordionItem key={lesson.id} id={lesson.id} title={lesson.date}>
@@ -36,7 +36,10 @@ export default function LessonsList(props) {
           ) : (
             <AccordionItem key={lesson.id} title={lesson.date}>
               <div className="lessonContent">
-                {lesson.description}
+                <Description
+                  lessonId={lesson.id}
+                  description={lesson.description}
+                ></Description>
                 <AddAttendesTable
                   courseId={lesson.courseId}
                   students={students}

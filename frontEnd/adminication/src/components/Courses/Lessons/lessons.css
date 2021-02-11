@@ -6,8 +6,15 @@
   color: #1a396b !important;
   font-weight: bold;
 }
+
 .accordion .accordion-item.active .title {
   background-color: #eedd6d !important;
+}
+.accordion .accordion-item:nth-child(2n) .title {
+  background-color: #eedd6d !important;
+}
+.accordion .accordion-item:nth-child(2n).active .title {
+  background-color: #d2c04e !important;
 }
 .lessonDescription {
   /* display: inline-block; */
