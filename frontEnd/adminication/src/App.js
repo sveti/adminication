@@ -12,6 +12,7 @@ import Navbar from "./components/Header/Navbar";
 import ScrollToTop from "react-scroll-up";
 
 import { getUser } from "./services/userService";
+//import { authenticateUser } from "./services/authenticationService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleUp } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer } from "react-toastify";
@@ -34,8 +35,17 @@ class App extends Component {
     this.setState({ user: data, isAuthenticated: true });
   }
 
+  // async authenticate(username, pass) {
+  //   // const { data } = await authenticateUser();
+  //   // console.log(data);
+  //   this.basicAuthorize(username, pass);
+  // }
+
   loginRequest = (event) => {
     event.preventDefault();
+    console.log(event.target.username.value);
+    console.log(event.target.password.value);
+    //this.authenticate(event.target.username.value, event.target.password.value);
     this.loadUser();
     this.props.history.push("/home/11");
     this.forceUpdate();

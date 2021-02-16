@@ -21,11 +21,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "roles")
@@ -63,7 +61,3 @@ public class Role {
 	
 	
 }
-//за базата
-//role -> id, име, 1 Role -> Many Priviledges
-//one to many -> User
-//Priviledges -> до кой домейн има достъп

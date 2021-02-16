@@ -18,6 +18,8 @@ public class DataSourceConfig {
 
 	@Value("${spring.datasource.password:  }")
 	public String password;
+	
+	
 
 	@Bean
 	public DataSource getDataSource() {
