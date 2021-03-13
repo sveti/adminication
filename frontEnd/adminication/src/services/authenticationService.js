@@ -5,10 +5,10 @@ import { getUser } from "./userService";
 
 import { gateway, authenticationServiceName } from "../config.json";
 
-http.setJWT(getJWT());
-
 const apiEndpoint = gateway + "/" + authenticationServiceName;
 const tokenKey = "token";
+
+http.setJWT(getJWT());
 
 export async function login(username, password) {
   const { data } = await http.post(apiEndpoint + "/authenticate", {

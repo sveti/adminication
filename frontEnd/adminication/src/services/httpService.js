@@ -14,14 +14,14 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
-function setJWT(jwt) {
+export function setJWT(jwt) {
   axios.defaults.headers.common["Authorization"] = jwt;
 }
-
 const http = {
   get: axios.get,
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
+  setJWT,
 };
 export default http;
