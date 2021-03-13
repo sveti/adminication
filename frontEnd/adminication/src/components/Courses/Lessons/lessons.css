@@ -2,9 +2,12 @@
   border: none !important;
 }
 .accordion .accordion-item .title {
-  background-color: #d2c04e !important;
+  background-color: #e7d55d !important;
   color: #1a396b !important;
   font-weight: bold;
+}
+.accordion .accordion-item:nth-child(2n).active .title {
+  background-color: #ddcb58 !important;
 }
 
 .accordion .accordion-item.active .title {
@@ -13,9 +16,7 @@
 .accordion .accordion-item:nth-child(2n) .title {
   background-color: #eedd6d !important;
 }
-.accordion .accordion-item:nth-child(2n).active .title {
-  background-color: #d2c04e !important;
-}
+
 .lessonDescription {
   /* display: inline-block; */
   font-size: 1.2rem;
@@ -89,6 +90,10 @@ TD {
 .accordion .accordion-item.active .panel {
   max-height: fit-content !important;
 }
+.sumbitBtn {
+  background-color: #6ee1ff !important;
+}
+
 @media screen and (max-width: 800px) {
   .lessonsOfCourseContainer {
     margin: 4rem 1rem;

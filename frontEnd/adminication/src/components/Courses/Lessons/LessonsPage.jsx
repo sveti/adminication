@@ -5,7 +5,13 @@ import StartedCoursesTable from "../StartedCoursesTable";
 import { dynamicSort } from "../../../common/helper";
 
 function LessonsPage(props) {
-  const teacherId = props.location.lessonProps.teacherId;
+  let teacherId;
+  if (props.location) {
+    teacherId = props.location.lessonProps.teacherId;
+  } else {
+    teacherId = props.teacherId;
+  }
+
   const [courses, setCourses] = useState(null);
 
   useEffect(() => {
@@ -19,7 +25,7 @@ function LessonsPage(props) {
   return courses ? (
     <div className="lessonsOfCourseContainer">
       <StartedCoursesTable
-        message={"Please select a course"}
+        message={"Started courses"}
         courses={courses}
       ></StartedCoursesTable>
     </div>

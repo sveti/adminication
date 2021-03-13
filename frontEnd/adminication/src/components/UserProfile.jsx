@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 const UserProfile = ({ givenId, user, avatar }) => {
   return (
-    <div id={givenId} className="row wrapper">
+    <div id={givenId} className="row wrapper mx-2">
       <div className="col-sm-12 col-lg-6">
         <img src={avatar} className="img-fluid userImage" alt="User Avatar" />
       </div>

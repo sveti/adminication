@@ -20,7 +20,7 @@ const WelcomeScreen = ({ name, lastName, roleName, avatar }) => {
             activeClass="active"
             to="mainContent"
             smooth={true}
-            offset={-200}
+            offset={-150}
             duration={800}
           >
             <button className="welcomeButton">Click</button>

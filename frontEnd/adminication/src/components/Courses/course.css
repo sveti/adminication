@@ -1,11 +1,8 @@
 .singleCourse {
-  margin: 7rem 2rem 1rem 2rem;
+  margin: 7rem auto 2rem;
+  width: 50%;
   padding: 2rem;
-  background-color: #2b7fa2 !important;
-}
-.customBadges {
-  margin-right: 10px;
-  background-color: #e74c3c;
+  background-color: #6ee1ff !important;
 }
 
 .dataLabel {
@@ -15,28 +12,43 @@
 
 .courseData {
   text-align: left;
-  color: #fff;
+  color: #082b64;
 }
 
 .courseTitle {
   margin: 2rem 0;
   font-weight: bold;
+  color: #082b64;
+}
+.customBadges {
+  margin-right: 10px;
+  background-color: #e74c3c;
   color: #fff;
 }
-
 .courseData > p {
   margin-bottom: 0px;
 }
 
 @media screen and (max-width: 768px) {
   .singleCourse {
-    margin: 5rem 10px 10px 10px;
+    width: 90%;
+    margin: 5rem 1rem 10px 1rem;
+    padding: 10px;
   }
   .courseData {
     text-align: center;
+    padding-top: 10px;
   }
   .dataLabel {
     text-align: center;
     margin: 10px 0;
+  }
+  .backButton {
+    margin-bottom: 20px;
+  }
+  .space {
+    margin-bottom: 1rem;
+    border-top: 1px solid #082b64;
+    border-bottom: 1px solid #082b64;
   }
 }

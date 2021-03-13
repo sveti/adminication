@@ -121,7 +121,7 @@ class AddLesson extends Component {
             ></textarea>
           </div>
 
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn sumbitBtn">
             Submit
           </button>
         </form>

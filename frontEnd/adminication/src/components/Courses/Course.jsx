@@ -52,60 +52,58 @@ class Course extends Component {
       return (
         <React.Fragment>
           <div className="courseContainer wrapper singleCourse">
-            <h1>Course #{course.id}</h1>
-            <h2 className="courseTitle">{course.title}</h2>
+            <div>
+              <h1>Course #{course.id}</h1>
+              <h2 className="courseTitle">{course.title}</h2>
+            </div>
 
             <div className="row info-group">
-              <div className="col-sm-12 col-md-6 dataLabel">
+              <div className="col-6 dataLabel">
                 <h5>Level: </h5>
               </div>
-              <div className="col-sm-12 col-md-6 courseData">
-                {course.level}
-              </div>
+              <div className=" col-6 courseData">{course.level}</div>
             </div>
-            <div className="row info-group">
+            <div className="row info-group space">
               <div className="col-sm-12 col-md-6 dataLabel">
                 <h5>Teachers: </h5>
               </div>
               <div className="col-sm-12 col-md-6 courseData">
                 {course.teachers.map((teacher) => {
-                  return <p key={teacher}>{teacher}</p>;
+                  return (
+                    <p key={teacher} className="mb-3">
+                      {teacher}
+                    </p>
+                  );
                 })}
               </div>
             </div>
             <div className="row info-group">
-              <div className="col-sm-12 col-md-6 dataLabel">
+              <div className="col-6 dataLabel">
                 <h5>Classes per week: </h5>
               </div>
-              <div className="col-sm-12 col-md-6 courseData">
-                {course.startDate.length}
-              </div>
+              <div className="col-6 courseData">{course.startDate.length}</div>
             </div>
 
             <div className="row info-group">
-              <div className="col-sm-12 col-md-6 dataLabel">
+              <div className="col-6 dataLabel">
                 <h5>Duration: </h5>
               </div>
-              <div className="col-sm-12 col-md-6 courseData">
-                {course.duration} Weeks
-              </div>
+              <div className="col-6 courseData">{course.duration} Weeks</div>
             </div>
             <div className="row info-group">
-              <div className="col-sm-12 col-md-6 dataLabel">
+              <div className="col-6 dataLabel">
                 <h5>Start date: </h5>
               </div>
-              <div className="col-sm-12 col-md-6 courseData">
-                {this.getMinDate()}
-              </div>
+              <div className="col-6 courseData">{this.getMinDate()}</div>
             </div>
-            <div className="row info-group">
+            <div className="row info-group space">
               <div className="col-sm-12 col-md-6 dataLabel">
                 <h5>Shedule: </h5>
               </div>
               <div className="col-sm-12 col-md-6 courseData">
                 {course.startDate.map((startD, index) => {
                   return (
-                    <p key={startD}>
+                    <p key={startD} className="mb-3">
                       {this.convertDateToDay(startD)}{" "}
                       {course.startTime[index].slice(0, -3)} -
                       {course.endTime[index].slice(0, -3)}{" "}
@@ -115,20 +113,16 @@ class Course extends Component {
               </div>
             </div>
             <div className="row info-group">
-              <div className="col-sm-12 col-md-6 dataLabel">
+              <div className="col-6 dataLabel">
                 <h5>Number of signed up: </h5>
               </div>
-              <div className="col-sm-12 col-md-6 courseData">
-                {course.signedUp}
-              </div>
+              <div className="col-6 courseData">{course.signedUp}</div>
             </div>
             <div className="row info-group">
-              <div className="col-sm-12 col-md-6 dataLabel">
+              <div className="col-6 dataLabel">
                 <h5>Maximum number of students: </h5>
               </div>
-              <div className="col-sm-12 col-md-6 courseData">
-                {course.signUpLimit}
-              </div>
+              <div className="col-6 courseData">{course.signUpLimit}</div>
             </div>
 
             <div className="row info-group">
@@ -148,7 +142,7 @@ class Course extends Component {
           </div>
           <div>
             <Link to={"/courses/"}>
-              <button className="editButton">Back</button>
+              <button className="editButton backButton">Back</button>
             </Link>
           </div>
         </React.Fragment>
