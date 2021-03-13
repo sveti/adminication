@@ -10,7 +10,7 @@ public interface UserService {
 	
 	List<DisplayUserDTO> getUsers();
 	
-	DisplayUserDTO getUser(@Min(1) long id);
+	DisplayUserDTO getUser(String username);
 	
 
 }

@@ -33,7 +33,9 @@ class Course extends Component {
   }
 
   async loadCourse() {
-    const { data } = await getCourseWithDetails(this.props.match.params.id);
+    const { data } = await getCourseWithDetails(
+      this.props.match.params.courseId
+    );
     this.setState({ course: data, loading: false });
   }
 

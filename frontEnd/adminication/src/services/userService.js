@@ -11,8 +11,8 @@ export function getUsers() {
   return http.get(apiEndpoint);
 }
 
-export function getUser(userId) {
-  return http.get(usersUrl(userId));
+export function getUser(username) {
+  return http.get(usersUrl(username));
 }
 
 // export function saveMovie(movie) {

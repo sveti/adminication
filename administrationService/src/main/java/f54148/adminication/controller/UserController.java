@@ -28,9 +28,11 @@ public class UserController {
 		return userService.getUsers();
 	}
 	
-	@GetMapping(path = "/{id}")
-	public @ResponseBody DisplayUserDTO getDisplayUserDTO(@PathVariable("id") @Min(1) Long id) {
-		return userService.getUser(id);
+	@GetMapping(path = "/{username}")
+	public @ResponseBody DisplayUserDTO getDisplayUserDTO(@PathVariable("username") String username) {
+		return userService.getUser(username);
 	}
+	
+	
 	
 }

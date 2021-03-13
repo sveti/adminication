@@ -31,9 +31,9 @@ public class UserServiceImplementation implements UserService{
 	}
 
 	@Override
-	public DisplayUserDTO getUser(@Min(1) long id) {
+	public DisplayUserDTO getUser(String username) {
 		
-		DisplayUserDTO user = restTemplate.getForObject("http://databaseService/users/displayUserDTO/{id}",DisplayUserDTO.class, id);
+		DisplayUserDTO user = restTemplate.getForObject("http://databaseService/users/displayUserDTO/{username}",DisplayUserDTO.class, username);
 		return user;
 	}
 }

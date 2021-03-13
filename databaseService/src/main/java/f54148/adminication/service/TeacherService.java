@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.DisplayUserDTO;
@@ -70,8 +72,8 @@ public class TeacherService {
 	}
 
 	public boolean updateTeacher(Teacher t) {
-		if (teacherRepository.save(t) != null) {
 
+		if (teacherRepository.save(t) != null) {
 			return true;
 		} else {
 			return false;

@@ -14,7 +14,6 @@ import Content from "./Content";
 class TeacherIndex extends Component {
   state = {
     user: this.props.user,
-    id: this.props.match.params.id,
   };
 
   async componentDidMount() {

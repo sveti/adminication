@@ -137,8 +137,8 @@ public class UserService {
         
     }
 	
-	public DisplayUserDTO getCreateUserDTOById(@Min(1) Long userId) {
-		return convertToCreateUserDTO(getUserById(userId));
+	public DisplayUserDTO getCreateUserDTOByUsername(@Min(1) String username) {
+		return convertToCreateUserDTO(getUserByUsername(username));
 	}
 	
 

@@ -1,70 +1,51 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch, withRouter } from "react-router-dom";
 
-import "./App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowAltCircleUp } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer } from "react-toastify";
+import ScrollToTop from "react-scroll-up";
+
 import CoursesPage from "./components/Courses/CoursesPage";
 import Course from "./components/Courses/Course";
 import NotFound from "./components/notFound";
 import IndexPage from "./components/IndexPage";
 import Login from "./components/Login/Login";
+import Logout from "./components/Login/Logout";
 import Navbar from "./components/Header/Navbar";
-
-import ScrollToTop from "react-scroll-up";
-
-import { getUser } from "./services/userService";
-//import { authenticateUser } from "./services/authenticationService";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowAltCircleUp } from "@fortawesome/free-solid-svg-icons";
-import { ToastContainer } from "react-toastify";
 import LessonsOfCoursePage from "./components/Courses/Lessons/LessonsOfCoursePage";
 import LessonsPage from "./components/Courses/Lessons/LessonsPage";
 
+import { getUser } from "./services/userService";
+import { getCurrentUser } from "./services/authenticationService";
+
 import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 class App extends Component {
   state = {
-    user: {},
-    scrollClicked: false,
-    isAuthenticated: false,
+    user: null,
   };
 
-  async loadUser() {
-    //const id = window.location.pathname.split("/")[2];
-    const id = 11;
-    const { data } = await getUser(id);
-    this.setState({ user: data, isAuthenticated: true });
+  async loadUser(username) {
+    const { data } = await getUser(username);
+    this.setState({ user: data });
   }
 
-  // async authenticate(username, pass) {
-  //   // const { data } = await authenticateUser();
-  //   // console.log(data);
-  //   this.basicAuthorize(username, pass);
-  // }
-
-  loginRequest = (event) => {
-    event.preventDefault();
-    console.log(event.target.username.value);
-    console.log(event.target.password.value);
-    //this.authenticate(event.target.username.value, event.target.password.value);
-    this.loadUser();
-    this.props.history.push("/home/11");
-    this.forceUpdate();
+  loginRequest = async (username) => {
+    await this.loadUser(username);
+    this.props.history.push("/home");
   };
 
-  handleScroll = () => {
-    if (window.pageYOffset < 100) {
-      this.setState({ scrollClicked: false });
-    }
-  };
-
-  handleClick = () => {
-    this.setState({ srollClicked: true });
+  checkIfAuthenticated = () => {
+    const user = getCurrentUser();
+    this.setState({ user });
   };
 
   render() {
-    const { isAuthenticated, scrollClicked, user } = this.state;
+    const { user } = this.state;
 
-    if (!isAuthenticated) {
+    if (!user) {
       return (
         <div className="App">
           <main>
@@ -76,7 +57,7 @@ class App extends Component {
       return (
         <div className="App">
           <div className="navContainer">
-            <Navbar scrollClicked={scrollClicked} user={user}></Navbar>
+            <Navbar user={user}></Navbar>
           </div>
           <main>
             <Switch>
@@ -84,13 +65,14 @@ class App extends Component {
                 path="/login"
                 render={() => <Login loginRequest={this.loginRequest}></Login>}
               />
+              <Route path="/logout" component={Logout} />
               <Route
-                path="/home/:id"
+                path="/home"
                 render={(params) => (
                   <IndexPage {...params} user={user}></IndexPage>
                 )}
               />
-              <Route path="/courses/:id" component={Course} />
+              <Route path="/courses/:courseId" component={Course} />
               <Route
                 path="/courses"
                 render={() => (
@@ -118,7 +100,6 @@ class App extends Component {
               <FontAwesomeIcon
                 className="styledButtonUp"
                 icon={faArrowAltCircleUp}
-                onClick={this.handleClick}
               />
             </ScrollToTop>
             <ToastContainer

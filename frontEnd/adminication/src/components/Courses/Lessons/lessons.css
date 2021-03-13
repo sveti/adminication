@@ -58,7 +58,7 @@
   font-size: 1.5rem;
 }
 
-TR.alternate:nth-child(2) {
+TR.alternate:nth-child(2n) {
   border-top: 1px solid #eedd6d;
   border-bottom: 1px solid #eedd6d;
 }

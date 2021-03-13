@@ -58,9 +58,9 @@ public class UserController {
 		return userService.getUserById(id);
 	}
 	
-	@GetMapping(path = "/displayUserDTO/{userId}")
-	public @ResponseBody DisplayUserDTO getCreateUserDTO(@PathVariable("userId") @Min(1) Long userId) {
-		return userService.getCreateUserDTOById(userId);
+	@GetMapping(path = "/displayUserDTO/{username}")
+	public @ResponseBody DisplayUserDTO getCreateUserDTO(@PathVariable("username") @Min(1) String username) {
+		return userService.getCreateUserDTOByUsername(username);
 	}
 	
 	
