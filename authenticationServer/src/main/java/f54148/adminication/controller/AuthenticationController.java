@@ -53,27 +53,4 @@ public class AuthenticationController {
 		return "hi";
 	}
 
-//	@GetMapping(path = "/")
-//	public @ResponseBody String home(Authentication authentication) {
-//        User principal = (User) authentication.getPrincipal();
-//        String info = principal.getUsername();
-//		
-//		return ("<h1>Welcome ," + info + "<br>" + principal.getEndpoints() + "</h1>");
-//	}
-//
-//	@GetMapping(path = "/user")
-//	public @ResponseBody String user() {
-//		return ("<h1>Welcome User</h1>");
-//	}
-//
-//	@GetMapping(path = "/admin")
-//	public @ResponseBody String admin() {
-//		return ("<h1>Welcome Admin</h1>");
-//	}
-//
-//	@GetMapping(value = "/username")
-//	@ResponseBody
-//	public String currentUserName(Principal principal) {
-//		return principal.getName();
-//	}
 }
