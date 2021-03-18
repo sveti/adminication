@@ -15,10 +15,13 @@ import org.springframework.context.annotation.Lazy;
 
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.DisplayUserDTO;
+import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
+import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Teacher;
@@ -47,6 +50,8 @@ public class ModelMapperConfig {
 		 	modelMapper.addConverter(convertCoursetoUpcommingCourseDTO);
 		 	modelMapper.addConverter(convertCoursetoCourseWithDetailsDTO);
 		 	modelMapper.addConverter(convertCoursetoStartedCourseDTO);
+		 	modelMapper.addConverter(convertCoursetoFinshedCourseDTO);
+		 	modelMapper.addConverter(convertEnrollmenttoStudentGradesDTO);
 		 	
 		 	return modelMapper;
 	    }
@@ -176,7 +181,50 @@ public class ModelMapperConfig {
 	        }
 	    };
 	    
-	
+	    Converter<Course, FinshedCourseDTO> convertCoursetoFinshedCourseDTO = new Converter<Course, FinshedCourseDTO>()
+	    {
+	        public FinshedCourseDTO convert(MappingContext<Course, FinshedCourseDTO> context)
+	        {
+	        	
+	        	Course source = context.getSource();
+	        	FinshedCourseDTO destination = new FinshedCourseDTO();
+	        	
+	        	destination.setId(source.getId());
+	        	destination.setTitle(source.getTitle());
+	        	destination.setSignedUp(source.getEnrollments().size());
+	        	
+	        	int numberOfSetGrades =0;
+	        	
+	        	for(Enrollment e: source.getEnrollments()) {
+	        		if(e.getGrade()>0) {
+	        			numberOfSetGrades++;
+	        		}
+	        	}
+	        	
+	        	destination.setNumberOfSetGrades(numberOfSetGrades);
+	            return destination;
+	        }
+	    };
 
+	    
+	    Converter<Enrollment, StudentGradesDTO> convertEnrollmenttoStudentGradesDTO = new Converter<Enrollment, StudentGradesDTO>()
+	    {
+	        public StudentGradesDTO convert(MappingContext<Enrollment, StudentGradesDTO> context)
+	        {
+	        	
+	        	Enrollment source = context.getSource();
+	        	StudentGradesDTO destination = new StudentGradesDTO();
+	        	
+	        	destination.setId(source.getId());
+	        	destination.setStudentId(source.getStudent().getId());
+	        	destination.setCourseId(source.getCourse().getId());
+	        	destination.setUsername(source.getStudent().getUsername());
+	        	destination.setName(source.getStudent().getName());
+	        	destination.setLastName(source.getStudent().getLastName());
+	        	destination.setGrade(source.getGrade());
+	        	
+	            return destination;
+	        }
+	    };
 }
 

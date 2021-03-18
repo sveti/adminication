@@ -4,15 +4,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faTimesCircle,
-  faEdit,
-  faSave,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
   addAttendances,
   updateAttendances,
 } from "../../../services/attendanceService";
+
+import { upsert } from "../../../common/helper";
+
 import { toast } from "react-toastify";
+import EditSaveButton from "../../../common/EditSaveButton";
 
 class AddAttendesTable extends Component {
   state = {
@@ -21,25 +23,14 @@ class AddAttendesTable extends Component {
     lessonId: this.props.lessonId,
     attendances: [],
     visualAttended: [],
-    buttonText: "Save",
-    buttonIcon: faSave,
-    buttonClasses: "saveButton",
     mode: "save",
     addAttendance: false,
     notSaved: true,
   };
 
   handleAddAttendance = () => {
-    this.setState({ addAttendance: true });
+    this.setState({ addAttendance: true, mode: "save" });
   };
-
-  upsert(array, item) {
-    const i = array.findIndex(
-      (attendance) => attendance.studentId === item.studentId
-    );
-    if (i > -1) array[i] = item;
-    else array.push(item);
-  }
 
   handleClick = (attended, studentId, index) => {
     const { lessonId } = this.state;
@@ -52,29 +43,14 @@ class AddAttendesTable extends Component {
     attendance["studentId"] = studentId;
     attendance["attended"] = attended;
 
-    this.upsert(attendances, attendance);
+    upsert(attendances, attendance, "studentId");
     visualAttended[index] = attended;
 
     this.setState({ visualAttended: visualAttended, attendances: attendances });
   };
 
-  updateButton = () => {
-    const { buttonText } = this.state;
-    if (buttonText === "Edit") {
-      this.setState({
-        buttonText: "Save",
-        buttonIcon: faSave,
-        buttonClasses: "saveButton",
-        mode: "save",
-      });
-    } else {
-      this.setState({
-        buttonText: "Edit",
-        buttonIcon: faEdit,
-        buttonClasses: "editButton",
-        mode: "display",
-      });
-    }
+  editAttendances = () => {
+    this.setState({ mode: "save" });
   };
 
   saveAttendance = () => {
@@ -91,6 +67,7 @@ class AddAttendesTable extends Component {
               ) {
                 this.setState({
                   notSaved: false,
+                  mode: "edit",
                 });
                 toast.success(response.data, {
                   position: "top-center",
@@ -101,7 +78,6 @@ class AddAttendesTable extends Component {
                   draggable: true,
                   progress: undefined,
                 });
-                this.updateButton();
               } else {
                 this.setState({
                   successMessage: "",
@@ -126,6 +102,7 @@ class AddAttendesTable extends Component {
             (response) => {
               this.setState({
                 notSaved: false,
+                mode: "edit",
               });
               toast.success(response.data, {
                 position: "top-center",
@@ -136,7 +113,6 @@ class AddAttendesTable extends Component {
                 draggable: true,
                 progress: undefined,
               });
-              this.updateButton();
             },
             (error) => {
               toast.error(error.response.data.error, {
@@ -152,7 +128,6 @@ class AddAttendesTable extends Component {
           );
         }
       } else {
-        this.updateButton();
       }
     } else {
       toast.error("Please fill in the attendances of all of the students!", {
@@ -168,14 +143,7 @@ class AddAttendesTable extends Component {
   };
 
   render() {
-    const {
-      buttonText,
-      buttonIcon,
-      buttonClasses,
-      visualAttended,
-      addAttendance,
-      mode,
-    } = this.state;
+    const { visualAttended, addAttendance, mode } = this.state;
 
     return (
       <div>
@@ -248,14 +216,11 @@ class AddAttendesTable extends Component {
               </Tbody>
             </Table>
             <div className="editButtonContainer">
-              <button className={buttonClasses} onClick={this.saveAttendance}>
-                <FontAwesomeIcon
-                  id="editButton"
-                  icon={buttonIcon}
-                  className="editIcon"
-                />
-                {buttonText}
-              </button>
+              <EditSaveButton
+                onEdit={this.editAttendances}
+                onSave={this.saveAttendance}
+                initialState={"save"}
+              ></EditSaveButton>
             </div>
           </div>
         ) : null}

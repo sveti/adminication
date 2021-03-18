@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AttendanceDTO;
+import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Student;
@@ -74,6 +76,22 @@ public class EnrollmentController {
 	@GetMapping(path = "/enrollments")
 	public @ResponseBody List<Enrollment> getAllEnrollments() {
 		return enrollmentservice.getEnrollments();
+	}
+	
+	@GetMapping(path = "/{courseId}/grades")
+	public @ResponseBody List<StudentGradesDTO> getEnrollmentsGrades(@PathVariable("courseId") Long courseId) {
+		return enrollmentservice.getStudentGradesDTOOfCourse(courseId);
+	}
+	
+	@PutMapping(path = "/updateGrades")
+	public @ResponseBody String updateAttendances(@RequestBody List<StudentGradesDTO> studentsGrades) {
+
+		if (enrollmentservice.updateStudentGrades(studentsGrades)) {
+			return "Successfully updated grades!";
+		} else {
+			return "An error has occured!";
+		}
+
 	}
 
 }

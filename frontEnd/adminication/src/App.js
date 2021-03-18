@@ -21,6 +21,8 @@ import { getCurrentUser } from "./services/authenticationService";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import Grading from "./components/Courses/Grading/Grading";
+import GradingTable from "./components/Courses/Grading/GradingTable";
 
 class App extends Component {
   state = {
@@ -46,6 +48,9 @@ class App extends Component {
     const { user } = this.state;
 
     if (!user) {
+      if (window.location.pathname !== "/login") {
+        window.location = "/login";
+      }
       return (
         <div className="App">
           <main>
@@ -79,7 +84,6 @@ class App extends Component {
                   <CoursesPage id={this.state.user.id}></CoursesPage>
                 )}
               />
-
               <Route
                 path="/lessons/:courseId"
                 render={(params) => (
@@ -89,6 +93,17 @@ class App extends Component {
               <Route
                 path="/lessons"
                 render={(params) => <LessonsPage {...params}></LessonsPage>}
+              />
+
+              <Route
+                path="/grading/:courseId"
+                render={(params) => <GradingTable {...params}></GradingTable>}
+              />
+              <Route
+                path="/grading"
+                render={(params) => (
+                  <Grading teacherId={user.id} {...params}></Grading>
+                )}
               />
 
               <Redirect from="/" exact to="/login" />

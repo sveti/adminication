@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import BackButton from "../../common/BackButton";
 import { getCourseWithDetails } from "../../services/courseService";
 
 import "./course.css";
@@ -141,9 +141,7 @@ class Course extends Component {
             </div>
           </div>
           <div>
-            <Link to={"/courses/"}>
-              <button className="editButton backButton">Back</button>
-            </Link>
+            <BackButton></BackButton>
           </div>
         </React.Fragment>
       );

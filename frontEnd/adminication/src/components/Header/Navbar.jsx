@@ -64,11 +64,24 @@ export default function Navbar(props) {
                 to={{
                   pathname: "/lessons",
                   lessonProps: {
-                    teacherId: 11,
+                    teacherId: user.id,
                   },
                 }}
               >
                 Lessons
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to={{
+                  pathname: "/grading",
+                  gradingProps: {
+                    teacherId: user.id,
+                  },
+                }}
+              >
+                Grading
               </Link>
             </li>
             <li className="nav-item">

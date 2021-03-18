@@ -5,12 +5,20 @@ import java.util.List;
 
 import javax.validation.constraints.Min;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
+import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
+import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.service.CourseService;
 import lombok.AllArgsConstructor;
@@ -56,6 +64,21 @@ public class CourseServiceImplementation  implements CourseService{
 	public List<StartedCourseDTO> getSubStartedCoursesByTeacherId(@Min(1) Long teacherId) {
 		StartedCourseDTO subStartedCourses[] = restTemplate.getForObject("http://databaseService/courses/{idTeacher}/sub/started",StartedCourseDTO[].class, teacherId);
 		return Arrays.asList(subStartedCourses);
+	}
+
+	@Override
+	public List<FinshedCourseDTO> getFinishedCoursesOfTeacher(@Min(1) Long teacherId) {
+		FinshedCourseDTO finishedCourses[] = restTemplate.getForObject("http://databaseService/courses/{idTeacher}/finished",FinshedCourseDTO[].class, teacherId);
+		return Arrays.asList(finishedCourses);
+	}
+
+	@Override
+	public String updateGrades(List<StudentGradesDTO> studentGrades) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<List<StudentGradesDTO>> requestEntity = new HttpEntity<>(studentGrades, headers);
+		ResponseEntity<String> response = restTemplate.exchange("http://databaseService/enrollments/updateGrades", HttpMethod.PUT,requestEntity,String.class);
+		return response.getBody();
 	}
 
 }

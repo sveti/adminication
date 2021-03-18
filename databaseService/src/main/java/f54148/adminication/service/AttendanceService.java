@@ -89,6 +89,7 @@ public class AttendanceService {
 	public Attendance convertToAttendance(AttendanceDTO attDTO) {
 		Attendance attendace =  modelMapper.map(attDTO, Attendance.class);
 		return attendace;
+		
 	
 	}
 	
@@ -97,7 +98,10 @@ public class AttendanceService {
 		
 		for(AttendanceDTO dto: attendaceDto) {
 			
-			att.add(convertToAttendance(dto));
+			Attendance a = getAttendanceById(dto.getId());
+			a.setAttended(dto.getAttended());
+			
+			att.add(a);
 		
 		}
 		

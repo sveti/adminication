@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
 import f54148.adminication.dto.StudentAttendanceDTO;
+import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.service.StudentService;
 import lombok.AllArgsConstructor;
 
@@ -23,6 +24,12 @@ public class StudentServiceImplementation implements StudentService {
 	@Override
 	public List<StudentAttendanceDTO> getStudentsOfCourse(@Min(1) long idCourse) {
 		StudentAttendanceDTO students[] = restTemplate.getForObject("http://databaseService/courses/{idCourse}/students",StudentAttendanceDTO[].class, idCourse);
+		return Arrays.asList(students);
+	}
+
+	@Override
+	public List<StudentGradesDTO> getGradesOfStudentsOfCourse(@Min(1) Long courseId) {
+		StudentGradesDTO students[] = restTemplate.getForObject("http://databaseService/enrollments/{courseId}/grades",StudentGradesDTO[].class, courseId);
 		return Arrays.asList(students);
 	}
 

@@ -45,7 +45,7 @@ export default function StartedCoursesTable(props) {
                       pathname: "/lessons/" + course.id,
                       lessonProps: {
                         courseId: course.id,
-                        teacherId: 11,
+                        teacherId: props.teacherId,
                       },
                     }}
                   >

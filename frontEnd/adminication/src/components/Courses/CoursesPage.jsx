@@ -40,7 +40,12 @@ class CoursesPage extends Component {
   };
 
   render() {
-    const { startedCourses, upCommingCourses, subStartedCourses } = this.state;
+    const {
+      id,
+      startedCourses,
+      upCommingCourses,
+      subStartedCourses,
+    } = this.state;
 
     let started,
       upcomming,
@@ -52,6 +57,7 @@ class CoursesPage extends Component {
           <StartedCoursesTable
             message={"Started courses"}
             courses={startedCourses}
+            teacherId={id}
           ></StartedCoursesTable>
         </div>
       );

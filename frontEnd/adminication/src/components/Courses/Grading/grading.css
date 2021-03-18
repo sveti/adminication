@@ -1,0 +1,30 @@
+.gradingTable{
+
+    margin-top: 100px;
+}
+
+.gradesTableContainer{
+    margin: 2rem auto;
+    width: 60%;
+}
+
+
+.notGraded{
+  margin: 0px !important;
+  padding: 0.4rem 0.5rem !important;
+}
+
+.saveButton:disabled{
+  background-color: #808080;
+}
+
+@media screen and (max-width: 800px) {
+    .gradesTableContainer {
+        width: 100%;
+      padding: 10px;
+    }
+    .notGraded{
+
+      padding: 10px !important;
+    }
+  }

@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AttendanceDTO;
+import f54148.adminication.dto.StudentAttendanceDTO;
+import f54148.adminication.dto.StudentGradesDTO;
+import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Student;
@@ -22,11 +27,27 @@ public class EnrollmentService {
 	private final StudentService studentService;
 
 	private final CourseService courseService;
+	
+	private final ModelMapper modelMapper;
 
 	public List<Enrollment> getEnrollments() {
 		List<Enrollment> enrollmentList = new ArrayList<>();
 		enrollmentRepository.findAll().forEach(enrollmentList::add);
 		return enrollmentList;
+	}
+	
+	public List<Enrollment> getEnrollmentsByCourseId(Long courseId) {
+		List<Enrollment> enrollmentList = new ArrayList<>();
+		enrollmentRepository.findAll().forEach(enrollmentList::add);
+		
+		List<Enrollment> courseEnrollment = new ArrayList<>();
+		for(Enrollment e:enrollmentList) {
+			if(e.getCourse().getId()==courseId) {
+				courseEnrollment.add(e);
+			}
+		}
+		
+		return courseEnrollment;
 	}
 
 	public Enrollment getEnrollmentById(Long enrollmentId) {
@@ -92,5 +113,54 @@ public class EnrollmentService {
 			return null;
 		}
 	}
+	
+	public StudentGradesDTO convertToStudentAttendanceDTO(Enrollment enrollment) {
+		
+		StudentGradesDTO studentDTO =  modelMapper.map(enrollment, StudentGradesDTO.class);
+		return studentDTO;
+	}
+	
+	public List<StudentGradesDTO> getStudentGradesDTOOfCourse(Long courseId){
+			
+		List<Enrollment> allEnrollments = getEnrollmentsByCourseId(courseId);
+		
+		List<StudentGradesDTO> students = new ArrayList<>();
+		
+		for(Enrollment e: allEnrollments) {
+			
+			students.add(convertToStudentAttendanceDTO(e));
+		}
+		
+		return students;
+		
+	}
+	
+	public Enrollment convertToEnrollments(StudentGradesDTO dto) {
+		Enrollment enrollment =  modelMapper.map(dto, Enrollment.class);
+		return enrollment;
+	
+	}
+
+	public boolean updateStudentGrades(List<StudentGradesDTO> studentsGrades) {
+	List <Enrollment> enrollments = new ArrayList<>();
+		
+		for(StudentGradesDTO dto: studentsGrades) {
+			
+			enrollments.add(convertToEnrollments(dto));
+		
+		}
+		
+		try {
+			for(Enrollment e: enrollments) {
+				updateEnrollment(e);
+			}
+			return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
+		
+	}
+	
 
 }

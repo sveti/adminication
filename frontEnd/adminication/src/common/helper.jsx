@@ -13,3 +13,16 @@ export function dynamicSort(property) {
     return result * sortOrder;
   };
 }
+
+export function upsert(array, item, keyName) {
+  const i = array.findIndex((member) => member[keyName] === item[keyName]);
+  if (i > -1) array[i] = item;
+  else array.push(item);
+}
+
+export function updateObject(array, item, keyName, propertyToChange, newValue) {
+  const i = array.findIndex((member) => member[keyName] === item[keyName]);
+  if (i > -1) {
+    array[i][propertyToChange] = newValue;
+  }
+}

@@ -10,8 +10,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.CourseWithDetailsDTO;
+import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
+import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
@@ -269,6 +271,21 @@ public class CourseService {
 		
 		return startedList;
 	}
+	public FinshedCourseDTO convertToFinshedCourseDTO(Course c) {
+		FinshedCourseDTO finishedCourse =  modelMapper.map(c, FinshedCourseDTO.class);
+		return finishedCourse;
+	}
+	
+	public List<FinshedCourseDTO> getFinshedCourseDTOByTeacherId(Long idTeacher) {
+		List<Course> courses = getCoursesByStatusAndTeacherId(CourseStatus.FINISHED,idTeacher);
+		
+		List<FinshedCourseDTO> finshedList = new ArrayList<FinshedCourseDTO>();
+		for(Course c: courses) {
+			finshedList.add(convertToFinshedCourseDTO(c));	
+		}
+		
+		return finshedList;
+	}
 
 	public List<StartedCourseDTO> getSubStartedCourseDTOByTeacherId(Long idTeacher) {
 		List <Course> courses = teacherService.getsubstituteCoursesByTeacherId(idTeacher);
@@ -310,6 +327,8 @@ public class CourseService {
 		return studentsDTO;
 		
 	}
+	
+
 	
 	
 }

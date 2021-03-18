@@ -6,7 +6,7 @@ import { dynamicSort } from "../../../common/helper";
 
 function LessonsPage(props) {
   let teacherId;
-  if (props.location) {
+  if (props.location && props.location.lessonProps) {
     teacherId = props.location.lessonProps.teacherId;
   } else {
     teacherId = props.teacherId;
@@ -27,6 +27,7 @@ function LessonsPage(props) {
       <StartedCoursesTable
         message={"Started courses"}
         courses={courses}
+        teacherId={teacherId}
       ></StartedCoursesTable>
     </div>
   ) : (

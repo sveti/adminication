@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
+import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
@@ -172,6 +173,11 @@ public class CourseController {
 	public @ResponseBody List<StartedCourseDTO> getStartedCourseDTOByTeacherId(@PathVariable("idTeacher") Long idTeacher) {
 		
 		return courseService.getStartedCourseDTOByTeacherId(idTeacher);
+	}
+	
+	@GetMapping(path = "/{idTeacher}/finished")
+	public @ResponseBody List<FinshedCourseDTO> getFinshedCourseDTOByTeacherId(@PathVariable("idTeacher") Long idTeacher) {
+		return courseService.getFinshedCourseDTOByTeacherId(idTeacher);
 	}
 	
 	@GetMapping(path = "/{idTeacher}/sub/started")
