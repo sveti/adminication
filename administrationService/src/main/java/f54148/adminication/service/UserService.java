@@ -11,6 +11,10 @@ public interface UserService {
 	List<DisplayUserDTO> getUsers();
 	
 	DisplayUserDTO getUser(String username);
+
+	String validateEmail(String email);
+
+	String validateUsername(String username);
 	
 
 }

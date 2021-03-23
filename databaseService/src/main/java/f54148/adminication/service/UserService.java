@@ -140,6 +140,24 @@ public class UserService {
 	public DisplayUserDTO getCreateUserDTOByUsername(@Min(1) String username) {
 		return convertToCreateUserDTO(getUserByUsername(username));
 	}
+
+	public boolean emailExists(String email) {
+		Optional<User> opUser = userRepository.findByEmail(email);
+		if (opUser.isPresent()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean usernameExists(String username) {
+		Optional<User> opUser = userRepository.findByUsername(username);
+		if (opUser.isPresent()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 
 	

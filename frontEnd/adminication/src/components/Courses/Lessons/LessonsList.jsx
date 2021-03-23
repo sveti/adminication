@@ -8,13 +8,14 @@ import Description from "./Description";
 
 export default function LessonsList(props) {
   const { lessons, attendances, students } = props;
-
   return (
     <div className="lessonsAccordion">
       <Accordion atomic={true}>
         {lessons.map((lesson) => {
+          ///are there attendances for this lesson
           return attendances.filter((a) => a.lessonId === lesson.id).length >
             0 ? (
+            ///edit existing attendances
             <AccordionItem key={lesson.id} id={lesson.id} title={lesson.date}>
               <div className="lessonContent">
                 <Description
@@ -25,15 +26,14 @@ export default function LessonsList(props) {
                 <AttendanceTable
                   courseId={lesson.courseId}
                   students={students}
-                  attendances={
-                    attendances
-                      ? attendances.filter((a) => a.lessonId === lesson.id)
-                      : null
-                  }
+                  attendances={attendances.filter(
+                    (a) => a.lessonId === lesson.id
+                  )}
                 ></AttendanceTable>
               </div>
             </AccordionItem>
           ) : (
+            ///there aren't any attendances => add attendances component
             <AccordionItem key={lesson.id} title={lesson.date}>
               <div className="lessonContent">
                 <Description
@@ -44,11 +44,7 @@ export default function LessonsList(props) {
                   courseId={lesson.courseId}
                   students={students}
                   lessonId={lesson.id}
-                  attendances={
-                    attendances
-                      ? attendances.filter((a) => a.lessonId === lesson.id)
-                      : null
-                  }
+                  attendances={null}
                 ></AddAttendesTable>
               </div>
             </AccordionItem>

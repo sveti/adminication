@@ -93,5 +93,25 @@ public class UserController {
 	public @ResponseBody List<Draft> getDraftsByUser(@PathVariable("id") Long id) {
 		return userService.getDraftsByUser(id);
 	}
+	
+	@GetMapping(path = "/validateEmail/{email}")
+	public @ResponseBody String validateEmail(@PathVariable("email") String email) {
+
+		if (userService.emailExists(email)) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
+	
+	@GetMapping(path = "/validateUsername/{username}")
+	public @ResponseBody String validateUsername(@PathVariable("username") String username) {
+
+		if (userService.usernameExists(username)) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
 
 }

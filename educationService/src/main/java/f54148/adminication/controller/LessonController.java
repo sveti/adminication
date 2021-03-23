@@ -33,9 +33,9 @@ public class LessonController {
 		return lessonService.getLessonDTO(lessonId);
 	}
 	
-	@GetMapping(path = "/{teacherId}/{courseId}")
-	public @ResponseBody List<LessonDTO> getUpcommingCoursesByTeacherId(@PathVariable("teacherId") @Min(1) Long teacherId,@PathVariable("courseId") @Min(1) Long courseId) {
-		return lessonService.getLessonsByTeacherIdAndCourseId(teacherId, courseId);
+	@GetMapping(path = "/{courseId}/lessons")
+	public @ResponseBody List<LessonDTO> getLessonsByCourseId(@PathVariable("courseId") @Min(1) Long courseId) {
+		return lessonService.getLessonsByCourseId(courseId);
 	}
 	
 	@PostMapping(path = "/add")
@@ -50,8 +50,6 @@ public class LessonController {
 	
 	@PutMapping(path = "/updateDescription")
 	public @ResponseBody String updateDescription(@RequestBody UpdateLessonDescriptionDTO updateLessonDTO) {
-		System.out.println("=========Controller=======");
-		System.out.println(updateLessonDTO);
 		return lessonService.updateLessonDescription(updateLessonDTO);
 	}
 }

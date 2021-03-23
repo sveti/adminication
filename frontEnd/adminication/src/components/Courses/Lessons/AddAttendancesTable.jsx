@@ -6,15 +6,14 @@ import {
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-import {
-  addAttendances,
-  updateAttendances,
-} from "../../../services/attendanceService";
+import { addAttendances } from "../../../services/attendanceService";
+import { getAttendancesByLessonId } from "../../../services/lessonService";
 
 import { upsert } from "../../../common/helper";
 
 import { toast } from "react-toastify";
 import EditSaveButton from "../../../common/EditSaveButton";
+import AttendanceTable from "./AttendanceTable";
 
 class AddAttendesTable extends Component {
   state = {
@@ -23,13 +22,30 @@ class AddAttendesTable extends Component {
     lessonId: this.props.lessonId,
     attendances: [],
     visualAttended: [],
-    mode: "save",
     addAttendance: false,
-    notSaved: true,
+    submittedAttendance: false,
+    savedAttendances: [],
+  };
+
+  validation = () => {
+    if (this.state.students.length === this.state.attendances.length) {
+      return true;
+    } else {
+      toast.error("Please fill in the attendances of all of the students!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+    return false;
   };
 
   handleAddAttendance = () => {
-    this.setState({ addAttendance: true, mode: "save" });
+    this.setState({ addAttendance: true });
   };
 
   handleClick = (attended, studentId, index) => {
@@ -49,88 +65,36 @@ class AddAttendesTable extends Component {
     this.setState({ visualAttended: visualAttended, attendances: attendances });
   };
 
-  editAttendances = () => {
-    this.setState({ mode: "save" });
+  editAttendances = () => {};
+
+  getSavedAttendances = async () => {
+    const { data } = await getAttendancesByLessonId(this.state.lessonId);
+    this.setState({ savedAttendances: data });
   };
 
-  saveAttendance = () => {
-    const { notSaved, attendances, students, mode } = this.state;
+  saveAttendance = async () => {
+    const { attendances } = this.state;
 
-    if (students.length === attendances.length) {
-      if (mode === "save") {
-        if (notSaved) {
-          addAttendances(this.state.attendances).then(
-            (response) => {
-              if (
-                response.status === 200 &&
-                response.data !== "An error has occured!"
-              ) {
-                this.setState({
-                  notSaved: false,
-                  mode: "edit",
-                });
-                toast.success(response.data, {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                });
-              } else {
-                this.setState({
-                  successMessage: "",
-                  errorMessage: response.data,
-                });
-              }
-            },
-            (error) => {
-              toast.error(error.response.data.error, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
-            }
-          );
-        } else {
-          updateAttendances(this.state.attendances).then(
-            (response) => {
-              this.setState({
-                notSaved: false,
-                mode: "edit",
-              });
-              toast.success(response.data, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
-            },
-            (error) => {
-              toast.error(error.response.data.error, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
-            }
-          );
-        }
-      } else {
-      }
+    const { data } = await addAttendances(attendances);
+    if (data !== "An error has occured!") {
+      await this.getSavedAttendances();
+
+      this.setState({
+        submittedAttendance: true,
+        addAttendance: false,
+      });
+
+      toast.success(data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
-      toast.error("Please fill in the attendances of all of the students!", {
+      toast.error("An error has occured", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -143,21 +107,24 @@ class AddAttendesTable extends Component {
   };
 
   render() {
-    const { visualAttended, addAttendance, mode } = this.state;
+    const { visualAttended, addAttendance, submittedAttendance } = this.state;
 
     return (
       <div>
-        <div>
-          <h4 className={addAttendance === false ? "" : "d-none"}>
-            No attendances for this lecture
-          </h4>
-          <button
-            className={addAttendance === false ? "welcomeButton" : "d-none"}
-            onClick={() => this.handleAddAttendance()}
-          >
-            Add attendances
-          </button>
-        </div>
+        {!submittedAttendance ? (
+          <div>
+            <h4 className={addAttendance === false ? "" : "d-none"}>
+              No attendances for this lecture
+            </h4>
+            <button
+              className={addAttendance === false ? "welcomeButton" : "d-none"}
+              onClick={() => this.handleAddAttendance()}
+            >
+              Add attendances
+            </button>
+          </div>
+        ) : null}
+
         {addAttendance ? (
           <div>
             <h1>Attendances</h1>
@@ -180,7 +147,6 @@ class AddAttendesTable extends Component {
                         <button
                           className="btn"
                           onClick={() => this.handleClick(true, s.id, index)}
-                          disabled={mode === "save" ? false : true}
                         >
                           <FontAwesomeIcon
                             className={
@@ -196,7 +162,6 @@ class AddAttendesTable extends Component {
                         <button
                           className="btn"
                           onClick={() => this.handleClick(false, s.id, index)}
-                          disabled={mode === "save" ? false : true}
                         >
                           <FontAwesomeIcon
                             className={
@@ -220,9 +185,18 @@ class AddAttendesTable extends Component {
                 onEdit={this.editAttendances}
                 onSave={this.saveAttendance}
                 initialState={"save"}
+                validation={this.validation}
               ></EditSaveButton>
             </div>
           </div>
+        ) : null}
+        {submittedAttendance ? (
+          <AttendanceTable
+            courseId={this.state.courseId}
+            students={this.state.students}
+            lessonId={this.state.lessonId}
+            attendances={this.state.savedAttendances}
+          ></AttendanceTable>
         ) : null}
       </div>
     );

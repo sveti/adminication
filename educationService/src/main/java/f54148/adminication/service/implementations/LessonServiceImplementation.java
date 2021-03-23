@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
+import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
+import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 import f54148.adminication.service.LessonService;
 import lombok.AllArgsConstructor;
@@ -32,11 +34,7 @@ public class LessonServiceImplementation implements LessonService{
 		return lessonDTO;
 	}
 
-	@Override
-	public List<LessonDTO> getLessonsByTeacherIdAndCourseId(@Min(1) long idTeacher, @Min(1) long idCourse) {
-		LessonDTO lessons[] = restTemplate.getForObject("http://databaseService/courses/lessons/{idTeacher}/{idCourse}",LessonDTO[].class, idTeacher,idCourse);
-		return Arrays.asList(lessons);
-	}
+
 
 	@Override
 	public String addLesson(LessonDTO lesson) {
@@ -53,4 +51,11 @@ public class LessonServiceImplementation implements LessonService{
 		return response.getBody();
 	}
 
+	@Override
+	public List<LessonDTO> getLessonsByCourseId(@Min(1) Long courseId) {
+		LessonDTO lessons[] = restTemplate.getForObject("http://databaseService/courses/lessons/{courseId}/lessons",LessonDTO[].class, courseId);
+		return Arrays.asList(lessons);
+	}
+
+	
 }

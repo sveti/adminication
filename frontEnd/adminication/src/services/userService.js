@@ -3,8 +3,8 @@ import { gateway, administrationServiceName } from "../config.json";
 
 const apiEndpoint = gateway + "/" + administrationServiceName + "/users/";
 
-function usersUrl(id) {
-  return `${apiEndpoint}${id}`;
+function usersUrl(username) {
+  return `${apiEndpoint}${username}`;
 }
 
 export function getUsers() {
@@ -15,16 +15,10 @@ export function getUser(username) {
   return http.get(usersUrl(username));
 }
 
-// export function saveMovie(movie) {
-//   if (movie._id) {
-//     const body = { ...movie };
-//     delete body._id;
-//     return http.put(movieUrl(movie._id), body);
-//   }
+export function checkIfEmailExists(email) {
+  return http.get(apiEndpoint + "validateEmail/" + email);
+}
 
-//   return http.post(apiEndpoint, movie);
-// }
-
-// export function deleteMovie(movieId) {
-//   return http.delete(movieUrl(movieId));
-// }
+export function checkIfUsernameExists(username) {
+  return http.get(apiEndpoint + "validateUsername/" + username);
+}

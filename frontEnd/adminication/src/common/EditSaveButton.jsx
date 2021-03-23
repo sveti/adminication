@@ -18,28 +18,38 @@ class EditSaveButton extends Component {
       }
     }
   }
-  updateButton = () => {
+
+  setSaveButton = () => {
+    this.setState({
+      buttonText: "Save",
+      buttonIcon: faSave,
+      buttonClasses: "saveButton",
+    });
+  };
+
+  setEditButton = () => {
+    this.setState({
+      buttonText: "Edit",
+      buttonIcon: faEdit,
+      buttonClasses: "editButton",
+    });
+  };
+
+  updateButton = async () => {
     const { buttonText } = this.state;
+
     if (buttonText === "Edit") {
       if (this.props.onEdit) {
         this.props.onEdit();
       }
-
-      this.setState({
-        buttonText: "Save",
-        buttonIcon: faSave,
-        buttonClasses: "saveButton",
-      });
+      this.setSaveButton();
     } else {
-      if (this.props.onSave) {
-        this.props.onSave();
+      if (await this.props.validation()) {
+        if (this.props.onSave) {
+          this.props.onSave();
+        }
+        this.setEditButton();
       }
-
-      this.setState({
-        buttonText: "Edit",
-        buttonIcon: faEdit,
-        buttonClasses: "editButton",
-      });
     }
   };
   render() {

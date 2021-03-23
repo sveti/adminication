@@ -8,7 +8,22 @@ class Description extends Component {
     description: this.props.description,
     lessonId: this.props.lessonId,
     editable: false,
-    changedDescription: "",
+  };
+
+  validation = () => {
+    if (this.state.description.length > 0) return true;
+    else {
+      toast.error("Description should be longer than 0 characters!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return false;
+    }
   };
 
   onEditClick = () => {
@@ -16,14 +31,13 @@ class Description extends Component {
   };
 
   onChange = (event) => {
-    this.setState({ changedDescription: event.target.value });
+    this.setState({ description: event.target.value });
   };
 
   onSaveClick = () => {
-    const { changedDescription } = this.state;
     let lesson = {
       id: this.state.lessonId,
-      description: this.state.changedDescription,
+      description: this.state.description,
     };
     updateLessonDescription(lesson).then(
       (response) => {
@@ -41,7 +55,6 @@ class Description extends Component {
             progress: undefined,
           });
           this.setState({
-            description: changedDescription,
             editable: false,
           });
         } else {
@@ -82,7 +95,7 @@ class Description extends Component {
             className="form-control"
             id="exampleFormControlTextarea1"
             rows="3"
-            defaultValue={description}
+            value={description}
             onChange={this.onChange}
           ></textarea>
         </div>
@@ -95,6 +108,7 @@ class Description extends Component {
         <EditSaveButton
           onEdit={this.onEditClick}
           onSave={this.onSaveClick}
+          validation={this.validation}
         ></EditSaveButton>
       </div>
     );

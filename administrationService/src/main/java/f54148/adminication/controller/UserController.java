@@ -34,5 +34,15 @@ public class UserController {
 	}
 	
 	
+	@GetMapping(path = "/validateEmail/{email}")
+	public @ResponseBody String checkIfEmailExists(@PathVariable("email") String email) {
+		return userService.validateEmail(email);
+	}
+	
+	@GetMapping(path = "/validateUsername/{username}")
+	public @ResponseBody String checkIfUsernameExists(@PathVariable("username") String username) {
+		return userService.validateUsername(username);
+	}
+	
 	
 }

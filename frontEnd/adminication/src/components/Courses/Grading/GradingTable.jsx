@@ -32,6 +32,14 @@ class GradingTable extends Component {
     this.loadStudents();
   };
 
+  validation = () => {
+    if (this.errorsInGrades) {
+      return this.errorsInGrades.size === 0 ? true : false;
+    } else {
+      return true;
+    }
+  };
+
   validateGrade = (grade) => {
     return grade >= 2 && grade <= 6;
   };
@@ -152,6 +160,7 @@ class GradingTable extends Component {
               onEdit={this.editGrades}
               onSave={this.saveGrades}
               disabled={errorsInGrades.size !== 0}
+              validation={this.validation}
             ></EditSaveButton>
           </div>
         </div>

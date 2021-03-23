@@ -1,7 +1,6 @@
 .content {
   box-sizing: border-box;
   min-height: 100vh;
-  background-color: white;
   margin-top: 100px;
 }
 
@@ -10,7 +9,7 @@
 }
 
 .wrapper {
-  background-color: #e74c3c;
+  background-color: #eedd6d;
   padding: 2rem;
   border-radius: 40px;
   -webkit-box-shadow: 5px 5px 18px 5px rgba(118, 118, 118, 0.31);
@@ -27,7 +26,6 @@
 
 .userData {
   display: inline-block;
-  color: #fff;
 }
 .identity {
   display: inline-block;
@@ -51,6 +49,13 @@
 
 .editIcon {
   margin-right: 5px;
+}
+
+.editButtonContainer {
+  margin: auto;
+}
+.editedInformaton {
+  display: inline-block !important;
 }
 
 @media screen and (max-width: 991px) {

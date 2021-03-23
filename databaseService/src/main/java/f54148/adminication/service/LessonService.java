@@ -163,14 +163,14 @@ public class LessonService {
 		return addLesson(convertToLesson(lessonDTO));
 	}
 	
-	public List<LessonDTO> getLessonsByTeacherIdAndCourseId(Long teacherId, Long courseId){
+	public List<LessonDTO> getLessonsDTOByCourseId(Long courseId){
 		
 		List<Lesson> allCourseLessons = getLessonsByCourseId(courseId);
 		List<LessonDTO> filtered = new ArrayList<>();
 		for(Lesson l : allCourseLessons) {
-			if(l.getTeacher().getId()==teacherId) {
+	
 				filtered.add(convertToLessonDTO(l));
-			}
+			
 		}
 		return filtered;
 	}

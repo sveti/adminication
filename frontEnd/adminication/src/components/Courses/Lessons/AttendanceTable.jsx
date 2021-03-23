@@ -18,6 +18,10 @@ class AttendanceTable extends Component {
     mode: "edit",
   };
 
+  validation = () => {
+    return true;
+  };
+
   handleMarked = (attendance) => {
     let attendances = [...this.state.attendances];
 
@@ -124,6 +128,7 @@ class AttendanceTable extends Component {
           <EditSaveButton
             onEdit={this.editAttendances}
             onSave={this.saveAttendance}
+            validation={this.validation}
           ></EditSaveButton>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getLessonsByTeacherIdAndCourseId } from "../../../services/lessonService";
+import { getLessonsByCourseId } from "../../../services/lessonService";
 import {
   getStudentsByCourseId,
   getAttendanceByCourseId,
@@ -30,15 +30,12 @@ class LessonsOfCoursePage extends Component {
   }
 
   async loadLessons() {
-    const { data } = await getLessonsByTeacherIdAndCourseId(
-      this.state.teacherId,
-      this.state.courseId
-    );
+    const { data } = await getLessonsByCourseId(this.state.courseId);
     this.setState({ lessons: data });
   }
 
-  updateOnAddedLesson = () => {
-    this.loadLessons();
+  updateOnAddedLesson = async () => {
+    await this.loadLessons();
   };
 
   componentDidMount = () => {
@@ -48,23 +45,18 @@ class LessonsOfCoursePage extends Component {
   };
 
   render() {
-    const { teacherId, courseId, students, attendances } = this.state;
-
-    let lessonsList = null;
-
-    if (this.state.lessons && attendances) {
-      lessonsList = (
-        <LessonsList
-          lessons={this.state.lessons}
-          students={students}
-          attendances={attendances}
-        ></LessonsList>
-      );
-    }
-
+    const { teacherId, courseId, students, attendances, lessons } = this.state;
     return (
       <div className="lessonsOfCourseContainer">
-        {lessonsList}
+        {lessons && attendances ? (
+          <LessonsList
+            lessons={lessons}
+            students={students}
+            attendances={attendances}
+          ></LessonsList>
+        ) : (
+          <h1>There are no lessons of this course! Add some</h1>
+        )}
         <AddLesson
           teacherId={teacherId}
           courseId={courseId}

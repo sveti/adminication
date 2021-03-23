@@ -102,9 +102,9 @@ public class LessonController {
 		return lessonservice.getLessons();
 	}
 	
-	@GetMapping(path = "/{idTeacher}/{idCourse}")
-	public @ResponseBody List<LessonDTO> getLessonsByTeacherIdAndCourseId(@PathVariable("idTeacher") Long idTeacher,@PathVariable("idCourse") Long idCourse) {
-		return lessonservice.getLessonsByTeacherIdAndCourseId(idTeacher,idCourse);
+	@GetMapping(path = "/{idCourse}/lessons")
+	public @ResponseBody List<LessonDTO> getLessonsCourseId(@PathVariable("idCourse") Long idCourse) {
+		return lessonservice.getLessonsDTOByCourseId(idCourse);
 	}
 	
 	@GetMapping(path = "/{idLesson}/attendance")
