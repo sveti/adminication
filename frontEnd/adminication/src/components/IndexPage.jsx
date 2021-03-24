@@ -16,14 +16,15 @@ class TeacherIndex extends Component {
     user: this.props.user,
   };
 
+  editedUser = (user) => {
+    ///update the user here aswell so that a name change can be visible
+    this.setState({ user });
+    this.props.editedUser(user);
+  };
+
   async componentDidMount() {
     //change body color from the gradient of login screen
     document.body.style = "background: #fff;";
-    window.addEventListener("scroll", this.handleScroll);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
   }
 
   render() {
@@ -44,7 +45,12 @@ class TeacherIndex extends Component {
           roleName={user.roleName}
           avatar={avatar}
         ></WelcomeScreen>
-        <Content givenId="mainContent" user={user} avatar={avatar}></Content>
+        <Content
+          givenId="mainContent"
+          user={user}
+          avatar={avatar}
+          editedUser={(user) => this.editedUser(user)}
+        ></Content>
       </React.Fragment>
     );
   }

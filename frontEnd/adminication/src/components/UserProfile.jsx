@@ -4,7 +4,10 @@ import EditSaveButton from "../common/EditSaveButton";
 import {
   checkIfEmailExists,
   checkIfUsernameExists,
+  updateUser,
 } from "../services/userService";
+
+import { checkCredentials } from "../services/authenticationService";
 
 import { toast } from "react-toastify";
 
@@ -17,10 +20,15 @@ class UserProfile extends Component {
     originalEmail: this.props.user.email,
     editMode: false,
     diasbleButton: false,
+    password: {
+      old: "",
+      newPassword: "",
+      repeatPassword: "",
+    },
   };
 
   validation = async () => {
-    const { user, originalUsername, originalEmail } = this.state;
+    const { user, originalUsername, originalEmail, password } = this.state;
     //change of email
     if (user.email !== originalEmail) {
       const { data } = await checkIfEmailExists(user.email);
@@ -53,26 +61,121 @@ class UserProfile extends Component {
         return false;
       }
     }
+    ///password change
+    if (password.old !== "") {
+      let credentialsCheckUser = {
+        username: originalUsername,
+        password: password.old,
+      };
+      const { data } = await checkCredentials(credentialsCheckUser);
+      if (data === false) {
+        toast.error("Incorrect password!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return false;
+      }
+      if (password.newPassword.length < 5) {
+        toast.error("Password must be at least 5 characters long!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return false;
+      }
+      if (password.newPassword !== password.repeatPassword) {
+        toast.error("Password wasn't repeated correctly!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return false;
+      }
+    }
 
     return true;
   };
 
-  handleEmailChange = (event, property) => {
+  handlePasswordChange = (event, property) => {
+    let pass = { ...this.state.password };
+    pass[property] = event.target.value;
+    this.setState({ password: pass, diasbleButton: false });
+  };
+
+  handleInputChange = (event, property) => {
     let user = { ...this.state.user };
     user[property] = event.target.value;
-    this.setState({ user, diasbleButton: false });
+    ///the username cannot be shorter than 5 characters
+    if (property === "username" && event.target.value.length < 5) {
+      this.setState({ user, diasbleButton: true });
+    } else {
+      this.setState({ user, diasbleButton: false });
+    }
   };
 
   editProfile = () => {
     this.setState({ editMode: true, diasbleButton: true });
   };
 
-  saveProfile = () => {
-    this.setState({ editMode: false });
+  saveProfile = async () => {
+    let { user, password } = this.state;
+
+    ///if the user has a new pass mark it in the object
+    if (password.newPassword.length > 0) {
+      user.password = password.newPassword;
+      user.changedPassword = true;
+    } else {
+      user.changedPassword = false;
+    }
+
+    const { data } = await updateUser(user);
+    if (data) {
+      toast.success("Sucessfully updated user", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      this.props.editedUser(user);
+      this.setState({ editMode: false });
+    } else {
+      toast.error("An error has occured", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   render() {
-    const { givenId, user, avatar, editMode, diasbleButton } = this.state;
+    const {
+      givenId,
+      user,
+      avatar,
+      editMode,
+      diasbleButton,
+      password,
+    } = this.state;
 
     const displayTable = (
       <div className="col-sm-12 col-lg-9 textSection">
@@ -102,7 +205,7 @@ class UserProfile extends Component {
               type="text"
               className="form-control editedInformaton"
               value={user.username}
-              onChange={(event) => this.handleEmailChange(event, "username")}
+              onChange={(event) => this.handleInputChange(event, "username")}
             ></input>
           </div>
         </div>
@@ -115,7 +218,7 @@ class UserProfile extends Component {
               type="text"
               className="form-control editedInformaton"
               value={user.name}
-              onChange={(event) => this.handleEmailChange(event, "name")}
+              onChange={(event) => this.handleInputChange(event, "name")}
             ></input>
           </div>
           <div className="col-sm-12 col-md-3">
@@ -126,7 +229,7 @@ class UserProfile extends Component {
               type="text"
               className="form-control editedInformaton"
               value={user.lastName}
-              onChange={(event) => this.handleEmailChange(event, "lastName")}
+              onChange={(event) => this.handleInputChange(event, "lastName")}
             ></input>
           </div>
         </div>
@@ -139,7 +242,7 @@ class UserProfile extends Component {
               type="email"
               className="form-control editedInformaton"
               value={user.email}
-              onChange={(event) => this.handleEmailChange(event, "email")}
+              onChange={(event) => this.handleInputChange(event, "email")}
             ></input>
           </div>
         </div>
@@ -152,6 +255,8 @@ class UserProfile extends Component {
             <input
               type="password"
               className="form-control editedInformaton"
+              value={password.old}
+              onChange={(event) => this.handlePasswordChange(event, "old")}
             ></input>
           </div>
         </div>
@@ -163,6 +268,10 @@ class UserProfile extends Component {
             <input
               type="password"
               className="form-control editedInformaton"
+              value={password.newPassword}
+              onChange={(event) =>
+                this.handlePasswordChange(event, "newPassword")
+              }
             ></input>
           </div>
         </div>
@@ -174,6 +283,10 @@ class UserProfile extends Component {
             <input
               type="password"
               className="form-control editedInformaton"
+              value={password.repeatPassword}
+              onChange={(event) =>
+                this.handlePasswordChange(event, "repeatPassword")
+              }
             ></input>
           </div>
         </div>

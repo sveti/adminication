@@ -9,9 +9,12 @@ import javax.validation.constraints.Min;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.DisplayUserDTO;
+import f54148.adminication.dto.EditUserDTO;
 import f54148.adminication.entity.Draft;
 import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Notification;
@@ -26,20 +29,19 @@ import f54148.adminication.repository.UserRepository;
 public class UserService {
 
 	private final UserRepository userRepository;
-	
-	private final NotificationService notificationService;
-	
-	private final RoleService roleService;
-	
-	 private final ModelMapper modelMapper;
 
-	public UserService(UserRepository userRepository, @Lazy NotificationService notificationService, RoleService roleService, ModelMapper modelMapper) {
+	private final NotificationService notificationService;
+
+	private final ModelMapper modelMapper;
+	
+	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
+
+	public UserService(UserRepository userRepository, @Lazy NotificationService notificationService,  ModelMapper modelMapper) {
 		super();
 		this.userRepository = userRepository;
-		this.roleService = roleService;
 		this.notificationService = notificationService;
 		this.modelMapper = modelMapper;
-	
+
 	}
 
 	public List<User> getUsers() {
@@ -56,7 +58,7 @@ public class UserService {
 			throw new UserNotFoundException("Invalid user id " + userId);
 		}
 	}
-	
+
 	public User getUserByUsername(String username) {
 		Optional<User> opUser = userRepository.findByUsername(username);
 		if (opUser.isPresent()) {
@@ -65,7 +67,7 @@ public class UserService {
 			throw new UserNotFoundException("Invalid username " + username);
 		}
 	}
-	
+
 	public User getUserByEmail(String email) {
 		Optional<User> opUser = userRepository.findByEmail(email);
 		if (opUser.isPresent()) {
@@ -83,10 +85,36 @@ public class UserService {
 			return false;
 		}
 	}
-
+	
 	public boolean updateUser(User user) {
+
 		if (userRepository.save(user) != null) {
 			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	public boolean updateUser(EditUserDTO dto) {
+
+		User u = getUserById(dto.getId());
+
+		if (u != null) {
+
+			u.setUsername(dto.getUsername());
+			u.setName(dto.getName());
+			u.setLastName(dto.getLastName());
+			u.setEmail(dto.getEmail());
+			if(dto.getChangedPassword()) {
+				u.setPassword(encoder.encode(dto.getPassword()));
+			}
+			if (userRepository.save(u) != null) {
+				return true;
+			} else {
+				return false;
+			}
+
 		} else {
 			return false;
 		}
@@ -131,12 +159,13 @@ public class UserService {
 			return null;
 		}
 	}
+
 	public DisplayUserDTO convertToCreateUserDTO(User user) {
-		
+
 		return modelMapper.map(user, DisplayUserDTO.class);
-        
-    }
-	
+
+	}
+
 	public DisplayUserDTO getCreateUserDTOByUsername(@Min(1) String username) {
 		return convertToCreateUserDTO(getUserByUsername(username));
 	}
@@ -158,8 +187,5 @@ public class UserService {
 			return false;
 		}
 	}
-	
-
-	
 
 }

@@ -29,6 +29,10 @@ class App extends Component {
     user: null,
   };
 
+  editedUser = (user) => {
+    this.setState({ user });
+  };
+
   async loadUser(username) {
     const { data } = await getUser(username);
     this.setState({ user: data });
@@ -74,7 +78,11 @@ class App extends Component {
               <Route
                 path="/home"
                 render={(params) => (
-                  <IndexPage {...params} user={user}></IndexPage>
+                  <IndexPage
+                    {...params}
+                    user={this.state.user}
+                    editedUser={(user) => this.editedUser(user)}
+                  ></IndexPage>
                 )}
               />
               <Route path="/courses/:courseId" component={Course} />

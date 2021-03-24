@@ -36,3 +36,7 @@ export async function getCurrentUser() {
 export function getJWT() {
   return localStorage.getItem(tokenKey);
 }
+
+export function checkCredentials(user) {
+  return http.post(apiEndpoint + "/checkCredentials", user);
+}

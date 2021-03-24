@@ -22,3 +22,7 @@ export function checkIfEmailExists(email) {
 export function checkIfUsernameExists(username) {
   return http.get(apiEndpoint + "validateUsername/" + username);
 }
+
+export function updateUser(user) {
+  return http.put(apiEndpoint + "edit", user);
+}

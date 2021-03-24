@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.dto.DisplayUserDTO;
+import f54148.adminication.dto.EditUserDTO;
 import f54148.adminication.entity.Draft;
 import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.Role;
@@ -39,12 +40,12 @@ public class UserController {
 	}
 	
 	@PutMapping(path = "/updateUser")
-		public @ResponseBody String updateUser(@RequestBody User user) {
+		public @ResponseBody String updateUser(@RequestBody EditUserDTO user) {
 
-			if (userService.addUser(user)) {
-				return "Updated user";
+			if (userService.updateUser(user)) {
+				return "true";
 			} else {
-				return "A problem has occured";
+				return "false";
 			}
 		}
 	

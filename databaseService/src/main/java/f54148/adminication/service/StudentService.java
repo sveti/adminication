@@ -44,7 +44,7 @@ public class StudentService {
 
 	public boolean addStudent(Student user) {
 		
-		user.setPassword(encoder.encode(user.getPassword()));
+		//user.setPassword(encoder.encode(user.getPassword()));
 		
 		if (studentRepository.save(user) != null) {
 			return true;

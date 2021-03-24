@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.constraints.Min;
 
 import f54148.adminication.dto.DisplayUserDTO;
+import f54148.adminication.dto.EditUserDTO;
 
 public interface UserService {
 	
@@ -15,6 +16,8 @@ public interface UserService {
 	String validateEmail(String email);
 
 	String validateUsername(String username);
+
+	String editUser(EditUserDTO editUserDTO);
 	
 
 }

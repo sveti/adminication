@@ -48,9 +48,20 @@ public class AuthenticationController {
 	}
 
 	
-	@GetMapping(path = "/hi")
-	public @ResponseBody String greeting() {
-		return "hi";
+	@PostMapping(path = "/checkCredentials")
+	public @ResponseBody String checkCredentials(@RequestBody AuthenticationRequest authenticationRequest) {
+		
+		try {
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+			);
+		}
+		catch (BadCredentialsException e) {
+			return "false";
+		}
+		
+
+		return "true";
 	}
 
 }
