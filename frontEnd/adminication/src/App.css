@@ -3,9 +3,24 @@
   color: #000040 !important;
 }
 .styledButtonUp {
-  color: #1a396b;
+  color: rgb(26, 57, 107);
   font-size: 2rem;
 }
-.backButton{
+.backButton {
   margin-bottom: 2rem;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(26, 57, 107, 0.3);
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #000040;
+  border: 2px solid #555555;
 }

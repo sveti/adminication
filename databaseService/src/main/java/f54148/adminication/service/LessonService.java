@@ -1,12 +1,10 @@
 package f54148.adminication.service;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
+import f54148.adminication.dto.LessonSalaryDTO;
 import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
@@ -54,6 +53,14 @@ public class LessonService {
 		lessonList.removeIf(lesson->lesson.getCourse().getId()!=courseID);
 		return lessonList;
 	}
+	
+	public List<Lesson> getLessonsByTeacherId(Long teacherId) {
+		List<Lesson> lessonList = new ArrayList<>();
+		lessonRepository.findAll().forEach(lessonList::add);
+		lessonList.removeIf(lesson->lesson.getTeacher().getId()!=teacherId);
+		return lessonList;
+	}
+
 
 	public Lesson getLessonById(Long lessonId) {
 		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
@@ -116,7 +123,7 @@ public class LessonService {
 			Set<Student> students = new HashSet<Student>();
 			
 			for(Attendance a: allAttendances) {
-				if(a.isAttended()) {
+				if(a.getAttended()) {
 					students.add(a.getStudent());
 				}
 			}
@@ -134,7 +141,7 @@ public class LessonService {
 			Set<Student> students = new HashSet<Student>();
 			
 			for(Attendance a: allAttendances) {
-				if(!a.isAttended()) {
+				if(!a.getAttended()) {
 					students.add(a.getStudent());
 				}
 			}
@@ -216,6 +223,23 @@ public class LessonService {
 		
 		return updateLesson(l);
 		
+	}
+
+	public List<Lesson> getLessonsOfTeacherByMonthAndYear(Long teacherId, Integer month, Integer year) {
+		
+		List<Lesson> allLessons = getLessonsByTeacherId(teacherId);
+		allLessons.removeIf(lesson->lesson.getDate().getMonthValue()!=month || lesson.getDate().getYear()!=year );
+		
+		return allLessons;
+	}
+
+	public LessonSalaryDTO convertToLessonSalaryDTO(Lesson l) {
+		
+		LessonSalaryDTO dto = modelMapper.map(l,LessonSalaryDTO.class);
+		Set<Attendance> att= getAttendancesByLessonId(l.getId());
+		att.removeIf(a->a.getAttended()==false);
+		dto.setAttended(att.size());
+		return dto;
 	}
 	
 }

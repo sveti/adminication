@@ -1,0 +1,37 @@
+.salaryDiv {
+  margin-top: 8rem;
+}
+.statsResult {
+  margin-top: 2rem;
+  text-align: left;
+}
+.editButton.showMore {
+  margin-top: 0px;
+  background: #e74c3c;
+}
+.editButton.showMore:hover {
+  background: #be3727;
+}
+.detailedCourseSalaryContainer {
+  text-align: right;
+}
+.detailedCourseSalaryTable {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.totalStats {
+  margin: 2rem 0;
+  padding: 1rem;
+  border-bottom: 1px solid #e74c3c;
+  border-top: 1px solid #e74c3c;
+}
+
+.coursesStats {
+  border-bottom: 0.5px solid #eedd6d;
+  padding: 1rem;
+}
+
+.statsWrapper {
+  animation: fadeIn 0.5s ease-in-out forwards !important;
+}

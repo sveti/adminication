@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
@@ -84,5 +85,11 @@ public class TeacherController {
 	public @ResponseBody List<Teacher> getAllTeachers() {
 		return teacherService.getTeachers();
 	}
-
+	
+	@GetMapping(path = "/{teacherId}/{month}/{year}")
+	public @ResponseBody MonthlyTeacherSalaryDTO getTeacherStatistics(@PathVariable("teacherId") Long teacherId, @PathVariable("month") Integer month,@PathVariable("year") Integer year) {
+		return teacherService.getTeacherStatistics(teacherId,month,year);
+	}
+	
 }
+

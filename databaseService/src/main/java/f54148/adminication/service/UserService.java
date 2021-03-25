@@ -7,7 +7,6 @@ import java.util.Optional;
 import javax.validation.constraints.Min;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +15,8 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.EditUserDTO;
 import f54148.adminication.entity.Draft;
-import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.Role;
-import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.User;
 import f54148.adminication.exceptions.UserNotFoundException;
 import f54148.adminication.repository.UserRepository;

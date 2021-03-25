@@ -85,7 +85,15 @@ export default function Navbar(props) {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/statistics/"}>
+              <Link
+                className="nav-link"
+                to={{
+                  pathname: "/statistics",
+                  statisticsProps: {
+                    teacherId: user.id,
+                  },
+                }}
+              >
                 Statistics
               </Link>
             </li>

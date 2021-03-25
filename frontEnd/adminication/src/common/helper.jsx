@@ -26,3 +26,9 @@ export function updateObject(array, item, keyName, propertyToChange, newValue) {
     array[i][propertyToChange] = newValue;
   }
 }
+
+export function getTodaysDate() {
+  let curr = new Date();
+  curr.setDate(curr.getDate());
+  return curr.toISOString().substr(0, 10);
+}

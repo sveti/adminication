@@ -1,16 +1,19 @@
 package f54148.adminication.dto;
 
+import java.time.LocalDate;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-public class UpdateLessonDescriptionDTO {
+public class LessonSalaryDTO {
 	
 	private Long id;
-	private String description;
+	private Long courseId;
+	private LocalDate date;
+	private Integer attended;
+
 }

@@ -1,6 +1,5 @@
 package f54148.adminication.dto;
 
-import f54148.adminication.entity.Gender;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

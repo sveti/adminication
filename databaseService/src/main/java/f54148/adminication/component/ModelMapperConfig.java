@@ -27,8 +27,6 @@ import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.User;
 import f54148.adminication.service.CourseService;
-import f54148.adminication.service.RoleService;
-import lombok.AllArgsConstructor;
 
 @Configuration
 public class ModelMapperConfig {

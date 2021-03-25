@@ -1,6 +1,6 @@
 import React from "react";
 import "./content.css";
-import LessonsPage from "./Courses/Lessons/LessonsPage";
+import LessonsPage from "../Courses/Lessons/LessonsPage";
 import UserProfile from "./UserProfile";
 
 const Content = ({ givenId, user, avatar, editedUser }) => {

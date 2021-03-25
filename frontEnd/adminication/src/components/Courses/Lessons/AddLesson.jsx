@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { saveLesson } from "../../../services/lessonService";
+import { getTodaysDate } from "../../../common/helper";
 import "./lessons.css";
 import { toast } from "react-toastify";
 
@@ -86,12 +87,6 @@ class AddLesson extends Component {
     }
   };
 
-  getTodaysDate = () => {
-    let curr = new Date();
-    curr.setDate(curr.getDate());
-    return curr.toISOString().substr(0, 10);
-  };
-
   isEmpty = (obj) => {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   };
@@ -107,7 +102,7 @@ class AddLesson extends Component {
               type="date"
               className="form-control"
               id="date"
-              defaultValue={this.getTodaysDate()}
+              defaultValue={getTodaysDate()}
               ref={(c) => (this.date = c)}
             />
           </div>

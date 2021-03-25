@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 public class StudentService {
 
 	private final StudentRepository studentRepository;
-	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
+	//private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
 
 	public List<Student> getStudents() {
 		List<Student> studentList = new ArrayList<>();

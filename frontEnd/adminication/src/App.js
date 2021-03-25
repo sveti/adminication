@@ -9,7 +9,7 @@ import ScrollToTop from "react-scroll-up";
 import CoursesPage from "./components/Courses/CoursesPage";
 import Course from "./components/Courses/Course";
 import NotFound from "./components/notFound";
-import IndexPage from "./components/IndexPage";
+import IndexPage from "./components/Homepage/IndexPage";
 import Login from "./components/Login/Login";
 import Logout from "./components/Login/Logout";
 import Navbar from "./components/Header/Navbar";
@@ -23,6 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Grading from "./components/Courses/Grading/Grading";
 import GradingTable from "./components/Courses/Grading/GradingTable";
+import TeacherSalary from "./components/Statistics/TeacherSalary";
 
 class App extends Component {
   state = {
@@ -111,6 +112,15 @@ class App extends Component {
                 path="/grading"
                 render={(params) => (
                   <Grading teacherId={user.id} {...params}></Grading>
+                )}
+              />
+              <Route
+                path="/statistics"
+                render={(params) => (
+                  <TeacherSalary
+                    teacherId={user.id}
+                    {...params}
+                  ></TeacherSalary>
                 )}
               />
 

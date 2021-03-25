@@ -64,4 +64,11 @@ public class TeachingController {
 		return teachingservice.getTeachings();
 	}
 
+	
+	@GetMapping(path = "/{teacherId}")
+	public @ResponseBody List<Teaching> getTeachingsByTeacherId(@PathVariable("teacherId") Long teacherId) {
+		return teachingservice.getTeachingsByTeacherId(teacherId);
+	}
+
+	
 }

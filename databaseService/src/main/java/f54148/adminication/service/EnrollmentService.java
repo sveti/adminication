@@ -7,10 +7,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import f54148.adminication.dto.AttendanceDTO;
-import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.StudentGradesDTO;
-import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Student;

@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.constraints.Min;
 
-import org.apache.tomcat.jni.Global;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
-import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
-import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 import f54148.adminication.service.LessonService;
 import lombok.AllArgsConstructor;

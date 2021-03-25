@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.constraints.Min;
 
 import f54148.adminication.dto.AttendanceDTO;
-import f54148.adminication.dto.StudentGradesDTO;
 
 public interface AttendanceService {
 	

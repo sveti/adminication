@@ -23,7 +23,7 @@ const WelcomeScreen = ({ name, lastName, roleName, avatar }) => {
             offset={-150}
             duration={800}
           >
-            <button className="welcomeButton">Click</button>
+            <button className="welcomeButton">Edit</button>
           </Link>
         </div>
       </section>

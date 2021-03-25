@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import "./userProfile.css";
-import EditSaveButton from "../common/EditSaveButton";
+import EditSaveButton from "../../common/EditSaveButton";
 import {
   checkIfEmailExists,
   checkIfUsernameExists,
   updateUser,
-} from "../services/userService";
+} from "../../services/userService";
 
-import { checkCredentials } from "../services/authenticationService";
+import { checkCredentials } from "../../services/authenticationService";
 
 import { toast } from "react-toastify";
 
@@ -29,6 +29,20 @@ class UserProfile extends Component {
 
   validation = async () => {
     const { user, originalUsername, originalEmail, password } = this.state;
+    //name or lastName are empty
+    if (user.name.length === 0 || user.lastName.length === 0) {
+      toast.error("Please fill in your name!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return false;
+    }
+
     //change of email
     if (user.email !== originalEmail) {
       const { data } = await checkIfEmailExists(user.email);
@@ -143,7 +157,7 @@ class UserProfile extends Component {
 
     const { data } = await updateUser(user);
     if (data) {
-      toast.success("Sucessfully updated user", {
+      toast.success("Update successfull!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-import WelcomeScreen from "./Header/WelcomeScreen";
+import WelcomeScreen from "../Header/WelcomeScreen";
 
-import LogoTeacherF from "../assets/images/teacherF.svg";
-import LogoTeacherM from "../assets/images/teacherM.svg";
-import LogoStudentF from "../assets/images/studentF.svg";
-import LogoStudentM from "../assets/images/studentM.svg";
+import LogoTeacherF from "../../assets/images/teacherF.svg";
+import LogoTeacherM from "../../assets/images/teacherM.svg";
+import LogoStudentF from "../../assets/images/studentF.svg";
+import LogoStudentM from "../../assets/images/studentM.svg";
 
 import "./indexPage.css";
 

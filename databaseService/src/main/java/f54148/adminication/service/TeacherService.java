@@ -7,11 +7,12 @@ import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.DisplayUserDTO;
+import f54148.adminication.dto.LessonSalaryDTO;
+import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
+import f54148.adminication.dto.TeachingSalaryDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
@@ -26,16 +27,19 @@ public class TeacherService {
 
 	private final TeachingService teachingService;	
 	
+	private final LessonService lessonService;
+	
 	private final ModelMapper modelMapper;
 	
 	private final RoleService roleService;
 	
-	public TeacherService(TeacherRepository teacherRepository,@Lazy TeachingService teachingService, @Lazy RoleService roleService,ModelMapper modelMapper) {
+	public TeacherService(TeacherRepository teacherRepository,@Lazy LessonService lessonService,@Lazy TeachingService teachingService, @Lazy RoleService roleService,ModelMapper modelMapper) {
 		super();
 		this.teacherRepository = teacherRepository;
 		this.teachingService = teachingService;
 		this.roleService = roleService;
 		this.modelMapper = modelMapper;
+		this.lessonService = lessonService;
 	}
 
 	public List<Teacher> getTeachers() {
@@ -98,6 +102,7 @@ public class TeacherService {
 		}
 	}
 
+
 	public List<Course> getsubstituteCoursesByTeacherId(Long teacherId) {
 
 		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
@@ -157,6 +162,39 @@ public class TeacherService {
 		t.setRole(roleService.getRoleByName("ROLE_TEACHER"));
 
 		return t;
+	}
+
+	public MonthlyTeacherSalaryDTO getTeacherStatistics(Long teacherId, Integer month, Integer year) {
+		
+		MonthlyTeacherSalaryDTO dto = new MonthlyTeacherSalaryDTO();
+		
+		List<Lesson> lessons = lessonService.getLessonsOfTeacherByMonthAndYear(teacherId, month, year);
+		List<LessonSalaryDTO> dtoLessons = new ArrayList<>();
+		for(Lesson l: lessons) {
+			dtoLessons.add(lessonService.convertToLessonSalaryDTO(l));
+		}
+		
+		dto.setLessons(dtoLessons);
+				
+		List<Teaching> teachings = teachingService.getTeachingsByTeacherId(teacherId);
+		List<TeachingSalaryDTO> dtoTeachings = new ArrayList<>();
+		
+		for(Teaching t: teachings) {
+			dtoTeachings.add(teachingService.convertToTeachingSalaryDTO(t));
+		}
+		
+		dto.setTeachings(dtoTeachings);
+		
+		Set <Teaching> subs  = getTeacherById(teacherId).getSubstituting();
+		List<TeachingSalaryDTO> dtoSubs = new ArrayList<>();
+		
+		for(Teaching t: subs) {
+			dtoSubs.add(teachingService.convertToTeachingSalaryDTO(t));
+		}
+		
+		dto.setSubstitutings(dtoSubs);
+		
+		return dto;
 	}
 
 }

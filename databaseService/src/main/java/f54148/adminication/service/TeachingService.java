@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.TeachingSalaryDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.Teaching;
@@ -21,13 +23,16 @@ public class TeachingService {
 
 	private final TeacherService teacherService;
 	
+	private final ModelMapper modelMapper;
+	
 
 	public TeachingService(TeachingRepository teachingRepository,@Lazy CourseService courseService,
-			@Lazy TeacherService teacherService) {
+			@Lazy TeacherService teacherService, @Lazy ModelMapper modelMapper) {
 		super();
 		this.teachingRepository = teachingRepository;
 		this.courseService = courseService;
 		this.teacherService = teacherService;
+		this.modelMapper = modelMapper;
 	}
 
 	public List<Teaching> getTeachings() {
@@ -47,16 +52,16 @@ public class TeachingService {
 
 	public List<Teaching> getTeachingsByCourseId(Long courseId) {
 		List<Teaching> teachings = getTeachings();
+		teachings.removeIf(teaching->teaching.getCourse().getId()!=courseId);
+		return teachings;
 
-		List<Teaching> current = new ArrayList<Teaching>();
+	}
+	
 
-		for (Teaching t : teachings) {
-			if (t.getCourse().getId() == courseId) {
-				current.add(t);
-			}
-		}
-
-		return current;
+	public List<Teaching> getTeachingsByTeacherId(Long teacherId) {
+		List<Teaching> teachings = getTeachings();
+		teachings.removeIf(teaching->teaching.getTeacher().getId()!=teacherId);
+		return teachings;
 
 	}
 
@@ -101,6 +106,14 @@ public class TeachingService {
 		} else {
 			return false;
 		}
+	}
+	
+	TeachingSalaryDTO convertToTeachingSalaryDTO(Teaching t) {
+		TeachingSalaryDTO dto =  modelMapper.map(t,TeachingSalaryDTO.class);
+		dto.setCourseSignedUp(t.getCourse().getEnrollments().size());
+		dto.setCourseTitle(t.getCourse().getTitle());
+		return dto;
+		
 	}
 
 }
