@@ -16,6 +16,7 @@ import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.StartedCourseStudentDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
@@ -35,22 +36,33 @@ public class CourseController {
 	
 	@GetMapping(path = "/upcomming/{courseId}")
 	public @ResponseBody UpcommingCourseDTO getUpcommingCourseById(@PathVariable("courseId") @Min(1) Long courseId) {
-		return courseService.getUpcommingCourseOfTeacher(courseId);
+		return courseService.getUpcommingCourseById(courseId);
 	}
 	
-	@GetMapping(path = "/{teacherId}/upcomming")
+	@GetMapping(path = "/teacher/{teacherId}/upcomming")
 	public @ResponseBody List<UpcommingCourseDTO> getUpcommingCoursesByTeacherId(@PathVariable("teacherId") @Min(1) Long teacherId) {
 		return courseService.getUpcommingCoursesOfTeacher(teacherId);
 	}
-	@GetMapping(path = "/{teacherId}/finished")
+	@GetMapping(path = "/teacher/{teacherId}/finished")
 	public @ResponseBody List<FinshedCourseDTO> getFinishedCoursesByTeacherId(@PathVariable("teacherId") @Min(1) Long teacherId) {
 		return courseService.getFinishedCoursesOfTeacher(teacherId);
 	}
 
-	@GetMapping(path = "/{teacherId}/started")
+	@GetMapping(path = "/teacher/{teacherId}/started")
 	public @ResponseBody List<StartedCourseDTO> getStartedCoursesByTeacherId(@PathVariable("teacherId") @Min(1) Long teacherId) {
 		return courseService.getStartedCoursesOfTeacher(teacherId);
 	}
+	
+	@GetMapping(path = "/student/{studentId}/started")
+	public @ResponseBody List<StartedCourseStudentDTO> getStartedCoursesByStudentId(@PathVariable("studentId") @Min(1) Long studentId) {
+		return courseService.getStartedCoursesOfStudent(studentId);
+	}
+	
+	@GetMapping(path = "/student/{studentId}/upcomming")
+	public @ResponseBody List<UpcommingCourseDTO> getUpcommingCoursesByStudentId(@PathVariable("studentId") @Min(1) Long studentId) {
+		return courseService.getUpcommingCoursesByStudentId(studentId);
+	}
+
 
 	@GetMapping(path = "/details/{courseId}")
 	public @ResponseBody CourseWithDetailsDTO getCourseWithDetailsDTOById(@PathVariable("courseId") @Min(1) Long courseId) {
@@ -62,7 +74,7 @@ public class CourseController {
 		return courseService.getStartedCourse(courseId);
 	}
 	
-	@GetMapping(path = "/{teacherId}/sub/started")
+	@GetMapping(path = "/teacher/{teacherId}/sub/started")
 	public @ResponseBody List<StartedCourseDTO> getSubStartedCoursesByTeacherId(@PathVariable("teacherId") @Min(1) Long teacherId) {
 		return courseService.getSubStartedCoursesByTeacherId(teacherId);
 	}

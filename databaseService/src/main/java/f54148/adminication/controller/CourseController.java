@@ -17,6 +17,7 @@ import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.StartedCourseStudentDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
@@ -163,16 +164,27 @@ public class CourseController {
 		return courseService.getStartedCourseDTOById(idCourse);
 	}
 	
-	@GetMapping(path = "/{idTeacher}/upcomming")
+	@GetMapping(path = "/teacher/{idTeacher}/upcomming")
 	public @ResponseBody List<UpcommingCourseDTO> getUpcommingCoursesDTOByTeacherId(@PathVariable("idTeacher") Long idTeacher) {
 		
 		return courseService.getUpcommingCoursesDTOByTeacherId(idTeacher);
 	}
 	
-	@GetMapping(path = "/{idTeacher}/started")
+	@GetMapping(path = "/student/{idStudent}/upcomming")
+	public @ResponseBody List<UpcommingCourseDTO> getUpcommingCoursesDTOByStudentId(@PathVariable("idStudent") Long idStudent) {
+		
+		return courseService.getUpcommingCoursesDTOByStudentId(idStudent);
+	}
+	
+	@GetMapping(path = "/teacher/{idTeacher}/started")
 	public @ResponseBody List<StartedCourseDTO> getStartedCourseDTOByTeacherId(@PathVariable("idTeacher") Long idTeacher) {
 		
 		return courseService.getStartedCourseDTOByTeacherId(idTeacher);
+	}
+	@GetMapping(path = "/student/{idStudent}/started")
+	public @ResponseBody List<StartedCourseStudentDTO> getStartedCourseDTOByStudentId(@PathVariable("idStudent") Long idStudent) {
+		
+		return courseService.getStartedCourseDTOByStudentId(idStudent);
 	}
 	
 	@GetMapping(path = "/{idTeacher}/finished")

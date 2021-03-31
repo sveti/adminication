@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.LessonDTO;
 import f54148.adminication.dto.LessonSalaryDTO;
+import f54148.adminication.dto.StudentLessonDTO;
 import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
@@ -155,6 +156,21 @@ public class LessonService {
 		LessonDTO lessonDTO =  modelMapper.map(lesson, LessonDTO.class);
 		return lessonDTO;
 	}
+	
+	public StudentLessonDTO convertToStudentLessonDTO(Lesson lesson, Long studentId) {
+		
+		LessonDTO lessonDTO =  modelMapper.map(lesson, LessonDTO.class);
+		StudentLessonDTO stDTO = new StudentLessonDTO(lessonDTO);
+		
+		for(Attendance a: lesson.getAttendances()) {
+			if(a.getStudent().getId()==studentId) {
+				stDTO.setAttended(a.getAttended());
+			}
+		}
+		
+		return stDTO;
+	}
+	
 	
 	public Lesson convertToLesson(LessonDTO lessonDTO) {
 		Lesson lesson =  modelMapper.map(lessonDTO, Lesson.class);

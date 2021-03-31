@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.StartedCourseStudentDTO;
 import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.service.CourseService;
@@ -30,14 +31,20 @@ public class CourseServiceImplementation  implements CourseService{
 	private final RestTemplate restTemplate;
 	
 	@Override
-	public UpcommingCourseDTO getUpcommingCourseOfTeacher(long idCourse) {
+	public UpcommingCourseDTO getUpcommingCourseById(long idCourse) {
 		UpcommingCourseDTO upcommingCourse = restTemplate.getForObject("http://databaseService/courses/upcomming/{idCourse}",UpcommingCourseDTO.class,idCourse);
 		return upcommingCourse;
 	}
 
 	@Override
 	public List<UpcommingCourseDTO> getUpcommingCoursesOfTeacher(@Min(1) long idTeacher) {
-		UpcommingCourseDTO upcommingCourses[] = restTemplate.getForObject("http://databaseService/courses/{idTeacher}/upcomming",UpcommingCourseDTO[].class, idTeacher);
+		UpcommingCourseDTO upcommingCourses[] = restTemplate.getForObject("http://databaseService/courses/teacher/{idTeacher}/upcomming",UpcommingCourseDTO[].class, idTeacher);
+		return Arrays.asList(upcommingCourses);
+	}
+	
+	@Override
+	public List<UpcommingCourseDTO> getUpcommingCoursesByStudentId(@Min(1) Long studentId) {
+		UpcommingCourseDTO upcommingCourses[] = restTemplate.getForObject("http://databaseService/courses/student/{studentId}/upcomming",UpcommingCourseDTO[].class, studentId);
 		return Arrays.asList(upcommingCourses);
 	}
 
@@ -55,7 +62,13 @@ public class CourseServiceImplementation  implements CourseService{
 
 	@Override
 	public List<StartedCourseDTO> getStartedCoursesOfTeacher(@Min(1) Long teacherId) {
-		StartedCourseDTO startedCourses[] = restTemplate.getForObject("http://databaseService/courses/{idTeacher}/started",StartedCourseDTO[].class, teacherId);
+		StartedCourseDTO startedCourses[] = restTemplate.getForObject("http://databaseService/courses/teacher/{teacherId}/started",StartedCourseDTO[].class, teacherId);
+		return Arrays.asList(startedCourses);
+	}
+	
+	@Override
+	public List<StartedCourseStudentDTO> getStartedCoursesOfStudent(@Min(1) Long studentId) {
+		StartedCourseStudentDTO startedCourses[] = restTemplate.getForObject("http://databaseService/courses/student/{studentId}/started",StartedCourseStudentDTO[].class, studentId);
 		return Arrays.asList(startedCourses);
 	}
 
@@ -79,5 +92,9 @@ public class CourseServiceImplementation  implements CourseService{
 		ResponseEntity<String> response = restTemplate.exchange("http://databaseService/enrollments/updateGrades", HttpMethod.PUT,requestEntity,String.class);
 		return response.getBody();
 	}
+
+
+
+
 
 }

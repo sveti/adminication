@@ -2,9 +2,10 @@ package f54148.adminication.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
-import f54148.adminication.entity.Level;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,15 +13,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UpcommingCourseDTO {
-
-	private long id;
+public class StartedCourseStudentDTO {
+	
+	private Long id;
 	private String title;
+	private List<LocalDate> days;
 	private List<LocalTime> startTime;
 	private List<LocalTime> endTime;
-	private List<LocalDate> startDate;
-	private int duration;
-	private int signUpLimit;
-	private int signedUp;
-	private Level level;
+	private List<StudentLessonDTO> lessons;
+
 }

@@ -1,11 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
-import { textToDayOfTheWeek } from "../../common/helper";
+import { textToDayOfTheWeek, dynamicSort } from "../../common/helper";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import "./upcommingCoursesTable.css";
 
-export default function StartedCoursesTable(props) {
+export default function StudentStartedCoursesTable(props) {
+  function countAttendance(lessons) {
+    let attendance = 0;
+
+    lessons.forEach((element) => {
+      if (element.attended === true) attendance++;
+    });
+    return attendance;
+  }
+
   return (
     <div className="table">
       <div className="coursesTitle">
@@ -14,11 +23,12 @@ export default function StartedCoursesTable(props) {
       <Table>
         <Thead>
           <Tr>
-            <Th className="noBorder">Course</Th>
-            <Th className="noBorder">Start Date</Th>
+            <Th className="noBorder">Title</Th>
             <Th className="noBorder">Day</Th>
             <Th className="noBorder">Timeframe</Th>
             <Th className="noBorder">Lessons</Th>
+            <Th className="noBorder">Attendance</Th>
+            <Th className="noBorder"></Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -27,12 +37,7 @@ export default function StartedCoursesTable(props) {
               <Tr key={course.id}>
                 <Td>{course.title}</Td>
                 <Td>
-                  {course.startDate.map((date) => {
-                    return <div key={date}>{date}</div>;
-                  })}
-                </Td>
-                <Td>
-                  {course.startDate.map((date) => {
+                  {course.days.map((date) => {
                     return <div key={date}>{textToDayOfTheWeek(date)}</div>;
                   })}
                 </Td>
@@ -46,18 +51,21 @@ export default function StartedCoursesTable(props) {
                     );
                   })}
                 </Td>
-
+                <Td>{course.lessons.length}</Td>
+                <Td>
+                  {countAttendance(course.lessons)}/{course.lessons.length}
+                </Td>
                 <Td>
                   <Link
                     to={{
-                      pathname: "/lessons/" + course.id,
+                      pathname: "/courses/" + course.id + "/lessons",
                       lessonProps: {
-                        courseId: course.id,
-                        teacherId: props.teacherId,
+                        course: course,
+                        lessons: course.lessons.sort(dynamicSort("id")),
                       },
                     }}
                   >
-                    <button className="editButton lessons">Lessons</button>
+                    <button className="editButton lessons">To course</button>
                   </Link>
                 </Td>
               </Tr>

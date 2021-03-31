@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
+import f54148.adminication.dto.StartedCourseStudentDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
+import f54148.adminication.dto.StudentLessonDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
@@ -35,6 +37,8 @@ public class CourseService {
 
 	private final CourseRepository courseRepository;
 	private final TeacherService teacherService;
+	private final StudentService studentService;
+	private final LessonService lessonService;
 	private final ModelMapper modelMapper;
 
 	public List<Course> getCourses() {
@@ -197,17 +201,16 @@ public class CourseService {
 		
 		List<Course> courses = teacherService.getCoursesByTeacherId(idTeacher);
 		
-		List<Course> filtered = new ArrayList<Course>();
+		courses.removeIf(course -> course.getStatus()!=cs);
+		return courses;
+	}
+	
+	public List<Course> getCoursesByStatusAndStudentId(CourseStatus cs, Long idStudent){
 		
-		for(Course c: courses) {
-			
-			if(c.getStatus() == cs) {
-				
-				filtered.add(c);
-			}
-			
-		}
-		return filtered;
+		List<Course> courses = studentService.getCoursesStudentById(idStudent);
+		
+		courses.removeIf(course -> course.getStatus()!=cs);
+		return courses;
 	}
 
 	public UpcommingCourseDTO convertToUpcommingCourseDTO(Course course) {
@@ -236,6 +239,21 @@ public class CourseService {
 		return upcommingList;
 	}
 	
+	public List<UpcommingCourseDTO> getUpcommingCoursesDTOByStudentId(Long idStudent) {
+List<Course> courses = getCoursesByStatusAndStudentId(CourseStatus.UPCOMMING,idStudent);
+		
+		List<UpcommingCourseDTO> upcommingList = new ArrayList<UpcommingCourseDTO>();
+		
+		for(Course c: courses) {
+			
+			upcommingList.add(convertToUpcommingCourseDTO(c));
+
+		}
+		
+		return upcommingList;
+	}
+
+	
 	
 	public CourseWithDetailsDTO convertToCourseWithDetailsDTO(Course c) {
 		CourseWithDetailsDTO courseWithDetails =  modelMapper.map(c, CourseWithDetailsDTO.class);
@@ -252,10 +270,29 @@ public class CourseService {
 		return startedCourse;
 	}
 	
+	public StartedCourseStudentDTO convertToStartedCourseStudentDTO(Course c,Long studentId) {
+		
+		StartedCourseDTO dto =  modelMapper.map(c, StartedCourseDTO.class);
+		StartedCourseStudentDTO startedCourse = new StartedCourseStudentDTO(dto);
+		
+		Set<Lesson> lessons = getLessonsByCourseId(c.getId());
+		List<StudentLessonDTO> lessonsDTO = new ArrayList<>();
+		
+		for(Lesson l : lessons) {
+			lessonsDTO.add(lessonService.convertToStudentLessonDTO(l, studentId));
+		}
+		
+		startedCourse.setLessons(lessonsDTO);
+		
+		return startedCourse;
+	}
+	
 	public StartedCourseDTO getStartedCourseDTOById(Long idCourse ) {
 		
 		return convertToStartedCourseDTO( getCourseById(idCourse));
 	}
+	
+	
 
 	public List<StartedCourseDTO> getStartedCourseDTOByTeacherId(Long idTeacher) {
 		List<Course> courses = getCoursesByStatusAndTeacherId(CourseStatus.STARTED,idTeacher);
@@ -270,6 +307,23 @@ public class CourseService {
 		
 		return startedList;
 	}
+	
+	public List<StartedCourseStudentDTO> getStartedCourseDTOByStudentId(Long idStudent) {
+		
+		List<Course> courses = getCoursesByStatusAndStudentId(CourseStatus.STARTED,idStudent);
+		
+		List<StartedCourseStudentDTO> startedList = new ArrayList<StartedCourseStudentDTO>();
+		
+		for(Course c: courses) {
+			
+			startedList.add(convertToStartedCourseStudentDTO(c,idStudent));
+			
+		}
+		
+		return startedList;
+	}
+	
+	
 	public FinshedCourseDTO convertToFinshedCourseDTO(Course c) {
 		FinshedCourseDTO finishedCourse =  modelMapper.map(c, FinshedCourseDTO.class);
 		return finishedCourse;
@@ -326,7 +380,9 @@ public class CourseService {
 		return studentsDTO;
 		
 	}
-	
+
+
+
 
 	
 	

@@ -1,3 +1,13 @@
+const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 export function dynamicSort(property) {
   var sortOrder = 1;
   if (property[0] === "-") {
@@ -5,9 +15,6 @@ export function dynamicSort(property) {
     property = property.substr(1);
   }
   return function (a, b) {
-    /* next line works with strings and numbers,
-     * and you may want to customize it to your needs
-     */
     var result =
       a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
     return result * sortOrder;
@@ -31,4 +38,10 @@ export function getTodaysDate() {
   let curr = new Date();
   curr.setDate(curr.getDate());
   return curr.toISOString().substr(0, 10);
+}
+
+export function textToDayOfTheWeek(text) {
+  let date = new Date(text);
+
+  return days[date.getDay()];
 }

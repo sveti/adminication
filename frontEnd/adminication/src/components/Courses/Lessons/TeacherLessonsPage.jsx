@@ -7,7 +7,7 @@ import {
 import StartedCoursesTable from "../StartedCoursesTable";
 import { dynamicSort } from "../../../common/helper";
 
-function LessonsPage(props) {
+function TeacherLessonsPage(props) {
   let teacherId;
   if (props.location && props.location.lessonProps) {
     teacherId = props.location.lessonProps.teacherId;
@@ -54,4 +54,4 @@ function LessonsPage(props) {
     <h1>There are no started courses yet</h1>
   );
 }
-export default LessonsPage;
+export default TeacherLessonsPage;

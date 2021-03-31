@@ -6,7 +6,84 @@ import { Link } from "react-router-dom";
 export default function Navbar(props) {
   const user = props.user;
   let navBarClasses = ["navbar fixed-top topNavbar"];
-  navBarClasses.push(user.roleName.toLowerCase().split("_")[1]);
+  const role = user.roleName.toLowerCase().split("_")[1];
+  navBarClasses.push(role);
+
+  const teacherNav = (
+    <React.Fragment>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/courses",
+            state: {
+              user: props.user,
+            },
+          }}
+        >
+          My courses
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/lessons",
+            lessonProps: {
+              teacherId: user.id,
+            },
+          }}
+        >
+          Lessons
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/grading",
+            gradingProps: {
+              teacherId: user.id,
+            },
+          }}
+        >
+          Grading
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/statistics",
+            statisticsProps: {
+              teacherId: user.id,
+            },
+          }}
+        >
+          Statistics
+        </Link>
+      </li>
+    </React.Fragment>
+  );
+
+  const studentNav = (
+    <React.Fragment>
+      {" "}
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/courses",
+            state: {
+              user: props.user,
+            },
+          }}
+        >
+          My courses
+        </Link>
+      </li>
+    </React.Fragment>
+  );
 
   return (
     <header className={navBarClasses.join(" ")} id="mainMenu">
@@ -20,9 +97,7 @@ export default function Navbar(props) {
             alt=""
             loading="lazy"
           />
-          <span className="brandName">
-            Adminication {user.roleName.toLowerCase().split("_")[1]}
-          </span>
+          <span className="brandName">Adminication {role}</span>
         </Link>
         <button
           className="navbar-toggler collapsed position-relative"
@@ -45,58 +120,7 @@ export default function Navbar(props) {
                 Home<span className="sr-only">(current)</span>
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to={{
-                  pathname: "/courses",
-                  state: {
-                    user: props.user,
-                  },
-                }}
-              >
-                My courses
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to={{
-                  pathname: "/lessons",
-                  lessonProps: {
-                    teacherId: user.id,
-                  },
-                }}
-              >
-                Lessons
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to={{
-                  pathname: "/grading",
-                  gradingProps: {
-                    teacherId: user.id,
-                  },
-                }}
-              >
-                Grading
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to={{
-                  pathname: "/statistics",
-                  statisticsProps: {
-                    teacherId: user.id,
-                  },
-                }}
-              >
-                Statistics
-              </Link>
-            </li>
+            {role === "teacher" ? teacherNav : studentNav}
             <li className="nav-item">
               <Link className="nav-link logoutMobile" to={"/logout/"}>
                 Log out

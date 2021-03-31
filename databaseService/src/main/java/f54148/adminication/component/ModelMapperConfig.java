@@ -96,6 +96,8 @@ public class ModelMapperConfig {
 	        	destination.setSignUpLimit(source.getMaxStudents());
 	        	destination.setSignedUp(source.getEnrollments().size());
 	        	
+	        	destination.setLevel(source.getLevel());
+	        	
 	            return destination;
 	        }
 	    };
