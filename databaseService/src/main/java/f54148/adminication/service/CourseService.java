@@ -265,6 +265,20 @@ List<Course> courses = getCoursesByStatusAndStudentId(CourseStatus.UPCOMMING,idS
 		return convertToCourseWithDetailsDTO( getCourseById(idCourse));
 	}
 	
+	public List<CourseWithDetailsDTO> getAllCourseWithDetailsDTO() {
+		List<Course> allCourses = this.getCourses();
+		allCourses.removeIf(course -> course.getStatus() == CourseStatus.FINISHED || course.getStatus() == CourseStatus.CANCELED);
+		
+		List<CourseWithDetailsDTO> dtoList = new ArrayList<>();
+		
+		for(Course c: allCourses) {
+			dtoList.add(convertToCourseWithDetailsDTO(c));
+		}
+	
+		return dtoList;
+	}
+	
+	
 	public StartedCourseDTO convertToStartedCourseDTO(Course c) {
 		StartedCourseDTO startedCourse =  modelMapper.map(c, StartedCourseDTO.class);
 		return startedCourse;
@@ -380,6 +394,8 @@ List<Course> courses = getCoursesByStatusAndStudentId(CourseStatus.UPCOMMING,idS
 		return studentsDTO;
 		
 	}
+
+
 
 
 

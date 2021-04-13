@@ -64,7 +64,7 @@ public class Event {
 
 	@NotNull
 	@Lob
-	@Column(name = "description", length = 1023)
+	@Column(name = "description", length = 5000)
 	private String description;
 
 	@ManyToMany(targetEntity = Schedule.class, cascade = CascadeType.ALL)

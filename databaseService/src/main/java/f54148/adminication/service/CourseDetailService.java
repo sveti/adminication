@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.CourseDetailsDTO;
+import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.repository.CourseDetailRepository;
@@ -19,13 +22,15 @@ public class CourseDetailService {
 
 	private final CourseDetailRepository repo;
 	private final CourseService courseService;
+	private final ModelMapper modelMapper;
 	
 	
 
-	public CourseDetailService(CourseDetailRepository repo, @Lazy CourseService courseService) {
+	public CourseDetailService(CourseDetailRepository repo, @Lazy CourseService courseService,@Lazy ModelMapper modelMapper) {
 		super();
 		this.repo = repo;
 		this.courseService = courseService;
+		this.modelMapper = modelMapper;
 	}
 
 	public List<CourseDetail> getCourseDetails() {
@@ -84,6 +89,20 @@ public class CourseDetailService {
 		} else {
 			return false;
 		}
+	}
+	
+	public CourseDetailsDTO convertToCourseDetailsDTO(CourseDetail cd) {
+		CourseDetailsDTO dto = modelMapper.map(cd, CourseDetailsDTO.class);
+		return dto;
+	}
+
+	public List<CourseDetailsDTO> getCourseDetailsDTO() {
+		List<CourseDetail> courseDetailsList = this.getCourseDetails();
+		List<CourseDetailsDTO> dto = new ArrayList<>();
+		for(CourseDetail cd : courseDetailsList) {
+			dto.add(convertToCourseDetailsDTO(cd));
+		}
+		return dto;
 	}
 
 }

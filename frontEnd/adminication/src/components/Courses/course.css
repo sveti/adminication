@@ -1,15 +1,17 @@
-.singleCourse {
-  margin: 7rem auto 2rem;
-  width: 50%;
-  padding: 2rem;
-  background-color: #6ee1ff !important;
+.courseContainer {
+  margin: 7rem 2rem 2rem;
 }
-
+.card.courseContainer {
+  border-color: #e74c3c !important;
+}
 .dataLabel {
   text-align: right;
   font-weight: bold;
 }
 
+.info-group {
+  margin: 1rem;
+}
 .courseData {
   text-align: left;
   color: #082b64;
@@ -29,8 +31,39 @@
   margin-bottom: 0px;
 }
 
-@media screen and (max-width: 768px) {
-  .singleCourse {
+.miniTable {
+  margin-top: 1rem;
+}
+
+.miniTable .card-header {
+  background-color: #dfcb4d !important;
+  font-weight: bold;
+}
+
+.cardHeaderBackground {
+  background-color: #eedd6d !important;
+}
+
+.enoughSpace {
+  background-color: #77b646 !important;
+  color: #fff !important;
+}
+
+.notEnoughSpace {
+  background-color: #e74c3c !important;
+}
+
+.filterButton {
+  background-color: #1a396b !important;
+  color: #fff !important;
+}
+
+.removeFiltersButton {
+  background-color: #eedd6d !important;
+}
+
+@media screen and (max-width: 600px) {
+  .courseContainer {
     width: 90%;
     margin: 5rem 1rem 10px 1rem;
     padding: 10px;

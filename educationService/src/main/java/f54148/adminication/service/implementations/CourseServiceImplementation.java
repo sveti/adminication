@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
+import f54148.adminication.dto.CourseDetailsDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
@@ -53,6 +54,13 @@ public class CourseServiceImplementation  implements CourseService{
 		CourseWithDetailsDTO courseWithDetails = restTemplate.getForObject("http://databaseService/courses/details/{idCourse}",CourseWithDetailsDTO.class,idCourse);
 		return courseWithDetails;
 	}
+	
+	@Override
+	public List<CourseWithDetailsDTO> getAllCourseWithDetailsDTO() {
+		CourseWithDetailsDTO courses[] = restTemplate.getForObject("http://databaseService/courses/allCourses",CourseWithDetailsDTO[].class);
+		return Arrays.asList(courses);
+	}
+
 
 	@Override
 	public StartedCourseDTO getStartedCourse(@Min(1) long idCourse) {
@@ -92,6 +100,13 @@ public class CourseServiceImplementation  implements CourseService{
 		ResponseEntity<String> response = restTemplate.exchange("http://databaseService/enrollments/updateGrades", HttpMethod.PUT,requestEntity,String.class);
 		return response.getBody();
 	}
+
+	@Override
+	public List<CourseDetailsDTO> getAllCourseDetails() {
+		CourseDetailsDTO details[] = restTemplate.getForObject("http://databaseService/courses/courseDetails/all",CourseDetailsDTO[].class);
+		return Arrays.asList(details);
+	}
+
 
 
 

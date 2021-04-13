@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import f54148.adminication.dto.AttendanceDTO;
+import f54148.adminication.dto.CourseDetailsDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
@@ -69,6 +70,11 @@ public class CourseController {
 		return courseService.getCourseWithDetails(courseId);
 	}
 	
+	@GetMapping(path = "/allCourses")
+	public @ResponseBody List<CourseWithDetailsDTO> getAllCourseWithDetailsDTO() {
+		return courseService.getAllCourseWithDetailsDTO();
+	}
+	
 	@GetMapping(path = "/started/{courseId}")
 	public @ResponseBody StartedCourseDTO getStartedCourseById(@PathVariable("courseId") @Min(1) Long courseId) {
 		return courseService.getStartedCourse(courseId);
@@ -90,7 +96,7 @@ public class CourseController {
 	}
 
 	@GetMapping(path = "/{courseId}/attendance")
-	public @ResponseBody List<AttendanceDTO> StudentGradesDTO(@PathVariable("courseId") @Min(1) Long courseId) {
+	public @ResponseBody List<AttendanceDTO> getStudentGradesDTO(@PathVariable("courseId") @Min(1) Long courseId) {
 		return attendanceService.getAttendancesOfCourse(courseId);
 	}
 	
@@ -99,7 +105,11 @@ public class CourseController {
 	public @ResponseBody String updateGrades(@RequestBody List<StudentGradesDTO> studentGrades) {
 		return courseService.updateGrades(studentGrades);
 	}
-
+	
+	@GetMapping(path = "/courseDetails")
+	public @ResponseBody List<CourseDetailsDTO> getAllCourseDetails() {
+		return courseService.getAllCourseDetails();
+	}
 	
 
 }

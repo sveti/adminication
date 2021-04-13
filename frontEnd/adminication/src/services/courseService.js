@@ -48,3 +48,11 @@ export function getAttendanceByCourseId(idCourse) {
 export function updateGrades(grades) {
   return http.put(apiEndpoint + "updateGrades", grades);
 }
+
+export function getAllCourses() {
+  return http.get(apiEndpoint + "allCourses");
+}
+
+export function getAllCourseDetails() {
+  return http.get(apiEndpoint + "courseDetails");
+}

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum CourseStatus implements Serializable {
 	
-	UPCOMMING, STARTED, FINISHED, POSTPONED, CANCELED;
+	UPCOMMING, STARTED, FINISHED, CANCELED;
 
 	public String getCourseStatus() {
 		return this.name();

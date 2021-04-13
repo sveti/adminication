@@ -45,3 +45,37 @@ export function textToDayOfTheWeek(text) {
 
   return days[date.getDay()];
 }
+
+export function textToDayOfTheWeekNumber(text) {
+  let date = new Date(text);
+
+  return date.getDay();
+}
+
+export function getMinDateAsDate(startDates) {
+  const dates = startDates.map((dateStr) => {
+    return new Date(dateStr);
+  });
+  let minDate = new Date(Math.min.apply(null, dates));
+  return minDate;
+}
+
+export function textToDate(text) {
+  return new Date(text);
+}
+
+export function isAfterDate(date1, date2) {
+  return date1 >= date2;
+}
+
+export function getMinDate(startDates) {
+  const dates = startDates.map((dateStr) => {
+    return new Date(dateStr);
+  });
+  let minDate = new Date(Math.min.apply(null, dates));
+  let dd = String(minDate.getDate()).padStart(2, "0");
+  let mm = String(minDate.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = minDate.getFullYear();
+
+  return dd + "." + mm + "." + yyyy;
+}

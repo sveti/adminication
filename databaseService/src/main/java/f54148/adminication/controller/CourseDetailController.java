@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.CourseDetailsDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.service.CourseDetailService;
@@ -55,8 +56,13 @@ public class CourseDetailController {
 	}
 
 	@GetMapping(path = "/courseDetails")
-	public @ResponseBody List<CourseDetail> getAllCourses() {
+	public @ResponseBody List<CourseDetail> getAllCourseDetails() {
 		return service.getCourseDetails();
+	}
+
+	@GetMapping(path = "/all")
+	public @ResponseBody List<CourseDetailsDTO> getAllCourseDetailsDTO() {
+		return service.getCourseDetailsDTO();
 	}
 
 }

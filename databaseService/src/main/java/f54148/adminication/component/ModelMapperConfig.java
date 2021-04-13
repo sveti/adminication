@@ -97,6 +97,7 @@ public class ModelMapperConfig {
 	        	destination.setSignedUp(source.getEnrollments().size());
 	        	
 	        	destination.setLevel(source.getLevel());
+	        	destination.setDescription(source.getDescription());
 	        	
 	            return destination;
 	        }
@@ -146,6 +147,8 @@ public class ModelMapperConfig {
 	        	
 	        	destination.setDetails(courseDetails);
 	        	destination.setTeachers(teachers);
+	        	
+	        	destination.setDescription(source.getDescription());
 	        	
 	            return destination;
 	        }

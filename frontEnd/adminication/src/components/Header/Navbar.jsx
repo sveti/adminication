@@ -82,6 +82,19 @@ export default function Navbar(props) {
           My courses
         </Link>
       </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/courses/all",
+            state: {
+              user: props.user,
+            },
+          }}
+        >
+          All courses
+        </Link>
+      </li>
     </React.Fragment>
   );
 

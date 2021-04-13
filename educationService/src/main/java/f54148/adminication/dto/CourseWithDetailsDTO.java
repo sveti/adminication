@@ -15,6 +15,7 @@ public class CourseWithDetailsDTO {
 	
 	private long id;
 	private String title;
+	private String description;
 	private List<LocalTime> startTime;
 	private List<LocalTime> endTime;
 	private List<LocalDate> startDate;

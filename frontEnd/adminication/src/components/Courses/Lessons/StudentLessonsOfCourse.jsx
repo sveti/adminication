@@ -15,7 +15,7 @@ const StudentLessonsOfCourse = (props) => {
 
   return (
     <div className="lessonsOfCourseContainer">
-      <h1 className="title">{course.title}</h1>
+      <h1 className="courseTitle">{course.title}</h1>
       <div className="courseInfo">
         {course.days.map((date, index) => {
           return (

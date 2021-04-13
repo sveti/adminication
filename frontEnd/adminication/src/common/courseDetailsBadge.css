@@ -1,0 +1,21 @@
+.short {
+  background-color: #359fc1;
+}
+.shortish {
+  background-color: #1a396b;
+  color: #fff;
+}
+.medium {
+  background-color: #eedd6d;
+}
+.mediumish {
+  background-color: #e74c3c;
+  color: #fff;
+}
+.long {
+  background-color: #98bf7b;
+}
+.longer {
+  background-color: #5b8a38;
+  color: #fff;
+}

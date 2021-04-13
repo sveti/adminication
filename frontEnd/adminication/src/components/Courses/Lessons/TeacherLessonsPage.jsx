@@ -34,7 +34,7 @@ function TeacherLessonsPage(props) {
 
   return courses.startedCourses.length > 0 ||
     courses.substituteCourses.length > 0 ? (
-    <div className="lessonsOfCourseContainer">
+    <div className="lessonsOfCourseContainer lessMargin">
       {courses.startedCourses.length > 0 ? (
         <StartedCoursesTable
           message={"Started courses"}

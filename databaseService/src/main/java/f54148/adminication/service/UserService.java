@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.EditUserDTO;
 import f54148.adminication.entity.Draft;
+import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.Role;
 import f54148.adminication.entity.User;
@@ -181,6 +182,50 @@ public class UserService {
 		if (opUser.isPresent()) {
 			return true;
 		} else {
+			return false;
+		}
+	}
+
+	public boolean encodeAllPassowords() {
+		List<User> users = this.getUsers();
+		
+		try {
+		for(User u: users) {
+			u.setPassword(encoder.encode(u.getPassword()));
+			userRepository.save(u);
+		}
+		
+		return true;}
+		catch (Exception e) {
+			return false;
+		}
+		
+	}
+
+	public boolean setAllGender() {
+		
+		List<User> users = this.getUsers();
+		
+		try {
+		for(User u: users) {
+			u.setGender(Gender.FEMALE);
+			userRepository.save(u);
+		}
+		
+		return true;}
+		catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean encodeSinglePassword(Long id) {
+		try {
+		User u = this.getUserById(id);
+		u.setPassword(encoder.encode(u.getPassword()));
+		userRepository.save(u);
+		return true;
+		}
+		catch(Exception e) {
 			return false;
 		}
 	}

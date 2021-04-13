@@ -4,6 +4,7 @@ import ProtectedRoute from "../../common/ProtectedRoute";
 import StudentLessonsOfCourse from "../Courses/Lessons/StudentLessonsOfCourse";
 import StudentCoursesPage from "../Courses/StudentCoursesPage";
 import Course from "../Courses/Course";
+import AllCoursesList from "../Courses/AllCoursesList";
 import IndexPage from "../Homepage/IndexPage";
 
 import Logout from "../Login/Logout";
@@ -24,6 +25,12 @@ const StudentSwitch = ({ user }) => {
             user={user}
             editedUser={(user) => editedUser(user)}
           ></IndexPage>
+        )}
+      />
+      <ProtectedRoute
+        path="/courses/all"
+        render={(params) => (
+          <AllCoursesList {...params} user={user}></AllCoursesList>
         )}
       />
 

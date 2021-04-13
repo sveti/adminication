@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.constraints.Min;
 
+import f54148.adminication.dto.CourseDetailsDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
@@ -24,5 +25,7 @@ public interface CourseService {
 	String updateGrades(List<StudentGradesDTO> studentGrades);
 	List<StartedCourseStudentDTO> getStartedCoursesOfStudent(@Min(1) Long studentId);
 	List<UpcommingCourseDTO> getUpcommingCoursesByStudentId(@Min(1) Long studentId);
+	List<CourseWithDetailsDTO> getAllCourseWithDetailsDTO();
+	List<CourseDetailsDTO> getAllCourseDetails();
 
 }

@@ -53,7 +53,7 @@ class CoursesPage extends Component {
 
     if (startedCourses.length > 0) {
       started = (
-        <div className="coursesTableContainer">
+        <div className="coursesTableContainer lessMargin">
           <StartedCoursesTable
             message={"Started courses"}
             courses={startedCourses}
@@ -65,7 +65,7 @@ class CoursesPage extends Component {
 
     if (upCommingCourses.length > 0) {
       upcomming = (
-        <div className="coursesTableContainer">
+        <div className="coursesTableContainer lessMargin">
           <UpcommingCoursesTable
             message={"Upcomming courses"}
             courses={upCommingCourses}
@@ -76,7 +76,7 @@ class CoursesPage extends Component {
 
     if (subStartedCourses.length > 0) {
       substitute = (
-        <div className="coursesTableContainer">
+        <div className="coursesTableContainer lessMargin">
           <StartedCoursesTable
             message={"Substituting courses"}
             courses={subStartedCourses}

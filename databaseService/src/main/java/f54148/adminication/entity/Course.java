@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -44,12 +45,15 @@ public class Course {
 	@NotBlank
 	@Column
 	private String title;
+	
+	
+	@Column(name="description",columnDefinition="LONGTEXT")
+	private String description;
 
 	@NotNull
 	@DecimalMin("0.01")
 	@Column
 	private Double pricePerStudent;
-
 
 	@NotNull
     @Min(1)

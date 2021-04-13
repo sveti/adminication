@@ -114,5 +114,37 @@ public class UserController {
 			return "false";
 		}
 	}
-
+	
+	@GetMapping(path = "/passwordUpdateAll" )
+	public  @ResponseBody String encodeAllPassowords(){
+		
+		if (userService.encodeAllPassowords()) {
+		return "Encoded";
+		}
+		else {
+			return "Nope";
+		}
+	}
+	
+	@GetMapping(path = "/setAllGender" )
+	public  @ResponseBody String setAllGender(){
+		
+		if (userService.setAllGender()) {
+		return "Gendered";
+		}
+		else {
+			return "Nope";
+		}
+	}
+	
+	@PostMapping (path = "/encodeSinglePassword/{id}")
+	public  @ResponseBody String encodeSinglePassword(@PathVariable("id") Long id){
+		
+		if (userService.encodeSinglePassword(id)) {
+		return "Encoded";
+		}
+		else {
+			return "Nope";
+		}
+	}
 }

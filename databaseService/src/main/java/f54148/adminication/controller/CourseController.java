@@ -93,6 +93,7 @@ public class CourseController {
 	public @ResponseBody List<Course> getAllCourses() {
 		return courseService.getCourses();
 	}
+	
 
 	@PutMapping(path = "/updateCourse")
 	public @ResponseBody String updateCourse(@RequestBody Course course) {
@@ -203,6 +204,12 @@ public class CourseController {
 		
 		return courseService.getCourseWithDetailsDTO(idCourse);
 	}
+	
+	@GetMapping(path = "/allCourses")
+	public @ResponseBody List<CourseWithDetailsDTO> getAllCourseWithDetailsDTO() {
+		return courseService.getAllCourseWithDetailsDTO();
+	}
+	
 	
 	
 	@GetMapping(path = "/{idCourse}/students")
