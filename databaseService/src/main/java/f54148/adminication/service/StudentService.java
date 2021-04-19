@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseWaitingList;
@@ -16,6 +18,7 @@ import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.EventWaitingList;
+import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.StudentRepository;
 import lombok.AllArgsConstructor;
@@ -25,6 +28,7 @@ import lombok.AllArgsConstructor;
 public class StudentService {
 
 	private final StudentRepository studentRepository;
+	private final ModelMapper modelMapper;
 	//private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
 
 	public List<Student> getStudents() {
@@ -144,6 +148,25 @@ public class StudentService {
 		} else {
 			return null;
 		}
+	}
+	
+	public StudentScheduleDTO convertToStudentScheduleDTO(Schedule schedule) {
+		return modelMapper.map(schedule,StudentScheduleDTO.class);
+	}
+
+	public List<StudentScheduleDTO> getStudentCourseSchedule(Long studentId) {
+		
+		
+		List<StudentScheduleDTO> dtoList = new ArrayList<>();
+		List<Course> signedUpCourses = getCoursesStudentById(studentId);
+		
+		for(Course c: signedUpCourses) {
+			for(Schedule s:c.getCourseSchedule()) {
+				dtoList.add(convertToStudentScheduleDTO(s));
+			}
+		}
+		
+		return dtoList;
 	}
 	
 }

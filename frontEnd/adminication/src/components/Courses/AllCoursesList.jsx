@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import {
   getAllCourses,
   getAllCourseDetails,
+  getCourseScheduleOfStudent,
 } from "../../services/courseService";
 
 import {
@@ -10,6 +11,7 @@ import {
   getMinDateAsDate,
   textToDate,
   isAfterDate,
+  textToDayOfTheWeekNumber,
 } from "../../common/helper";
 
 import "./course.css";
@@ -22,11 +24,62 @@ class AllCoursesList extends Component {
     allCourses: [],
     courses: [],
     allCourseDetails: [],
+    studentSchedule: [],
+    scheduleConflict: [],
+  };
+
+  isOutsideOfTimeRange = (start1, end1, start2, end2) => {
+    ////https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+
+    return (start1 > start2 ? start1 : start2) > (end1 < end2 ? end1 : end2);
+  };
+
+  scheduleOverlap = (dates, startTimes, endTimes) => {
+    const { studentSchedule } = this.state;
+
+    let dayOfTheWeek = [];
+
+    dates.forEach((element) => {
+      dayOfTheWeek.push(textToDayOfTheWeekNumber(element));
+    });
+
+    let sameDayOfTheWeek = studentSchedule.filter((schedule) =>
+      dayOfTheWeek.includes(textToDayOfTheWeekNumber(schedule.startDate))
+    );
+
+    if (sameDayOfTheWeek.length === 0) return false;
+    else {
+      var indicator = false;
+      sameDayOfTheWeek.some((schedule) => {
+        startTimes.some((element, index) => {
+          if (
+            !this.isOutsideOfTimeRange(
+              schedule.startTime,
+              schedule.endTime,
+              startTimes[index],
+              endTimes[index]
+            )
+          ) {
+            indicator = true;
+            return true;
+          }
+          return false;
+        });
+        return indicator;
+      });
+      return indicator;
+    }
   };
 
   componentDidMount = () => {
     this.getCourses();
     this.getCourseDetails();
+    this.getScheduleOfStudent();
+  };
+
+  getScheduleOfStudent = async () => {
+    const { data } = await getCourseScheduleOfStudent(this.state.user.id);
+    this.setState({ studentSchedule: data });
   };
 
   getCourses = async () => {
@@ -41,6 +94,25 @@ class AllCoursesList extends Component {
       element.teachers.sort();
     });
     this.setState({ allCourses: data, courses: data });
+
+    let scheduleConflict = [];
+    data.forEach((course) => {
+      let sheduleOverLap = this.scheduleOverlap(
+        course.startDate,
+        course.startTime,
+        course.endTime
+      );
+      scheduleConflict.push({
+        courseId: course.id,
+        scheduleOverlap: sheduleOverLap,
+      });
+    });
+
+    this.setState({
+      allCourses: data,
+      courses: data,
+      scheduleConflict: scheduleConflict,
+    });
   };
 
   getCourseDetails = async () => {
@@ -54,7 +126,8 @@ class AllCoursesList extends Component {
     title,
     avialable,
     startDate,
-    endDate
+    endDate,
+    scheduleConflict
   ) => {
     const { allCourses } = this.state;
     if (
@@ -63,7 +136,8 @@ class AllCoursesList extends Component {
       title.length === 0 &&
       avialable === false &&
       startDate === "" &&
-      endDate === ""
+      endDate === "" &&
+      scheduleConflict === false
     ) {
       this.setState({ courses: allCourses });
     } else {
@@ -71,7 +145,8 @@ class AllCoursesList extends Component {
         levelsFiltered = [...allCourses],
         courseDetailsFiltered = [...allCourses],
         avialableFiltered = [...allCourses],
-        dateFiltered = [...allCourses];
+        dateFiltered = [...allCourses],
+        sheduleFiltered = [...allCourses];
 
       if (title.length !== 0) {
         titleFiltered = allCourses.filter((course) =>
@@ -105,18 +180,32 @@ class AllCoursesList extends Component {
           isAfterDate(textToDate(startDate), getMinDateAsDate(course.startDate))
         );
       }
+      if (scheduleConflict !== false) {
+        sheduleFiltered = allCourses.filter(
+          (course) =>
+            !this.state.scheduleConflict.find(
+              (conflicts) => course.id === conflicts.courseId
+            ).scheduleOverlap
+        );
+      }
 
       let merged = titleFiltered
         .filter((n) => levelsFiltered.includes(n))
         .filter((n) => courseDetailsFiltered.includes(n))
         .filter((n) => avialableFiltered.includes(n))
-        .filter((n) => dateFiltered.includes(n));
+        .filter((n) => dateFiltered.includes(n))
+        .filter((n) => sheduleFiltered.includes(n));
       this.setState({ courses: merged });
     }
   };
 
   render() {
-    const { courses, allCourses, allCourseDetails } = this.state;
+    const {
+      courses,
+      allCourses,
+      allCourseDetails,
+      scheduleConflict,
+    } = this.state;
 
     return (
       <div className="container">
@@ -131,7 +220,8 @@ class AllCoursesList extends Component {
                   title,
                   avialable,
                   startDate,
-                  endDate
+                  endDate,
+                  scheduleConflict
                 ) =>
                   this.handleSubmit(
                     levels,
@@ -139,7 +229,8 @@ class AllCoursesList extends Component {
                     title,
                     avialable,
                     startDate,
-                    endDate
+                    endDate,
+                    scheduleConflict
                   )
                 }
               ></CoursesSearchBar>
@@ -154,7 +245,13 @@ class AllCoursesList extends Component {
                   </h3>
                   <div>
                     {courses.map((course) => (
-                      <CourseCard course={course} key={course.id}></CourseCard>
+                      <CourseCard
+                        course={course}
+                        key={course.id}
+                        scheduleConflict={scheduleConflict.find(
+                          (conflicts) => course.id === conflicts.courseId
+                        )}
+                      ></CourseCard>
                     ))}
                   </div>
                 </React.Fragment>

@@ -12,6 +12,7 @@ class CoursesSearchBar extends Component {
     avialable: false,
     startDate: "",
     endDate: "",
+    scheduleConflict: false,
   };
 
   removeFilters = () => {
@@ -22,8 +23,9 @@ class CoursesSearchBar extends Component {
       avialable: false,
       startDate: "",
       endDate: "",
+      scheduleConflict: false,
     });
-    this.props.handleSubmit([], [], "", false, "", "");
+    this.props.handleSubmit([], [], "", false, "", "", false);
   };
 
   onSubmit = (event) => {
@@ -34,7 +36,8 @@ class CoursesSearchBar extends Component {
       this.state.title,
       this.state.avialable,
       this.state.startDate,
-      this.state.endDate
+      this.state.endDate,
+      this.state.scheduleConflict
     );
   };
 
@@ -81,6 +84,7 @@ class CoursesSearchBar extends Component {
       avialable,
       startDate,
       endDate,
+      scheduleConflict,
     } = this.state;
     return (
       <div className="row text-left">
@@ -156,6 +160,17 @@ class CoursesSearchBar extends Component {
                 onChange={() => this.setState({ avialable: !avialable })}
               ></input>
               Show only avialable courses
+            </label>
+            <label className="mt-3">
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={scheduleConflict}
+                onChange={() =>
+                  this.setState({ scheduleConflict: !scheduleConflict })
+                }
+              ></input>
+              Show only courses without schedule conflict
             </label>
             <div>
               <button className="btn filterButton mt-3">

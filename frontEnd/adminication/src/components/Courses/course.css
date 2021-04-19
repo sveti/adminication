@@ -62,6 +62,15 @@
   background-color: #eedd6d !important;
 }
 
+.scheduleOverlap {
+  background-color: #e78f3c !important;
+}
+
+.noScheduleOverlap {
+  background-color: #77b646 !important;
+  color: #fff !important;
+}
+
 @media screen and (max-width: 600px) {
   .courseContainer {
     width: 90%;

@@ -34,7 +34,7 @@ const StudentCoursesPage = (props) => {
   );
   const upcomming = (
     <UpcommingCoursesTable
-      message="Started courses"
+      message="Upcomming courses"
       courses={courses.upcomming}
     ></UpcommingCoursesTable>
   );

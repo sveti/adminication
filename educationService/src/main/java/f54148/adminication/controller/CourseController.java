@@ -20,6 +20,7 @@ import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StartedCourseStudentDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.StudentGradesDTO;
+import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.service.AttendanceService;
 import f54148.adminication.service.CourseService;
@@ -110,6 +111,13 @@ public class CourseController {
 	public @ResponseBody List<CourseDetailsDTO> getAllCourseDetails() {
 		return courseService.getAllCourseDetails();
 	}
+	
+	@GetMapping(path = "/student/{studentId}/schedule")
+	public @ResponseBody List<StudentScheduleDTO> getStudentCourseSchedule(@PathVariable("studentId") @Min(1) Long studentId) {
+		return courseService.getStudentCourseSchedule(studentId);
+	}
+	
+	
 	
 
 }

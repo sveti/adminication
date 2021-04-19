@@ -3,12 +3,41 @@ import LevelBadge from "../../common/LevelBadge";
 import CourseDetailsBadge from "../../common/CourseDetailsBadge";
 import { getMinDate, textToDayOfTheWeek } from "../../common/helper";
 import "./course.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-const CourseCard = ({ course }) => {
+const CourseCard = ({ course, scheduleConflict }) => {
+  let sheduleOverLap;
+
+  if (scheduleConflict !== undefined) {
+    sheduleOverLap = scheduleConflict.scheduleOverlap;
+  } else {
+    sheduleOverLap = false;
+  }
+
+  const scheduleOkBadge = (
+    <span className="mx-3">
+      <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
+    </span>
+  );
+  const scheduleAlertBadge = (
+    <span className="mx-3">
+      <FontAwesomeIcon icon={faBan}></FontAwesomeIcon> Shedule conflict
+    </span>
+  );
+
+  let courseClasses = ["card-header", "cardHeaderBackground"];
+  if (sheduleOverLap) {
+    courseClasses.push("scheduleOverlap");
+  } else {
+    courseClasses.push("noScheduleOverlap");
+  }
+
   return (
     <div className="card text-left mb-5">
-      <div className="card-header cardHeaderBackground">
-        <h5 className="m-0">{course.title}</h5>
+      <div className={courseClasses.join(" ")}>
+        <h5 className="m-0 d-inline-block">{course.title}</h5>
+        {sheduleOverLap ? scheduleAlertBadge : scheduleOkBadge}
       </div>
       <div className="card-body">
         <h6 className="card-subtitle mb-2 text-muted">

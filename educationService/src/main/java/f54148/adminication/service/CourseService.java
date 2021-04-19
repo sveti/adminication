@@ -10,6 +10,7 @@ import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StartedCourseStudentDTO;
 import f54148.adminication.dto.StudentGradesDTO;
+import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 
 public interface CourseService {
@@ -27,5 +28,6 @@ public interface CourseService {
 	List<UpcommingCourseDTO> getUpcommingCoursesByStudentId(@Min(1) Long studentId);
 	List<CourseWithDetailsDTO> getAllCourseWithDetailsDTO();
 	List<CourseDetailsDTO> getAllCourseDetails();
+	List<StudentScheduleDTO> getStudentCourseSchedule(@Min(1) Long studentId);
 
 }

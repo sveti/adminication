@@ -20,6 +20,7 @@ import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StartedCourseStudentDTO;
 import f54148.adminication.dto.StudentGradesDTO;
+import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.service.CourseService;
 import lombok.AllArgsConstructor;
@@ -105,6 +106,12 @@ public class CourseServiceImplementation  implements CourseService{
 	public List<CourseDetailsDTO> getAllCourseDetails() {
 		CourseDetailsDTO details[] = restTemplate.getForObject("http://databaseService/courses/courseDetails/all",CourseDetailsDTO[].class);
 		return Arrays.asList(details);
+	}
+
+	@Override
+	public List<StudentScheduleDTO> getStudentCourseSchedule(@Min(1) Long studentId) {
+		StudentScheduleDTO schedules[] = restTemplate.getForObject("http://databaseService/students/{studentId}/schedule",StudentScheduleDTO[].class,studentId);
+		return Arrays.asList(schedules);
 	}
 
 
