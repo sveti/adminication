@@ -6,13 +6,13 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.GradesOfStudentDTO;
 import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.CourseStatus;
 import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Event;
@@ -154,19 +154,42 @@ public class StudentService {
 		return modelMapper.map(schedule,StudentScheduleDTO.class);
 	}
 
-	public List<StudentScheduleDTO> getStudentCourseSchedule(Long studentId) {
+	public List<StudentScheduleDTO> getStudentSchedule(Long studentId) {
 		
 		
 		List<StudentScheduleDTO> dtoList = new ArrayList<>();
 		List<Course> signedUpCourses = getCoursesStudentById(studentId);
+		List<Event> signedUpEvents = getEventsStudentById(studentId);
 		
 		for(Course c: signedUpCourses) {
 			for(Schedule s:c.getCourseSchedule()) {
 				dtoList.add(convertToStudentScheduleDTO(s));
 			}
 		}
+		for(Event e: signedUpEvents) {
+			for(Schedule s:e.getEventSchedule()) {
+				dtoList.add(convertToStudentScheduleDTO(s));
+			}
+		}
 		
 		return dtoList;
+	}
+	
+	
+	public List<GradesOfStudentDTO> getGradesOfStudent(long GradesOfStudentDTO){
+		
+		Set<Enrollment> enrollments = getStudentById(GradesOfStudentDTO).getEnrollments();
+		
+		List<GradesOfStudentDTO> dto = new ArrayList<>();
+		
+		for(Enrollment e: enrollments) {
+			if(e.getCourse().getStatus() == CourseStatus.FINISHED) {
+				GradesOfStudentDTO grade = new GradesOfStudentDTO(e.getCourse().getId(),e.getCourse().getTitle(),e.getGrade());
+				dto.add(grade);
+			}
+		}
+		
+		return dto;
 	}
 	
 }

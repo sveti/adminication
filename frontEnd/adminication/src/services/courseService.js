@@ -56,7 +56,3 @@ export function getAllCourses() {
 export function getAllCourseDetails() {
   return http.get(apiEndpoint + "courseDetails");
 }
-
-export function getCourseScheduleOfStudent(studentId) {
-  return http.get(apiEndpoint + "student/" + studentId + "/schedule");
-}

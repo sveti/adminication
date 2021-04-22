@@ -108,12 +108,6 @@ public class CourseServiceImplementation  implements CourseService{
 		return Arrays.asList(details);
 	}
 
-	@Override
-	public List<StudentScheduleDTO> getStudentCourseSchedule(@Min(1) Long studentId) {
-		StudentScheduleDTO schedules[] = restTemplate.getForObject("http://databaseService/students/{studentId}/schedule",StudentScheduleDTO[].class,studentId);
-		return Arrays.asList(schedules);
-	}
-
 
 
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.EventDTO;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
@@ -89,9 +90,20 @@ public class EventController {
 		return eventService.getStudentsWaitingByEventId(id);
 	}
 
-	@GetMapping(path = "/events")
+	@GetMapping(path = "/all")
 	public @ResponseBody List<Event> getAllEvents() {
 		return eventService.getEvents();
 	}
 
+	@GetMapping(path = "/events")
+	public @ResponseBody List<EventDTO> getEvents() {
+		return eventService.getAllEvents();
+	}
+
+	@GetMapping(path = "/student/{studentId}")
+	public @ResponseBody List<EventDTO> getEventsOfStudent(@PathVariable("studentId") Long studentId) {
+		return eventService.getEventsOfStudent(studentId);
+	}
+
+	
 }

@@ -68,7 +68,6 @@ export default function Navbar(props) {
 
   const studentNav = (
     <React.Fragment>
-      {" "}
       <li className="nav-item">
         <Link
           className="nav-link"
@@ -86,6 +85,32 @@ export default function Navbar(props) {
         <Link
           className="nav-link"
           to={{
+            pathname: "/grades",
+            state: {
+              user: props.user,
+            },
+          }}
+        >
+          Grades
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/events",
+            state: {
+              user: props.user,
+            },
+          }}
+        >
+          My events
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
             pathname: "/courses/all",
             state: {
               user: props.user,
@@ -93,6 +118,20 @@ export default function Navbar(props) {
           }}
         >
           All courses
+        </Link>
+      </li>
+
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/events/all",
+            state: {
+              user: props.user,
+            },
+          }}
+        >
+          All Events
         </Link>
       </li>
     </React.Fragment>

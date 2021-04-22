@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.GradesOfStudentDTO;
 import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
@@ -103,8 +104,14 @@ public class StudentController {
 	}
 	
 	@GetMapping(path = "/{id}/schedule")
-	public @ResponseBody List<StudentScheduleDTO> getStudentCourseSchedule(@PathVariable("id") Long studentId) {
-		return studentService.getStudentCourseSchedule(studentId);
+	public @ResponseBody List<StudentScheduleDTO> getStudentSchedule(@PathVariable("id") Long studentId) {
+		return studentService.getStudentSchedule(studentId);
+	}
+
+	
+	@GetMapping(path = "/{id}/grades")
+	public @ResponseBody List<GradesOfStudentDTO> getGradesOfStudent(@PathVariable("id") Long studentId) {
+		return studentService.getGradesOfStudent(studentId);
 	}
 
 }

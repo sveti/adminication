@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.EventDTO;
+import f54148.adminication.entity.CourseStatus;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.EventWaitingList;
@@ -18,8 +21,11 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class EventService {
-
+	
+	
 	private final EventRepository eventRepository;
+	private final StudentService studentService;
+	private final ModelMapper modelMapper;
 
 	public List<Event> getEvents() {
 		List<Event> eventList = new ArrayList<>();
@@ -115,5 +121,40 @@ public class EventService {
 		} else {
 			return null;
 		}
+	}
+	
+	public EventDTO convertToEventDTO(Event e) {
+		EventDTO dto = modelMapper.map(e,EventDTO.class);
+		return dto;
+	}
+	
+	
+	public List<EventDTO> getAllEvents(){
+		
+		List<Event> allEvents = getEvents();
+		allEvents.removeIf(event -> event.getStatus() == CourseStatus.FINISHED || event.getStatus() == CourseStatus.CANCELED);
+		
+		List<EventDTO> dtoList = new ArrayList<>();
+		
+		for(Event e: allEvents) {
+			dtoList.add(convertToEventDTO(e));
+		}
+	
+		return dtoList;
+		
+	}
+
+	public List<EventDTO> getEventsOfStudent(Long studentId) {
+		
+		List<Event> allEvents = studentService.getEventsStudentById(studentId);
+		
+		List<EventDTO> dtoList = new ArrayList<>();
+		
+		for(Event e: allEvents) {
+			dtoList.add(convertToEventDTO(e));
+		}
+	
+		return dtoList;
+		
 	}
 }

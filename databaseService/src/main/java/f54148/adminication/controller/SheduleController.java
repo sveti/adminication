@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 public class SheduleController {
 
 	private final ScheduleService scheduleService;
-
+	
 	@PostMapping(path = "/addSchedule")
 	public @ResponseBody String addNewSchedule(@RequestBody Schedule schedule) {
 

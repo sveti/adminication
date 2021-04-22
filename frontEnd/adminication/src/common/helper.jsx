@@ -79,3 +79,18 @@ export function getMinDate(startDates) {
 
   return dd + "." + mm + "." + yyyy;
 }
+
+export function daysTillStart(startDate) {
+  let Difference_In_Time =
+    getMinDateFromArray(startDate).getTime() - Date.now();
+
+  return Math.round(Difference_In_Time / (1000 * 3600 * 24));
+}
+
+export function getMinDateFromArray(startDate) {
+  const dates = startDate.map((dateStr) => {
+    return new Date(dateStr);
+  });
+  var minDate = new Date(Math.min.apply(null, dates));
+  return minDate;
+}

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Lazy;
 
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.DisplayUserDTO;
+import f54148.adminication.dto.EventDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StudentGradesDTO;
@@ -22,6 +23,7 @@ import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.entity.Enrollment;
+import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Gender;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Teacher;
@@ -50,6 +52,7 @@ public class ModelMapperConfig {
 		 	modelMapper.addConverter(convertCoursetoStartedCourseDTO);
 		 	modelMapper.addConverter(convertCoursetoFinshedCourseDTO);
 		 	modelMapper.addConverter(convertEnrollmenttoStudentGradesDTO);
+		 	modelMapper.addConverter(convertEventtoEventDTO);
 		 	
 		 	return modelMapper;
 	    }
@@ -229,5 +232,47 @@ public class ModelMapperConfig {
 	            return destination;
 	        }
 	    };
+	    
+	    Converter<Event, EventDTO> convertEventtoEventDTO = new Converter<Event, EventDTO>()
+	    {
+	        public EventDTO convert(MappingContext<Event, EventDTO> context)
+	        {
+
+	        	Event source = context.getSource();
+	        	EventDTO destination = new EventDTO();
+	        	
+	        	destination.setId(source.getId());
+	        	destination.setTitle(source.getTitle());
+	        	destination.setDescription(source.getDescription());
+	        	destination.setStatus(source.getStatus());
+	        	
+	        	destination.setMinAge(source.getMinAge());
+	        	destination.setMaxAge(source.getMaxAge());
+	        	destination.setMaxNumberOfPeople(source.getMaxNumberOfPeople());
+	        	destination.setSignedUp(source.getEventSignedUps().size());
+	        	
+	        	List<LocalTime> startTimes = new ArrayList<LocalTime>();
+	        	List<LocalTime> endTimes = new ArrayList<LocalTime>();
+	        	List<LocalDate> startDates = new ArrayList<LocalDate>();
+	   
+	        	
+	        	for(Schedule s: source.getEventSchedule()){
+	        		startTimes.add(s.getStartTime());
+	        		endTimes.add(s.getEndTime());
+	        		startDates.add(s.getStartDate());
+	        	}
+	        	
+	        	
+	        	
+	        	
+	        	destination.setStartTime(startTimes);
+	        	destination.setEndTime(endTimes);
+	        	destination.setStartDate(startDates);
+	        	
+
+	            return destination;
+	        }
+	    };
+	    
 }
 

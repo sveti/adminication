@@ -1,0 +1,39 @@
+.miniTable {
+  margin-top: 1rem;
+}
+
+.miniTable .card-header {
+  background-color: #dfcb4d !important;
+  font-weight: bold;
+}
+
+.cardHeaderBackground {
+  background-color: #eedd6d !important;
+}
+
+.enoughSpace {
+  background-color: #77b646 !important;
+  color: #fff !important;
+}
+
+.notEnoughSpace {
+  background-color: #e74c3c !important;
+}
+
+.filterButton {
+  background-color: #1a396b !important;
+  color: #fff !important;
+}
+
+.removeFiltersButton {
+  background-color: #eedd6d !important;
+}
+
+.scheduleOverlap {
+  background-color: #e78f3c !important;
+}
+
+.noScheduleOverlap {
+  background-color: #77b646 !important;
+  color: #fff !important;
+}

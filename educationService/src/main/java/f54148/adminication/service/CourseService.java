@@ -28,6 +28,6 @@ public interface CourseService {
 	List<UpcommingCourseDTO> getUpcommingCoursesByStudentId(@Min(1) Long studentId);
 	List<CourseWithDetailsDTO> getAllCourseWithDetailsDTO();
 	List<CourseDetailsDTO> getAllCourseDetails();
-	List<StudentScheduleDTO> getStudentCourseSchedule(@Min(1) Long studentId);
+
 
 }

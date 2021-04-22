@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import {
   getAllCourses,
   getAllCourseDetails,
-  getCourseScheduleOfStudent,
 } from "../../services/courseService";
+
+import { getScheduleOfStudent } from "../../services/scheduleService";
 
 import {
   dynamicSort,
@@ -72,14 +73,14 @@ class AllCoursesList extends Component {
   };
 
   componentDidMount = () => {
-    this.getCourses();
     this.getCourseDetails();
     this.getScheduleOfStudent();
   };
 
   getScheduleOfStudent = async () => {
-    const { data } = await getCourseScheduleOfStudent(this.state.user.id);
+    const { data } = await getScheduleOfStudent(this.state.user.id);
     this.setState({ studentSchedule: data });
+    this.getCourses();
   };
 
   getCourses = async () => {
@@ -93,7 +94,6 @@ class AllCoursesList extends Component {
       element.details.sort();
       element.teachers.sort();
     });
-    this.setState({ allCourses: data, courses: data });
 
     let scheduleConflict = [];
     data.forEach((course) => {
@@ -177,7 +177,7 @@ class AllCoursesList extends Component {
       }
       if (endDate !== "") {
         dateFiltered = dateFiltered.filter((course) =>
-          isAfterDate(textToDate(startDate), getMinDateAsDate(course.startDate))
+          isAfterDate(textToDate(endDate), getMinDateAsDate(course.startDate))
         );
       }
       if (scheduleConflict !== false) {

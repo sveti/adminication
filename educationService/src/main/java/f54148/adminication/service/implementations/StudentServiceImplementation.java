@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
+import f54148.adminication.dto.GradesOfStudentDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.service.StudentService;
@@ -30,6 +31,12 @@ public class StudentServiceImplementation implements StudentService {
 	@Override
 	public List<StudentGradesDTO> getGradesOfStudentsOfCourse(@Min(1) Long courseId) {
 		StudentGradesDTO students[] = restTemplate.getForObject("http://databaseService/enrollments/{courseId}/grades",StudentGradesDTO[].class, courseId);
+		return Arrays.asList(students);
+	}
+
+	@Override
+	public List<GradesOfStudentDTO> getGradesOfStudent(@Min(1) Long studentId) {
+		GradesOfStudentDTO students[] = restTemplate.getForObject("http://databaseService/students/{studentId}/grades",GradesOfStudentDTO[].class, studentId);
 		return Arrays.asList(students);
 	}
 

@@ -9,6 +9,10 @@ import IndexPage from "../Homepage/IndexPage";
 
 import Logout from "../Login/Logout";
 import NotFound from "../notFound";
+import AllEventsList from "../Courses/Events/AllEventsList";
+import StudentsEventsPage from "../Courses/Events/StudentEventsPage";
+import Event from "../Courses/Events/Event";
+import StudentGrades from "../Courses/Grading/StudentGrades";
 
 const StudentSwitch = ({ user }) => {
   function editedUser(passedUser) {
@@ -52,6 +56,32 @@ const StudentSwitch = ({ user }) => {
           <StudentCoursesPage {...params} user={user}></StudentCoursesPage>
         )}
       />
+
+      <ProtectedRoute
+        path="/grades"
+        render={(params) => (
+          <StudentGrades {...params} user={user}></StudentGrades>
+        )}
+      />
+
+      <ProtectedRoute
+        path="/events/all"
+        render={(params) => (
+          <AllEventsList {...params} user={user}></AllEventsList>
+        )}
+      />
+      <ProtectedRoute
+        path="/events/:eventId"
+        render={(params) => <Event {...params}></Event>}
+      />
+
+      <ProtectedRoute
+        path="/events"
+        render={(params) => (
+          <StudentsEventsPage {...params} user={user}></StudentsEventsPage>
+        )}
+      />
+
       <Redirect from="/" exact to="/login" />
       <ProtectedRoute path="/not-found" component={NotFound} />
       <Redirect to="/not-found" />

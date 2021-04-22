@@ -112,10 +112,7 @@ public class CourseController {
 		return courseService.getAllCourseDetails();
 	}
 	
-	@GetMapping(path = "/student/{studentId}/schedule")
-	public @ResponseBody List<StudentScheduleDTO> getStudentCourseSchedule(@PathVariable("studentId") @Min(1) Long studentId) {
-		return courseService.getStudentCourseSchedule(studentId);
-	}
+
 	
 	
 	
