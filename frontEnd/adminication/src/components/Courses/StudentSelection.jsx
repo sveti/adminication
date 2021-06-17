@@ -9,7 +9,7 @@ import "./studentSelection.css";
 const StudentSelection = (props) => {
   const [students, setStudents] = useState([]);
 
-  const destination = "/" + props.location.state.path + "/all";
+  const destination = "/" + props.location.state.path;
 
   useEffect(() => {
     async function getStudents() {
@@ -41,7 +41,7 @@ const StudentSelection = (props) => {
                 }}
               >
                 <button className="editButton details">
-                  Sign up for {props.location.state.message}
+                  {props.location.state.message}
                 </button>
               </Link>
             </p>

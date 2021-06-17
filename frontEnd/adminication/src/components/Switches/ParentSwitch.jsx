@@ -7,6 +7,10 @@ import NotFound from "../notFound";
 import StudentSelection from "../Courses/StudentSelection";
 import AllCoursesList from "../Courses/AllCoursesList";
 import AllEventsList from "../Courses/Events/AllEventsList";
+import StudentCoursesPage from "../Courses/StudentCoursesPage";
+import StudentLessonsOfCourse from "../Courses/Lessons/StudentLessonsOfCourse";
+import Course from "../Courses/Course";
+import StudentGrades from "../Courses/Grading/StudentGrades";
 
 const ParentSwitch = ({ user }) => {
   function editedUser(passedUser) {
@@ -28,8 +32,30 @@ const ParentSwitch = ({ user }) => {
       />
 
       <ProtectedRoute
+        path="/courses/:courseId/lessons"
+        render={(params) => (
+          <StudentLessonsOfCourse {...params}></StudentLessonsOfCourse>
+        )}
+      />
+      <ProtectedRoute
         path="/courses/all"
         render={(params) => <AllCoursesList {...params}></AllCoursesList>}
+      />
+      <ProtectedRoute
+        path="/courses/:courseId"
+        render={(params) => <Course {...params}></Course>}
+      />
+
+      <ProtectedRoute
+        path="/courses"
+        render={(params) => (
+          <StudentCoursesPage {...params}></StudentCoursesPage>
+        )}
+      />
+
+      <ProtectedRoute
+        path="/grades"
+        render={(params) => <StudentGrades {...params}></StudentGrades>}
       />
 
       <ProtectedRoute

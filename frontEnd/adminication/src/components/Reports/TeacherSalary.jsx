@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-import { getTeacherStatisticForMonth } from "../../services/statisticsService";
+import { getTeacherStatisticForMonth } from "../../services/reportsService";
 import { getTodaysDate } from "../../common/helper";
 
 import { toast } from "react-toastify";
 
-import "./statistics.css";
+import "./reports.css";
 import GeneralCourseSalary from "./GeneralCourseSalary";
 
 class TeacherSalary extends Component {

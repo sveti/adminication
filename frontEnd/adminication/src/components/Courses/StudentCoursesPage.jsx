@@ -10,7 +10,11 @@ import StudentStartedCoursesTable from "./StudentStartedCoursesTable";
 import UpcommingCoursesTable from "./UpcommingCoursesTable";
 
 const StudentCoursesPage = (props) => {
-  const { user } = props;
+  let { user } = props;
+
+  if (!user) {
+    user = props.location.state.user;
+  }
 
   const [courses, setCourses] = useState({ started: [], upcomming: [] });
 

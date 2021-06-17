@@ -60,7 +60,7 @@ export default function Navbar(props) {
             },
           }}
         >
-          Statistics
+          Reports
         </Link>
       </li>
     </React.Fragment>
@@ -146,8 +146,38 @@ export default function Navbar(props) {
             pathname: "/selectStudent",
             state: {
               user: props.user,
-              message: "courses",
+              message: "See current courses",
               path: "courses",
+            },
+          }}
+        >
+          Current courses
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/selectStudent",
+            state: {
+              user: props.user,
+              message: "See grades",
+              path: "grades",
+            },
+          }}
+        >
+          Grading
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/selectStudent",
+            state: {
+              user: props.user,
+              message: "Sign up for courses",
+              path: "courses/all",
             },
           }}
         >
@@ -161,8 +191,8 @@ export default function Navbar(props) {
             pathname: "/selectStudent",
             state: {
               user: props.user,
-              message: "events",
-              path: "events",
+              message: "Sign up for events",
+              path: "events/all",
             },
           }}
         >

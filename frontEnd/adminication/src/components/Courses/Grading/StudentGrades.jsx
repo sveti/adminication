@@ -8,7 +8,11 @@ import { dynamicSort } from "../../../common/helper";
 
 import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 const StudentGrades = (props) => {
-  const { user } = props;
+  let { user } = props;
+
+  if (!user) {
+    user = props.location.state.user;
+  }
 
   const [grades, setGrades] = useState([]);
 

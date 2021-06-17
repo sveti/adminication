@@ -9,7 +9,7 @@ import LessonsOfCoursePage from "../Courses/Lessons/LessonsOfCoursePage";
 import TeacherLessonsPage from "../Courses/Lessons/TeacherLessonsPage";
 import GradingTable from "../Courses/Grading/GradingTable";
 import Grading from "../Courses/Grading/Grading";
-import TeacherSalary from "../Statistics/TeacherSalary";
+import TeacherSalary from "../Reports/TeacherSalary";
 import NotFound from "../notFound";
 
 const TeacherSwitch = ({ user }) => {
