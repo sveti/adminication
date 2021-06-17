@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AddCourseWaitingListSignUpDTO;
+import f54148.adminication.dto.CourseOfStudentInWaitingListDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Student;
@@ -36,6 +38,17 @@ public class CourseWaitingListController {
 
 	}
 
+	@PostMapping(path = "/add")
+	public @ResponseBody String addWaitingListSignUp(@RequestBody AddCourseWaitingListSignUpDTO courseWaitingList) {
+
+		if (courseWaitingListService.addWaitingListSignUp(courseWaitingList)) {
+			return "Sucessfully added student to course waiting list!";
+		} else {
+			return "An error has occured";
+		}
+
+	}
+	
 	@PutMapping(path = "/updateCourseWaitingList")
 	public @ResponseBody String updateCourseWaitingList(@RequestBody CourseWaitingList courseWaitingList) {
 
@@ -72,6 +85,12 @@ public class CourseWaitingListController {
 		return courseWaitingListService.getFirstStudentInQueue(courseId);
 	}
 
+	@GetMapping(path = "/student/{studentId}/waitingList")
+	public @ResponseBody List<CourseOfStudentInWaitingListDTO> getCourseWaitingListOfStudent(@PathVariable("studentId") Long studentId) {
+		return courseWaitingListService.getWaitingListsOfStudent(studentId);
+	}
+	
+	
 	@DeleteMapping(path = "/courseWaitingList/{id}")
 	public @ResponseBody String deteleCourseWaiting(@PathVariable("id") Long courseWaitingListId) {
 		if (courseWaitingListService.deleteCourseWaitingList(courseWaitingListId)) {

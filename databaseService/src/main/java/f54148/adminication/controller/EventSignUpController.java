@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AddEventSignUpDTO;
 import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.service.EventSignUpService;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,16 @@ public class EventSignUpController {
 		}
 
 	}
+	
+	@PostMapping(path = "/add")
+	public @ResponseBody String addEventSignUpDTO(@RequestBody AddEventSignUpDTO enrollment) {
+		if (eventSignUpservice.addEventSignUpDTO(enrollment)) {
+			return "Student was sucessfully signed up for the event!";
+		} else {
+			return "An error has occured";
+		}
+	}
+
 
 	@PutMapping(path = "/updateEventSignUp")
 	public @ResponseBody String updateEventSignUp(@RequestBody EventSignUp eventSignUp) {

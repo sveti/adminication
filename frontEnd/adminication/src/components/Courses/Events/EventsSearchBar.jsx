@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 class EventsSearchBar extends Component {
   state = {
     title: "",
+    minAge: 0,
+    maxAge: 100,
     startDate: "",
     endDate: "",
     avialable: false,
@@ -14,12 +17,14 @@ class EventsSearchBar extends Component {
   removeFilters = () => {
     this.setState({
       title: "",
+      minAge: 0,
+      maxAge: 100,
       avialable: false,
       startDate: "",
       endDate: "",
       scheduleConflict: false,
     });
-    this.props.handleSubmit("", false, "", "", false);
+    this.props.handleSubmit("", 0, 100, false, "", "", false);
   };
 
   onTitleChange = (event) => {
@@ -38,6 +43,8 @@ class EventsSearchBar extends Component {
     event.preventDefault();
     this.props.handleSubmit(
       this.state.title,
+      this.state.minAge,
+      this.state.maxAge,
       this.state.avialable,
       this.state.startDate,
       this.state.endDate,
@@ -45,14 +52,13 @@ class EventsSearchBar extends Component {
     );
   };
 
+  onRangeSiderChange = (event) => {
+    console.log(event);
+  };
+
   render() {
-    const {
-      title,
-      startDate,
-      endDate,
-      avialable,
-      scheduleConflict,
-    } = this.state;
+    const { title, startDate, endDate, avialable, scheduleConflict } =
+      this.state;
 
     return (
       <div className="row text-left">
@@ -68,6 +74,33 @@ class EventsSearchBar extends Component {
             type="text"
             value={title}
             onChange={(event) => this.onTitleChange(event)}
+          />
+        </div>
+        <div className="col-12">
+          <h4 className="my-2">Age:</h4>
+        </div>
+        <div className="col-6">
+          <h6 className="my-2">from:</h6>
+          <input
+            className="form-control mb-2"
+            type="text"
+            pattern="[0-9]*"
+            value={this.state.minAge}
+            onChange={(event) =>
+              this.setState({ minAge: event.target.value.replace(/\D/, "") })
+            }
+          />
+        </div>
+        <div className="col-6">
+          <h6 className="my-2">to:</h6>
+          <input
+            className="form-control mb-2"
+            type="text"
+            pattern="[0-9]*"
+            value={this.state.maxAge}
+            onChange={(event) =>
+              this.setState({ maxAge: event.target.value.replace(/\D/, "") })
+            }
           />
         </div>
         <div className="col-12">

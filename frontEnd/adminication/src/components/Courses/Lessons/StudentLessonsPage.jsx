@@ -36,7 +36,9 @@ const StudentLessonsPage = (props) => {
       ></StudentStartedCoursesTable>
     </div>
   ) : (
-    <h1>There are no started courses yet</h1>
+    <div className="lessonsOfCourseContainer">
+      <h2 className="mt-5">There are no started courses yet</h2>
+    </div>
   );
 };
 

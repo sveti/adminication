@@ -45,7 +45,9 @@ const StudentCoursesPage = (props) => {
       {courses.upcomming.length > 0 ? upcomming : null}
     </div>
   ) : (
-    <h1>There are no started courses yet</h1>
+    <div className="lessonsOfCourseContainer">
+      <h1 className="mt-1">There are no started courses yet</h1>
+    </div>
   );
 };
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.StudentOfParentDTO;
 import f54148.adminication.entity.Parent;
 import f54148.adminication.entity.Student;
 import f54148.adminication.service.ParentService;
@@ -28,15 +29,15 @@ public class ParentController {
 	public @ResponseBody String addNewParent(@RequestBody Parent parent) {
 		
 	//for password encryption
-		for(Student s: parent.getChildren()) {
-			
-			if(s.getId()==0) {
-				
-				s.setPassword(parentService.encodePassword(s.getPassword()));
-				
-			}
-			
-		}
+//		for(Student s: parent.getChildren()) {
+//			
+//			if(s.getId()==0) {
+//				
+//				s.setPassword(parentService.encodePassword(s.getPassword()));
+//				
+//			}
+//			
+//		}
 
 		if (parentService.addParent(parent)) {
 			return "Saved parent";
@@ -71,5 +72,11 @@ public class ParentController {
 	public @ResponseBody List<Parent> getAllParents() {
 		return parentService.getParents();
 	}
+	
+	@GetMapping(path = "/{id}/students")
+	public @ResponseBody List<StudentOfParentDTO> getStudentOfParentDTO(@PathVariable("id") Long id) {
+		return parentService.getStudentOfParentDTO(id);
+	}
+	
 
 }

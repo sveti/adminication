@@ -3,10 +3,14 @@ package f54148.adminication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AddEventWaitingListDTO;
+import f54148.adminication.dto.EventOfStudentInWaitingListDTO;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventWaitingList;
 import f54148.adminication.entity.Student;
@@ -106,5 +110,35 @@ public class EventWaitingListService {
 			return null;
 		}
 	}
+	
+	public Integer getNumberOfStudentInQueue(EventWaitingList ew) {
+		ArrayList<EventWaitingList> waitingLists = (ArrayList<EventWaitingList>)  ew.getEvent().getWaitingList().stream().sorted().collect(Collectors.toList());
+		return waitingLists.indexOf(ew);
+		
+	}
 
+public List<EventOfStudentInWaitingListDTO> getWaitingListsOfStudent(Long studentId){
+		
+		Set<EventWaitingList> eventWaitingList = studentService.getStudentById(studentId).getEventWaitingList();
+		List<EventOfStudentInWaitingListDTO> dtoList = new ArrayList<>();
+		
+		for(EventWaitingList ew: eventWaitingList) {
+			EventOfStudentInWaitingListDTO dto = new EventOfStudentInWaitingListDTO();
+			dto.setEventWaitingListId(ew.getId());
+			dto.setEventId(ew.getEvent().getId());
+			dto.setStudentId(ew.getStudent().getId());
+			dto.setNumberInLine(getNumberOfStudentInQueue(ew));
+			dtoList.add(dto);
+		}
+		
+		return dtoList;
+	}
+
+public boolean addWaitingListSignUp(AddEventWaitingListDTO dto) {
+	EventWaitingList eventWaitingList = new EventWaitingList();
+	eventWaitingList.setStudent(studentService.getStudentById(dto.getStudentId()));
+	eventWaitingList.setEvent(eventService.getEventById(dto.getEventId()));
+	eventWaitingList.setSigned(dto.getSigned());
+	return addEventWaitingList(eventWaitingList);
+}
 }

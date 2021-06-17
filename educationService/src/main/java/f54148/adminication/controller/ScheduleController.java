@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import f54148.adminication.dto.EventDTO;
 import f54148.adminication.dto.StudentScheduleDTO;
-import f54148.adminication.service.EventService;
 import f54148.adminication.service.ScheduleService;
 import lombok.AllArgsConstructor;
 

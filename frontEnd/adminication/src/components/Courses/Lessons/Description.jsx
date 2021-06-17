@@ -42,6 +42,7 @@ class Description extends Component {
     updateLessonDescription(lesson).then(
       (response) => {
         if (
+          response &&
           response.status === 200 &&
           response.data !== "An error has occured!"
         ) {

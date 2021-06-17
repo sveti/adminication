@@ -13,6 +13,7 @@ class CoursesSearchBar extends Component {
     startDate: "",
     endDate: "",
     scheduleConflict: false,
+    waitingList: false,
   };
 
   removeFilters = () => {
@@ -24,6 +25,7 @@ class CoursesSearchBar extends Component {
       startDate: "",
       endDate: "",
       scheduleConflict: false,
+      waitingList: false,
     });
     this.props.handleSubmit([], [], "", false, "", "", false);
   };
@@ -37,7 +39,8 @@ class CoursesSearchBar extends Component {
       this.state.avialable,
       this.state.startDate,
       this.state.endDate,
-      this.state.scheduleConflict
+      this.state.scheduleConflict,
+      this.state.waitingList
     );
   };
 
@@ -85,6 +88,7 @@ class CoursesSearchBar extends Component {
       startDate,
       endDate,
       scheduleConflict,
+      waitingList,
     } = this.state;
     return (
       <div className="row text-left">
@@ -171,6 +175,15 @@ class CoursesSearchBar extends Component {
                 }
               ></input>
               Show only courses without schedule conflict
+            </label>
+            <label className="mt-3">
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={waitingList}
+                onChange={() => this.setState({ waitingList: !waitingList })}
+              ></input>
+              In waiting list
             </label>
             <div>
               <button className="btn filterButton mt-3">

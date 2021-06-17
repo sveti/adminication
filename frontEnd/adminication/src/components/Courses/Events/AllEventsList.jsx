@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import EventCard from "./EventCard";
 import EventsSearchBar from "./EventsSearchBar";
 
-import { getEvents } from "../../../services/eventsService";
+import { getEvents, getEventsOfStudent } from "../../../services/eventsService";
 import { getScheduleOfStudent } from "../../../services/scheduleService";
 import {
   dynamicSort,
@@ -13,16 +13,33 @@ import {
   textToDayOfTheWeekNumber,
 } from "../../../common/helper";
 
+import {
+  getWaitingListEventsOfStudent,
+  addEventWaitingListSignUp,
+  deleteEventWaitingList,
+} from "../../../services/waitingListService";
+import { addEventSignUp } from "../../../services/eventSignUpService";
+import { toast } from "react-toastify";
+
 import "./events.css";
 
 class AllEventsList extends Component {
-  state = {
-    user: this.props.user,
-    allEvents: [],
-    events: [],
-    studentSchedule: [],
-    scheduleConflict: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: this.props.user,
+      allEvents: [],
+      events: [],
+      studentSchedule: [],
+      scheduleConflict: [],
+      parentView: false,
+      waitingList: [],
+    };
+    if (!this.props.user) {
+      this.state.user = this.props.location.state.user;
+      this.state.parentView = this.props.location.state.parentView;
+    }
+  }
 
   isOutsideOfTimeRange = (start1, end1, start2, end2) => {
     ////https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
@@ -67,7 +84,16 @@ class AllEventsList extends Component {
   };
 
   getEvents = async () => {
-    const { data } = await getEvents();
+    let { data } = await getEvents();
+
+    const { data: studentEvents } = await getEventsOfStudent(
+      this.state.user.id
+    );
+
+    data = data.filter(
+      (event) => !studentEvents.some((e) => e.id === event.id)
+    );
+
     data.sort(dynamicSort("id"));
 
     let scheduleConflict = [];
@@ -96,14 +122,30 @@ class AllEventsList extends Component {
     this.getEvents();
   };
 
+  getStudentWaitingList = async () => {
+    const { data } = await getWaitingListEventsOfStudent(this.state.user.id);
+    this.setState({ waitingList: data });
+  };
+
   componentDidMount() {
     this.getScheduleOfStudent();
+    this.getStudentWaitingList();
   }
 
-  handleSubmit = (title, avialable, startDate, endDate, scheduleConflict) => {
+  handleSubmit = (
+    title,
+    minAge,
+    maxAge,
+    avialable,
+    startDate,
+    endDate,
+    scheduleConflict
+  ) => {
     const { allEvents } = this.state;
     if (
       title.length === 0 &&
+      minAge === 0 &&
+      maxAge === 100 &&
       avialable === false &&
       startDate === "" &&
       endDate === "" &&
@@ -112,6 +154,7 @@ class AllEventsList extends Component {
       this.setState({ events: allEvents });
     } else {
       let titleFiltered = [...allEvents],
+        ageLimitFiltered = [...allEvents],
         avialableFiltered = [...allEvents],
         dateFiltered = [...allEvents],
         sheduleFiltered = [...allEvents];
@@ -119,6 +162,17 @@ class AllEventsList extends Component {
       if (title.length !== 0) {
         titleFiltered = allEvents.filter((event) =>
           event.title.toLowerCase().includes(title.toLowerCase())
+        );
+      }
+
+      if (minAge > 0) {
+        ageLimitFiltered = ageLimitFiltered.filter(
+          (event) => event.minAge <= minAge && event.maxAge >= minAge
+        );
+      }
+      if (maxAge < 100) {
+        ageLimitFiltered = ageLimitFiltered.filter(
+          (event) => event.maxAge <= maxAge
         );
       }
 
@@ -148,14 +202,179 @@ class AllEventsList extends Component {
 
       let merged = titleFiltered
         .filter((n) => avialableFiltered.includes(n))
+        .filter((n) => ageLimitFiltered.includes(n))
         .filter((n) => dateFiltered.includes(n))
         .filter((n) => sheduleFiltered.includes(n));
       this.setState({ events: merged });
     }
   };
 
+  onEventSignUp = async (event) => {
+    const response = await addEventSignUp({
+      studentId: this.state.user.id,
+      eventId: event.id,
+    }).catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("An error occured! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+
+    if (response && response.status === 200) {
+      toast.success(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
+  onWaitingListSignUp = async (event) => {
+    const currentDate = new Date();
+    const response = await addEventWaitingListSignUp({
+      studentId: this.state.user.id,
+      eventId: event.id,
+      signed: currentDate.toISOString().slice(0, -5),
+    }).catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("An error occured saving your lesson! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+
+    if (response && response.status === 200) {
+      toast.success(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
+  onRemoveFromWaitingList = async (waitingList) => {
+    const response = await deleteEventWaitingList(
+      waitingList.eventWaitingListId
+    ).catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("An error occured saving your lesson! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+
+    if (response && response.status === 200) {
+      toast.success(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
   render() {
-    const { events, allEvents, scheduleConflict } = this.state;
+    const { events, allEvents, scheduleConflict, parentView, waitingList } =
+      this.state;
     return (
       <div className="container">
         <div className="lessonsOfCourseContainer row">
@@ -164,6 +383,8 @@ class AllEventsList extends Component {
               <EventsSearchBar
                 handleSubmit={(
                   title,
+                  minAge,
+                  maxAge,
                   avialable,
                   startDate,
                   endDate,
@@ -171,6 +392,8 @@ class AllEventsList extends Component {
                 ) =>
                   this.handleSubmit(
                     title,
+                    minAge,
+                    maxAge,
                     avialable,
                     startDate,
                     endDate,
@@ -194,6 +417,17 @@ class AllEventsList extends Component {
                       scheduleConflict={scheduleConflict.find(
                         (conflicts) => event.id === conflicts.eventId
                       )}
+                      parentView={parentView}
+                      waitingList={waitingList.filter(
+                        (e) => e.eventId === event.id
+                      )}
+                      onEventSignUp={(event) => this.onEventSignUp(event)}
+                      onWaitingListSignUp={(event) =>
+                        this.onWaitingListSignUp(event)
+                      }
+                      onRemoveFromWaitingList={(waitingList) =>
+                        this.onRemoveFromWaitingList(waitingList)
+                      }
                     ></EventCard>
                   ))}
                 </React.Fragment>

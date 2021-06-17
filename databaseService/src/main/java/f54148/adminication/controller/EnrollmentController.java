@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AddEnrollmentDTO;
 import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Enrollment;
@@ -34,7 +35,14 @@ public class EnrollmentController {
 		} else {
 			return "An error has occured";
 		}
-
+	}
+	@PostMapping(path = "/add")
+	public @ResponseBody String addEnrollmentDTO(@RequestBody AddEnrollmentDTO enrollment) {
+		if (enrollmentservice.addEnrollmentDTO(enrollment)) {
+			return "Student was sucessfully enrolled in the course!";
+		} else {
+			return "An error has occured";
+		}
 	}
 
 	@PutMapping(path = "/updateEnrollment")

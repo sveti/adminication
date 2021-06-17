@@ -1,0 +1,18 @@
+.studentSelectionImage {
+  height: 10rem;
+  padding-top: 1rem;
+}
+
+.card-deck {
+  overflow: hidden;
+  margin: 7rem 10px !important;
+}
+
+.students {
+  margin: 8rem;
+  padding: 0 2rem;
+}
+
+.no-border {
+  border: none !important;
+}

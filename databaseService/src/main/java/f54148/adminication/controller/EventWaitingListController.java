@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AddEventWaitingListDTO;
+import f54148.adminication.dto.EventOfStudentInWaitingListDTO;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventWaitingList;
 import f54148.adminication.entity.Student;
@@ -30,6 +32,17 @@ public class EventWaitingListController {
 
 		if (eventWaitingListService.addEventWaitingList(eventWaitingList)) {
 			return "Saved eventWaitingList";
+		} else {
+			return "An error has occured";
+		}
+
+	}
+	
+	@PostMapping(path = "/add")
+	public @ResponseBody String addWaitingListSignUp(@RequestBody AddEventWaitingListDTO dto) {
+
+		if (eventWaitingListService.addWaitingListSignUp(dto)) {
+			return "Sucessfully added student to event waiting list!";
 		} else {
 			return "An error has occured";
 		}
@@ -81,4 +94,9 @@ public class EventWaitingListController {
 		}
 	}
 
+	@GetMapping(path = "/student/{studentId}/waitingList")
+	public @ResponseBody List<EventOfStudentInWaitingListDTO> getEventWaitingListOfStudent(@PathVariable("studentId") Long studentId) {
+		return eventWaitingListService.getWaitingListsOfStudent(studentId);
+	}
+	
 }

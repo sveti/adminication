@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AddEnrollmentDTO;
 import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Enrollment;
@@ -62,6 +63,15 @@ public class EnrollmentService {
 		} else {
 			return false;
 		}
+	}
+	
+	public boolean addEnrollmentDTO(AddEnrollmentDTO enrollment) {
+		
+		Enrollment enroll = new Enrollment();
+		enroll.setStudent(studentService.getStudentById(enrollment.getStudentId()));
+		enroll.setCourse(courseService.getCourseById(enrollment.getCourseId()));
+		return addEnrollment(enroll);
+		
 	}
 
 	public boolean updateEnrollment(Enrollment enrollment) {

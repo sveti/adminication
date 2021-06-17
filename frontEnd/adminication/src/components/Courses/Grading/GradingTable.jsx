@@ -70,6 +70,7 @@ class GradingTable extends Component {
     updateGrades(this.state.studentsGrades).then(
       (response) => {
         if (
+          response &&
           response.status === 200 &&
           response.data !== "An error has occured!"
         ) {

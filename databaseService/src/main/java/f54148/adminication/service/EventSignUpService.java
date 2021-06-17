@@ -1,5 +1,6 @@
 package f54148.adminication.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +8,7 @@ import java.util.Optional;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AddEventSignUpDTO;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.Student;
@@ -82,6 +84,15 @@ public class EventSignUpService {
 		} else {
 			return false;
 		}
+	}
+
+
+	public boolean addEventSignUpDTO(AddEventSignUpDTO dto) {
+		EventSignUp signUp = new EventSignUp();
+		signUp.setStudent(studentService.getStudentById(dto.getStudentId()));
+		signUp.setEvent(eventService.getEventById(dto.getEventId()));
+		signUp.setSigned(LocalDateTime.now());
+		return addEventSignUp(signUp);
 	}
 
 

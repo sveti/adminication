@@ -137,6 +137,41 @@ export default function Navbar(props) {
     </React.Fragment>
   );
 
+  const parentNav = (
+    <React.Fragment>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/selectStudent",
+            state: {
+              user: props.user,
+              message: "courses",
+              path: "courses",
+            },
+          }}
+        >
+          All courses
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/selectStudent",
+            state: {
+              user: props.user,
+              message: "events",
+              path: "events",
+            },
+          }}
+        >
+          All events
+        </Link>
+      </li>
+    </React.Fragment>
+  );
+
   return (
     <header className={navBarClasses.join(" ")} id="mainMenu">
       <nav className="navbar navbar-expand-lg">
@@ -172,7 +207,9 @@ export default function Navbar(props) {
                 Home<span className="sr-only">(current)</span>
               </Link>
             </li>
-            {role === "teacher" ? teacherNav : studentNav}
+            {role === "teacher" ? teacherNav : null}
+            {role === "student" ? studentNav : null}
+            {role === "parent" ? parentNav : null}
             <li className="nav-item">
               <Link className="nav-link logoutMobile" to={"/logout/"}>
                 Log out

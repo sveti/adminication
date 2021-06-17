@@ -48,7 +48,9 @@ const StudentsEventsPage = (props) => {
       {events.passed.length > 0 ? passed : null}
     </div>
   ) : (
-    <h1>There are no started events yet</h1>
+    <div className="lessonsOfCourseContainer">
+      <h1>There are no started events yet</h1>
+    </div>
   );
 };
 

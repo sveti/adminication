@@ -20,7 +20,6 @@ import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StartedCourseStudentDTO;
 import f54148.adminication.dto.StudentAttendanceDTO;
 import f54148.adminication.dto.StudentGradesDTO;
-import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.service.AttendanceService;
 import f54148.adminication.service.CourseService;

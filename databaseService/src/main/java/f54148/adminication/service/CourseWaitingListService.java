@@ -3,10 +3,14 @@ package f54148.adminication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AddCourseWaitingListSignUpDTO;
+import f54148.adminication.dto.CourseOfStudentInWaitingListDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Student;
@@ -53,6 +57,14 @@ public class CourseWaitingListService {
 			return false;
 		}
 	}
+	
+	public boolean addWaitingListSignUp(AddCourseWaitingListSignUpDTO dto) {
+		CourseWaitingList courseWaitingList = new CourseWaitingList();
+		courseWaitingList.setStudent(studentService.getStudentById(dto.getStudentId()));
+		courseWaitingList.setCourse(courseService.getCourseById(dto.getCourseId()));
+		courseWaitingList.setSigned(dto.getSigned());
+		return addCourseWaitingList(courseWaitingList);
+	}
 
 	public boolean updateCourseWaitingList(CourseWaitingList courseWaitingList) {
 		if (courseWaitingListRepository.save(courseWaitingList) != null) {
@@ -88,6 +100,12 @@ public class CourseWaitingListService {
 		return courseService.getCourseWaitingList(courseId).stream().sorted().findFirst().get().getStudent();
 
 	}
+	
+	public Integer getNumberOfStudentInQueue(CourseWaitingList cw) {
+		ArrayList<CourseWaitingList> waitingLists = (ArrayList<CourseWaitingList>) cw.getCourse().getCourseWaitingList().stream().sorted().collect(Collectors.toList());
+		return waitingLists.indexOf(cw);
+		
+	}
 
 	public Student getStudentByCourseWaitingListId(Long courseWaitingListId) {
 		Optional<CourseWaitingList> opCourseWaitingList = courseWaitingListRepository.findById(courseWaitingListId);
@@ -106,5 +124,23 @@ public class CourseWaitingListService {
 			return null;
 		}
 	}
-
+	
+	public List<CourseOfStudentInWaitingListDTO> getWaitingListsOfStudent(Long studentId){
+		
+		Set<CourseWaitingList> courseWaitingList = studentService.getStudentById(studentId).getCourseWaitingList();
+		List<CourseOfStudentInWaitingListDTO> dtoList = new ArrayList<>();
+		
+		for(CourseWaitingList cw: courseWaitingList) {
+			CourseOfStudentInWaitingListDTO dto = new CourseOfStudentInWaitingListDTO();
+			dto.setCourseWaitingListId(cw.getId());
+			dto.setCourseId(cw.getCourse().getId());
+			dto.setStudentId(cw.getStudent().getId());
+			dto.setNumberInLine(getNumberOfStudentInQueue(cw));
+			dtoList.add(dto);
+		}
+		
+		return dtoList;
+	}
+	
+	
 }

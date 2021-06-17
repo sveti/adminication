@@ -63,12 +63,30 @@
 }
 
 .scheduleOverlap {
-  background-color: #e78f3c !important;
+  background-color: #f79d4a !important;
 }
 
 .noScheduleOverlap {
   background-color: #77b646 !important;
   color: #fff !important;
+}
+
+.signUpButton {
+  background-color: #3d6b19 !important;
+  color: #fff !important;
+}
+
+.waitingListButton {
+  background-color: #dfcb4d !important;
+}
+
+.removeWaitingListButton {
+  background-color: #e74c3c !important;
+  color: #fff !important;
+}
+
+.numberInLine {
+  color: #000;
 }
 
 @media screen and (max-width: 600px) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import LevelBadge from "../../common/LevelBadge";
 import CourseDetailsBadge from "../../common/CourseDetailsBadge";
 import { getMinDate, textToDayOfTheWeek } from "../../common/helper";
@@ -6,8 +6,18 @@ import "./course.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-const CourseCard = ({ course, scheduleConflict }) => {
+const CourseCard = ({
+  course,
+  scheduleConflict,
+  parentView,
+  onCourseSignUp,
+  onWaitingListSignUp,
+  waitingList,
+  onRemoveFromWaitingList,
+}) => {
   let sheduleOverLap;
+
+  const [disable, setDisable] = useState(false);
 
   if (scheduleConflict !== undefined) {
     sheduleOverLap = scheduleConflict.scheduleOverlap;
@@ -33,11 +43,70 @@ const CourseCard = ({ course, scheduleConflict }) => {
     courseClasses.push("noScheduleOverlap");
   }
 
+  function onSignUpButtonClick() {
+    setDisable(true);
+    onCourseSignUp(course);
+  }
+
+  function onWaitingListButtonClick() {
+    setDisable(true);
+    onWaitingListSignUp(course);
+  }
+
+  function onRemoveFromWaitingListClick() {
+    setDisable(true);
+    onRemoveFromWaitingList(waitingList[0]);
+  }
+
+  const signUpButton = (
+    <button
+      className="btn float-right signUpButton"
+      disabled={disable}
+      onClick={onSignUpButtonClick}
+    >
+      Sign up
+    </button>
+  );
+
+  const courseWaitingList = (
+    <button
+      className="btn float-right waitingListButton"
+      disabled={disable}
+      onClick={onWaitingListButtonClick}
+    >
+      Join waiting list
+    </button>
+  );
+
+  const removeFromWaitingList = (
+    <span>
+      <button
+        className="btn float-right removeWaitingListButton"
+        disabled={disable}
+        onClick={onRemoveFromWaitingListClick}
+      >
+        Remove from waiting list
+      </button>
+    </span>
+  );
+
   return (
     <div className="card text-left mb-5">
       <div className={courseClasses.join(" ")}>
-        <h5 className="m-0 d-inline-block">{course.title}</h5>
+        <h5 className="mt-2 d-inline-block">{course.title}</h5>
         {sheduleOverLap ? scheduleAlertBadge : scheduleOkBadge}
+        {parentView
+          ? waitingList.length > 0
+            ? removeFromWaitingList
+            : course.signUpLimit - course.signedUp > 0
+            ? signUpButton
+            : courseWaitingList
+          : null}
+        {waitingList.length > 0 && disable !== true ? (
+          <h6 className="card-subtitle mb-2 numberInLine">
+            Number in Line: {waitingList[0].numberInLine + 1}
+          </h6>
+        ) : null}
       </div>
       <div className="card-body">
         <h6 className="card-subtitle mb-2 text-muted">

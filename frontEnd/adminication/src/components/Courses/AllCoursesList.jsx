@@ -1,11 +1,22 @@
 import React, { Component } from "react";
-
+import CoursesSearchBar from "./CoursesSearchBar";
+import CourseCard from "./CourseCard";
 import {
   getAllCourses,
   getAllCourseDetails,
+  getStartedCoursesOfStudent,
+  getUpcommingCoursesOfStudent,
 } from "../../services/courseService";
 
+import { addEnrollment } from "../../services/enrollmentService";
+import {
+  addCourseWaitingListSignUp,
+  getWaitingListCoursesOfStudent,
+  deleteCourseWaitingList,
+} from "../../services/waitingListService";
+
 import { getScheduleOfStudent } from "../../services/scheduleService";
+import { toast } from "react-toastify";
 
 import {
   dynamicSort,
@@ -16,18 +27,25 @@ import {
 } from "../../common/helper";
 
 import "./course.css";
-import CoursesSearchBar from "./CoursesSearchBar";
-import CourseCard from "./CourseCard";
 
 class AllCoursesList extends Component {
-  state = {
-    user: this.props.user,
-    allCourses: [],
-    courses: [],
-    allCourseDetails: [],
-    studentSchedule: [],
-    scheduleConflict: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: this.props.user,
+      allCourses: [],
+      courses: [],
+      allCourseDetails: [],
+      studentSchedule: [],
+      scheduleConflict: [],
+      waitingList: [],
+      parentView: false,
+    };
+    if (!this.props.user) {
+      this.state.user = this.props.location.state.user;
+      this.state.parentView = this.props.location.state.parentView;
+    }
+  }
 
   isOutsideOfTimeRange = (start1, end1, start2, end2) => {
     ////https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
@@ -72,9 +90,178 @@ class AllCoursesList extends Component {
     }
   };
 
+  onCourseSignUp = async (course) => {
+    const response = await addEnrollment({
+      studentId: this.state.user.id,
+      courseId: course.id,
+    }).catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("An error occured! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+
+    if (response && response.status === 200) {
+      toast.success(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
+  onWaitingListSignUp = async (course) => {
+    const currentDate = new Date();
+    const response = await addCourseWaitingListSignUp({
+      studentId: this.state.user.id,
+      courseId: course.id,
+      signed: currentDate.toISOString().slice(0, -5),
+    }).catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("An error occured saving your lesson! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+
+    if (response && response.status === 200) {
+      toast.success(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
+  onRemoveFromWaitingList = async (waitingList) => {
+    const response = await deleteCourseWaitingList(
+      waitingList.courseWaitingListId
+    ).catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("An error occured saving your lesson! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+
+    if (response && response.status === 200) {
+      toast.success(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
   componentDidMount = () => {
     this.getCourseDetails();
     this.getScheduleOfStudent();
+    this.getStudentWaitingList();
+  };
+
+  getStudentWaitingList = async () => {
+    const { data } = await getWaitingListCoursesOfStudent(this.state.user.id);
+    this.setState({ waitingList: data });
   };
 
   getScheduleOfStudent = async () => {
@@ -84,11 +271,22 @@ class AllCoursesList extends Component {
   };
 
   getCourses = async () => {
-    const { data } = await getAllCourses();
-    ///use a set they said
-    ///its more efficient they said
-    ///little did they know
-    ///order DOES matter
+    const { user } = this.state;
+
+    let { data } = await getAllCourses();
+
+    ///remove the courses the student has already signed up for
+    const { data: startedCourses } = await getStartedCoursesOfStudent(user.id);
+    const { data: upcommingCourses } = await getUpcommingCoursesOfStudent(
+      user.id
+    );
+
+    data = data.filter(
+      (course) => !startedCourses.some((c) => c.id === course.id)
+    );
+    data = data.filter(
+      (course) => !upcommingCourses.some((c) => c.id === course.id)
+    );
     data.sort(dynamicSort("id"));
     data.forEach((element) => {
       element.details.sort();
@@ -127,7 +325,8 @@ class AllCoursesList extends Component {
     avialable,
     startDate,
     endDate,
-    scheduleConflict
+    scheduleConflict,
+    waitingList
   ) => {
     const { allCourses } = this.state;
     if (
@@ -137,7 +336,8 @@ class AllCoursesList extends Component {
       avialable === false &&
       startDate === "" &&
       endDate === "" &&
-      scheduleConflict === false
+      scheduleConflict === false &&
+      waitingList === false
     ) {
       this.setState({ courses: allCourses });
     } else {
@@ -146,7 +346,8 @@ class AllCoursesList extends Component {
         courseDetailsFiltered = [...allCourses],
         avialableFiltered = [...allCourses],
         dateFiltered = [...allCourses],
-        sheduleFiltered = [...allCourses];
+        sheduleFiltered = [...allCourses],
+        waitingListFiltered = [...allCourses];
 
       if (title.length !== 0) {
         titleFiltered = allCourses.filter((course) =>
@@ -188,13 +389,19 @@ class AllCoursesList extends Component {
             ).scheduleOverlap
         );
       }
+      if (waitingList !== false) {
+        waitingListFiltered = allCourses.filter((course) =>
+          this.state.waitingList.some((c) => c.courseId === course.id)
+        );
+      }
 
       let merged = titleFiltered
         .filter((n) => levelsFiltered.includes(n))
         .filter((n) => courseDetailsFiltered.includes(n))
         .filter((n) => avialableFiltered.includes(n))
         .filter((n) => dateFiltered.includes(n))
-        .filter((n) => sheduleFiltered.includes(n));
+        .filter((n) => sheduleFiltered.includes(n))
+        .filter((n) => waitingListFiltered.includes(n));
       this.setState({ courses: merged });
     }
   };
@@ -205,8 +412,9 @@ class AllCoursesList extends Component {
       allCourses,
       allCourseDetails,
       scheduleConflict,
+      parentView,
+      waitingList,
     } = this.state;
-
     return (
       <div className="container">
         <div className="lessonsOfCourseContainer row">
@@ -221,7 +429,8 @@ class AllCoursesList extends Component {
                   avialable,
                   startDate,
                   endDate,
-                  scheduleConflict
+                  scheduleConflict,
+                  waitingList
                 ) =>
                   this.handleSubmit(
                     levels,
@@ -230,7 +439,8 @@ class AllCoursesList extends Component {
                     avialable,
                     startDate,
                     endDate,
-                    scheduleConflict
+                    scheduleConflict,
+                    waitingList
                   )
                 }
               ></CoursesSearchBar>
@@ -251,6 +461,17 @@ class AllCoursesList extends Component {
                         scheduleConflict={scheduleConflict.find(
                           (conflicts) => course.id === conflicts.courseId
                         )}
+                        parentView={parentView}
+                        waitingList={waitingList.filter(
+                          (e) => e.courseId === course.id
+                        )}
+                        onCourseSignUp={(course) => this.onCourseSignUp(course)}
+                        onWaitingListSignUp={(course) =>
+                          this.onWaitingListSignUp(course)
+                        }
+                        onRemoveFromWaitingList={(waitingList) =>
+                          this.onRemoveFromWaitingList(waitingList)
+                        }
                       ></CourseCard>
                     ))}
                   </div>

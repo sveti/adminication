@@ -8,6 +8,10 @@
   z-index: 9999 !important;
 }
 
+.navbar.parent {
+  background-color: #a2c65d;
+}
+
 .navbar.student {
   background-color: #359fc1;
 }

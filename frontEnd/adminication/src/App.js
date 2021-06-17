@@ -10,6 +10,7 @@ import Navbar from "./components/Header/Navbar";
 import Login from "./components/Login/Login";
 import StudentSwitch from "./components/Switches/StudentSwitch";
 import TeacherSwitch from "./components/Switches/TeacherSwitch";
+import ParentSwitch from "./components/Switches/ParentSwitch";
 import { getUser } from "./services/userService";
 
 class App extends Component {
@@ -39,6 +40,9 @@ class App extends Component {
           break;
         case "ROLE_STUDENT":
           routing = <StudentSwitch user={user}></StudentSwitch>;
+          break;
+        case "ROLE_PARENT":
+          routing = <ParentSwitch user={user}></ParentSwitch>;
           break;
         default:
           routing = null;

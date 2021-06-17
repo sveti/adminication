@@ -4,26 +4,26 @@ import { gateway, educationServiceName } from "../config.json";
 const apiEndpoint = gateway + "/" + educationServiceName + "/courses/";
 
 export function getFinishedCoursesOfTeacher(idTeacher) {
-  return http.get(apiEndpoint + "/teacher/" + idTeacher + "/finished");
+  return http.get(apiEndpoint + "teacher/" + idTeacher + "/finished");
 }
 
 export function getUpcommingCoursesOfTeacher(idTeacher) {
-  return http.get(apiEndpoint + "/teacher/" + idTeacher + "/upcomming");
+  return http.get(apiEndpoint + "teacher/" + idTeacher + "/upcomming");
 }
 
 export function getStartedCoursesOfTeacher(idTeacher) {
-  return http.get(apiEndpoint + "/teacher/" + idTeacher + "/started");
+  return http.get(apiEndpoint + "teacher/" + idTeacher + "/started");
 }
 
 export function getStartedCoursesOfStudent(idStudent) {
-  return http.get(apiEndpoint + "/student/" + idStudent + "/started");
+  return http.get(apiEndpoint + "student/" + idStudent + "/started");
 }
 export function getUpcommingCoursesOfStudent(idStudent) {
-  return http.get(apiEndpoint + "/student/" + idStudent + "/upcomming");
+  return http.get(apiEndpoint + "student/" + idStudent + "/upcomming");
 }
 
 export function getSubStartedCoursesOfTeacher(idTeacher) {
-  return http.get(apiEndpoint + "/teacher/" + idTeacher + "/sub/started");
+  return http.get(apiEndpoint + "teacher/" + idTeacher + "/sub/started");
 }
 
 export function getUpcommingCourse(idCourse) {

@@ -48,7 +48,7 @@ class AddLesson extends Component {
       }
     });
 
-    if (response.status === 200) {
+    if (response && response.status === 200) {
       toast.success(response.data, {
         position: "top-center",
         autoClose: 5000,
