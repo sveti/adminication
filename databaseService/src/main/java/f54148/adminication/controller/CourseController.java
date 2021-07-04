@@ -210,8 +210,6 @@ public class CourseController {
 		return courseService.getAllCourseWithDetailsDTO();
 	}
 	
-	
-	
 	@GetMapping(path = "/{idCourse}/students")
 	public @ResponseBody List<StudentAttendanceDTO> StudentAttendanceDTObyCourseId(@PathVariable("idCourse") Long idCourse) {
 		

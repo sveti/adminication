@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.dto.GradesOfStudentDTO;
+import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
+import f54148.adminication.dto.StudentMonthlyAttendanceDTO;
 import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
@@ -114,4 +116,9 @@ public class StudentController {
 		return studentService.getGradesOfStudent(studentId);
 	}
 
+	@GetMapping(path = "/{studentId}/{month}/{year}")
+	public @ResponseBody List<StudentMonthlyAttendanceDTO> getTeacherStatistics(@PathVariable("studentId") Long studentId, @PathVariable("month") Integer month,@PathVariable("year") Integer year) {
+		return studentService.getStudentReport(studentId,month,year);
+	}
+	
 }

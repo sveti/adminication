@@ -9,6 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.GradesOfStudentDTO;
+import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
+import f54148.adminication.dto.StudentAttendanceReportDTO;
+import f54148.adminication.dto.StudentMonthlyAttendanceDTO;
 import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
@@ -18,6 +21,7 @@ import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.EventWaitingList;
+import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.StudentRepository;
@@ -175,6 +179,30 @@ public class StudentService {
 		return dtoList;
 	}
 	
+	private List<StudentAttendanceReportDTO> getMonthlyAttendancesOfStudent(Long studentId, Course c,Integer month, Integer year){
+		System.out.println("i have been called for course " + c.getTitle());
+		System.out.println("i have "+ c.getLessons().size() + " lessons");
+		
+		List<StudentAttendanceReportDTO> dto = new ArrayList<StudentAttendanceReportDTO>();
+		
+		for(Lesson l : c.getLessons()) {
+			
+			if(l.getDate().getMonthValue()== month && l.getDate().getYear()==year) {
+				
+				Attendance a = l.getAttendances().stream().filter(o -> o.getStudent().getId()==studentId).findFirst().get();
+				
+				if(a.getAttended()) {
+					dto.add(new StudentAttendanceReportDTO(a.getId(),l.getDate()));
+					
+				}
+				
+			}
+			
+		}
+		
+		return dto;
+	}
+	
 	
 	public List<GradesOfStudentDTO> getGradesOfStudent(long GradesOfStudentDTO){
 		
@@ -187,6 +215,26 @@ public class StudentService {
 				GradesOfStudentDTO grade = new GradesOfStudentDTO(e.getCourse().getId(),e.getCourse().getTitle(),e.getGrade());
 				dto.add(grade);
 			}
+		}
+		
+		return dto;
+	}
+
+	public List<StudentMonthlyAttendanceDTO> getStudentReport(Long studentId, Integer month, Integer year) {
+	
+		List<Course> courses = getCoursesStudentById(studentId);
+		
+		courses.removeIf(course -> course.getStatus()!= CourseStatus.STARTED);
+		
+		List<StudentMonthlyAttendanceDTO> dto = new ArrayList<StudentMonthlyAttendanceDTO>();
+		
+		for(Course c: courses) {
+			StudentMonthlyAttendanceDTO singleDto = new StudentMonthlyAttendanceDTO();
+			singleDto.setCourseId(c.getId());
+			singleDto.setCourseTitle(c.getTitle());
+			singleDto.setAttendances(getMonthlyAttendancesOfStudent(studentId,c,month, year));
+			singleDto.setPricePerAttendance(c.getPricePerStudent());
+			dto.add(singleDto);
 		}
 		
 		return dto;

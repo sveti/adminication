@@ -8,3 +8,9 @@ export function getTeacherStatisticForMonth(teacherId, month, year) {
     apiEndpoint + "/teachers/" + teacherId + "/" + month + "/" + year
   );
 }
+
+export function getStudentAttendaceForMonth(teacherId, month, year) {
+  return http.get(
+    apiEndpoint + "/students/" + teacherId + "/" + month + "/" + year
+  );
+}

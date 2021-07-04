@@ -8,7 +8,7 @@ import Description from "./Description";
 
 export default function LessonsList(props) {
   const { lessons, attendances, students } = props;
-  return (
+  return lessons.length > 0 ? (
     <div className="lessonsAccordion">
       <Accordion atomic={true}>
         {lessons.map((lesson) => {
@@ -33,7 +33,7 @@ export default function LessonsList(props) {
               </div>
             </AccordionItem>
           ) : (
-            ///there aren't any attendances => add attendances component
+            //  there aren't any attendances => add attendances component
             <AccordionItem key={lesson.id} title={lesson.date}>
               <div className="lessonContent">
                 <Description
@@ -52,5 +52,10 @@ export default function LessonsList(props) {
         })}
       </Accordion>
     </div>
+  ) : (
+    <h3>
+      There are no lessons to this course! Use the form to add your first
+      lesson!
+    </h3>
   );
 }

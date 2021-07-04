@@ -199,6 +199,16 @@ export default function Navbar(props) {
           All events
         </Link>
       </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/reports",
+          }}
+        >
+          Reports
+        </Link>
+      </li>
     </React.Fragment>
   );
 

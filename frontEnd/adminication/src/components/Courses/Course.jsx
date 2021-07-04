@@ -10,6 +10,7 @@ class Course extends Component {
   state = {
     course: {},
     loading: true,
+    parentView: this.props.parentView,
   };
 
   getMinDate() {
@@ -46,7 +47,7 @@ class Course extends Component {
   };
 
   render() {
-    const { course } = this.state;
+    const { course, parentView } = this.state;
 
     if (this.state.loading) {
       return <h1>Loading...</h1>;
@@ -160,6 +161,11 @@ class Course extends Component {
               </div>
             </div>
           </div>
+          {parentView ? (
+            <div>
+              <h1>Wololo</h1>
+            </div>
+          ) : null}
           <div>
             <BackButton></BackButton>
           </div>

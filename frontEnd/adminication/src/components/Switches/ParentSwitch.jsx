@@ -11,6 +11,7 @@ import StudentCoursesPage from "../Courses/StudentCoursesPage";
 import StudentLessonsOfCourse from "../Courses/Lessons/StudentLessonsOfCourse";
 import Course from "../Courses/Course";
 import StudentGrades from "../Courses/Grading/StudentGrades";
+import ParentInvoice from "../Reports/ParentInvoice";
 
 const ParentSwitch = ({ user }) => {
   function editedUser(passedUser) {
@@ -43,7 +44,7 @@ const ParentSwitch = ({ user }) => {
       />
       <ProtectedRoute
         path="/courses/:courseId"
-        render={(params) => <Course {...params}></Course>}
+        render={(params) => <Course {...params} parentView={true}></Course>}
       />
 
       <ProtectedRoute
@@ -67,6 +68,13 @@ const ParentSwitch = ({ user }) => {
         path="/selectStudent"
         render={(params) => (
           <StudentSelection {...params} user={user}></StudentSelection>
+        )}
+      />
+
+      <ProtectedRoute
+        path="/reports"
+        render={(params) => (
+          <ParentInvoice {...params} user={user}></ParentInvoice>
         )}
       />
 

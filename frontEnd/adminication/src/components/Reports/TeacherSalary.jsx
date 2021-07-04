@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 
 import { getTeacherStatisticForMonth } from "../../services/reportsService";
-import { getTodaysDate } from "../../common/helper";
-
-import { toast } from "react-toastify";
 
 import "./reports.css";
 import GeneralCourseSalary from "./GeneralCourseSalary";
+import MonthYearSelector from "../../common/MonthYearSelector";
 
 class TeacherSalary extends Component {
   constructor(props) {
@@ -14,24 +12,6 @@ class TeacherSalary extends Component {
     this.state = {
       teacherId: null,
       stats: null,
-      months: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ],
-      selectedPeriod: {
-        month: "",
-        year: getTodaysDate().split("-")[0],
-      },
       showStats: false,
       totalSalaryForPeriod: 0,
       totalLessonsForPeriod: 0,
@@ -43,51 +23,10 @@ class TeacherSalary extends Component {
     }
   }
 
-  periodChange = (event, property) => {
-    let selectedPeriod = this.state.selectedPeriod;
-    selectedPeriod[property] = event.target.value;
-    this.setState({ selectedPeriod });
-  };
-
-  validate = () => {
-    const { selectedPeriod } = this.state;
-    if (selectedPeriod.month === "") {
-      toast.error("Please select a month!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return false;
-    }
-
-    if (selectedPeriod.year < 1000 || selectedPeriod.year > 9999) {
-      toast.error("Please enter a valid year!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return false;
-    }
-    return true;
-  };
-
-  loadStats = async () => {
-    const { selectedPeriod } = this.state;
-
-    //Jan is 0 as index but 1 as month
-    const montAsANumber = this.state.months.indexOf(selectedPeriod.month) + 1;
-
+  loadStats = async (selectedPeriod) => {
     const { data } = await getTeacherStatisticForMonth(
       this.state.teacherId,
-      montAsANumber,
+      selectedPeriod.month,
       selectedPeriod.year
     );
 
@@ -96,13 +35,6 @@ class TeacherSalary extends Component {
       showStats: true,
       totalLessonsForPeriod: data.lessons.length,
     });
-  };
-
-  showStatistics = async () => {
-    if (this.validate()) {
-      await this.loadStats();
-      this.getTotalSalary();
-    }
   };
 
   getLessonsOfCourse = (courseId) => {
@@ -133,54 +65,20 @@ class TeacherSalary extends Component {
 
     return salary;
   };
+  handleSubmit = async (selectedPeriod) => {
+    await this.loadStats(selectedPeriod);
+    this.getTotalSalary();
+  };
 
   render() {
-    const {
-      stats,
-      selectedPeriod,
-      showStats,
-      totalSalaryForPeriod,
-      totalLessonsForPeriod,
-    } = this.state;
+    const { stats, showStats, totalSalaryForPeriod, totalLessonsForPeriod } =
+      this.state;
 
     return (
       <div className="salaryDiv container">
-        <div className="row form-group mx-auto">
-          <div className="form-group col-sm-12 col-md-3">
-            <p>Month</p>
-          </div>
-          <div className="form-group col-sm-12 col-md-3">
-            <select
-              className="form-control"
-              value={selectedPeriod.month}
-              onChange={(event) => this.periodChange(event, "month")}
-            >
-              <option disabled hidden value=""></option>
-              {this.state.months.map((m) => (
-                <option key={m}>{m}</option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group col-sm-12 col-md-3">
-            <p>Year</p>
-          </div>
-          <div className="form-group col-sm-12 col-md-3">
-            <input
-              type="number"
-              className="form-control"
-              id="date"
-              min={1000}
-              max={9999}
-              value={selectedPeriod.year}
-              onChange={(event) => this.periodChange(event, "year")}
-            />
-          </div>
-        </div>
-        <div className="mx-auto">
-          <button className="editButton" onClick={this.showStatistics}>
-            Show
-          </button>
-        </div>
+        <MonthYearSelector
+          handleSubmit={(selectedPeriod) => this.handleSubmit(selectedPeriod)}
+        ></MonthYearSelector>
         <div className="statsResult">
           {/* have you pressed the button */}
 

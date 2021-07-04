@@ -31,14 +31,17 @@ public class LessonService {
 
 	private final CourseService courseService;
 	
+	private final AttendanceService attendanceService;
+	
 	private final ModelMapper modelMapper;
 
 	public LessonService(LessonRepository lessonRepository, @Lazy TeacherService teacherService,
-			 @Lazy CourseService courseService,ModelMapper modelMapper) {
+			 @Lazy CourseService courseService,@Lazy AttendanceService attendanceService,ModelMapper modelMapper) {
 		super();
 		this.lessonRepository = lessonRepository;
 		this.teacherService = teacherService;
 		this.courseService = courseService;
+		this.attendanceService = attendanceService;
 		this.modelMapper = modelMapper;
 	}
 
@@ -92,7 +95,11 @@ public class LessonService {
 		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
 		if (opLesson.isPresent()) {
 			Lesson l = opLesson.get();
-
+			
+			for(Attendance a: l.getAttendances()) {
+				attendanceService.deleteAttendance(a.getId());
+			}
+			
 			Teacher t = l.getTeacher();
 			t.getLessons().remove(l);
 			teacherService.updateTeacher(t);
