@@ -52,6 +52,7 @@ const EventsTable = (props) => {
                       pathname: "/events/" + event.id,
                       state: {
                         event: event,
+                        student: props.student,
                       },
                     }}
                   >

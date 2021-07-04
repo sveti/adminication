@@ -62,7 +62,17 @@ export default function UpcommingCoursesTable(props) {
                 </Td>
                 <Td>{daysTillStart(course.startDate)}</Td>
                 <Td>
-                  <Link to={"/courses/" + course.id}>
+                  {/* <Link to={"/courses/" + course.id}>
+                    <button className="editButton details">Details</button>
+                  </Link> */}
+                  <Link
+                    to={{
+                      pathname: "/courses/" + course.id,
+                      studentProps: {
+                        student: props.student,
+                      },
+                    }}
+                  >
                     <button className="editButton details">Details</button>
                   </Link>
                 </Td>

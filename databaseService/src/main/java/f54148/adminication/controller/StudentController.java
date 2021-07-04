@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.dto.GradesOfStudentDTO;
-import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
 import f54148.adminication.dto.StudentMonthlyAttendanceDTO;
 import f54148.adminication.dto.StudentScheduleDTO;
 import f54148.adminication.entity.Attendance;

@@ -151,7 +151,22 @@ export default function Navbar(props) {
             },
           }}
         >
-          Current courses
+          Courses
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link"
+          to={{
+            pathname: "/selectStudent",
+            state: {
+              user: props.user,
+              message: "See current events",
+              path: "events",
+            },
+          }}
+        >
+          Events
         </Link>
       </li>
       <li className="nav-item">

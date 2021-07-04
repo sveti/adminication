@@ -100,5 +100,14 @@ public class EnrollmentController {
 		}
 
 	}
+	
+	@DeleteMapping(path = "/delete/{studentId}/{courseId}")
+	public @ResponseBody String deleteEnrollmentByStudentAndCourse(@PathVariable("studentId") Long studentId,@PathVariable("courseId") Long courseId) {
+		if (enrollmentservice.deleteEnrollmentByStudentAndCourse(studentId,courseId)) {
+			return "You have successfully unsubscribed from this course!";
+		} else {
+			return "An error has occured!";
+		}
+	}
 
 }

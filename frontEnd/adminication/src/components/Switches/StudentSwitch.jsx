@@ -47,7 +47,7 @@ const StudentSwitch = ({ user }) => {
 
       <ProtectedRoute
         path="/courses/:courseId"
-        render={(params) => <Course {...params}></Course>}
+        render={(params) => <Course {...params} parentView={false}></Course>}
       />
 
       <ProtectedRoute
@@ -72,7 +72,7 @@ const StudentSwitch = ({ user }) => {
       />
       <ProtectedRoute
         path="/events/:eventId"
-        render={(params) => <Event {...params}></Event>}
+        render={(params) => <Event {...params} parentView={false}></Event>}
       />
 
       <ProtectedRoute

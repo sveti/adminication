@@ -92,6 +92,9 @@ public class EventWaitingListService {
 		return eventService.getEventWaitingList(eventId).stream().sorted().findFirst().get().getStudent();
 
 	}
+	public EventWaitingList getFirstEventWaitingListInQueue(Long eventId) {
+		return eventService.getEventWaitingList(eventId).stream().sorted().findFirst().get();
+	}
 
 	public Student getStudentByEventWaitingListId(Long eventWaitingListId) {
 		Optional<EventWaitingList> opEventWaitingList = eventWaitingListRepository.findById(eventWaitingListId);
@@ -141,4 +144,6 @@ public boolean addWaitingListSignUp(AddEventWaitingListDTO dto) {
 	eventWaitingList.setSigned(dto.getSigned());
 	return addEventWaitingList(eventWaitingList);
 }
+
+
 }

@@ -79,6 +79,15 @@ public class EventSignUpService {
 			eventService.updateEvent(e);
 
 			eventSignUpRepository.deleteById(eventSignUpId);
+			
+			Student nextS = eventService.updateEventWaitingList(e);
+			
+			if(nextS!=null) {
+				
+				EventSignUp newEsu = new EventSignUp(nextS,e);
+				eventSignUpRepository.save(newEsu);
+				
+			}
 
 			return true;
 		} else {
@@ -94,6 +103,25 @@ public class EventSignUpService {
 		signUp.setSigned(LocalDateTime.now());
 		return addEventSignUp(signUp);
 	}
+
+	private EventSignUp getEventSignUpByStudentAndEvent(Long studentId, Long eventId) {
+		
+		Student s = studentService.getStudentById(studentId);
+		Event e = eventService.getEventById(eventId);
+		
+		EventSignUp esu = eventSignUpRepository.findByStudentAndEvent(s,e);
+		
+		return esu;
+	}
+	
+	public boolean deleteEventSignUpByStudentIdAndEventId(Long studentId, Long eventId) {
+		
+		EventSignUp esu = getEventSignUpByStudentAndEvent(studentId,eventId);
+		
+		return deleteEventSignUp(esu.getId());
+	}
+
+
 
 
 }

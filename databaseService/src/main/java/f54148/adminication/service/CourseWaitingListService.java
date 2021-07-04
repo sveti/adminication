@@ -101,6 +101,10 @@ public class CourseWaitingListService {
 
 	}
 	
+	public CourseWaitingList getFirstCourseWaitingListInQueue(Long courseId) {
+		return courseService.getCourseWaitingList(courseId).stream().sorted().findFirst().get();
+	}
+	
 	public Integer getNumberOfStudentInQueue(CourseWaitingList cw) {
 		ArrayList<CourseWaitingList> waitingLists = (ArrayList<CourseWaitingList>) cw.getCourse().getCourseWaitingList().stream().sorted().collect(Collectors.toList());
 		return waitingLists.indexOf(cw);

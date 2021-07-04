@@ -9,7 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.GradesOfStudentDTO;
-import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
 import f54148.adminication.dto.StudentAttendanceReportDTO;
 import f54148.adminication.dto.StudentMonthlyAttendanceDTO;
 import f54148.adminication.dto.StudentScheduleDTO;

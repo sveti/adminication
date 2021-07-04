@@ -74,4 +74,13 @@ public class EventSignUpController {
 	public @ResponseBody List<EventSignUp> getAllEventSignUps() {
 		return eventSignUpservice.getEventSignUps();
 	}
+	
+	@DeleteMapping(path = "/delete/{studentId}/{eventId}")
+	public @ResponseBody String deleteEventSignUpByStudentIdAndEventId(@PathVariable("studentId") Long studentId,@PathVariable("eventId") Long eventId) {
+		if (eventSignUpservice.deleteEventSignUpByStudentIdAndEventId(studentId,eventId)) {
+			return "You have sucessfully unsubscribed from this event!";
+		} else {
+			return "An error has occured";
+		}
+	}
 }

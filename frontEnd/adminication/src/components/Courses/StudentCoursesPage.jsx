@@ -40,6 +40,7 @@ const StudentCoursesPage = (props) => {
     <UpcommingCoursesTable
       message="Upcomming courses"
       courses={courses.upcomming}
+      student={user}
     ></UpcommingCoursesTable>
   );
 

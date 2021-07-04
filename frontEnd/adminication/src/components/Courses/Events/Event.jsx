@@ -2,9 +2,69 @@ import React from "react";
 import BackButton from "../../../common/BackButton";
 
 import { textToDayOfTheWeek } from "../../../common/helper";
+import { deleteEventSignUp } from "../../../services/eventSignUpService";
+
+import { toast } from "react-toastify";
 
 const Event = (props) => {
   const event = props.location.state.event;
+  const parentView = props.parentView;
+  const student = props.location.state.student;
+
+  async function unsubscribeFromEvent() {
+    const response = await deleteEventSignUp(student.id, event.id).catch(
+      function (error) {
+        if (error.response) {
+          // Request made and server responded
+          toast.error(error.response.data.error, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else if (error.request) {
+          // The request was made but no response was received
+          toast.error("An error occured! Try again later", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          toast.error(error.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      }
+    );
+
+    if (response && response.status === 200) {
+      toast.success(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      props.history.goBack();
+    }
+  }
+
   return (
     <React.Fragment>
       <div className="card courseContainer rounded-lg">
@@ -12,6 +72,16 @@ const Event = (props) => {
           <div className="card-title">
             <h1>Event #{event.id}</h1>
             <h2 className="courseTitle">{event.title}</h2>
+            {parentView ? (
+              <div>
+                <button
+                  className="saveButton backButton"
+                  onClick={unsubscribeFromEvent}
+                >
+                  Unsubscribe from this event
+                </button>
+              </div>
+            ) : null}
           </div>
 
           <div className="row info-group">

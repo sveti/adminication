@@ -39,6 +39,7 @@ public class CourseService {
 	private final TeacherService teacherService;
 	private final StudentService studentService;
 	private final LessonService lessonService;
+	private final CourseWaitingListService courseWaitingListService;
 	private final ModelMapper modelMapper;
 
 	public List<Course> getCourses() {
@@ -392,6 +393,20 @@ public class CourseService {
 		}
 		
 		return studentsDTO;
+		
+	}
+
+	public Student updateWaitinList(Course c) {
+		
+		if(c.getCourseWaitingList().size()==0)return null;
+		
+		CourseWaitingList cw = courseWaitingListService.getFirstCourseWaitingListInQueue(c.getId());
+		
+		Student s = cw.getStudent();
+		
+		courseWaitingListService.deleteCourseWaitingList(cw.getId());
+		
+		return s;
 		
 	}
 

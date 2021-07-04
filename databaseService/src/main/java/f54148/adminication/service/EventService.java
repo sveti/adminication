@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.EventDTO;
 import f54148.adminication.entity.CourseStatus;
+import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.EventWaitingList;
@@ -25,6 +26,7 @@ public class EventService {
 	
 	private final EventRepository eventRepository;
 	private final StudentService studentService;
+	private final EventWaitingListService eventWaitingListService;
 	private final ModelMapper modelMapper;
 
 	public List<Event> getEvents() {
@@ -156,5 +158,18 @@ public class EventService {
 	
 		return dtoList;
 		
+	}
+
+	public Student updateEventWaitingList(Event e) {
+		
+		if(e.getWaitingList().size()==0)return null;
+		
+		EventWaitingList esu = eventWaitingListService.getFirstEventWaitingListInQueue(e.getId());
+		
+		Student s = esu.getStudent();
+		
+		eventWaitingListService.deleteEventWaitingList(esu.getId());
+		
+		return s;
 	}
 }

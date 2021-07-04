@@ -7,7 +7,11 @@ import { dynamicSort } from "../../../common/helper";
 import EventsTable from "./EventsTable";
 
 const StudentsEventsPage = (props) => {
-  const { user } = props;
+  let { user } = props;
+
+  if (!user) {
+    user = props.location.state.user;
+  }
 
   const [events, setEvents] = useState({ upcomming: [], passed: [] });
 
@@ -35,6 +39,7 @@ const StudentsEventsPage = (props) => {
     <EventsTable
       message="Upcomming events"
       events={events.upcomming}
+      student={user}
     ></EventsTable>
   );
 

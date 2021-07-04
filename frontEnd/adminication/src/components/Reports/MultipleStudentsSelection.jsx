@@ -7,12 +7,14 @@ function MultipleStudentSelection(props) {
   let { selectedIds, students, studentSelection } = props;
 
   function selectStudent(id) {
-    if (selectedIds.includes(id)) {
-      selectedIds = selectedIds.filter((e) => e !== id);
-      studentSelection(selectedIds);
-    } else {
-      selectedIds.push(id);
-      studentSelection(selectedIds);
+    if (students.length > 1) {
+      if (selectedIds.includes(id)) {
+        selectedIds = selectedIds.filter((e) => e !== id);
+        studentSelection(selectedIds);
+      } else {
+        selectedIds.push(id);
+        studentSelection(selectedIds);
+      }
     }
   }
 

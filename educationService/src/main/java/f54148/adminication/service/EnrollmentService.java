@@ -5,5 +5,7 @@ import f54148.adminication.dto.AddEnrollmentDTO;
 public interface EnrollmentService {
 	
 	String addEnrollment(AddEnrollmentDTO dto);
+
+	String deleteEnrollmentByStudentAndCourse(Long studentId, Long courseId);
 	
 }

@@ -3,6 +3,8 @@ import BackButton from "../../common/BackButton";
 import CourseDetailsBadge from "../../common/CourseDetailsBadge";
 import LevelBadge from "../../common/LevelBadge";
 import { getCourseWithDetails } from "../../services/courseService";
+import { deleteEnrollment } from "../../services/enrollmentService";
+import { toast } from "react-toastify";
 
 import "./course.css";
 
@@ -11,6 +13,7 @@ class Course extends Component {
     course: {},
     loading: true,
     parentView: this.props.parentView,
+    student: this.props.location.studentProps.student,
   };
 
   getMinDate() {
@@ -42,6 +45,61 @@ class Course extends Component {
     this.setState({ course: data, loading: false });
   }
 
+  unsubscribeFromCourse = async () => {
+    const response = await deleteEnrollment(
+      this.state.student.id,
+      this.state.course.id
+    ).catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("An error occured! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+
+    if (response && response.status === 200) {
+      toast.success(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      this.props.history.goBack();
+    }
+  };
+
   componentDidMount = () => {
     this.loadCourse();
   };
@@ -59,6 +117,16 @@ class Course extends Component {
               <div className="card-title">
                 <h1>Course #{course.id}</h1>
                 <h2 className="courseTitle">{course.title}</h2>
+                {parentView ? (
+                  <div>
+                    <button
+                      className="saveButton backButton"
+                      onClick={this.unsubscribeFromCourse}
+                    >
+                      Unsubscribe from this course
+                    </button>
+                  </div>
+                ) : null}
               </div>
 
               <div className="row info-group">
@@ -161,11 +229,7 @@ class Course extends Component {
               </div>
             </div>
           </div>
-          {parentView ? (
-            <div>
-              <h1>Wololo</h1>
-            </div>
-          ) : null}
+
           <div>
             <BackButton></BackButton>
           </div>

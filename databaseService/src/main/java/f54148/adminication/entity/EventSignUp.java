@@ -27,6 +27,8 @@ import lombok.ToString;
 @Table(name = "event_sign_ups")
 public class EventSignUp {
 	
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -47,5 +49,11 @@ public class EventSignUp {
 	@Column(name = "signed", columnDefinition = "DATETIME")
 	private LocalDateTime signed;
 	
+	public EventSignUp(Student s, Event e) {
+		super();
+		this.student = s;
+		this.event = e;
+		this.signed = LocalDateTime.now();
+	}
 	
 }

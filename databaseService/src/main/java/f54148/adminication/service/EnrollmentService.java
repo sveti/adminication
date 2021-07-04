@@ -97,6 +97,16 @@ public class EnrollmentService {
 
 			courseService.updateCourse(c);
 			enrollmentRepository.deleteById(enrollmentId);
+			
+			Student nextS = courseService.updateWaitinList(c);
+			
+			if(nextS!=null) {
+				
+				Enrollment newE = new Enrollment(nextS,c);
+				addEnrollment(newE);
+			}
+			
+			
 			return true;
 		} else {
 			return false;
@@ -168,6 +178,25 @@ public class EnrollmentService {
 		}
 		
 	}
+
+	private Enrollment findEnrollmentByStudentAndCourse(Long studentId, Long courseId) {
+		
+		Student s = studentService.getStudentById(studentId);
+		Course c = courseService.getCourseById(courseId);
+		
+		Enrollment e = enrollmentRepository.findByStudentAndCourse(s,c);
+		
+		return e;	
+	}
+	
+	public boolean deleteEnrollmentByStudentAndCourse(Long studentId, Long courseId) {
+		
+		Enrollment e = findEnrollmentByStudentAndCourse(studentId,courseId);
+		
+		return deleteEnrollment(e.getId());
+	}
+
+
 	
 
 }

@@ -9,6 +9,8 @@ import AllCoursesList from "../Courses/AllCoursesList";
 import AllEventsList from "../Courses/Events/AllEventsList";
 import StudentCoursesPage from "../Courses/StudentCoursesPage";
 import StudentLessonsOfCourse from "../Courses/Lessons/StudentLessonsOfCourse";
+import StudentEventsPage from "../Courses/Events/StudentEventsPage";
+import Event from "../Courses/Events/Event";
 import Course from "../Courses/Course";
 import StudentGrades from "../Courses/Grading/StudentGrades";
 import ParentInvoice from "../Reports/ParentInvoice";
@@ -62,6 +64,16 @@ const ParentSwitch = ({ user }) => {
       <ProtectedRoute
         path="/events/all"
         render={(params) => <AllEventsList {...params}></AllEventsList>}
+      />
+
+      <ProtectedRoute
+        path="/events/:eventId"
+        render={(params) => <Event {...params} parentView={true}></Event>}
+      />
+
+      <ProtectedRoute
+        path="/events"
+        render={(params) => <StudentEventsPage {...params}></StudentEventsPage>}
       />
 
       <ProtectedRoute

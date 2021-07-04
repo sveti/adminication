@@ -44,5 +44,13 @@ public class Enrollment {
 	@Column
 	private float grade;
 
+	public Enrollment(@NotNull Student student, @NotNull Course course) {
+		super();
+		this.student = student;
+		this.course = course;
+		this.grade = 0;
+	}
+
+	
 
 }
