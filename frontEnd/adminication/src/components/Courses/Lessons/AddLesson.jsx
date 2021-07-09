@@ -83,7 +83,6 @@ class AddLesson extends Component {
       lesson.courseId = this.state.courseId;
       lesson.date = date;
       lesson.description = description;
-      console.log(lesson);
       this.addLesson(lesson);
     }
   };

@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.EditUserDTO;
+import f54148.adminication.dto.NotificationDTO;
 import f54148.adminication.entity.Draft;
 import f54148.adminication.entity.Gender;
+import f54148.adminication.entity.MessageStatus;
 import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.Role;
 import f54148.adminication.entity.User;
@@ -159,8 +161,21 @@ public class UserService {
 	}
 
 	public DisplayUserDTO convertToCreateUserDTO(User user) {
-
-		return modelMapper.map(user, DisplayUserDTO.class);
+		
+		DisplayUserDTO dto = modelMapper.map(user, DisplayUserDTO.class);
+		
+		List<Notification> nots = getNotificationsReceivedByUser(user.getId());
+		
+		nots.removeIf(not->not.getStatus()!=MessageStatus.SEND);
+		
+		List<NotificationDTO> dtoNots = new ArrayList<NotificationDTO>();
+		
+		for(Notification n : nots) {
+			dtoNots.add(notificationService.convertToNotificationDTO(n));
+		}
+		dto.setNotifications(dtoNots);
+		
+		return dto;
 
 	}
 
@@ -228,6 +243,12 @@ public class UserService {
 		catch(Exception e) {
 			return false;
 		}
+	}
+	
+	public User getAdmin() {
+		
+		return getUserById((long) 1);
+		
 	}
 
 }

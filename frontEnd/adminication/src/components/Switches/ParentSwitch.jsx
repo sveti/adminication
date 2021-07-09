@@ -6,14 +6,15 @@ import IndexPage from "../Homepage/IndexPage";
 import NotFound from "../notFound";
 import StudentSelection from "../Courses/StudentSelection";
 import AllCoursesList from "../Courses/AllCoursesList";
-import AllEventsList from "../Courses/Events/AllEventsList";
 import StudentCoursesPage from "../Courses/StudentCoursesPage";
 import StudentLessonsOfCourse from "../Courses/Lessons/StudentLessonsOfCourse";
-import StudentEventsPage from "../Courses/Events/StudentEventsPage";
-import Event from "../Courses/Events/Event";
 import Course from "../Courses/Course";
+import AllEventsList from "../Events/AllEventsList";
+import StudentEventsPage from "../Events/StudentEventsPage";
+import Event from "../Events/Event";
 import StudentGrades from "../Courses/Grading/StudentGrades";
 import ParentInvoice from "../Reports/ParentInvoice";
+import AllNotifications from "../Notifications/AllNotifications";
 
 const ParentSwitch = ({ user }) => {
   function editedUser(passedUser) {
@@ -87,6 +88,13 @@ const ParentSwitch = ({ user }) => {
         path="/reports"
         render={(params) => (
           <ParentInvoice {...params} user={user}></ParentInvoice>
+        )}
+      />
+
+      <ProtectedRoute
+        path="/notifications"
+        render={(params) => (
+          <AllNotifications {...params} user={user}></AllNotifications>
         )}
       />
 

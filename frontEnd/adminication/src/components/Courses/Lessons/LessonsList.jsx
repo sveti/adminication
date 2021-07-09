@@ -1,10 +1,10 @@
 import React from "react";
 import { Accordion, AccordionItem } from "react-light-accordion";
-import "react-light-accordion/demo/css/index.css";
 import AddAttendesTable from "./AddAttendancesTable";
 import AttendanceTable from "./AttendanceTable";
-import "./lessons.css";
 import Description from "./Description";
+import "react-light-accordion/demo/css/index.css";
+import "./lessons.css";
 
 export default function LessonsList(props) {
   const { lessons, attendances, students } = props;

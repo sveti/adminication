@@ -1,8 +1,8 @@
 import React from "react";
-import BackButton from "../../../common/BackButton";
+import BackButton from "../../common/BackButton";
 
-import { textToDayOfTheWeek } from "../../../common/helper";
-import { deleteEventSignUp } from "../../../services/eventSignUpService";
+import { textToDayOfTheWeek } from "../../common/helper";
+import { deleteEventSignUp } from "../../services/eventSignUpService";
 
 import { toast } from "react-toastify";
 

@@ -2,6 +2,7 @@
     "gateway": "http://localhost:8090",
     "administrationServiceName":"administrationService",
     "educationServiceName":"educationService",
-    "authenticationServiceName":"authenticationService"
+    "authenticationServiceName":"authenticationService",
+    "notificationServiceName":"notificationService"
   }
   

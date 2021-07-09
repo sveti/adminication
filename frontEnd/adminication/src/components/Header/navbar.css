@@ -143,6 +143,16 @@ header.navbar.scrolled a:hover {
   top: 2.5px;
 }
 
+.mailIcon {
+  font-size: 1.5rem;
+}
+.badge {
+  position: relative;
+  margin-left: -5px;
+  top: 5px;
+  z-index: 9999 !important;
+  background-color: #fff;
+}
 @media screen and (max-width: 768px) {
   #mainMenu {
     padding: 0px;

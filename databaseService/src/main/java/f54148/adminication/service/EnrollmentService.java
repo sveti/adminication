@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.dto.AddEnrollmentDTO;
 import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.entity.Course;
+import f54148.adminication.entity.Draft;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.EnrollmentRepository;
@@ -25,6 +26,10 @@ public class EnrollmentService {
 	private final StudentService studentService;
 
 	private final CourseService courseService;
+	
+	private final DraftService draftService;
+	
+	private final NotificationService notificationService;
 	
 	private final ModelMapper modelMapper;
 
@@ -104,6 +109,10 @@ public class EnrollmentService {
 				
 				Enrollment newE = new Enrollment(nextS,c);
 				addEnrollment(newE);
+				String message = nextS.getName() + " " + nextS.getLastName() + " has been successfully enrolled in course #" + c.getId() + " : " + c.getTitle();
+				Long draftId = draftService.createDraftFromAdmin(message);
+				Long parentId = nextS.getParent().getId();
+				notificationService.sendDraft(draftId, parentId);
 			}
 			
 			

@@ -52,10 +52,6 @@ class EventsSearchBar extends Component {
     );
   };
 
-  onRangeSiderChange = (event) => {
-    console.log(event);
-  };
-
   render() {
     const { title, startDate, endDate, avialable, scheduleConflict } =
       this.state;

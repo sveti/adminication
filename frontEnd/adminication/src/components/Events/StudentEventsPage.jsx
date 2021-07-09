@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-import { getEventsOfStudent } from "../../../services/eventsService";
+import { getEventsOfStudent } from "../../services/eventsService";
 
-import { dynamicSort } from "../../../common/helper";
+import { dynamicSort } from "../../common/helper";
 import EventsTable from "./EventsTable";
 
 const StudentsEventsPage = (props) => {

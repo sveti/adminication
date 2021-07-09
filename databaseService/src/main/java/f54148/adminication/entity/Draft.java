@@ -56,6 +56,8 @@ public class Draft {
 	@OneToMany(mappedBy = "draft")
 	@JsonManagedReference(value = "notification_draft")
 	private Set<Notification> notificationsSend = new HashSet<Notification>();
+
+	
 	
 	
 

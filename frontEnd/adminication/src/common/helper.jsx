@@ -8,6 +8,20 @@ const days = [
   "Saturday",
 ];
 
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 export function dynamicSort(property) {
   var sortOrder = 1;
   if (property[0] === "-") {
@@ -93,4 +107,9 @@ export function getMinDateFromArray(startDate) {
   });
   var minDate = new Date(Math.min.apply(null, dates));
   return minDate;
+}
+
+export function getMonthByDate(month) {
+  let index = parseInt(month) - 1;
+  return months[index];
 }

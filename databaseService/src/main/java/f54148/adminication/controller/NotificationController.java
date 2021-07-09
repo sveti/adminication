@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.NotificationDTO;
 import f54148.adminication.entity.Notification;
 import f54148.adminication.service.NotificationService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,6 @@ public class NotificationController {
 
 	@PostMapping(path = "/addNotification")
 	public @ResponseBody String addNotification(@RequestBody Notification notification) {
-		
 
 		if (notificationService.addNotification(notification)) {
 			return "Saved notification";
@@ -66,4 +66,15 @@ public class NotificationController {
 		}
 	}
 
+	@GetMapping(path = "/user/{userId}")
+	public @ResponseBody List<NotificationDTO> getAllNotificationsOfUserById(@PathVariable("userId") Long userId) {
+		return notificationService.getAllNotificationsOfUserById(userId);
+	}
+	
+	@GetMapping(path = "/{notificationId}/dismiss")
+	public @ResponseBody Boolean dismissNotificationById(@PathVariable("notificationId") Long notificationId) {
+		return notificationService.dismissNotificationById(notificationId);
+	}
+	
+	
 }

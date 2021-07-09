@@ -1,5 +1,7 @@
 package f54148.adminication.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,4 +19,5 @@ public class DisplayUserDTO {
 	private String lastName;
 	private String gender;
 	private String roleName;
+	private List<NotificationDTO> notifications;
 }

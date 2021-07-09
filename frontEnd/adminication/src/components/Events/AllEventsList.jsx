@@ -3,22 +3,22 @@ import React, { Component } from "react";
 import EventCard from "./EventCard";
 import EventsSearchBar from "./EventsSearchBar";
 
-import { getEvents, getEventsOfStudent } from "../../../services/eventsService";
-import { getScheduleOfStudent } from "../../../services/scheduleService";
+import { getEvents, getEventsOfStudent } from "../../services/eventsService";
+import { getScheduleOfStudent } from "../../services/scheduleService";
 import {
   dynamicSort,
   getMinDateAsDate,
   textToDate,
   isAfterDate,
   textToDayOfTheWeekNumber,
-} from "../../../common/helper";
+} from "../../common/helper";
 
 import {
   getWaitingListEventsOfStudent,
   addEventWaitingListSignUp,
   deleteEventWaitingList,
-} from "../../../services/waitingListService";
-import { addEventSignUp } from "../../../services/eventSignUpService";
+} from "../../services/waitingListService";
+import { addEventSignUp } from "../../services/eventSignUpService";
 import { toast } from "react-toastify";
 
 import "./events.css";

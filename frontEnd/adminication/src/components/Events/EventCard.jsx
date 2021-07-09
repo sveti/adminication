@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { getMinDate, textToDayOfTheWeek } from "../../../common/helper";
+import { getMinDate, textToDayOfTheWeek } from "../../common/helper";
 
 const EventCard = ({
   event,

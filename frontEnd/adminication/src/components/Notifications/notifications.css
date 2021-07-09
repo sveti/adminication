@@ -1,0 +1,22 @@
+.notificationsContainer {
+  margin: 8rem 1rem;
+  padding: 0rem 2rem;
+}
+
+.unreadNotification {
+  background-color: #6ee1ff !important;
+}
+
+.dismissButton {
+  font-size: 2rem;
+  color: #fff;
+  position: relative;
+  bottom: 2.2rem;
+}
+
+@media screen and (max-width: 768px) {
+  .notificationsContainer {
+    margin: 5rem 1rem;
+    padding: 0rem;
+  }
+}

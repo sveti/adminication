@@ -3,11 +3,14 @@ package f54148.adminication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.entity.Draft;
+import f54148.adminication.entity.MessageStatus;
+import f54148.adminication.entity.Notification;
 import f54148.adminication.entity.User;
 import f54148.adminication.repository.DraftRepository;
 
@@ -25,7 +28,6 @@ public class DraftService {
 	}
 
 	
-	
 	public List<Draft> getDrafts() {
 		List<Draft> draftList = new ArrayList<>();
 		draftRepository.findAll().forEach(draftList::add);
@@ -42,13 +44,19 @@ public class DraftService {
 	}
 
 	public boolean addDraft(Draft draft) {
+		
 		if (draftRepository.save(draft) != null) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+	
+	public Long addDraftAndGetId(Draft draft) {
+		Draft d = draftRepository.save(draft);
+		return d.getId();
+	}
+	
 	public boolean updateDraft(Draft draft) {
 		if (draftRepository.save(draft) != null) {
 			return true;
@@ -70,6 +78,27 @@ public class DraftService {
 		} else {
 			return false;
 		}
+	}
+	
+	public Long createDraftFromAdmin(String message) {
+		
+		Draft d = new Draft();
+		d.setSender(userService.getAdmin());
+		d.setContent(message);
+		d.setStatus(MessageStatus.DRAFT);
+		
+		return addDraftAndGetId(d);
+		
+	}
+
+
+	public void addNotification(Draft draft,Notification saved) {
+		
+		Set<Notification> draftNots = draft.getNotificationsSend();
+		draftNots.add(saved);
+		draft.setNotificationsSend(draftNots);
+		updateDraft(draft);
+		
 	}
 
 }

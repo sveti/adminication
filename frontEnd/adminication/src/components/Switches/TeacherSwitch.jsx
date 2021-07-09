@@ -10,6 +10,7 @@ import TeacherLessonsPage from "../Courses/Lessons/TeacherLessonsPage";
 import GradingTable from "../Courses/Grading/GradingTable";
 import Grading from "../Courses/Grading/Grading";
 import TeacherSalary from "../Reports/TeacherSalary";
+import AllNotifications from "../Notifications/AllNotifications";
 import NotFound from "../notFound";
 
 const TeacherSwitch = ({ user }) => {
@@ -57,12 +58,18 @@ const TeacherSwitch = ({ user }) => {
         render={(params) => <Grading teacherId={user.id} {...params}></Grading>}
       />
       <ProtectedRoute
-        path="/statistics"
+        path="/reports"
         render={(params) => (
           <TeacherSalary teacherId={user.id} {...params}></TeacherSalary>
         )}
       />
 
+      <ProtectedRoute
+        path="/notifications"
+        render={(params) => (
+          <AllNotifications {...params} user={user}></AllNotifications>
+        )}
+      />
       <Redirect from="/" exact to="/login" />
       <ProtectedRoute path="/not-found" component={NotFound} />
       <Redirect to="/not-found" />
