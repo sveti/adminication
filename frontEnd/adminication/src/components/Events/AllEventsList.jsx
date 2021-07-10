@@ -260,6 +260,7 @@ class AllEventsList extends Component {
         draggable: true,
         progress: undefined,
       });
+      this.props.increase();
     }
   };
 
@@ -316,6 +317,7 @@ class AllEventsList extends Component {
         draggable: true,
         progress: undefined,
       });
+      this.props.increase();
     }
   };
 

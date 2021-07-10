@@ -141,6 +141,7 @@ class AllCoursesList extends Component {
         draggable: true,
         progress: undefined,
       });
+      this.props.increase();
     }
   };
 
@@ -197,6 +198,7 @@ class AllCoursesList extends Component {
         draggable: true,
         progress: undefined,
       });
+      this.props.increase();
     }
   };
 
@@ -415,6 +417,7 @@ class AllCoursesList extends Component {
       parentView,
       waitingList,
     } = this.state;
+
     return (
       <div className="container">
         <div className="lessonsOfCourseContainer row">

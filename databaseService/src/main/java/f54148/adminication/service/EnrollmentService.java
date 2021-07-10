@@ -75,8 +75,18 @@ public class EnrollmentService {
 		Enrollment enroll = new Enrollment();
 		enroll.setStudent(studentService.getStudentById(enrollment.getStudentId()));
 		enroll.setCourse(courseService.getCourseById(enrollment.getCourseId()));
-		return addEnrollment(enroll);
-		
+		if( addEnrollment(enroll)) {
+			
+			String message = enroll.getStudent().getName() + " " + enroll.getStudent().getLastName() + " has been successfully enrolled in course #" + enroll.getCourse().getId() + " : " + enroll.getCourse().getTitle();
+			Long draftId = draftService.createDraftFromAdmin(message);
+			Long parentId = enroll.getStudent().getParent().getId();
+			notificationService.sendDraft(draftId, parentId);
+			
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public boolean updateEnrollment(Enrollment enrollment) {
@@ -113,7 +123,11 @@ public class EnrollmentService {
 				Long draftId = draftService.createDraftFromAdmin(message);
 				Long parentId = nextS.getParent().getId();
 				notificationService.sendDraft(draftId, parentId);
-			}
+				String studentMessage = "You have been successfully enrolled in course #" + c.getId() + " : " + c.getTitle();
+				Long studentdraftId = draftService.createDraftFromAdmin(studentMessage);
+				notificationService.sendDraft(studentdraftId, nextS.getId());
+				
+				}
 			
 			
 			return true;
@@ -163,11 +177,14 @@ public class EnrollmentService {
 	
 	public Enrollment convertToEnrollments(StudentGradesDTO dto) {
 		Enrollment enrollment =  modelMapper.map(dto, Enrollment.class);
+		enrollment.setStudent(studentService.getStudentById(dto.getStudentId()));
+		enrollment.setCourse(courseService.getCourseById(dto.getCourseId()));
 		return enrollment;
 	
 	}
 
 	public boolean updateStudentGrades(List<StudentGradesDTO> studentsGrades) {
+
 	List <Enrollment> enrollments = new ArrayList<>();
 		
 		for(StudentGradesDTO dto: studentsGrades) {
@@ -178,7 +195,17 @@ public class EnrollmentService {
 		
 		try {
 			for(Enrollment e: enrollments) {
+				
 				updateEnrollment(e);
+	
+				String message = e.getStudent().getName() + " " + e.getStudent().getLastName() + " has received the grade " + e.getGrade() +" in course #" + e.getCourse().getId() + " : " + e.getCourse().getTitle();
+				Long draftId = draftService.createDraftFromAdmin(message);
+				Long parentId = e.getStudent().getParent().getId();
+				notificationService.sendDraft(draftId, parentId);
+				String studentMessage = "You have been graded in course #" + e.getCourse().getId() + " : " + e.getCourse().getTitle() + " with grade " + e.getGrade();
+				Long studentdraftId = draftService.createDraftFromAdmin(studentMessage);
+				notificationService.sendDraft(studentdraftId, e.getStudent().getId());
+				
 			}
 			return true;
 		}

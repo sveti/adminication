@@ -16,7 +16,7 @@ class AllNotifications extends Component {
     notification.status = "OPENED";
     allNotificaions[index] = notification;
     this.setState({ allNotificaions });
-    this.props.location.data.decrease();
+    this.props.decrease();
   };
 
   getAllNotificationsOfUser = async () => {

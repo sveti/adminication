@@ -13,7 +13,7 @@ import TeacherSalary from "../Reports/TeacherSalary";
 import AllNotifications from "../Notifications/AllNotifications";
 import NotFound from "../notFound";
 
-const TeacherSwitch = ({ user }) => {
+const TeacherSwitch = ({ user, increase, decrease }) => {
   function editedUser(passedUser) {
     user = passedUser;
   }
@@ -67,7 +67,11 @@ const TeacherSwitch = ({ user }) => {
       <ProtectedRoute
         path="/notifications"
         render={(params) => (
-          <AllNotifications {...params} user={user}></AllNotifications>
+          <AllNotifications
+            {...params}
+            user={user}
+            decrease={decrease}
+          ></AllNotifications>
         )}
       />
       <Redirect from="/" exact to="/login" />

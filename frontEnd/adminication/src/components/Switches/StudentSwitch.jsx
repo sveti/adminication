@@ -14,7 +14,7 @@ import Event from "../Events/Event";
 import StudentGrades from "../Courses/Grading/StudentGrades";
 import AllNotifications from "../Notifications/AllNotifications";
 
-const StudentSwitch = ({ user }) => {
+const StudentSwitch = ({ user, increase, decrease }) => {
   function editedUser(passedUser) {
     user = passedUser;
   }
@@ -34,7 +34,11 @@ const StudentSwitch = ({ user }) => {
       <ProtectedRoute
         path="/courses/all"
         render={(params) => (
-          <AllCoursesList {...params} user={user}></AllCoursesList>
+          <AllCoursesList
+            {...params}
+            user={user}
+            decrease={decrease}
+          ></AllCoursesList>
         )}
       />
 
@@ -84,7 +88,11 @@ const StudentSwitch = ({ user }) => {
       <ProtectedRoute
         path="/notifications"
         render={(params) => (
-          <AllNotifications {...params} user={user}></AllNotifications>
+          <AllNotifications
+            {...params}
+            user={user}
+            decrease={decrease}
+          ></AllNotifications>
         )}
       />
 

@@ -90,6 +90,17 @@ public class DraftService {
 		return addDraftAndGetId(d);
 		
 	}
+	
+	public Long createDraftFromTeacher(String message, Long teacherId) {
+		
+		Draft d = new Draft();
+		d.setSender(userService.getUserById(teacherId));
+		d.setContent(message);
+		d.setStatus(MessageStatus.DRAFT);
+		
+		return addDraftAndGetId(d);
+		
+	}
 
 
 	public void addNotification(Draft draft,Notification saved) {

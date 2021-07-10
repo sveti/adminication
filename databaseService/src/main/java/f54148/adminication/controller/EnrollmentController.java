@@ -91,7 +91,7 @@ public class EnrollmentController {
 	}
 	
 	@PutMapping(path = "/updateGrades")
-	public @ResponseBody String updateAttendances(@RequestBody List<StudentGradesDTO> studentsGrades) {
+	public @ResponseBody String updateGrades(@RequestBody List<StudentGradesDTO> studentsGrades) {
 
 		if (enrollmentservice.updateStudentGrades(studentsGrades)) {
 			return "Successfully updated grades!";

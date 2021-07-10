@@ -16,11 +16,26 @@ import { getUser } from "./services/userService";
 class App extends Component {
   state = {
     user: null,
+    notificationsCount: 0,
+  };
+
+  increaseNotificationsCount = () => {
+    let { notificationsCount } = this.state;
+    notificationsCount++;
+    this.setState({ notificationsCount });
+  };
+  decreaseNotificationsCount = () => {
+    let { notificationsCount } = this.state;
+    notificationsCount--;
+    this.setState({ notificationsCount });
   };
 
   async loadUser(username) {
     const { data } = await getUser(username);
-    this.setState({ user: data });
+    this.setState({
+      user: data,
+      notificationsCount: data.notifications.length,
+    });
   }
 
   loginRequest = async (username) => {
@@ -29,20 +44,38 @@ class App extends Component {
   };
 
   render() {
-    const { user } = this.state;
+    const { user, notificationsCount } = this.state;
 
     let routing = null;
 
     if (user) {
       switch (user.roleName) {
         case "ROLE_TEACHER":
-          routing = <TeacherSwitch user={user}></TeacherSwitch>;
+          routing = (
+            <TeacherSwitch
+              user={user}
+              increase={this.increaseNotificationsCount}
+              decrease={this.decreaseNotificationsCount}
+            ></TeacherSwitch>
+          );
           break;
         case "ROLE_STUDENT":
-          routing = <StudentSwitch user={user}></StudentSwitch>;
+          routing = (
+            <StudentSwitch
+              user={user}
+              increase={this.increaseNotificationsCount}
+              decrease={this.decreaseNotificationsCount}
+            ></StudentSwitch>
+          );
           break;
         case "ROLE_PARENT":
-          routing = <ParentSwitch user={user}></ParentSwitch>;
+          routing = (
+            <ParentSwitch
+              user={user}
+              increase={this.increaseNotificationsCount}
+              decrease={this.decreaseNotificationsCount}
+            ></ParentSwitch>
+          );
           break;
         default:
           routing = null;
@@ -64,7 +97,10 @@ class App extends Component {
       return (
         <div className="App">
           <div className="navContainer">
-            <Navbar user={user}></Navbar>
+            <Navbar
+              user={user}
+              notificationsCount={notificationsCount}
+            ></Navbar>
           </div>
 
           <main>

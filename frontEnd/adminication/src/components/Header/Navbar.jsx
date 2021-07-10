@@ -12,19 +12,11 @@ class Navbar extends Component {
       user: this.props.user,
       navBarClasses: ["navbar fixed-top topNavbar"],
       role: this.props.user.roleName.toLowerCase().split("_")[1],
-      newNotificationsCount: this.props.user.notifications.length,
     };
     this.state.navBarClasses.push(this.state.role);
   }
-
-  updateNotificationCount = () => {
-    let { newNotificationsCount } = this.state;
-    newNotificationsCount--;
-    this.setState({ newNotificationsCount });
-  };
-
   render() {
-    const { user, navBarClasses, role, newNotificationsCount } = this.state;
+    const { user, navBarClasses, role } = this.state;
     const teacherNav = (
       <React.Fragment>
         <li className="nav-item">
@@ -88,8 +80,8 @@ class Navbar extends Component {
             }}
           >
             <FontAwesomeIcon icon={faEnvelope} className="mailIcon" />
-            {newNotificationsCount > 0 ? (
-              <span className="badge">{newNotificationsCount}</span>
+            {this.props.notificationsCount > 0 ? (
+              <span className="badge">{this.props.notificationsCount}</span>
             ) : null}
           </Link>
         </li>
@@ -173,8 +165,8 @@ class Navbar extends Component {
             }}
           >
             <FontAwesomeIcon icon={faEnvelope} className="mailIcon" />
-            {newNotificationsCount > 0 ? (
-              <span className="badge">{newNotificationsCount}</span>
+            {this.props.notificationsCount > 0 ? (
+              <span className="badge">{this.props.notificationsCount}</span>
             ) : null}
           </Link>
         </li>
@@ -273,12 +265,11 @@ class Navbar extends Component {
             className="nav-link"
             to={{
               pathname: "/notifications",
-              data: { decrease: this.updateNotificationCount },
             }}
           >
             <FontAwesomeIcon icon={faEnvelope} className="mailIcon" />
-            {newNotificationsCount > 0 ? (
-              <span className="badge">{newNotificationsCount}</span>
+            {this.props.notificationsCount > 0 ? (
+              <span className="badge">{this.props.notificationsCount}</span>
             ) : null}
           </Link>
         </li>

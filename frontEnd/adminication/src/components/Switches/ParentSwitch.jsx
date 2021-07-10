@@ -16,7 +16,7 @@ import StudentGrades from "../Courses/Grading/StudentGrades";
 import ParentInvoice from "../Reports/ParentInvoice";
 import AllNotifications from "../Notifications/AllNotifications";
 
-const ParentSwitch = ({ user }) => {
+const ParentSwitch = ({ user, increase, decrease }) => {
   function editedUser(passedUser) {
     user = passedUser;
   }
@@ -43,7 +43,9 @@ const ParentSwitch = ({ user }) => {
       />
       <ProtectedRoute
         path="/courses/all"
-        render={(params) => <AllCoursesList {...params}></AllCoursesList>}
+        render={(params) => (
+          <AllCoursesList {...params} increase={increase}></AllCoursesList>
+        )}
       />
       <ProtectedRoute
         path="/courses/:courseId"
@@ -64,7 +66,9 @@ const ParentSwitch = ({ user }) => {
 
       <ProtectedRoute
         path="/events/all"
-        render={(params) => <AllEventsList {...params}></AllEventsList>}
+        render={(params) => (
+          <AllEventsList {...params} increase={increase}></AllEventsList>
+        )}
       />
 
       <ProtectedRoute
@@ -94,7 +98,11 @@ const ParentSwitch = ({ user }) => {
       <ProtectedRoute
         path="/notifications"
         render={(params) => (
-          <AllNotifications {...params} user={user}></AllNotifications>
+          <AllNotifications
+            {...params}
+            user={user}
+            decrease={decrease}
+          ></AllNotifications>
         )}
       />
 
