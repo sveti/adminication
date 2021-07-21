@@ -13,12 +13,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
+import f54148.adminication.dto.AdminAllCoursesDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.EventDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StudentGradesDTO;
+import f54148.adminication.dto.TeacherForCourseDTO;
 import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
@@ -46,6 +48,7 @@ public class ModelMapperConfig {
 		 	ModelMapper modelMapper = new ModelMapper();
 		 	
 		 	modelMapper.addMappings(convertUserToCreateUserDTO);
+		 	modelMapper.addMappings(convertUserToAdminAllCoursesDTO);
 		 	
 		 	modelMapper.addConverter(convertCoursetoUpcommingCourseDTO);
 		 	modelMapper.addConverter(convertCoursetoCourseWithDetailsDTO);
@@ -69,7 +72,7 @@ public class ModelMapperConfig {
 			    
 			  }
 	    };
-
+	    
 	    Converter<Course, UpcommingCourseDTO> convertCoursetoUpcommingCourseDTO = new Converter<Course, UpcommingCourseDTO>()
 	    {
 	        public UpcommingCourseDTO convert(MappingContext<Course, UpcommingCourseDTO> context)
@@ -273,6 +276,12 @@ public class ModelMapperConfig {
 	            return destination;
 	        }
 	    };
-	    
+	    PropertyMap<Course, AdminAllCoursesDTO> convertUserToAdminAllCoursesDTO = new PropertyMap<Course,AdminAllCoursesDTO>()
+	    {
+		 protected void configure() {
+			 	map().setSignedUp(source.getEnrollments().size());
+			 	map().setWaitingList(source.getCourseWaitingList().size());
+			  }
+	    };
 }
 

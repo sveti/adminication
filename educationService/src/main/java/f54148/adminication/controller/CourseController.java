@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import f54148.adminication.dto.AdminAllCoursesDTO;
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.CourseDetailsDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
@@ -112,7 +113,10 @@ public class CourseController {
 	}
 	
 
-	
+	@GetMapping(path = "/admin/courses")
+	public @ResponseBody List<AdminAllCoursesDTO> getAllCourses() {
+		return courseService.getAllCourses();
+	}
 	
 	
 

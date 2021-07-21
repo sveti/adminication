@@ -104,4 +104,12 @@ public class CourseDetailService {
 		return dto;
 	}
 
+	public CourseDetail createNewDetail(String newDetail) {
+		
+		CourseDetail courseDetail = new CourseDetail();
+		courseDetail.setDescription(newDetail);
+		CourseDetail saved = repo.save(courseDetail);
+		return saved;
+	}
+
 }

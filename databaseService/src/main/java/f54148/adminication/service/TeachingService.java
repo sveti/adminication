@@ -116,4 +116,15 @@ public class TeachingService {
 		
 	}
 
+	public Teaching addTeaching(Long teacherId, Long courseId, Double salary) {
+		
+		Teaching t = new Teaching();
+		t.setTeacher(teacherService.getTeacherById(teacherId));
+		t.setCourse(courseService.getCourseById(courseId));
+		t.setSalaryPerStudent(salary);
+		
+		return teachingRepository.save(t);
+	
+	}
+
 }

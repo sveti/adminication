@@ -2,6 +2,7 @@ package f54148.adminication.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -9,6 +10,11 @@ import java.util.Set;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AddCourseDTO;
+import f54148.adminication.dto.AddCourseScheduleDTO;
+import f54148.adminication.dto.AddCourseTeacherDTO;
+import f54148.adminication.dto.AdminAllCoursesDTO;
+import f54148.adminication.dto.CourseDetailsDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
@@ -23,6 +29,7 @@ import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
+import f54148.adminication.entity.Level;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
 import f54148.adminication.entity.Teacher;
@@ -40,6 +47,9 @@ public class CourseService {
 	private final StudentService studentService;
 	private final LessonService lessonService;
 	private final CourseWaitingListService courseWaitingListService;
+	private final CourseDetailService courseDetailService;
+	private final ScheduleService scheduleService;
+	private final TeachingService teachingService;
 	private final ModelMapper modelMapper;
 
 	public List<Course> getCourses() {
@@ -409,6 +419,83 @@ public class CourseService {
 		return s;
 		
 	}
+
+	private AdminAllCoursesDTO convertToAdminAllCoursesDTO(Course c) {
+		AdminAllCoursesDTO dto = modelMapper.map(c, AdminAllCoursesDTO.class);
+		
+		return dto;
+	}
+
+	
+	public List<AdminAllCoursesDTO> getAllCoursesAdmin() {
+		List<Course> courses = getCourses();
+		
+		List<AdminAllCoursesDTO>  dto = new ArrayList<>();
+		
+		for(Course c: courses) {
+			dto.add(convertToAdminAllCoursesDTO(c));
+		}
+		
+		return dto;
+	}
+
+	public String addAddCourseDTO(AddCourseDTO course) {
+		
+		try {
+		Course c = new Course();
+		c.setTitle(course.getTitle());
+		c.setDescription(course.getDescription());
+		c.setLevel(Level.valueOf(course.getLevel()));
+		c.setPricePerStudent(course.getPricePerStudent());
+		c.setMaxStudents(course.getMaxStudents());
+		c.setStatus(CourseStatus.UPCOMMING);
+		c.setDuration(course.getDuration());
+		
+		Set<CourseDetail> courseDetails = new HashSet<>();
+		
+		for(CourseDetailsDTO cd: course.getDetails()) {
+			
+			courseDetails.add(courseDetailService.getCourseDetailsById(cd.getId()));
+			
+		}
+		
+		for(String newDetail: course.getNewCourseDetails()) {
+			CourseDetail newCD = courseDetailService.createNewDetail(newDetail);
+			courseDetails.add(newCD);
+		}
+		
+		c.setDetails(courseDetails);
+		
+		Set<Schedule> schedules = new HashSet<>();
+		
+		for(AddCourseScheduleDTO schedule: course.getScheudles()) {
+			
+			schedules.add(scheduleService.findOrCreateSchedule(schedule));
+		}
+		
+		c.setCourseSchedule(schedules);
+		
+		Course savedCourse = courseRepository.save(c);
+		
+		//Set<Teaching> teachings  = new HashSet<>();
+		
+		for(AddCourseTeacherDTO addTeacher : course.getTeachers()) {
+			
+			Teaching a = teachingService.addTeaching(addTeacher.getId(),savedCourse.getId(),addTeacher.getSalary());
+			//teachings.add(a);
+		}
+		
+		//savedCourse.setTeaching(teachings);
+		//courseRepository.save(savedCourse);
+		return "Course have been successfully saved!";
+		}
+		catch(Exception e) {
+			return "An error has occured!";
+		}
+		
+		
+	}
+
 
 
 

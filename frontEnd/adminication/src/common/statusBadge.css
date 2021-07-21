@@ -1,0 +1,14 @@
+.upcomming {
+  background-color: #359fc1;
+}
+.canceled {
+  background-color: #eedd6d;
+}
+.finished {
+  background-color: #e74c3c;
+  color: #fff;
+}
+.started {
+  background-color: #5b8a38;
+  color: #fff;
+}

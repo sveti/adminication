@@ -1,0 +1,145 @@
+.adminAllCoursesContainer {
+  margin: 8rem 2rem;
+}
+.allCoursesTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.allCoursesTh {
+  padding-left: 20px;
+}
+.allCoursesTableHead {
+  border-bottom: 1px solid #9e9796;
+}
+
+.allCoursesRow:nth-of-type(2n) {
+  background-color: #f0eeee;
+}
+
+.allCoursesTd {
+  word-wrap: break-word;
+}
+
+.globalSearchInput {
+  width: 100%;
+  border: 1px solid #bfdeff;
+}
+
+.biggerLabel {
+  font-size: 1.1rem;
+}
+
+div[role="columnheader"] {
+  margin-bottom: 1rem;
+}
+
+.detailsBadgeDiv {
+  display: inline-block;
+  margin-right: 0.2rem;
+  margin-left: 0.2rem;
+}
+
+.addDetailsButton {
+  background-color: #5b8a38 !important;
+  color: #fff !important;
+  border-radius: 15px !important;
+}
+
+.fadeIn {
+  animation: fadeIn 0.5s ease-in-out forwards !important;
+}
+
+.fullHeight {
+  margin-bottom: 3rem;
+}
+
+.editIcon {
+  margin-right: 5px;
+}
+.saveCourseButton {
+  background-color: #e74c3c !important;
+  color: #fff;
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+/* input {
+  z-index: -1 !important;
+} */
+
+/* .bootstrap-datetimepicker-widget {
+  z-index: 99999 !important;
+} */
+
+@media only screen and (max-width: 768px) {
+  .adminAllCoursesContainer {
+    margin: 4rem 1rem;
+  }
+
+  /* Force table to not be like tables anymore */
+  .allCoursesTable,
+  .allCoursesTableHead,
+  .allCoursesTableBody,
+  .allCoursesTh,
+  .allCoursesTd,
+  .allCoursesRow {
+    display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  .allCoursesTableHead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .allCoursesRow {
+    border: 1px solid #ccc;
+  }
+
+  .allCoursesTd {
+    /* Behave  like a "row" */
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  .allCoursesTd:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+
+  /*
+	Label the data
+	*/
+  .allCoursesTd:nth-of-type(1):before {
+    content: "Course ID";
+  }
+  .allCoursesTd:nth-of-type(2):before {
+    content: "Titile";
+  }
+  .allCoursesTd:nth-of-type(3):before {
+    content: "Status";
+  }
+  .allCoursesTd:nth-of-type(4):before {
+    content: "Level";
+  }
+  .allCoursesTd:nth-of-type(5):before {
+    content: "Price/Student";
+  }
+  .allCoursesTd:nth-of-type(6):before {
+    content: "Details";
+    margin-top: 1rem;
+  }
+}

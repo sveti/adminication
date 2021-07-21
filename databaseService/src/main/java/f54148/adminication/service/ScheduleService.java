@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AddCourseScheduleDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Schedule;
@@ -102,6 +103,23 @@ public class ScheduleService {
 			return opSchedule.get().getScheduledEvents();
 		} else {
 			return null;
+		}
+	}
+
+	public Schedule findOrCreateSchedule(AddCourseScheduleDTO schedule) {
+		
+		Optional<Schedule> opSchedule = scheduleRepository.findByStartTimeAndEndTimeAndStartDate(schedule.getStartTime(),schedule.getEndTime(),schedule.getDayOfTheWeek());
+		
+		if (opSchedule.isPresent()) {
+			return opSchedule.get();
+		} else {
+			
+			Schedule s = new Schedule();
+			s.setStartTime(schedule.getStartTime());
+			s.setEndTime(schedule.getEndTime());
+			s.setStartDate(schedule.getDayOfTheWeek());
+			
+			return scheduleRepository.save(s);
 		}
 	}
 

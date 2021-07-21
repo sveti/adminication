@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
+import f54148.adminication.dto.AdminAllCoursesDTO;
 import f54148.adminication.dto.CourseDetailsDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
@@ -105,6 +106,12 @@ public class CourseServiceImplementation  implements CourseService{
 	public List<CourseDetailsDTO> getAllCourseDetails() {
 		CourseDetailsDTO details[] = restTemplate.getForObject("http://databaseService/courses/courseDetails/all",CourseDetailsDTO[].class);
 		return Arrays.asList(details);
+	}
+
+	@Override
+	public List<AdminAllCoursesDTO> getAllCourses() {
+		AdminAllCoursesDTO dto[] = restTemplate.getForObject("http://databaseService/courses/admin/courses",AdminAllCoursesDTO[].class);
+		return Arrays.asList(dto);
 	}
 
 

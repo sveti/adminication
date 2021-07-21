@@ -113,9 +113,9 @@ class AttendanceTable extends Component {
               {this.state.students.map((s) => {
                 return (
                   <Tr key={s.id} className="alternate">
-                    <Td>{s.username}</Td>
-                    <Td>{s.name + " " + s.lastName}</Td>
-                    <Td>
+                    <Td className="p-5">{s.username}</Td>
+                    <Td className="p-5">{s.name + " " + s.lastName}</Td>
+                    <Td className="p-5">
                       {this.getAttendance(
                         attendances.find((x) => x.studentId === s.id)
                       )}

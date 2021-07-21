@@ -1,10 +1,15 @@
 package f54148.adminication.service.implementations;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
+import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
+import f54148.adminication.dto.TeacherForCourseDTO;
 import f54148.adminication.service.TeacherService;
 import lombok.AllArgsConstructor;
 
@@ -19,6 +24,12 @@ public class TeacherServiceImplementation implements TeacherService {
 	public MonthlyTeacherSalaryDTO getTeacherStatistics(Long teacherId, Integer month, Integer year) {
 		MonthlyTeacherSalaryDTO statistics = restTemplate.getForObject("http://databaseService/teachers/{teacherId}/{month}/{year}",MonthlyTeacherSalaryDTO.class, teacherId,month,year);
 		return statistics;
+	}
+
+	@Override
+	public List<TeacherForCourseDTO> getAllTeacherForCourseDTO() {
+		TeacherForCourseDTO users[] = restTemplate.getForObject("http://databaseService/teachers/teachersForCourse",TeacherForCourseDTO[].class);
+		return Arrays.asList(users);
 	}
 		
 

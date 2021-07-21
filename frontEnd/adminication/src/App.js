@@ -11,6 +11,7 @@ import Login from "./components/Login/Login";
 import StudentSwitch from "./components/Switches/StudentSwitch";
 import TeacherSwitch from "./components/Switches/TeacherSwitch";
 import ParentSwitch from "./components/Switches/ParentSwitch";
+import AdminSwitch from "./components/Switches/AdminSwitch";
 import { getUser } from "./services/userService";
 
 class App extends Component {
@@ -75,6 +76,15 @@ class App extends Component {
               increase={this.increaseNotificationsCount}
               decrease={this.decreaseNotificationsCount}
             ></ParentSwitch>
+          );
+          break;
+        case "ROLE_ADMIN":
+          routing = (
+            <AdminSwitch
+              user={user}
+              increase={this.increaseNotificationsCount}
+              decrease={this.decreaseNotificationsCount}
+            ></AdminSwitch>
           );
           break;
         default:

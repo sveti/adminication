@@ -276,6 +276,21 @@ class Navbar extends Component {
       </React.Fragment>
     );
 
+    const adminNav = (
+      <React.Fragment>
+        <li className="nav-item">
+          <Link
+            className="nav-link"
+            to={{
+              pathname: "/courses/all",
+            }}
+          >
+            Courses
+          </Link>
+        </li>
+      </React.Fragment>
+    );
+
     return (
       <header className={navBarClasses.join(" ")} id="mainMenu">
         <nav className="navbar navbar-expand-lg">
@@ -314,6 +329,7 @@ class Navbar extends Component {
               {role === "teacher" ? teacherNav : null}
               {role === "student" ? studentNav : null}
               {role === "parent" ? parentNav : null}
+              {role === "admin" ? adminNav : null}
               <li className="nav-item">
                 <Link className="nav-link logoutMobile" to={"/logout/"}>
                   Log out

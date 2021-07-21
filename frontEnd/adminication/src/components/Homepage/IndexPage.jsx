@@ -8,6 +8,7 @@ import LogoStudentF from "../../assets/images/studentF.svg";
 import LogoStudentM from "../../assets/images/studentM.svg";
 import LogoParentM from "../../assets/images/parentM.svg";
 import LogoParentF from "../../assets/images/parentF.svg";
+import LogoAdmin from "../../assets/images/admin.svg";
 
 import "./indexPage.css";
 
@@ -39,6 +40,8 @@ class TeacherIndex extends Component {
       avatar = user.gender === "MALE" ? LogoStudentM : LogoStudentF;
     } else if (user.roleName === "ROLE_PARENT") {
       avatar = user.gender === "MALE" ? LogoParentM : LogoParentF;
+    } else if (user.roleName === "ROLE_ADMIN") {
+      avatar = LogoAdmin;
     }
 
     return (

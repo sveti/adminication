@@ -9,6 +9,11 @@
   text-align: center;
 }
 
+.welcome.admin {
+  background-image: url("../../assets/images/adminBackground.png");
+  background-color: #949494;
+}
+
 .welcome.student {
   background-image: url("../../assets/images/studentBackground.png");
   background-color: #2b7fa2;

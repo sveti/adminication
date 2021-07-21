@@ -113,3 +113,9 @@ export function getMonthByDate(month) {
   let index = parseInt(month) - 1;
   return months[index];
 }
+
+export function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}

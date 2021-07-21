@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.LessonSalaryDTO;
 import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
+import f54148.adminication.dto.TeacherForCourseDTO;
 import f54148.adminication.dto.TeachingSalaryDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.File;
@@ -196,5 +197,26 @@ public class TeacherService {
 		
 		return dto;
 	}
+	
+	public TeacherForCourseDTO convertToTeacherForCourseDTO(Teacher t) {
+		
+		TeacherForCourseDTO dto = modelMapper.map(t, TeacherForCourseDTO.class);
+		dto.setLabel(t.getName() +" "+t.getLastName());
+		
+		return dto;
+	}
+
+	public List<TeacherForCourseDTO> getAllTeacherForCourseDTO() {
+		
+		List<Teacher> allTeachers = getTeachers();
+		List<TeacherForCourseDTO> dtos = new ArrayList<>();
+		
+		for(Teacher t: allTeachers) {
+			dtos.add(convertToTeacherForCourseDTO(t));
+		}
+		
+		return dtos;
+	}
+
 
 }

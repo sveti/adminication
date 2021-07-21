@@ -23,7 +23,7 @@ export default function Grading(props) {
   }, [teacherId]);
 
   return courses ? (
-    <div className="lessonsOfCourseContainer">
+    <div className="lessonsOfCourseContainer mt-2">
       <FinisedCoursesTable
         courses={courses}
         message={"Finished Courses"}

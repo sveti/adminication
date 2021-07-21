@@ -69,9 +69,9 @@ TR.alternate:nth-child(2n) {
   border-bottom: 1px solid #eedd6d;
 }
 
-TD {
+/* TD {
   padding: 10px;
-}
+} */
 .editButtonContainer {
   text-align: right;
 }

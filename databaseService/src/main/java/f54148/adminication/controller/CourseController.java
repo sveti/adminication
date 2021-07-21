@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AddCourseDTO;
+import f54148.adminication.dto.AdminAllCoursesDTO;
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
@@ -88,6 +90,8 @@ public class CourseController {
 		}
 
 	}
+	
+	
 
 	@GetMapping(path = "/courses")
 	public @ResponseBody List<Course> getAllCourses() {
@@ -221,6 +225,16 @@ public class CourseController {
 		return lessonService.getAttendanceDTOOfCourse(idCourse);
 	}
 	
+	@GetMapping(path = "/admin/courses")
+	public @ResponseBody List<AdminAllCoursesDTO> getAllCoursesAdmin() {
+		return courseService.getAllCoursesAdmin();
+	}
+	
 
+	@PostMapping(path = "/add")
+	public @ResponseBody String addNewCourseDTO(@RequestBody AddCourseDTO course) {
+		
+		return courseService.addAddCourseDTO(course);
+	}
 	
 }

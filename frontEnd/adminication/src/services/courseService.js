@@ -1,7 +1,12 @@
 import http from "./httpService";
-import { gateway, educationServiceName } from "../config.json";
+import {
+  gateway,
+  educationServiceName,
+  administrationServiceName,
+} from "../config.json";
 
 const apiEndpoint = gateway + "/" + educationServiceName + "/courses/";
+const adminEndpoint = gateway + "/" + administrationServiceName + "/courses/";
 
 export function getFinishedCoursesOfTeacher(idTeacher) {
   return http.get(apiEndpoint + "teacher/" + idTeacher + "/finished");
@@ -55,4 +60,12 @@ export function getAllCourses() {
 
 export function getAllCourseDetails() {
   return http.get(apiEndpoint + "courseDetails");
+}
+
+export function getAllCoursesAdmin() {
+  return http.get(apiEndpoint + "/admin/courses");
+}
+
+export function addNewCourse(course) {
+  return http.post(adminEndpoint + "add", course);
 }
