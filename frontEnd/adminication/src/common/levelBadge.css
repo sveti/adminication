@@ -19,3 +19,7 @@
   background-color: #5b8a38;
   color: #fff;
 }
+
+.normal {
+  z-index: 1 !important;
+}

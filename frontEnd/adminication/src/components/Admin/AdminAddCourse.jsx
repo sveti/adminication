@@ -32,7 +32,6 @@ class AdminAddCourse extends Component {
         teachers: [],
       },
       showCharLimitWarning: false,
-      editMode: true,
       charLimit: 2048,
       allCourseDetails: [],
       currentNewDetail: "",
@@ -133,17 +132,31 @@ class AdminAddCourse extends Component {
   };
 
   clearCourse = () => {
-    let course = {};
+    let { course } = this.state;
+    course.title = "";
+    course.description = "";
+    course.pricePerStudent = null;
+    course.maxStudents = null;
+    course.level = null;
     course.startDate = getTodaysDate();
     course.details = [];
     course.scheudles = [
       {
         dayOfTheWeek: textToDayOfTheWeekNumber(getTodaysDate()),
+        startTime: null,
+        endTime: null,
       },
     ];
     course.lessonsPerWeek = 1;
     course.teachers = [];
-    return course;
+    course.lessonsPerWeek = 1;
+    course.teachers.length = 0;
+    course.teachers = [];
+    let { allTeachers } = this.state;
+
+    allTeachers.forEach((t) => delete t.salary);
+
+    this.setState({ course, allTeachers });
   };
 
   saveCourse = async () => {
@@ -163,7 +176,6 @@ class AdminAddCourse extends Component {
     updatedCourse.teachers = newArrayOfObj;
     updatedCourse.newCourseDetails = this.state.newCourseDetails;
 
-    console.log(updatedCourse);
     const { data } = await addNewCourse(updatedCourse);
     if (data) {
       toast.success("The course has been added!", {
@@ -175,8 +187,8 @@ class AdminAddCourse extends Component {
         draggable: true,
         progress: undefined,
       });
-      course = this.clearCourse();
-      this.setState({ course });
+      this.clearCourse();
+      this.getCourseDetails();
     } else {
       toast.error("An error has occured", {
         position: "top-center",
@@ -359,6 +371,7 @@ class AdminAddCourse extends Component {
           <div className="col-sm-10 col-md-2 timePicker">
             <TimePicker
               widgetPositioning={{ vertical: "top", horizontal: "auto" }}
+              date={course.scheudles[i].startTime}
               onChange={(e) => this.handleTimeChange(e.date, "startTime", i)}
             />
           </div>
@@ -371,6 +384,7 @@ class AdminAddCourse extends Component {
           <div className="col-sm-10 col-md-2 timePicker">
             <TimePicker
               widgetPositioning={{ vertical: "top", horizontal: "auto" }}
+              date={course.scheudles[i].endTime}
               onChange={(e) => this.handleTimeChange(e.date, "endTime", i)}
             />
           </div>
@@ -395,7 +409,7 @@ class AdminAddCourse extends Component {
               type="number"
               className="form-control editedInformaton"
               min={0}
-              value={teacher.salary}
+              value={teacher.salary || ""}
               onChange={(event) =>
                 this.handleTeacherSalaryUpdate(event, teacher.value)
               }
@@ -410,7 +424,6 @@ class AdminAddCourse extends Component {
 
   render() {
     const {
-      editMode,
       course,
       showCharLimitWarning,
       allCourseDetails,
@@ -428,269 +441,6 @@ class AdminAddCourse extends Component {
       { value: "C2", label: "C2" },
     ];
 
-    const displayTable = <h1>Wololo</h1>;
-    const form = (
-      <form className="fullHeight">
-        <div className="form-group row">
-          <label htmlFor="title" className="col-sm-2 col-form-label">
-            Course Title
-          </label>
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control editedInformaton"
-              value={course.title || ""}
-              onChange={(event) => this.handleInputChange(event, "title")}
-            />
-          </div>
-        </div>
-        <div className="form-group row">
-          <label htmlFor="description" className="col-sm-2 col-form-label">
-            Description
-          </label>
-          <div className="col-sm-10">
-            <textarea
-              className="form-control editedInformaton"
-              rows="5"
-              value={course.description || ""}
-              onChange={(event) => this.handleInputChange(event, "description")}
-            />
-          </div>
-        </div>
-        <div className="form-group row">
-          <label
-            htmlFor="pricePerStudent"
-            className="col-sm-2 col-md-2 col-form-label"
-          >
-            Price Per Student
-          </label>
-          <div className="col-sm-10 col-md-4">
-            <input
-              type="number"
-              className="form-control editedInformaton"
-              value={course.pricePerStudent || ""}
-              onChange={(event) =>
-                this.handleInputChange(event, "pricePerStudent")
-              }
-            />
-          </div>
-          <label
-            htmlFor="descriptopm"
-            className="col-sm-2 col-md-2 col-form-label"
-          >
-            Maximum number of students
-          </label>
-          <div className="col-sm-10 col-md-4">
-            <input
-              type="number"
-              className="form-control editedInformaton"
-              value={course.maxStudents || ""}
-              onChange={(event) => this.handleInputChange(event, "maxStudents")}
-            />
-          </div>
-        </div>
-        <hr />
-        <div className="form-group row">
-          <label
-            htmlFor="pricePerStudent"
-            className="col-sm-2 col-md-2 col-form-label"
-          >
-            Level
-          </label>
-          <div className="col-sm-10 col-md-4">
-            <Select
-              options={levelOptions}
-              value={{ label: course.level }}
-              onChange={this.handleLevelChange}
-            ></Select>
-          </div>
-        </div>
-        <div className="form-group row">
-          <label
-            htmlFor="courseDetails"
-            className="col-sm-2 col-form-label mb-3"
-          >
-            Course details:
-          </label>
-          <div className="col-sm-10 text-left">
-            {course.details
-              ? course.details.map((detail) => {
-                  return (
-                    <div
-                      className="detailsBadgeDiv"
-                      key={detail.id}
-                      onClick={() => this.removeCourseDetail(detail)}
-                    >
-                      <CourseDetailsBadge
-                        text={detail.description}
-                      ></CourseDetailsBadge>
-                    </div>
-                  );
-                })
-              : null}
-            {newCourseDetails.length > 0
-              ? newCourseDetails.map((detail) => {
-                  return (
-                    <div
-                      className="detailsBadgeDiv"
-                      key={detail}
-                      onClick={() => this.removeNewCourseDetail(detail)}
-                    >
-                      <CourseDetailsBadge text={detail}></CourseDetailsBadge>
-                    </div>
-                  );
-                })
-              : null}
-            {newCourseDetails.length === 0 &&
-            (!course.details || course.details.length === 0) ? (
-              <label
-                htmlFor="pleaseAddDetails"
-                className="col-sm-10 col-md-10 col-form-label"
-              >
-                Please add details
-              </label>
-            ) : null}
-          </div>
-
-          <label
-            htmlFor="courseDetails"
-            className="col-sm-2 col-md-2 col-form-label mt-2"
-          >
-            All details:
-          </label>
-          <div className="col-sm-10 text-left">
-            {allCourseDetails && course.details ? (
-              allCourseDetails
-                .filter((el) => !course.details.includes(el))
-                .map((detail) => {
-                  return (
-                    <div
-                      className="detailsBadgeDiv"
-                      key={detail.id}
-                      onClick={() => this.addCourseDetail(detail)}
-                    >
-                      <CourseDetailsBadge
-                        text={detail.description}
-                      ></CourseDetailsBadge>
-                    </div>
-                  );
-                })
-            ) : (
-              <label
-                htmlFor="courseDetails"
-                className="col-sm-2 col-form-label mb-3"
-              >
-                None
-              </label>
-            )}
-          </div>
-        </div>
-        <div className="form-group row mt-2">
-          <label
-            htmlFor="courseDetails"
-            className="col-sm-2 col-md-2 col-form-label"
-          >
-            Add custom details:
-          </label>
-          <div className="col-sm-10 col-md-8">
-            <input
-              type="text"
-              className="form-control editedInformaton"
-              value={currentNewDetail}
-              onChange={(event) => this.handleNewCourseDetail(event)}
-            />
-          </div>
-          <div className="col-sm-12 col-md-2">
-            <button
-              type="button"
-              className="btn addDetailsButton"
-              disabled={currentNewDetail.length > 0 ? false : true}
-              onClick={this.addNewCourseDetail}
-            >
-              Add
-            </button>
-          </div>
-        </div>
-        <hr />
-        <div className="form-group row mt-4">
-          <label
-            htmlFor="duration"
-            className="col-sm-2 col-md-2 col-form-label"
-          >
-            Start Date
-          </label>
-          <div className="col-sm-10 col-md-2">
-            <input
-              type="date"
-              className="form-control"
-              id="date"
-              value={course.startDate}
-              onChange={(event) => this.handleInputChange(event, "startDate")}
-            />
-          </div>
-          <label
-            htmlFor="duration"
-            className="col-sm-2 col-md-2 col-form-label"
-          >
-            Duration in weeks
-          </label>
-          <div className="col-sm-10 col-md-2">
-            <input
-              type="number"
-              className="form-control editedInformaton"
-              value={course.duration || ""}
-              onChange={(event) => this.handleInputChange(event, "duration")}
-            />
-          </div>
-          <label
-            htmlFor="lessonsPerWeek"
-            className="col-sm-2 col-md-2 col-form-label"
-          >
-            Lessons per week
-          </label>
-          <div className="col-sm-10 col-md-2">
-            <input
-              type="number"
-              className="form-control editedInformaton"
-              value={course.lessonsPerWeek}
-              min={1}
-              onChange={(event) =>
-                this.handleInputChange(event, "lessonsPerWeek")
-              }
-            />
-          </div>
-        </div>
-        {course.lessonsPerWeek > 0
-          ? this.generateScheduleFields().map((schedule) => {
-              return schedule;
-            })
-          : null}
-        <hr />
-        <div className="form-group row mt-4">
-          <label
-            htmlFor="duration"
-            className="col-sm-2 col-md-2 col-form-label"
-          >
-            Teachers
-          </label>
-          <div className="col-sm-10 col-md-10">
-            <Select
-              value={course.teachers}
-              isMulti
-              onChange={this.handleTeacherChange}
-              options={allTeachers}
-              maxMenuHeight={"9rem"}
-            />
-          </div>
-        </div>
-        {course.teachers.length > 0
-          ? this.generateTeacherSalary().map((salary) => {
-              return salary;
-            })
-          : null}
-      </form>
-    );
-
     const charWarning = (
       <div className="alert alert-danger" role="alert">
         The description has a limit of 2048 characters. Currect characters:
@@ -705,7 +455,278 @@ class AdminAddCourse extends Component {
         <div className="adminAllCoursesContainer container">
           <h1>Create a course</h1>
           <hr className="mb-5"></hr>
-          {editMode ? form : displayTable}
+          <form className="fullHeight">
+            <div className="form-group row">
+              <label htmlFor="title" className="col-sm-2 col-form-label">
+                Course Title
+              </label>
+              <div className="col-sm-10">
+                <input
+                  type="text"
+                  className="form-control editedInformaton"
+                  value={course.title || ""}
+                  onChange={(event) => this.handleInputChange(event, "title")}
+                />
+              </div>
+            </div>
+            <div className="form-group row">
+              <label htmlFor="description" className="col-sm-2 col-form-label">
+                Description
+              </label>
+              <div className="col-sm-10">
+                <textarea
+                  className="form-control editedInformaton"
+                  rows="5"
+                  value={course.description || ""}
+                  onChange={(event) =>
+                    this.handleInputChange(event, "description")
+                  }
+                />
+              </div>
+            </div>
+            <div className="form-group row">
+              <label
+                htmlFor="pricePerStudent"
+                className="col-sm-2 col-md-2 col-form-label"
+              >
+                Price Per Student
+              </label>
+              <div className="col-sm-10 col-md-4">
+                <input
+                  type="number"
+                  className="form-control editedInformaton"
+                  value={course.pricePerStudent || ""}
+                  onChange={(event) =>
+                    this.handleInputChange(event, "pricePerStudent")
+                  }
+                />
+              </div>
+              <label
+                htmlFor="descriptopm"
+                className="col-sm-2 col-md-2 col-form-label"
+              >
+                Maximum number of students
+              </label>
+              <div className="col-sm-10 col-md-4">
+                <input
+                  type="number"
+                  className="form-control editedInformaton"
+                  value={course.maxStudents || ""}
+                  onChange={(event) =>
+                    this.handleInputChange(event, "maxStudents")
+                  }
+                />
+              </div>
+            </div>
+            <hr />
+            <div className="form-group row">
+              <label
+                htmlFor="pricePerStudent"
+                className="col-sm-2 col-md-2 col-form-label"
+              >
+                Level
+              </label>
+              <div className="col-sm-10 col-md-4">
+                <Select
+                  options={levelOptions}
+                  value={{ label: course.level }}
+                  onChange={this.handleLevelChange}
+                ></Select>
+              </div>
+            </div>
+            <div className="form-group row">
+              <label
+                htmlFor="courseDetails"
+                className="col-sm-2 col-form-label mb-3"
+              >
+                Course details:
+              </label>
+              <div className="col-sm-10 text-left">
+                {course.details
+                  ? course.details.map((detail) => {
+                      return (
+                        <div
+                          className="detailsBadgeDiv"
+                          key={detail.id}
+                          onClick={() => this.removeCourseDetail(detail)}
+                        >
+                          <CourseDetailsBadge
+                            text={detail.description}
+                            hide={true}
+                          ></CourseDetailsBadge>
+                        </div>
+                      );
+                    })
+                  : null}
+                {newCourseDetails.length > 0
+                  ? newCourseDetails.map((detail) => {
+                      return (
+                        <div
+                          className="detailsBadgeDiv"
+                          key={detail}
+                          onClick={() => this.removeNewCourseDetail(detail)}
+                        >
+                          <CourseDetailsBadge
+                            text={detail}
+                            hide={true}
+                          ></CourseDetailsBadge>
+                        </div>
+                      );
+                    })
+                  : null}
+                {newCourseDetails.length === 0 &&
+                (!course.details || course.details.length === 0) ? (
+                  <label
+                    htmlFor="pleaseAddDetails"
+                    className="col-sm-10 col-md-10 col-form-label"
+                  >
+                    Please add details
+                  </label>
+                ) : null}
+              </div>
+
+              <label
+                htmlFor="courseDetails"
+                className="col-sm-2 col-md-2 col-form-label mt-2"
+              >
+                All details:
+              </label>
+              <div className="col-sm-10 text-left">
+                {allCourseDetails && course.details ? (
+                  allCourseDetails
+                    .filter((el) => !course.details.includes(el))
+                    .map((detail) => {
+                      return (
+                        <div
+                          className="detailsBadgeDiv"
+                          key={detail.id}
+                          onClick={() => this.addCourseDetail(detail)}
+                        >
+                          <CourseDetailsBadge
+                            text={detail.description}
+                            hide={true}
+                          ></CourseDetailsBadge>
+                        </div>
+                      );
+                    })
+                ) : (
+                  <label
+                    htmlFor="courseDetails"
+                    className="col-sm-2 col-form-label mb-3"
+                  >
+                    None
+                  </label>
+                )}
+              </div>
+            </div>
+            <div className="form-group row mt-2">
+              <label
+                htmlFor="courseDetails"
+                className="col-sm-2 col-md-2 col-form-label"
+              >
+                Add custom details:
+              </label>
+              <div className="col-sm-10 col-md-8">
+                <input
+                  type="text"
+                  className="form-control editedInformaton"
+                  value={currentNewDetail}
+                  onChange={(event) => this.handleNewCourseDetail(event)}
+                />
+              </div>
+              <div className="col-sm-12 col-md-2">
+                <button
+                  type="button"
+                  className="btn addDetailsButton"
+                  disabled={currentNewDetail.length > 0 ? false : true}
+                  onClick={this.addNewCourseDetail}
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+            <hr />
+            <div className="form-group row mt-4">
+              <label
+                htmlFor="duration"
+                className="col-sm-2 col-md-2 col-form-label"
+              >
+                Start Date
+              </label>
+              <div className="col-sm-10 col-md-2">
+                <input
+                  type="date"
+                  className="form-control"
+                  id="date"
+                  value={course.startDate}
+                  onChange={(event) =>
+                    this.handleInputChange(event, "startDate")
+                  }
+                />
+              </div>
+              <label
+                htmlFor="duration"
+                className="col-sm-2 col-md-2 col-form-label"
+              >
+                Duration in weeks
+              </label>
+              <div className="col-sm-10 col-md-2">
+                <input
+                  type="number"
+                  className="form-control editedInformaton"
+                  value={course.duration || ""}
+                  onChange={(event) =>
+                    this.handleInputChange(event, "duration")
+                  }
+                />
+              </div>
+              <label
+                htmlFor="lessonsPerWeek"
+                className="col-sm-2 col-md-2 col-form-label"
+              >
+                Lessons per week
+              </label>
+              <div className="col-sm-10 col-md-2">
+                <input
+                  type="number"
+                  className="form-control editedInformaton"
+                  value={course.lessonsPerWeek}
+                  min={1}
+                  onChange={(event) =>
+                    this.handleInputChange(event, "lessonsPerWeek")
+                  }
+                />
+              </div>
+            </div>
+            {course.lessonsPerWeek > 0
+              ? this.generateScheduleFields().map((schedule) => {
+                  return schedule;
+                })
+              : null}
+            <hr />
+            <div className="form-group row mt-4">
+              <label
+                htmlFor="duration"
+                className="col-sm-2 col-md-2 col-form-label"
+              >
+                Teachers
+              </label>
+              <div className="col-sm-10 col-md-10">
+                <Select
+                  value={course.teachers}
+                  isMulti
+                  onChange={this.handleTeacherChange}
+                  options={allTeachers}
+                  maxMenuHeight={"9rem"}
+                />
+              </div>
+            </div>
+            {course.teachers.length > 0
+              ? this.generateTeacherSalary().map((salary) => {
+                  return salary;
+                })
+              : null}
+          </form>
           {showCharLimitWarning ? charWarning : null}
           <div className="editButtonContainer">
             <button

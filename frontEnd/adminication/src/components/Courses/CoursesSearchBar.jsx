@@ -21,13 +21,15 @@ class CoursesSearchBar extends Component {
       activeLevels: [],
       activeCourseDetails: [],
       title: "",
+      levels: ["A1", "A2", "B1", "B2", "C1", "C2"],
       avialable: false,
       startDate: "",
       endDate: "",
       scheduleConflict: false,
       waitingList: false,
     });
-    this.props.handleSubmit([], [], "", false, "", "", false);
+
+    this.props.handleSubmit([], [], "", false, "", "", false, false);
   };
 
   onSubmit = (event) => {

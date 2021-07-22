@@ -11,7 +11,16 @@ const CourseDetailsBadge = (props) => {
     else return "longer";
   }
 
-  let badgeClasses = "badge badge-pill mr-2 my-2 p-2 " + badgeColor(props.text);
+  function zIndexModifier() {
+    if (props.hide === true) {
+      return " hide";
+    } else return " normal";
+  }
+
+  let badgeClasses =
+    "badge badge-pill mr-2 my-2 p-2 " +
+    badgeColor(props.text) +
+    zIndexModifier();
 
   return <span className={badgeClasses}>{props.text}</span>;
 };

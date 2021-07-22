@@ -20,7 +20,7 @@ public class AddCourseDTO {
 	private Integer maxStudents;
 	private Double pricePerStudent;
 	List <String> newCourseDetails;
-	List <CourseDetalDTO> details;
+	List <CourseDetailsDTO> details;
 	List<AddCourseScheduleDTO> scheudles;
 	List<AddCourseTeacherDTO> teachers;
 
