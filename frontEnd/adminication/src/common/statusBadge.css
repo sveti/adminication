@@ -12,3 +12,10 @@
   background-color: #5b8a38;
   color: #fff;
 }
+.hide {
+  z-index: -1 !important;
+}
+
+.normal {
+  z-index: 1 !important;
+}

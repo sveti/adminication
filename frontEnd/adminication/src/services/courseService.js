@@ -69,3 +69,11 @@ export function getAllCoursesAdmin() {
 export function addNewCourse(course) {
   return http.post(adminEndpoint + "add", course);
 }
+
+export function editCourse(course) {
+  return http.put(adminEndpoint + "edit", course);
+}
+
+export function getEditCourse(idCourse) {
+  return http.get(adminEndpoint + "edit/" + idCourse);
+}

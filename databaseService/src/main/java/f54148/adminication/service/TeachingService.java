@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.EditCourseTeacherDTO;
 import f54148.adminication.dto.TeachingSalaryDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Teacher;
@@ -97,9 +98,11 @@ public class TeachingService {
 			teacherService.updateTeacher(teacher);
 
 			Teacher substitute = t.getSubstitute();
-			substitute.getSubstituting().remove(t);
-
-			teacherService.updateTeacher(substitute);
+			if(substitute!=null) {
+				substitute.getSubstituting().remove(t);
+				teacherService.updateTeacher(substitute);
+			}
+			
 
 			teachingRepository.deleteById(teachingId);
 			return true;
@@ -125,6 +128,25 @@ public class TeachingService {
 		
 		return teachingRepository.save(t);
 	
+	}
+
+	public Teaching findOrCreateTeaching(EditCourseTeacherDTO teaching, Long courseId) {
+	
+		if(teaching.getId() != null) {
+			
+			Teaching t = getTeachingById(teaching.getId());
+			if(t.getSalaryPerStudent() == teaching.getSalary()) {
+				return t;
+			}
+			else {
+				t.setSalaryPerStudent(teaching.getSalary());
+				return teachingRepository.save(t);
+			}
+			
+		}
+		
+		
+		return addTeaching(teaching.getTeacherId(),courseId, teaching.getSalary());
 	}
 
 }

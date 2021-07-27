@@ -5,7 +5,11 @@ import CourseDetailsBadge from "../../common/CourseDetailsBadge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { TimePicker } from "react-tempusdominus-bootstrap";
-import { getAllCourseDetails } from "../../services/courseService";
+import {
+  getAllCourseDetails,
+  getEditCourse,
+  editCourse,
+} from "../../services/courseService";
 import {
   getTodaysDate,
   textToDayOfTheWeekNumber,
@@ -22,6 +26,7 @@ class AdminAddCourse extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      mode: this.props.mode ? this.props.mode : "save",
       course: {
         startDate: getTodaysDate(),
         details: [],
@@ -40,16 +45,84 @@ class AdminAddCourse extends Component {
     };
   }
 
-  getTeachersForCourse = async () => {
-    const { data } = await getTeachersForCourse();
-
-    ///replace id from array with value
-    const newArrayOfObj = data.map(({ id: value, ...rest }) => ({
+  convertFromIdToValue = (teachers) => {
+    ///replace id from array with value for view
+    const newArrayOfObj = teachers.map(({ id: value, ...rest }) => ({
       value,
       ...rest,
     }));
 
-    this.setState({ allTeachers: newArrayOfObj });
+    return newArrayOfObj;
+  };
+
+  convertFromTeacherIdToValue = (teachers) => {
+    ///replace teacherId from array with value
+    const newArrayOfObj = teachers.map(
+      ({ teacherId: value, teacherName: label, ...rest }) => ({
+        value,
+        label,
+        ...rest,
+      })
+    );
+    return newArrayOfObj;
+  };
+
+  convertTeachersFromViewToDTO = (teachers) => {
+    let convertedArray = [];
+
+    teachers.forEach((teacher) => {
+      let teacherForArray = {};
+      if (teacher.id) {
+        teacherForArray.id = teacher.id;
+        teacherForArray.teacherId = teacher.value;
+      } else {
+        teacherForArray.teacherId = teacher.value;
+      }
+      teacherForArray.teacherName = teacher.label;
+      teacherForArray.salary = teacher.salary;
+      convertedArray.push(teacherForArray);
+    });
+    return convertedArray;
+  };
+
+  convertDaysToSchedule = () => {
+    let { course } = this.state;
+
+    const start = course.startDate;
+    let firstLesson = textToDayOfTheWeekNumber(start);
+
+    course.scheudles.forEach((schedule, index) => {
+      let startDateFull = addDays(start, schedule.dayOfTheWeek - firstLesson);
+      course.scheudles[index].startDate = startDateFull
+        .toISOString()
+        .split("T")[0];
+    });
+    // const newArrayOfObj = course.scheudles.map(
+    //   ({ dayOfTheWeek: startDate, ...rest }) => ({
+    //     startDate,
+    //     ...rest,
+    //   })
+    // );
+    // course.scheudles = newArrayOfObj;
+
+    return course;
+  };
+
+  convertScheduleToDays = (course) => {
+    course.scheudles.forEach((schedule, index) => {
+      course.startDate = course.scheudles[0].startDate;
+      course.scheudles[index].dayOfTheWeek = textToDayOfTheWeekNumber(
+        schedule.startDate
+      );
+    });
+
+    return course;
+  };
+
+  getTeachersForCourse = async () => {
+    let { data } = await getTeachersForCourse();
+    data = this.convertFromIdToValue(data);
+    this.setState({ allTeachers: data });
   };
 
   getCourseDetails = async () => {
@@ -57,7 +130,29 @@ class AdminAddCourse extends Component {
     this.setState({ allCourseDetails: data });
   };
 
-  componentDidMount = () => {
+  filterCourseDetails = () => {
+    const { course, allCourseDetails } = this.state;
+
+    const myArrayFiltered = allCourseDetails.filter((el) => {
+      return !course.details.some((f) => {
+        return f.id === el.id;
+      });
+    });
+    return myArrayFiltered;
+  };
+
+  getCourse = async () => {
+    const { data } = await getEditCourse(this.props.location.state.courseId);
+    let converted = this.convertScheduleToDays(data);
+    converted.teachers = this.convertFromTeacherIdToValue(converted.teachers);
+    return converted;
+  };
+
+  componentDidMount = async () => {
+    if (this.state.mode === "edit") {
+      const course = await this.getCourse();
+      this.setState({ course });
+    }
     this.getCourseDetails();
     this.getTeachersForCourse();
   };
@@ -69,6 +164,7 @@ class AdminAddCourse extends Component {
       course.scheudles[0].dayOfTheWeek = textToDayOfTheWeekNumber(
         event.target.value
       );
+      course.scheudles[0].startDate = event.target.value;
     }
     this.setState({ course });
 
@@ -111,24 +207,43 @@ class AdminAddCourse extends Component {
     this.setState({ course });
   };
 
-  validation = async () => {
-    return true;
+  handleScheduleDayChange = (event, i) => {
+    // eslint-disable-next-line no-extend-native
+    Array.prototype.insert = function (index) {
+      this.splice.apply(
+        this,
+        [index, 0].concat(Array.prototype.slice.call(arguments, 1))
+      );
+      return this;
+    };
+
+    let { course } = this.state;
+    if (course.scheudles[i] === undefined) {
+      course.scheudles.insert(i, {
+        dayOfTheWeek: parseInt(event.target.value),
+      });
+    } else {
+      course.scheudles[i].dayOfTheWeek = parseInt(event.target.value);
+    }
+    this.setState({ course });
   };
 
-  convertDaysToSchedule = () => {
+  handleTeacherChange = (selectedOption) => {
     let { course } = this.state;
+    course.teachers = selectedOption;
+    this.setState({ course });
+  };
 
-    const start = course.startDate;
-    let firstLesson = textToDayOfTheWeekNumber(start);
+  handleLevelChange = (selectedOption) => {
+    let { course } = this.state;
+    course.level = selectedOption.value;
+    this.setState({ course });
+  };
 
-    course.scheudles.forEach((schedule, index) => {
-      course.scheudles[index].dayOfTheWeek = addDays(
-        start,
-        schedule.dayOfTheWeek - firstLesson
-      );
-      ///.getTime()
-    });
-    return course;
+  handleStatusChange = (selectedOption) => {
+    let { course } = this.state;
+    course.status = selectedOption.value;
+    this.setState({ course });
   };
 
   clearCourse = () => {
@@ -160,45 +275,73 @@ class AdminAddCourse extends Component {
   };
 
   saveCourse = async () => {
-    let { course } = this.state;
+    let { course, mode } = this.state;
 
-    course.scheudles.length = course.lessonsPerWeek;
+    let updatedCourse = { ...course };
 
-    let updatedCourse = this.convertDaysToSchedule();
+    updatedCourse.scheudles.length = updatedCourse.lessonsPerWeek;
 
-    ///replace id from array with value
-    const newArrayOfObj = updatedCourse.teachers.map(
-      ({ value: id, ...rest }) => ({
-        id,
-        ...rest,
-      })
-    );
-    updatedCourse.teachers = newArrayOfObj;
+    updatedCourse = this.convertDaysToSchedule();
     updatedCourse.newCourseDetails = this.state.newCourseDetails;
 
-    const { data } = await addNewCourse(updatedCourse);
-    if (data) {
-      toast.success("The course has been added!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      this.clearCourse();
-      this.getCourseDetails();
+    updatedCourse.teachers = this.convertTeachersFromViewToDTO(
+      updatedCourse.teachers
+    );
+
+    if (mode === "save") {
+      console.log("=====Save====");
+      console.log(updatedCourse);
+      const { data } = await addNewCourse(updatedCourse);
+      if (data) {
+        toast.success("The course has been added!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        this.clearCourse();
+        this.getCourseDetails();
+      } else {
+        toast.error("An error has occured", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
     } else {
-      toast.error("An error has occured", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      console.log(updatedCourse);
+      const { data } = await editCourse(updatedCourse);
+      if (data) {
+        toast.success("The course has been updated!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        this.getCourseDetails();
+        const c = await this.getCourse();
+        this.setState({ course: c });
+      } else {
+        toast.error("An error has occured", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
     }
   };
 
@@ -284,39 +427,6 @@ class AdminAddCourse extends Component {
     this.setState({ currentNewDetail: "", newCourseDetails });
   };
 
-  handleScheduleDayChange = (event, i) => {
-    // eslint-disable-next-line no-extend-native
-    Array.prototype.insert = function (index) {
-      this.splice.apply(
-        this,
-        [index, 0].concat(Array.prototype.slice.call(arguments, 1))
-      );
-      return this;
-    };
-
-    let { course } = this.state;
-    if (course.scheudles[i] === undefined) {
-      course.scheudles.insert(i, {
-        dayOfTheWeek: parseInt(event.target.value),
-      });
-    } else {
-      course.scheudles[i].dayOfTheWeek = parseInt(event.target.value);
-    }
-    this.setState({ course });
-  };
-
-  handleTeacherChange = (selectedOption) => {
-    let { course } = this.state;
-    course.teachers = selectedOption;
-    this.setState({ course });
-  };
-
-  handleLevelChange = (selectedOption) => {
-    let { course } = this.state;
-    course.level = selectedOption.value;
-    this.setState({ course });
-  };
-
   handleTeacherSalaryUpdate = (event, teacherId) => {
     let { course } = this.state;
     let teacherIndex = course.teachers.findIndex(
@@ -342,6 +452,7 @@ class AdminAddCourse extends Component {
                 course.scheudles[i] ? course.scheudles[i].dayOfTheWeek : ""
               }
               onChange={(event) => this.handleScheduleDayChange(event, i)}
+              disabled={i === 0}
             >
               <option
                 defaultValue
@@ -371,7 +482,7 @@ class AdminAddCourse extends Component {
           <div className="col-sm-10 col-md-2 timePicker">
             <TimePicker
               widgetPositioning={{ vertical: "top", horizontal: "auto" }}
-              date={course.scheudles[i].startTime}
+              date={course.scheudles[i] ? course.scheudles[i].startTime : ""}
               onChange={(e) => this.handleTimeChange(e.date, "startTime", i)}
             />
           </div>
@@ -384,7 +495,7 @@ class AdminAddCourse extends Component {
           <div className="col-sm-10 col-md-2 timePicker">
             <TimePicker
               widgetPositioning={{ vertical: "top", horizontal: "auto" }}
-              date={course.scheudles[i].endTime}
+              date={course.scheudles[i] ? course.scheudles[i].endTime : ""}
               onChange={(e) => this.handleTimeChange(e.date, "endTime", i)}
             />
           </div>
@@ -430,6 +541,7 @@ class AdminAddCourse extends Component {
       currentNewDetail,
       newCourseDetails,
       allTeachers,
+      mode,
     } = this.state;
 
     const levelOptions = [
@@ -439,6 +551,13 @@ class AdminAddCourse extends Component {
       { value: "B2", label: "B2" },
       { value: "C1", label: "C1" },
       { value: "C2", label: "C2" },
+    ];
+
+    const statusOptions = [
+      { value: "UPCOMMING", label: "Upcomming" },
+      { value: "STARTED", label: "Started" },
+      { value: "FINISHED", label: "Finished" },
+      { value: "CANCELED", label: "Canceled" },
     ];
 
     const charWarning = (
@@ -453,7 +572,11 @@ class AdminAddCourse extends Component {
     return (
       <React.Fragment>
         <div className="adminAllCoursesContainer container">
-          <h1>Create a course</h1>
+          {mode === "save" ? (
+            <h1>Create a course</h1>
+          ) : (
+            <h1>Edit course #{course.id}</h1>
+          )}
           <hr className="mb-5"></hr>
           <form className="fullHeight">
             <div className="form-group row">
@@ -533,6 +656,23 @@ class AdminAddCourse extends Component {
                   onChange={this.handleLevelChange}
                 ></Select>
               </div>
+              {mode === "edit" ? (
+                <React.Fragment>
+                  <label
+                    htmlFor="pricePerStudent"
+                    className="col-sm-2 col-md-2 col-form-label"
+                  >
+                    Course Status
+                  </label>
+                  <div className="col-sm-10 col-md-4">
+                    <Select
+                      options={statusOptions}
+                      value={{ label: course.status }}
+                      onChange={this.handleStatusChange}
+                    ></Select>
+                  </div>
+                </React.Fragment>
+              ) : null}
             </div>
             <div className="form-group row">
               <label
@@ -593,22 +733,20 @@ class AdminAddCourse extends Component {
               </label>
               <div className="col-sm-10 text-left">
                 {allCourseDetails && course.details ? (
-                  allCourseDetails
-                    .filter((el) => !course.details.includes(el))
-                    .map((detail) => {
-                      return (
-                        <div
-                          className="detailsBadgeDiv"
-                          key={detail.id}
-                          onClick={() => this.addCourseDetail(detail)}
-                        >
-                          <CourseDetailsBadge
-                            text={detail.description}
-                            hide={true}
-                          ></CourseDetailsBadge>
-                        </div>
-                      );
-                    })
+                  this.filterCourseDetails().map((detail) => {
+                    return (
+                      <div
+                        className="detailsBadgeDiv"
+                        key={detail.id}
+                        onClick={() => this.addCourseDetail(detail)}
+                      >
+                        <CourseDetailsBadge
+                          text={detail.description}
+                          hide={true}
+                        ></CourseDetailsBadge>
+                      </div>
+                    );
+                  })
                 ) : (
                   <label
                     htmlFor="courseDetails"
@@ -649,11 +787,11 @@ class AdminAddCourse extends Component {
             <div className="form-group row mt-4">
               <label
                 htmlFor="duration"
-                className="col-sm-2 col-md-2 col-form-label"
+                className="col-sm-2 col-md-1 col-form-label"
               >
                 Start Date
               </label>
-              <div className="col-sm-10 col-md-2">
+              <div className="col-sm-10 col-md-3">
                 <input
                   type="date"
                   className="form-control"

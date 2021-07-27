@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,8 @@ import f54148.adminication.dto.AddCourseDTO;
 import f54148.adminication.dto.AdminAllCoursesDTO;
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
+import f54148.adminication.dto.DisplayEditCourseDTO;
+import f54148.adminication.dto.EditCourseDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StartedCourseStudentDTO;
@@ -111,6 +114,11 @@ public class CourseController {
 	}
 	
 
+	@DeleteMapping(path = "/course/{id}")
+	public @ResponseBody String deleteCourseById(@PathVariable("id") Long id) {
+		return courseService.deleteCourseById(id);
+	}
+	
 	@GetMapping(path = "/course/{id}")
 	public @ResponseBody Course getCourseById(@PathVariable("id") Long id) {
 		return courseService.getCourseById(id);
@@ -237,4 +245,15 @@ public class CourseController {
 		return courseService.addAddCourseDTO(course);
 	}
 	
+	@GetMapping(path = "/edit/{idCourse}")
+	public @ResponseBody DisplayEditCourseDTO getEditCourseDTO(@PathVariable("idCourse") Long idCourse) {
+		return courseService.getEditCourseDTO(idCourse);
+	}
+	
+	
+	@PutMapping(path = "/edit")
+	public @ResponseBody String editCourse(@RequestBody EditCourseDTO course) {
+		
+		return courseService.editCourse(course);
+	}
 }

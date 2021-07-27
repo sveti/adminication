@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
-import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
 import f54148.adminication.dto.TeacherForCourseDTO;
 import f54148.adminication.service.TeacherService;

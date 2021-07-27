@@ -16,6 +16,10 @@ import f54148.adminication.dto.AddCourseTeacherDTO;
 import f54148.adminication.dto.AdminAllCoursesDTO;
 import f54148.adminication.dto.CourseDetailsDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
+import f54148.adminication.dto.DisplayEditCourseDTO;
+import f54148.adminication.dto.EditCourseDTO;
+import f54148.adminication.dto.EditCourseScheduleDTO;
+import f54148.adminication.dto.EditCourseTeacherDTO;
 import f54148.adminication.dto.FinshedCourseDTO;
 import f54148.adminication.dto.StartedCourseDTO;
 import f54148.adminication.dto.StartedCourseStudentDTO;
@@ -441,6 +445,8 @@ public class CourseService {
 
 	public String addAddCourseDTO(AddCourseDTO course) {
 		
+		System.out.println(course);
+		
 		try {
 		Course c = new Course();
 		c.setTitle(course.getTitle());
@@ -477,16 +483,12 @@ public class CourseService {
 		
 		Course savedCourse = courseRepository.save(c);
 		
-		//Set<Teaching> teachings  = new HashSet<>();
 		
 		for(AddCourseTeacherDTO addTeacher : course.getTeachers()) {
 			
-			Teaching a = teachingService.addTeaching(addTeacher.getId(),savedCourse.getId(),addTeacher.getSalary());
-			//teachings.add(a);
+			Teaching a = teachingService.addTeaching(addTeacher.getTeacherId(),savedCourse.getId(),addTeacher.getSalary());
 		}
 		
-		//savedCourse.setTeaching(teachings);
-		//courseRepository.save(savedCourse);
 		return "Course have been successfully saved!";
 		}
 		catch(Exception e) {
@@ -494,6 +496,163 @@ public class CourseService {
 		}
 		
 		
+	}
+
+	public DisplayEditCourseDTO getEditCourseDTO(Long idCourse) {
+		
+		Course c = getCourseById(idCourse);
+		DisplayEditCourseDTO dto = new DisplayEditCourseDTO();
+		dto.setId(c.getId());
+		dto.setTitle(c.getTitle());
+		dto.setDescription(c.getDescription());
+		dto.setDuration(c.getDuration());
+		dto.setLevel(c.getLevel());
+		dto.setStatus(c.getStatus());
+		dto.setMaxStudents(c.getMaxStudents());
+		dto.setLessonsPerWeek(c.getCourseSchedule().size());
+		dto.setPricePerStudent(c.getPricePerStudent());
+		List<CourseDetailsDTO> details = new ArrayList<>();
+		for(CourseDetail cd : c.getDetails()) {
+			details.add(modelMapper.map(cd, CourseDetailsDTO.class));
+		}
+		dto.setDetails(details);
+		
+		List<EditCourseScheduleDTO> schedules = new ArrayList<>();
+		for(Schedule s: c.getCourseSchedule()) {
+			schedules.add(modelMapper.map(s,EditCourseScheduleDTO.class));
+		}
+		
+		dto.setScheudles(schedules);
+		
+		List<EditCourseTeacherDTO> teachers = new ArrayList<>();
+		for(Teaching teaching: c.getTeaching()) {
+			EditCourseTeacherDTO ect = new EditCourseTeacherDTO();
+			ect.setId(teaching.getId());
+			ect.setTeacherId(teaching.getTeacher().getId());
+			ect.setTeacherName(teaching.getTeacher().getName() +" "+ teaching.getTeacher().getLastName());
+			ect.setSalary(teaching.getSalaryPerStudent());
+			teachers.add(ect);
+		}
+		
+		dto.setTeachers(teachers);
+		
+		return dto;
+	}
+
+	public String editCourse(EditCourseDTO course) {
+		
+		try {
+		
+		Course c = getCourseById(course.getId());
+		c.setTitle(course.getTitle());
+		c.setDescription(course.getDescription());
+		c.setDuration(course.getDuration());
+		c.setLevel(course.getLevel());
+		c.setPricePerStudent(course.getPricePerStudent());
+		c.setMaxStudents(course.getMaxStudents());
+		c.setStatus(course.getStatus());
+		c.setDuration(course.getDuration());
+		
+		Set<CourseDetail> courseDetails = new HashSet<>();
+		
+		for(CourseDetailsDTO cd: course.getDetails()) {
+			
+			courseDetails.add(courseDetailService.getCourseDetailsById(cd.getId()));
+			
+		}
+		if(course.getNewCourseDetails()!=null) {
+			for(String newDetail: course.getNewCourseDetails()) {
+				CourseDetail newCD = courseDetailService.createNewDetail(newDetail);
+				courseDetails.add(newCD);
+			}
+		}
+		
+		Set <CourseDetail> currectCd = c.getDetails();
+		
+		for(CourseDetail cs : currectCd) {
+			
+			if(!courseDetails.contains(cs)) {
+				courseDetailService.removeDetailFromCourse(cs, c);
+			}
+			
+		}
+		
+
+		Set<Schedule> schedules = new HashSet<>();
+		
+		for(EditCourseScheduleDTO schedule: course.getScheudles()) {
+			schedules.add(scheduleService.findOrCreateSchedule(schedule));
+		}
+		
+		Set <Schedule> toRemove = new HashSet<>();
+		
+		for(Schedule sch : c.getCourseSchedule()) {
+			
+			if(!schedules.contains(sch)) {
+				toRemove.add(sch);
+			}
+			
+		}
+			
+		Set<Teaching> teachings = new HashSet<>();
+		for(EditCourseTeacherDTO teaching: course.getTeachers()) {
+			teachings.add(teachingService.findOrCreateTeaching(teaching,c.getId()));
+			
+		}
+		
+		Set<Teaching> toDetelete = new HashSet<>();
+		
+		for(Teaching teach : c.getTeaching()) {
+			
+			if(!teachings.contains(teach)) {
+				toDetelete.add(teach);	}
+			
+		}
+			
+		c.setDetails(courseDetails);
+		c.setTeaching(teachings);
+		c.setCourseSchedule(schedules);
+		
+		
+		courseRepository.save(c);
+		
+		for(Teaching teach : toDetelete) {
+			teachingService.deleteTeaching(teach.getId());
+		}
+		
+		for(Schedule sch: toRemove) {
+			scheduleService.removeScheduleFromCourse(sch, c);
+		}
+		
+		return "Okay";
+		
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+			return "Nope";
+		}
+
+	}
+
+	public String deleteCourseById(Long id) {
+		
+		Course c = getCourseById(id);
+		
+		for(Teaching t: c.getTeaching()) {
+			teachingService.deleteTeaching(t.getId());
+		}
+		
+		for(CourseDetail cd: c.getDetails()) {
+			courseDetailService.removeDetailFromCourse(cd, c);
+		}
+		
+		
+		if(deleteCourse(id)) {
+			return "Course has been deleted";
+		}
+		else {
+			return "Nope";
+		}
 	}
 
 

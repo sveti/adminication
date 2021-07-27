@@ -1,5 +1,6 @@
 package f54148.adminication.service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,9 +10,11 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.AddCourseScheduleDTO;
+import f54148.adminication.dto.EditCourseScheduleDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Schedule;
+import f54148.adminication.entity.Teaching;
 import f54148.adminication.repository.ScheduleRepository;
 
 @Service
@@ -108,7 +111,7 @@ public class ScheduleService {
 
 	public Schedule findOrCreateSchedule(AddCourseScheduleDTO schedule) {
 		
-		Optional<Schedule> opSchedule = scheduleRepository.findByStartTimeAndEndTimeAndStartDate(schedule.getStartTime(),schedule.getEndTime(),schedule.getDayOfTheWeek());
+		Optional<Schedule> opSchedule = scheduleRepository.findByStartTimeAndEndTimeAndStartDate(schedule.getStartTime(),schedule.getEndTime(),schedule.getStartDate());
 		
 		if (opSchedule.isPresent()) {
 			return opSchedule.get();
@@ -117,10 +120,49 @@ public class ScheduleService {
 			Schedule s = new Schedule();
 			s.setStartTime(schedule.getStartTime());
 			s.setEndTime(schedule.getEndTime());
-			s.setStartDate(schedule.getDayOfTheWeek());
+			s.setStartDate(schedule.getStartDate());
 			
 			return scheduleRepository.save(s);
 		}
+	}
+	
+
+	public Schedule findOrCreateSchedule(EditCourseScheduleDTO schedule) {
+		
+		if(schedule.getId() != null) {
+			Schedule s  = getScheduleById(schedule.getId());
+			if(s.getStartDate() == schedule.getStartDate() && s.getStartTime()==schedule.getStartTime() && s.getEndTime() == schedule.getEndTime()) {
+				return s;
+			}
+		}
+		
+
+			Optional<Schedule> opSchedule = scheduleRepository.findByStartTimeAndEndTimeAndStartDate(schedule.getStartTime(),schedule.getEndTime(),schedule.getStartDate());
+			
+			if (opSchedule.isPresent()) {
+				return opSchedule.get();
+			} else {
+				Schedule s = new Schedule();
+				s.setStartTime(schedule.getStartTime());
+				s.setEndTime(schedule.getEndTime());
+				s.setStartDate(schedule.getStartDate());
+				
+				return scheduleRepository.save(s);
+			}
+		
+	}
+
+	public void removeScheduleFromCourse(Schedule sch, Course c) {
+		
+		sch.getScheduledCourses().remove(c);
+		updateSchedule(sch);
+		c.getCourseSchedule().remove(sch);
+		courseService.updateCourse(c);
+		
+		if(sch.getScheduledCourses().size()==0 && sch.getScheduledEvents().size() == 0) {
+			scheduleRepository.deleteById(sch.getId());
+		}
+		
 	}
 
 }

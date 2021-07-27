@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 public class AddCourseScheduleDTO {
 	
-	private LocalDate dayOfTheWeek;
+	private LocalDate startDate;
 	private LocalTime startTime;
 	private LocalTime endTime;
 	

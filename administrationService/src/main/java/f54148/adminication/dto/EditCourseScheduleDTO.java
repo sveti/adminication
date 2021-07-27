@@ -12,10 +12,10 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class AddCourseScheduleDTO {
-	
-	private LocalDate startDate;
-	private LocalTime startTime;
-	private LocalTime endTime;
-	
+public class EditCourseScheduleDTO {
+
+		private Long id;
+		private LocalDate startDate;
+		private LocalTime startTime;
+		private LocalTime endTime;
 }

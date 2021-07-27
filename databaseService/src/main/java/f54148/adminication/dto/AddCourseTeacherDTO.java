@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class AddCourseTeacherDTO {
 	
-	private Long id;
+	private Long teacherId;
 	private Double salary;
 
 }

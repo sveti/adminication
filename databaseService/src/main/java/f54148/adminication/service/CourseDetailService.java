@@ -1,6 +1,7 @@
 package f54148.adminication.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -75,15 +76,16 @@ public class CourseDetailService {
 	public boolean deleteCourseDetails(Long courseDetailsId) {
 		Optional<CourseDetail> opcourseDetails = repo.findById(courseDetailsId);
 		if (opcourseDetails.isPresent()) {
+			
 			CourseDetail cd = opcourseDetails.get();
 
-			for (Course c : cd.getCourses()) {
-				c.getDetails().remove(cd);
-				courseService.updateCourse(c);
-			}
-
-			repo.deleteById(courseDetailsId);
-
+				for (Course c : cd.getCourses()) {
+					c.getDetails().remove(cd);
+					courseService.updateCourse(c);
+				}
+			
+			
+			repo.deleteById(cd.getId());
 			return true;
 		} else {
 			return false;
@@ -111,5 +113,20 @@ public class CourseDetailService {
 		CourseDetail saved = repo.save(courseDetail);
 		return saved;
 	}
+
+	public void removeDetailFromCourse(CourseDetail cs, Course c) {
+		
+		//many to many 
+		cs.getCourses().remove(c);
+		updateCourseDetails(cs);
+		c.getDetails().remove(cs);
+		courseService.updateCourse(c);
+		if(cs.getCourses().size() == 0) {
+				
+			repo.deleteById(cs.getId());
+		}
+		
+	}
+	
 
 }

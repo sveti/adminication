@@ -5,7 +5,6 @@ import Logout from "../Login/Logout";
 import NotFound from "../notFound";
 import IndexPage from "../Homepage/IndexPage";
 import AdminAllCourses from "../Admin/AdminAllCourses";
-import AdminEditCourse from "../Admin/AdminEditCourse";
 import AdminAddCourse from "../Admin/AdminAddCourse";
 
 const AdminSwitch = ({ user, increase, decrease }) => {
@@ -33,12 +32,16 @@ const AdminSwitch = ({ user, increase, decrease }) => {
       />
       <ProtectedRoute
         path="/courses/add"
-        render={(params) => <AdminAddCourse {...params}></AdminAddCourse>}
+        render={(params) => (
+          <AdminAddCourse {...params} mode={"save"}></AdminAddCourse>
+        )}
       />
 
       <ProtectedRoute
         path="/courses/:courseId"
-        render={(params) => <AdminEditCourse {...params}></AdminEditCourse>}
+        render={(params) => (
+          <AdminAddCourse {...params} mode={"edit"}></AdminAddCourse>
+        )}
       />
 
       <Redirect from="/" exact to="/login" />

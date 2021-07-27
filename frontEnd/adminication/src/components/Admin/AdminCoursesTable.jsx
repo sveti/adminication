@@ -320,7 +320,9 @@ const AdminCoursesTable = (props) => {
             accessor: "level",
             Filter: SelectColumnFilter,
             filter: "includes",
-            Cell: ({ cell: { value } }) => <LevelBadge level={value} />,
+            Cell: ({ cell: { value } }) => (
+              <LevelBadge hide={true} level={value} />
+            ),
           },
           {
             Header: "Price/Student",
