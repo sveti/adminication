@@ -6,6 +6,8 @@ import NotFound from "../notFound";
 import IndexPage from "../Homepage/IndexPage";
 import AdminAllCourses from "../Admin/AdminAllCourses";
 import AdminAddCourse from "../Admin/AdminAddCourse";
+import AdminAllTeachers from "../Admin/AdminAllTeachers";
+import AdminAddTeacher from "../Admin/AdminAddTeacher";
 
 const AdminSwitch = ({ user, increase, decrease }) => {
   function editedUser(passedUser) {
@@ -41,6 +43,26 @@ const AdminSwitch = ({ user, increase, decrease }) => {
         path="/courses/:courseId"
         render={(params) => (
           <AdminAddCourse {...params} mode={"edit"}></AdminAddCourse>
+        )}
+      />
+
+      <ProtectedRoute
+        path="/teachers/all"
+        render={(params) => (
+          <AdminAllTeachers {...params} user={user}></AdminAllTeachers>
+        )}
+      />
+      <ProtectedRoute
+        path="/teachers/add"
+        render={(params) => (
+          <AdminAddTeacher {...params} mode={"save"}></AdminAddTeacher>
+        )}
+      />
+
+      <ProtectedRoute
+        path="/teachers/:teacherId"
+        render={(params) => (
+          <AdminAddTeacher {...params} mode={"edit"}></AdminAddTeacher>
         )}
       />
 

@@ -1,15 +1,18 @@
 .adminAllCoursesContainer {
   margin: 8rem 2rem;
 }
-.allCoursesTable {
+.allCoursesTable,
+.allTeachersTable {
   width: 100%;
   border-collapse: collapse;
 }
 
-.allCoursesTh {
+.allCoursesTh,
+.allTeachersTh {
   padding-left: 20px;
 }
-.allCoursesTableHead {
+.allCoursesTableHead,
+.allTeachersTableHead {
   border-bottom: 1px solid #9e9796;
 }
 
@@ -17,7 +20,8 @@
   background-color: #f0eeee;
 }
 
-.allCoursesTd {
+.allCoursesTd,
+.allTeachersTd {
   word-wrap: break-word;
 }
 
@@ -67,6 +71,18 @@ div[role="columnheader"] {
   font-weight: 700;
 }
 
+.allTeachersTd {
+  padding: 10px;
+}
+
+.allTeachersRow:nth-of-type(2n) {
+  background-color: #fcf7d8;
+}
+
+.addTeacherButton {
+  background-color: #eedd6d !important;
+  color: #000040 !important;
+}
 /* input {
   z-index: -1 !important;
 } */
@@ -86,22 +102,31 @@ div[role="columnheader"] {
   .allCoursesTableBody,
   .allCoursesTh,
   .allCoursesTd,
-  .allCoursesRow {
+  .allCoursesRow,
+  .allTeachersTable,
+  .allTeachersTableHead,
+  .allTeachersTableBody,
+  .allTeachersTh,
+  .allTeachersTd,
+  .allTeachersRow {
     display: block;
   }
 
   /* Hide table headers (but not display: none;, for accessibility) */
-  .allCoursesTableHead tr {
+  .allCoursesTableHead tr,
+  .allTeachersTableHead tr {
     position: absolute;
     top: -9999px;
     left: -9999px;
   }
 
-  .allCoursesRow {
+  .allCoursesRow,
+  .allTeachersRow {
     border: 1px solid #ccc;
   }
 
-  .allCoursesTd {
+  .allCoursesTd,
+  .allTeachersTd {
     /* Behave  like a "row" */
     border: none;
     border-bottom: 1px solid #eee;
@@ -109,7 +134,8 @@ div[role="columnheader"] {
     padding-left: 50%;
   }
 
-  .allCoursesTd:before {
+  .allCoursesTd:before,
+  .allTeachersTd:before {
     /* Now like a table header */
     position: absolute;
     /* Top/left values mimic padding */
@@ -141,5 +167,21 @@ div[role="columnheader"] {
   .allCoursesTd:nth-of-type(6):before {
     content: "Details";
     margin-top: 1rem;
+  }
+
+  .allTeachersTd:nth-of-type(1):before {
+    content: "Teacher ID";
+  }
+  .allTeachersTd:nth-of-type(2):before {
+    content: "Name";
+  }
+  .allTeachersTd:nth-of-type(3):before {
+    content: "Gender";
+  }
+  .allTeachersTd:nth-of-type(4):before {
+    content: "Teaching courses";
+  }
+  .allTeachersTd:nth-of-type(5):before {
+    content: "Substituting courses";
   }
 }

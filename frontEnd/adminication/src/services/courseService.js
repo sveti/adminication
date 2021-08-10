@@ -77,3 +77,7 @@ export function editCourse(course) {
 export function getEditCourse(idCourse) {
   return http.get(adminEndpoint + "edit/" + idCourse);
 }
+
+export function getCourseTitles() {
+  return http.get(adminEndpoint + "titles");
+}

@@ -9,9 +9,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { matchSorter } from "match-sorter";
-import StatusBadge from "../../common/StausBadge";
-import LevelBadge from "../../common/LevelBadge";
 import { Link } from "react-router-dom";
+
 import "./admin.css";
 
 // Define a default UI for filtering
@@ -216,18 +215,20 @@ function Table({ columns, data }) {
   );
   // Render the UI for your table
   return (
-    <table className="mx-auto allCoursesTable" {...getTableProps()}>
-      <thead className="allCoursesTableHead">
+    <table className="mx-auto allTeachersTable" {...getTableProps()}>
+      <thead className="allTeachersTableHead">
         <tr>
           <th>
             <div className="mb-3">
               <Link
                 className="nav-link"
                 to={{
-                  pathname: "/courses/add",
+                  pathname: "/teachers/add",
                 }}
               >
-                <button className="editButton my-0 btn-lg">Add Course</button>
+                <button className="editButton my-0 btn-lg addTeacherButton">
+                  Add Teacher
+                </button>
               </Link>
             </div>
           </th>
@@ -247,7 +248,7 @@ function Table({ columns, data }) {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th key={column.id} className="allCoursesTh">
+              <th key={column.id} className="allTeachersTh">
                 <div {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
                   <span>
@@ -269,14 +270,14 @@ function Table({ columns, data }) {
           </tr>
         ))}
       </thead>
-      <tbody className="allCoursesTableBody" {...getTableBodyProps()}>
+      <tbody className="allTeachersTableBody" {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <tr className="allCoursesRow" {...row.getRowProps()}>
+            <tr className="allTeachersRow" {...row.getRowProps()}>
               {row.cells.map((cell) => {
                 return (
-                  <td className="allCoursesTd" {...cell.getCellProps()}>
+                  <td className="allTeachersTd" {...cell.getCellProps()}>
                     {cell.render("Cell")}
                   </td>
                 );
@@ -289,11 +290,11 @@ function Table({ columns, data }) {
   );
 }
 
-const AdminCoursesTable = (props) => {
+const AdminTeachersTable = (props) => {
   const columns = React.useMemo(
     () => [
       {
-        Header: "Course",
+        Header: "Teacher",
         columns: [
           {
             Header: "ID",
@@ -301,8 +302,8 @@ const AdminCoursesTable = (props) => {
             accessor: (row) => row.id,
           },
           {
-            Header: "Title",
-            accessor: "title",
+            Header: "Name",
+            accessor: "name",
           },
         ],
       },
@@ -310,46 +311,24 @@ const AdminCoursesTable = (props) => {
         Header: "Info",
         columns: [
           {
-            Header: "Status",
-            accessor: "status",
+            Header: "Gender",
+            accessor: "gender",
             Filter: SelectColumnFilter,
             filter: "includes",
-            Cell: ({ cell: { value } }) => <StatusBadge status={value} />,
           },
           {
-            Header: "Level",
-            accessor: "level",
-            Filter: SelectColumnFilter,
-            filter: "includes",
-            Cell: ({ cell: { value } }) => (
-              <LevelBadge hide={true} level={value} />
-            ),
+            Header: "Teaching courses",
+            accessor: "teaching",
+            Filter: NumberRangeColumnFilter,
+            filter: "between",
           },
           {
-            Header: "Price/Student",
-            accessor: "pricePerStudent",
+            Header: "Substituting courses",
+            accessor: "substituting",
             Filter: NumberRangeColumnFilter,
             filter: "between",
           },
         ],
-      },
-      {
-        Header: "Details",
-        accessor: "id",
-        filterable: false,
-        Cell: (e) => (
-          <Link
-            className="nav-link"
-            to={{
-              pathname: "/courses/" + e.value,
-              state: {
-                courseId: e.value,
-              },
-            }}
-          >
-            <button className="editButton my-0">Details</button>
-          </Link>
-        ),
       },
     ],
     []
@@ -364,10 +343,12 @@ const AdminCoursesTable = (props) => {
             <Link
               className="nav-link"
               to={{
-                pathname: "/courses/add",
+                pathname: "/teachers/add",
               }}
             >
-              <button className="editButton my-0 btn-lg">Add Course</button>
+              <button className="editButton my-0 btn-lg addTeacherButton">
+                Add Teacher
+              </button>
             </Link>
           </div>
         </h1>
@@ -377,4 +358,4 @@ const AdminCoursesTable = (props) => {
   );
 };
 
-export default AdminCoursesTable;
+export default AdminTeachersTable;

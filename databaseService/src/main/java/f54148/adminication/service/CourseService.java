@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.dto.AddCourseDTO;
 import f54148.adminication.dto.AddCourseScheduleDTO;
 import f54148.adminication.dto.AddCourseTeacherDTO;
+import f54148.adminication.dto.CourseTitles;
 import f54148.adminication.dto.AdminAllCoursesDTO;
 import f54148.adminication.dto.CourseDetailsDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
@@ -486,7 +487,7 @@ public class CourseService {
 		
 		for(AddCourseTeacherDTO addTeacher : course.getTeachers()) {
 			
-			Teaching a = teachingService.addTeaching(addTeacher.getTeacherId(),savedCourse.getId(),addTeacher.getSalary());
+			teachingService.addTeaching(addTeacher.getTeacherId(),savedCourse.getId(),addTeacher.getSalary());
 		}
 		
 		return "Course have been successfully saved!";
@@ -653,6 +654,18 @@ public class CourseService {
 		else {
 			return "Nope";
 		}
+	}
+
+	private CourseTitles convertToAddCourseToTeacherDTO(Course c) {
+		return modelMapper.map(c, CourseTitles.class);
+	}
+	
+	public List<CourseTitles> getCourseTitles() {
+		List<Course> allCourses = this.getCourses();
+		allCourses.removeIf(course -> course.getStatus() == CourseStatus.FINISHED || course.getStatus() == CourseStatus.CANCELED);
+		List<CourseTitles> dtos = new ArrayList<>();
+		allCourses.forEach(c->dtos.add(convertToAddCourseToTeacherDTO(c)));
+		return dtos;
 	}
 
 

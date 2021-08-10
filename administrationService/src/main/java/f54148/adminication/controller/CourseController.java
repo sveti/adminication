@@ -1,5 +1,7 @@
 package f54148.adminication.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import f54148.adminication.dto.AddCourseDTO;
+import f54148.adminication.dto.CourseTitles;
 import f54148.adminication.dto.DisplayEditCourseDTO;
 import f54148.adminication.service.CourseService;
 import lombok.AllArgsConstructor;
@@ -37,4 +40,10 @@ public class CourseController {
 		return courseService.editCourse(course);
 	}
 
+	@GetMapping(path = "/titles")
+	public @ResponseBody List<CourseTitles> getCourseTitles() {
+		return courseService.getCourseTitles();
+	}
+	
+	
 }

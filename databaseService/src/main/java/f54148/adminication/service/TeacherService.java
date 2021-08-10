@@ -7,8 +7,13 @@ import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AddTeacherDTO;
+import f54148.adminication.dto.AddTeacherTeachingDTO;
+import f54148.adminication.dto.DisplayTeacherDTO;
 import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.LessonSalaryDTO;
 import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
@@ -19,6 +24,8 @@ import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.entity.Teaching;
+import f54148.adminication.exceptions.EmailTakenException;
+import f54148.adminication.exceptions.UsernameTakenException;
 import f54148.adminication.repository.TeacherRepository;
 
 @Service
@@ -33,6 +40,8 @@ public class TeacherService {
 	private final ModelMapper modelMapper;
 	
 	private final RoleService roleService;
+	
+	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
 	
 	public TeacherService(TeacherRepository teacherRepository,@Lazy LessonService lessonService,@Lazy TeachingService teachingService, @Lazy RoleService roleService,ModelMapper modelMapper) {
 		super();
@@ -216,6 +225,67 @@ public class TeacherService {
 		}
 		
 		return dtos;
+	}
+	
+	public DisplayTeacherDTO convertToDisplayTeacherDTO(Teacher t) {
+		
+		DisplayTeacherDTO  dto = new DisplayTeacherDTO();
+		dto.setId(t.getId());
+		dto.setName(t.getName() + " " + t.getLastName());
+		dto.setGender(t.getGender().name());
+		dto.setTeaching(t.getTeaching().size());
+		dto.setSubstituting(t.getSubstituting().size());
+		
+		return dto;
+		
+	}
+
+	public List<DisplayTeacherDTO> getAllDisplayTeacherDTO() {
+		List<Teacher> teachers = getTeachers();
+		
+		List<DisplayTeacherDTO> dtos = new ArrayList<DisplayTeacherDTO>();
+		for(Teacher t: teachers) {
+			dtos.add(convertToDisplayTeacherDTO(t));
+		}
+		
+		return dtos;
+	}
+
+	public boolean adminAddTeacher(AddTeacherDTO teacher) {
+		if(teacherRepository.findByUsername(teacher.getUsername()).isPresent()){
+			System.out.println("gotcha");
+			throw new UsernameTakenException("Username " + teacher.getUsername() +" is taken!");
+		
+		}
+		else if(teacherRepository.findByEmail(teacher.getEmail()).isPresent()){
+			throw new EmailTakenException("Email" +teacher.getEmail() + " is taken!");
+		}
+
+
+				
+			Teacher t = convertAddTeacherDTOToTeacher(teacher);
+			t = teacherRepository.save(t);
+			for(AddTeacherTeachingDTO dto: teacher.getTeachings()) {
+				teachingService.createTeaching(dto,t.getId());
+				
+			}
+			
+			return true;
+
+		
+	}
+
+	private Teacher convertAddTeacherDTOToTeacher(AddTeacherDTO teacher) {
+		
+		Teacher t = modelMapper.map(teacher, Teacher.class);
+		t.setAccountNonExpired(true);
+		t.setAccountNonLocked(true);
+		t.setCredentialsNonExpired(true);
+		t.setEnabled(true);
+		t.setRole(roleService.getRoleByName("ROLE_TEACHER"));
+		t.setPassword(encoder.encode(teacher.getPassword()));
+		
+		return t;
 	}
 
 

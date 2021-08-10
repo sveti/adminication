@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import f54148.adminication.dto.AddTeacherTeachingDTO;
 import f54148.adminication.dto.EditCourseTeacherDTO;
 import f54148.adminication.dto.TeachingSalaryDTO;
 import f54148.adminication.entity.Course;
@@ -147,6 +148,16 @@ public class TeachingService {
 		
 		
 		return addTeaching(teaching.getTeacherId(),courseId, teaching.getSalary());
+	}
+
+	public void createTeaching(AddTeacherTeachingDTO dto, long teacherId) {
+		
+		Teaching t = new Teaching();
+		t.setCourse(courseService.getCourseById(dto.getCourseId()));
+		t.setTeacher(teacherService.getTeacherById(teacherId));
+		t.setSalaryPerStudent(dto.getSalary());
+		
+		addTeaching(t);
 	}
 
 }

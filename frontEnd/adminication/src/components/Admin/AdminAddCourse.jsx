@@ -92,18 +92,15 @@ class AdminAddCourse extends Component {
     let firstLesson = textToDayOfTheWeekNumber(start);
 
     course.scheudles.forEach((schedule, index) => {
-      let startDateFull = addDays(start, schedule.dayOfTheWeek - firstLesson);
+      let diff = schedule.dayOfTheWeek - firstLesson;
+      if (diff === -6) {
+        diff = 1;
+      }
+      let startDateFull = addDays(start, diff);
       course.scheudles[index].startDate = startDateFull
         .toISOString()
         .split("T")[0];
     });
-    // const newArrayOfObj = course.scheudles.map(
-    //   ({ dayOfTheWeek: startDate, ...rest }) => ({
-    //     startDate,
-    //     ...rest,
-    //   })
-    // );
-    // course.scheudles = newArrayOfObj;
 
     return course;
   };
@@ -262,16 +259,18 @@ class AdminAddCourse extends Component {
         endTime: null,
       },
     ];
-    course.lessonsPerWeek = 1;
     course.teachers = [];
     course.lessonsPerWeek = 1;
     course.teachers.length = 0;
     course.teachers = [];
+    course.duration = 1;
     let { allTeachers } = this.state;
 
     allTeachers.forEach((t) => delete t.salary);
 
-    this.setState({ course, allTeachers });
+    let newCourseDetails = [];
+
+    this.setState({ course, allTeachers, newCourseDetails: newCourseDetails });
   };
 
   saveCourse = async () => {
@@ -289,8 +288,8 @@ class AdminAddCourse extends Component {
     );
 
     if (mode === "save") {
-      console.log("=====Save====");
-      console.log(updatedCourse);
+      // console.log("=====Save====");
+      // console.log(updatedCourse);
       const { data } = await addNewCourse(updatedCourse);
       if (data) {
         toast.success("The course has been added!", {
@@ -304,6 +303,7 @@ class AdminAddCourse extends Component {
         });
         this.clearCourse();
         this.getCourseDetails();
+        window.scrollTo(0, 0);
       } else {
         toast.error("An error has occured", {
           position: "top-center",
@@ -316,7 +316,7 @@ class AdminAddCourse extends Component {
         });
       }
     } else {
-      console.log(updatedCourse);
+      // console.log(updatedCourse);
       const { data } = await editCourse(updatedCourse);
       if (data) {
         toast.success("The course has been updated!", {

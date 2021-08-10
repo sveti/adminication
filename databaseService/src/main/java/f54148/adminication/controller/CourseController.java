@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import f54148.adminication.dto.AddCourseDTO;
+import f54148.adminication.dto.CourseTitles;
 import f54148.adminication.dto.AdminAllCoursesDTO;
 import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.dto.CourseWithDetailsDTO;
@@ -248,6 +249,11 @@ public class CourseController {
 	@GetMapping(path = "/edit/{idCourse}")
 	public @ResponseBody DisplayEditCourseDTO getEditCourseDTO(@PathVariable("idCourse") Long idCourse) {
 		return courseService.getEditCourseDTO(idCourse);
+	}
+	
+	@GetMapping(path = "/titles")
+	public @ResponseBody List<CourseTitles> getCourseTitles() {
+		return courseService.getCourseTitles();
 	}
 	
 	

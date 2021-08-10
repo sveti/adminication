@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import f54148.adminication.dto.AddTeacherDTO;
+import f54148.adminication.dto.DisplayTeacherDTO;
 import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
 import f54148.adminication.dto.TeacherForCourseDTO;
 import f54148.adminication.entity.Course;
@@ -97,6 +99,21 @@ public class TeacherController {
 		return teacherService.getTeacherStatistics(teacherId,month,year);
 	}
 	
+	@GetMapping(path = "/admin/teachers")
+	public @ResponseBody List<DisplayTeacherDTO> getAllDisplayTeacherDTO() {
+		return teacherService.getAllDisplayTeacherDTO();
+	}
+	
+	@PostMapping(path = "/add")
+	public @ResponseBody String adminAddTeacher(@RequestBody AddTeacherDTO teacher) {
+
+		if (teacherService.adminAddTeacher(teacher)) {
+			return "Saved teacher";
+		} else {
+			return "An error has occured";
+		}
+
+	}
 	
 	
 }

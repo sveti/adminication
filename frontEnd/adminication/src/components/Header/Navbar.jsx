@@ -288,6 +288,16 @@ class Navbar extends Component {
             Courses
           </Link>
         </li>
+        <li className="nav-item">
+          <Link
+            className="nav-link"
+            to={{
+              pathname: "/teachers/all",
+            }}
+          >
+            Teachers
+          </Link>
+        </li>
       </React.Fragment>
     );
 
