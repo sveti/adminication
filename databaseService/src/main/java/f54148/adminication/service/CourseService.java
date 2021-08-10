@@ -450,13 +450,13 @@ public class CourseService {
 		
 		for(AddCourseTeacherDTO addTeacher : course.getTeachers()) {
 			
-			teachingService.addTeaching(addTeacher.getTeacherId(),savedCourse.getId(),addTeacher.getSalary());
+			teachingService.addTeaching(addTeacher.getTeacherId(),savedCourse.getId(),addTeacher.getSalary(), addTeacher.getSubstituteId());
 		}
 		
 		return "Course have been successfully saved!";
 		}
 		catch(Exception e) {
-			return "An error has occured!";
+			return "An error has occurred!";
 		}
 		
 		
@@ -495,6 +495,11 @@ public class CourseService {
 			ect.setTeacherId(teaching.getTeacher().getId());
 			ect.setTeacherName(teaching.getTeacher().getName() +" "+ teaching.getTeacher().getLastName());
 			ect.setSalary(teaching.getSalaryPerStudent());
+			if(teaching.getSubstitute() != null){
+				ect.setSubstituteId(teaching.getSubstitute().getId());
+				ect.setSubstitute(teaching.getSubstitute().getName() + " " + teaching.getSubstitute().getLastName());
+			}
+
 			teachers.add(ect);
 		}
 		
@@ -564,12 +569,12 @@ public class CourseService {
 			
 		}
 		
-		Set<Teaching> toDetelete = new HashSet<>();
+		Set<Teaching> toDelete = new HashSet<>();
 		
 		for(Teaching teach : c.getTeaching()) {
 			
 			if(!teachings.contains(teach)) {
-				toDetelete.add(teach);	}
+				toDelete.add(teach);	}
 			
 		}
 			
@@ -580,7 +585,7 @@ public class CourseService {
 		
 		courseRepository.save(c);
 		
-		for(Teaching teach : toDetelete) {
+		for(Teaching teach : toDelete) {
 			teachingService.deleteTeaching(teach.getId());
 		}
 		

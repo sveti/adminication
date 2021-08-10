@@ -80,6 +80,9 @@ class AdminAddCourse extends Component {
       }
       teacherForArray.teacherName = teacher.label;
       teacherForArray.salary = teacher.salary;
+      if (teacher.substituteId !== null) {
+        teacherForArray.substituteId = teacher.substituteId;
+      }
       convertedArray.push(teacherForArray);
     });
     return convertedArray;
@@ -316,7 +319,7 @@ class AdminAddCourse extends Component {
         });
       }
     } else {
-      // console.log(updatedCourse);
+      console.log(updatedCourse);
       const { data } = await editCourse(updatedCourse);
       if (data) {
         toast.success("The course has been updated!", {
@@ -505,17 +508,35 @@ class AdminAddCourse extends Component {
     return schedules;
   };
 
+  handleSubstituteUpdate = (selectedOption, teacherId) => {
+    let { course } = this.state;
+    let teacherIndex = course.teachers.findIndex(
+      (el) => el.value === teacherId
+    );
+    if (selectedOption === null) {
+      course.teachers[teacherIndex].substitute = null;
+      course.teachers[teacherIndex].substituteId = null;
+    } else {
+      course.teachers[teacherIndex].substitute = selectedOption.label;
+      course.teachers[teacherIndex].substituteId = selectedOption.value;
+    }
+    this.setState({ course });
+  };
+
   generateTeacherSalary = () => {
-    const { course } = this.state;
+    const { course, allTeachers } = this.state;
     let salaries = [];
 
     course.teachers.forEach((teacher) => {
       salaries.push(
         <div className="form-group row mt-2 fadeIn" key={teacher.value}>
-          <label htmlFor="level" className="col-sm-2 col-md-2 col-form-label">
-            Salary for {teacher.label}
+          <label className="col-sm-12 col-md-2 col-form-label">
+            {teacher.label}
           </label>
-          <div className="col-sm-10 col-md-10">
+          <label htmlFor="level" className="col-sm-2 col-md-1 col-form-label">
+            Salary
+          </label>
+          <div className="col-sm-10 col-md-4">
             <input
               type="number"
               className="form-control editedInformaton"
@@ -524,6 +545,22 @@ class AdminAddCourse extends Component {
               onChange={(event) =>
                 this.handleTeacherSalaryUpdate(event, teacher.value)
               }
+            />
+          </div>
+          <label htmlFor="level" className="col-sm-2 col-md-1 col-form-label">
+            SubStitute (optional)
+          </label>
+          <div className="col-sm-10 col-md-4">
+            <Select
+              value={{ label: teacher.substitute }}
+              onChange={(selected) =>
+                this.handleSubstituteUpdate(selected, teacher.value)
+              }
+              isSearchable
+              noOptionsMessage={"There are no other teachers!"}
+              isClearable={true}
+              options={allTeachers.filter((el) => el.value !== teacher.value)}
+              maxMenuHeight={"9rem"}
             />
           </div>
         </div>
@@ -543,6 +580,8 @@ class AdminAddCourse extends Component {
       allTeachers,
       mode,
     } = this.state;
+
+    console.log(course);
 
     const levelOptions = [
       { value: "A1", label: "A1" },

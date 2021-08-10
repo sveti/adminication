@@ -1,32 +1,20 @@
 package f54148.adminication.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
+import f54148.adminication.dto.*;
+import f54148.adminication.entity.*;
+import f54148.adminication.exceptions.EmailTakenException;
+import f54148.adminication.exceptions.UsernameTakenException;
+import f54148.adminication.repository.TeacherRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import f54148.adminication.dto.AddTeacherDTO;
-import f54148.adminication.dto.AddTeacherTeachingDTO;
-import f54148.adminication.dto.DisplayTeacherDTO;
-import f54148.adminication.dto.DisplayUserDTO;
-import f54148.adminication.dto.LessonSalaryDTO;
-import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
-import f54148.adminication.dto.TeacherForCourseDTO;
-import f54148.adminication.dto.TeachingSalaryDTO;
-import f54148.adminication.entity.Course;
-import f54148.adminication.entity.File;
-import f54148.adminication.entity.Lesson;
-import f54148.adminication.entity.Teacher;
-import f54148.adminication.entity.Teaching;
-import f54148.adminication.exceptions.EmailTakenException;
-import f54148.adminication.exceptions.UsernameTakenException;
-import f54148.adminication.repository.TeacherRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TeacherService {
@@ -145,16 +133,6 @@ public class TeacherService {
 		return opTeacher.map(Teacher::getFiles).orElse(null);
 	}
 
-	public Teacher convertToTeacher(DisplayUserDTO userDTO) {
-		Teacher t = modelMapper.map(userDTO, Teacher.class);		
-		t.setAccountNonExpired(true);
-		t.setAccountNonLocked(true);
-		t.setCredentialsNonExpired(true);
-		t.setEnabled(true);
-		t.setRole(roleService.getRoleByName("ROLE_TEACHER"));
-
-		return t;
-	}
 
 	public MonthlyTeacherSalaryDTO getTeacherStatistics(Long teacherId, Integer month, Integer year) {
 		
@@ -233,17 +211,7 @@ public class TeacherService {
 		return dtos;
 	}
 
-	public boolean adminAddTeacher(AddTeacherDTO teacher) {
-		if(teacherRepository.findByUsername(teacher.getUsername()).isPresent()){
-			System.out.println("gotcha");
-			throw new UsernameTakenException("Username " + teacher.getUsername() +" is taken!");
-		
-		}
-		else if(teacherRepository.findByEmail(teacher.getEmail()).isPresent()){
-			throw new EmailTakenException("Email" +teacher.getEmail() + " is taken!");
-		}
-
-
+	public String adminAddTeacher(AddTeacherDTO teacher) {
 				
 			Teacher t = convertAddTeacherDTOToTeacher(teacher);
 			t = teacherRepository.save(t);
@@ -252,7 +220,7 @@ public class TeacherService {
 				
 			}
 			
-			return true;
+			return "Teacher has been added successfully!";
 
 		
 	}

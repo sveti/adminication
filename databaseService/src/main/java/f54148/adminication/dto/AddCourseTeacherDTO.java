@@ -13,5 +13,5 @@ public class AddCourseTeacherDTO {
 	
 	private Long teacherId;
 	private Double salary;
-
+	private Long substituteId;
 }

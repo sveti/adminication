@@ -14,5 +14,7 @@ public class EditCourseTeacherDTO{
 	private Long teacherId;
 	private String teacherName;
 	private Double salary;
+	private Long substituteId;
+	private String substitute;
 
 }

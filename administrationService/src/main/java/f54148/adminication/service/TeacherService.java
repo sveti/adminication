@@ -6,6 +6,7 @@ import f54148.adminication.dto.AddTeacherDTO;
 import f54148.adminication.dto.DisplayTeacherDTO;
 import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
 import f54148.adminication.dto.TeacherForCourseDTO;
+import org.springframework.http.ResponseEntity;
 
 public interface TeacherService {
 

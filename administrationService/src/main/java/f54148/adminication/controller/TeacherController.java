@@ -40,7 +40,8 @@ public @ResponseBody List<DisplayTeacherDTO> getAllDisplayTeacherDTO() {
 }
 
 @PostMapping(path = "/add")
-public @ResponseBody String adminAddTeacher(@RequestBody AddTeacherDTO teacher) {
+public @ResponseBody
+String adminAddTeacher(@RequestBody AddTeacherDTO teacher) {
 
 	return teacherService.adminAddTeacher(teacher);
 

@@ -3,6 +3,10 @@ package f54148.adminication.controller;
 import java.util.List;
 import java.util.Set;
 
+import f54148.adminication.exceptions.EmailTakenException;
+import f54148.adminication.exceptions.UsernameTakenException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -103,16 +107,12 @@ public class TeacherController {
 	public @ResponseBody List<DisplayTeacherDTO> getAllDisplayTeacherDTO() {
 		return teacherService.getAllDisplayTeacherDTO();
 	}
-	
+
+
 	@PostMapping(path = "/add")
-	public @ResponseBody String adminAddTeacher(@RequestBody AddTeacherDTO teacher) {
-
-		if (teacherService.adminAddTeacher(teacher)) {
-			return "Saved teacher";
-		} else {
-			return "An error has occured";
-		}
-
+	public @ResponseBody
+	String adminAddTeacher(@RequestBody AddTeacherDTO teacher)  {
+		return teacherService.adminAddTeacher(teacher);
 	}
 	
 	

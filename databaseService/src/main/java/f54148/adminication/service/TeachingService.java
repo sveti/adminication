@@ -111,14 +111,19 @@ public class TeachingService {
 		
 	}
 
-	public Teaching addTeaching(Long teacherId, Long courseId, Double salary) {
-		
+	public Teaching addTeaching(Long teacherId, Long courseId, Double salary, Long substituteId) {
+
+
 		Teaching t = new Teaching();
 		t.setTeacher(teacherService.getTeacherById(teacherId));
 		t.setCourse(courseService.getCourseById(courseId));
 		t.setSalaryPerStudent(salary);
-		
-		return teachingRepository.save(t);
+		if(substituteId != null){
+			Teacher teacher = teacherService.getTeacherById(substituteId);
+			t.setSubstitute(teacher);
+		}
+		Teaching savedTeaching = teachingRepository.save(t);
+		return savedTeaching;
 	
 	}
 
@@ -127,18 +132,24 @@ public class TeachingService {
 		if(teaching.getId() != null) {
 			
 			Teaching t = getTeachingById(teaching.getId());
-			if(Objects.equals(t.getSalaryPerStudent(), teaching.getSalary())) {
+			if(Objects.equals(t.getSalaryPerStudent(), teaching.getSalary()) && Objects.equals(t.getSubstitute().getId(),teaching.getSubstituteId())) {
 				return t;
 			}
 			else {
 				t.setSalaryPerStudent(teaching.getSalary());
+				if(teaching.getSubstituteId() != null){
+					t.setSubstitute(teacherService.getTeacherById(teaching.getSubstituteId()));
+				}
+				else{
+					System.out.println("===No sub id found===");
+					deleteTeaching(t.getId());
+					return addTeaching(teaching.getTeacherId(),courseId, teaching.getSalary(), teaching.getSubstituteId());
+				}
 				return teachingRepository.save(t);
 			}
 			
 		}
-		
-		
-		return addTeaching(teaching.getTeacherId(),courseId, teaching.getSalary());
+		return addTeaching(teaching.getTeacherId(),courseId, teaching.getSalary(), teaching.getSubstituteId());
 	}
 
 	public void createTeaching(AddTeacherTeachingDTO dto, long teacherId) {
@@ -147,6 +158,9 @@ public class TeachingService {
 		t.setCourse(courseService.getCourseById(dto.getCourseId()));
 		t.setTeacher(teacherService.getTeacherById(teacherId));
 		t.setSalaryPerStudent(dto.getSalary());
+		if(dto.getSubstituteId()!=null) {
+			t.setSubstitute(teacherService.getTeacherById(dto.getSubstituteId()));
+		}
 		
 		addTeaching(t);
 	}
