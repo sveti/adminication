@@ -27,8 +27,7 @@ public class LessonServiceImplementation implements LessonService{
 
 	@Override
 	public LessonDTO getLessonDTO(@Min(1) long idLesson) {
-		LessonDTO lessonDTO = restTemplate.getForObject("http://databaseService/courses/lessons/{idLesson}/display",LessonDTO.class,idLesson);
-		return lessonDTO;
+		return restTemplate.getForObject("http://databaseService/courses/lessons/{idLesson}/display",LessonDTO.class,idLesson);
 	}
 
 
@@ -50,7 +49,8 @@ public class LessonServiceImplementation implements LessonService{
 
 	@Override
 	public List<LessonDTO> getLessonsByCourseId(@Min(1) Long courseId) {
-		LessonDTO lessons[] = restTemplate.getForObject("http://databaseService/courses/lessons/{courseId}/lessons",LessonDTO[].class, courseId);
+		LessonDTO[] lessons = restTemplate.getForObject("http://databaseService/courses/lessons/{courseId}/lessons",LessonDTO[].class, courseId);
+		assert lessons != null;
 		return Arrays.asList(lessons);
 	}
 

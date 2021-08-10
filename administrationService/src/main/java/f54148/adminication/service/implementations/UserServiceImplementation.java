@@ -28,27 +28,25 @@ public class UserServiceImplementation implements UserService{
 	@Override
 	public List<DisplayUserDTO> getUsers() {
 		
-		DisplayUserDTO users[] = restTemplate.getForObject("http://databaseService/users/users",DisplayUserDTO[].class);
+		DisplayUserDTO[] users = restTemplate.getForObject("http://databaseService/users/users",DisplayUserDTO[].class);
+		assert users != null;
 		return Arrays.asList(users);
 	}
 
 	@Override
 	public DisplayUserDTO getUser(String username) {
-		
-		DisplayUserDTO user = restTemplate.getForObject("http://databaseService/users/displayUserDTO/{username}",DisplayUserDTO.class, username);
-		return user;
+
+		return restTemplate.getForObject("http://databaseService/users/displayUserDTO/{username}",DisplayUserDTO.class, username);
 	}
 
 	@Override
 	public String validateEmail(String email) {
-		String exists = restTemplate.getForObject("http://databaseService/users/validateEmail/{email}",String.class, email);
-		return exists;
+		return restTemplate.getForObject("http://databaseService/users/validateEmail/{email}",String.class, email);
 	}
 
 	@Override
 	public String validateUsername(String username) {
-		String exists = restTemplate.getForObject("http://databaseService/users/validateUsername/{username}",String.class, username);
-		return exists;
+		return restTemplate.getForObject("http://databaseService/users/validateUsername/{username}",String.class, username);
 	}
 
 	@Override

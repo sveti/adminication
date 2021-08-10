@@ -20,7 +20,8 @@ public class ParentServiceImplementation implements ParentService {
 
 	@Override
 	public List<StudentOfParentDTO> getStudentOfParentDTO(Long parentId) {
-		StudentOfParentDTO users[] = restTemplate.getForObject("http://databaseService/parents/{parentId}/students",StudentOfParentDTO[].class,parentId);
+		StudentOfParentDTO[] users = restTemplate.getForObject("http://databaseService/parents/{parentId}/students",StudentOfParentDTO[].class,parentId);
+		assert users != null;
 		return Arrays.asList(users);
 	}
 

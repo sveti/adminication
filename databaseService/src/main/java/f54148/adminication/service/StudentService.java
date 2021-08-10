@@ -42,36 +42,26 @@ public class StudentService {
 
 	public Student getStudentById(Long studentId) {
 		Optional<Student> opStudent = studentRepository.findById(studentId);
-		if (opStudent.isPresent()) {
-			return opStudent.get();
-		} else {
-			return null;
-		}
+		return opStudent.orElse(null);
 	}
 
 	public boolean addStudent(Student user) {
 		
 		//user.setPassword(encoder.encode(user.getPassword()));
-		
-		if (studentRepository.save(user) != null) {
-			return true;
-		} else {
-			return false;
-		}
+
+		studentRepository.save(user);
+		return true;
 	}
 
 	public boolean updateStudent(Student student) {
 
-		if (studentRepository.save(student) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		studentRepository.save(student);
+		return true;
 
 	}
 
 	public boolean deleteStudent(Long userId) {
-		if (studentRepository.findById(userId) != null) {
+		if (studentRepository.findById(userId).isPresent()) {
 			studentRepository.deleteById(userId);
 			return true;
 		} else {
@@ -83,7 +73,7 @@ public class StudentService {
 		Optional<Student> opUser = studentRepository.findById(studentId);
 		if (opUser.isPresent()) {
 			Student s = opUser.get();
-			List<Course> courses = new ArrayList<Course>();
+			List<Course> courses = new ArrayList<>();
 			for (Enrollment e : s.getEnrollments()) {
 
 				courses.add(e.getCourse());
@@ -99,7 +89,7 @@ public class StudentService {
 	public List<Event> getEventsStudentById(Long studentId) {
 		Optional<Student> opStudent = studentRepository.findById(studentId);
 		if (opStudent.isPresent()) {
-			List<Event> events = new ArrayList<Event>();
+			List<Event> events = new ArrayList<>();
 			
 			for(EventSignUp es:opStudent.get().getEventsSignedUp()) {
 				
@@ -117,7 +107,7 @@ public class StudentService {
 		Optional<Student> opUser = studentRepository.findById(studentId);
 		if (opUser.isPresent()) {
 			Student s = opUser.get();
-			List<Event> events = new ArrayList<Event>();
+			List<Event> events = new ArrayList<>();
 			for (EventWaitingList e : s.getEventWaitingList()) {
 				events.add(e.getEvent());
 			}
@@ -132,7 +122,7 @@ public class StudentService {
 		Optional<Student> opUser = studentRepository.findById(studentId);
 		if (opUser.isPresent()) {
 			Student s = opUser.get();
-			List<Course> courses = new ArrayList<Course>();
+			List<Course> courses = new ArrayList<>();
 			for (CourseWaitingList c : s.getCourseWaitingList()) {
 				courses.add(c.getCourse());
 			}
@@ -145,12 +135,7 @@ public class StudentService {
 
 	public Set<Attendance> getStudentAttendances(Long studentId) {
 		Optional<Student> opStudent = studentRepository.findById(studentId);
-		if (opStudent.isPresent()) {
-			return opStudent.get().getAttendances();
-
-		} else {
-			return null;
-		}
+		return opStudent.map(Student::getAttendances).orElse(null);
 	}
 	
 	public StudentScheduleDTO convertToStudentScheduleDTO(Schedule schedule) {
@@ -179,10 +164,8 @@ public class StudentService {
 	}
 	
 	private List<StudentAttendanceReportDTO> getMonthlyAttendancesOfStudent(Long studentId, Course c,Integer month, Integer year){
-		System.out.println("i have been called for course " + c.getTitle());
-		System.out.println("i have "+ c.getLessons().size() + " lessons");
-		
-		List<StudentAttendanceReportDTO> dto = new ArrayList<StudentAttendanceReportDTO>();
+
+		List<StudentAttendanceReportDTO> dto = new ArrayList<>();
 		
 		for(Lesson l : c.getLessons()) {
 			
@@ -225,7 +208,7 @@ public class StudentService {
 		
 		courses.removeIf(course -> course.getStatus()!= CourseStatus.STARTED);
 		
-		List<StudentMonthlyAttendanceDTO> dto = new ArrayList<StudentMonthlyAttendanceDTO>();
+		List<StudentMonthlyAttendanceDTO> dto = new ArrayList<>();
 		
 		for(Course c: courses) {
 			StudentMonthlyAttendanceDTO singleDto = new StudentMonthlyAttendanceDTO();

@@ -65,31 +65,20 @@ public class CourseService {
 
 	public Course getCourseById(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
-		if (opCourse.isPresent()) {
-			return opCourse.get();
-		} else {
-			return null;
-		}
+		return opCourse.orElse(null);
 	}
 
 	public boolean addCourse(Course course) {
-		if (courseRepository.save(course) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		courseRepository.save(course);
+		return true;
 	}
 
-	public boolean updateCourse(Course course) {
-		if (courseRepository.save(course) != null) {
-			return true;
-		} else {
-			return false;
-		}
+	public void updateCourse(Course course) {
+		courseRepository.save(course);
 	}
 
 	public boolean deleteCourse(Long courseId) {
-		if (courseRepository.findById(courseId) != null) {
+		if (courseRepository.findById(courseId).isPresent()) {
 			courseRepository.deleteById(courseId);
 			return true;
 		} else {
@@ -102,7 +91,7 @@ public class CourseService {
 		if (opCourse.isPresent()) {
 			Course c = opCourse.get();
 
-			List<Student> students = new ArrayList<Student>();
+			List<Student> students = new ArrayList<>();
 
 			for (Enrollment e : c.getEnrollments()) {
 				students.add(e.getStudent());
@@ -119,7 +108,7 @@ public class CourseService {
 		if (opCourse.isPresent()) {
 			Course c = opCourse.get();
 
-			List<Teacher> teachers = new ArrayList<Teacher>();
+			List<Teacher> teachers = new ArrayList<>();
 
 			for (Teaching e : c.getTeaching()) {
 				teachers.add(e.getTeacher());
@@ -133,20 +122,12 @@ public class CourseService {
 
 	public Set<Schedule> getScheduleByCourseId(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
-		if (opCourse.isPresent()) {
-			return opCourse.get().getCourseSchedule();
-		} else {
-			return null;
-		}
+		return opCourse.map(Course::getCourseSchedule).orElse(null);
 	}
 
 	public Collection<CourseWaitingList> getCourseWaitingList(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
-		if (opCourse.isPresent()) {
-			return opCourse.get().getCourseWaitingList();
-		} else {
-			return null;
-		}
+		return opCourse.<Collection<CourseWaitingList>>map(Course::getCourseWaitingList).orElse(null);
 	}
 
 	public List<Student> getStudentsWaitingByCourseId(Long courseId) {
@@ -154,7 +135,7 @@ public class CourseService {
 		if (opCourse.isPresent()) {
 			Course c = opCourse.get();
 
-			List<Student> students = new ArrayList<Student>();
+			List<Student> students = new ArrayList<>();
 
 			for (CourseWaitingList cw : c.getCourseWaitingList()) {
 				students.add(cw.getStudent());
@@ -168,29 +149,17 @@ public class CourseService {
 
 	public Set<Lesson> getLessonsByCourseId(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
-		if (opCourse.isPresent()) {
-			return opCourse.get().getLessons();
-		} else {
-			return null;
-		}
+		return opCourse.map(Course::getLessons).orElse(null);
 	}
 
 	public Set<File> getFilesByCourseId(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
-		if (opCourse.isPresent()) {
-			return opCourse.get().getFiles();
-		} else {
-			return null;
-		}
+		return opCourse.map(Course::getFiles).orElse(null);
 	}
 
 	public Set<CourseDetail> getCourseDetailsByCourseId(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
-		if (opCourse.isPresent()) {
-			return opCourse.get().getDetails();
-		} else {
-			return null;
-		}
+		return opCourse.map(Course::getDetails).orElse(null);
 	}
 
 	public List<Teacher> getSubstitutesByCourseId(Long id) {
@@ -198,7 +167,7 @@ public class CourseService {
 		if (opCourse.isPresent()) {
 			Course c = opCourse.get();
 
-			List<Teacher> teachers = new ArrayList<Teacher>();
+			List<Teacher> teachers = new ArrayList<>();
 
 			for (Teaching e : c.getTeaching()) {
 				//if the teaching has a substitute add the sub teacher to the list
@@ -230,8 +199,7 @@ public class CourseService {
 	}
 
 	public UpcommingCourseDTO convertToUpcommingCourseDTO(Course course) {
-		UpcommingCourseDTO upcomming =  modelMapper.map(course, UpcommingCourseDTO.class);
-		return upcomming;
+		return modelMapper.map(course, UpcommingCourseDTO.class);
         
     }
 
@@ -244,7 +212,7 @@ public class CourseService {
 		
 		List<Course> courses = getCoursesByStatusAndTeacherId(CourseStatus.UPCOMMING,idTeacher);
 		
-		List<UpcommingCourseDTO> upcommingList = new ArrayList<UpcommingCourseDTO>();
+		List<UpcommingCourseDTO> upcommingList = new ArrayList<>();
 		
 		for(Course c: courses) {
 			
@@ -258,7 +226,7 @@ public class CourseService {
 	public List<UpcommingCourseDTO> getUpcommingCoursesDTOByStudentId(Long idStudent) {
 		List<Course> courses = getCoursesByStatusAndStudentId(CourseStatus.UPCOMMING,idStudent);
 		
-		List<UpcommingCourseDTO> upcommingList = new ArrayList<UpcommingCourseDTO>();
+		List<UpcommingCourseDTO> upcommingList = new ArrayList<>();
 		
 		for(Course c: courses) {
 			
@@ -272,8 +240,7 @@ public class CourseService {
 	
 	
 	public CourseWithDetailsDTO convertToCourseWithDetailsDTO(Course c) {
-		CourseWithDetailsDTO courseWithDetails =  modelMapper.map(c, CourseWithDetailsDTO.class);
-		return courseWithDetails;
+		return modelMapper.map(c, CourseWithDetailsDTO.class);
 	}
 	
 	public CourseWithDetailsDTO getCourseWithDetailsDTO(Long idCourse ) {
@@ -296,8 +263,7 @@ public class CourseService {
 	
 	
 	public StartedCourseDTO convertToStartedCourseDTO(Course c) {
-		StartedCourseDTO startedCourse =  modelMapper.map(c, StartedCourseDTO.class);
-		return startedCourse;
+		return modelMapper.map(c, StartedCourseDTO.class);
 	}
 	
 	public StartedCourseStudentDTO convertToStartedCourseStudentDTO(Course c,Long studentId) {
@@ -327,7 +293,7 @@ public class CourseService {
 	public List<StartedCourseDTO> getStartedCourseDTOByTeacherId(Long idTeacher) {
 		List<Course> courses = getCoursesByStatusAndTeacherId(CourseStatus.STARTED,idTeacher);
 		
-		List<StartedCourseDTO> startedList = new ArrayList<StartedCourseDTO>();
+		List<StartedCourseDTO> startedList = new ArrayList<>();
 		
 		for(Course c: courses) {
 			
@@ -342,7 +308,7 @@ public class CourseService {
 		
 		List<Course> courses = getCoursesByStatusAndStudentId(CourseStatus.STARTED,idStudent);
 		
-		List<StartedCourseStudentDTO> startedList = new ArrayList<StartedCourseStudentDTO>();
+		List<StartedCourseStudentDTO> startedList = new ArrayList<>();
 		
 		for(Course c: courses) {
 			
@@ -355,14 +321,13 @@ public class CourseService {
 	
 	
 	public FinshedCourseDTO convertToFinshedCourseDTO(Course c) {
-		FinshedCourseDTO finishedCourse =  modelMapper.map(c, FinshedCourseDTO.class);
-		return finishedCourse;
+		return modelMapper.map(c, FinshedCourseDTO.class);
 	}
 	
 	public List<FinshedCourseDTO> getFinshedCourseDTOByTeacherId(Long idTeacher) {
 		List<Course> courses = getCoursesByStatusAndTeacherId(CourseStatus.FINISHED,idTeacher);
 		
-		List<FinshedCourseDTO> finshedList = new ArrayList<FinshedCourseDTO>();
+		List<FinshedCourseDTO> finshedList = new ArrayList<>();
 		for(Course c: courses) {
 			finshedList.add(convertToFinshedCourseDTO(c));	
 		}
@@ -372,7 +337,7 @@ public class CourseService {
 
 	public List<StartedCourseDTO> getSubStartedCourseDTOByTeacherId(Long idTeacher) {
 		List <Course> courses = teacherService.getsubstituteCoursesByTeacherId(idTeacher);
-		List<StartedCourseDTO> startedList = new ArrayList<StartedCourseDTO>();
+		List<StartedCourseDTO> startedList = new ArrayList<>();
 		for(Course c: courses) {
 			if(c.getStatus()==CourseStatus.STARTED)
 			startedList.add(convertToStartedCourseDTO(c));
@@ -382,21 +347,20 @@ public class CourseService {
 	}
 	
 	public StudentAttendanceDTO convertToStudentAttendanceDTO(Student student) {
-		
-		StudentAttendanceDTO studentDTO =  modelMapper.map(student, StudentAttendanceDTO.class);
-		return studentDTO;
+
+		return modelMapper.map(student, StudentAttendanceDTO.class);
 	}
-	
+
 	public List<StudentAttendanceDTO> getStudentAttendanceDTOOfLesson(Long courseId){
 		List<Student> students = getStudentsByCourseId(courseId);
 		List<StudentAttendanceDTO> studentsDTO = new ArrayList<>();
-		
+
 		for(Student s: students) {
 			studentsDTO.add(convertToStudentAttendanceDTO(s));
 		}
-		
+
 		return studentsDTO;
-		
+
 	}
 	
 	public List<StudentAttendanceDTO> getStudentAttendanceDTOOfCourse(Long courseId){
@@ -426,9 +390,8 @@ public class CourseService {
 	}
 
 	private AdminAllCoursesDTO convertToAdminAllCoursesDTO(Course c) {
-		AdminAllCoursesDTO dto = modelMapper.map(c, AdminAllCoursesDTO.class);
-		
-		return dto;
+
+		return modelMapper.map(c, AdminAllCoursesDTO.class);
 	}
 
 	

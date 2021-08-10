@@ -43,19 +43,12 @@ public class CourseWaitingListService {
 
 	public CourseWaitingList getCourseWaitingListById(Long courseWaitingListId) {
 		Optional<CourseWaitingList> opCourseWaitingList = courseWaitingListRepository.findById(courseWaitingListId);
-		if (opCourseWaitingList.isPresent()) {
-			return opCourseWaitingList.get();
-		} else {
-			return null;
-		}
+		return opCourseWaitingList.orElse(null);
 	}
 
 	public boolean addCourseWaitingList(CourseWaitingList courseWaitingList) {
-		if (courseWaitingListRepository.save(courseWaitingList) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		courseWaitingListRepository.save(courseWaitingList);
+		return true;
 	}
 	
 	public boolean addWaitingListSignUp(AddCourseWaitingListSignUpDTO dto) {
@@ -67,11 +60,8 @@ public class CourseWaitingListService {
 	}
 
 	public boolean updateCourseWaitingList(CourseWaitingList courseWaitingList) {
-		if (courseWaitingListRepository.save(courseWaitingList) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		courseWaitingListRepository.save(courseWaitingList);
+		return true;
 	}
 
 	public boolean deleteCourseWaitingList(Long courseWaitingListId) {
@@ -113,20 +103,12 @@ public class CourseWaitingListService {
 
 	public Student getStudentByCourseWaitingListId(Long courseWaitingListId) {
 		Optional<CourseWaitingList> opCourseWaitingList = courseWaitingListRepository.findById(courseWaitingListId);
-		if (opCourseWaitingList.isPresent()) {
-			return opCourseWaitingList.get().getStudent();
-		} else {
-			return null;
-		}
+		return opCourseWaitingList.map(CourseWaitingList::getStudent).orElse(null);
 	}
 
 	public Course getCourseByCourseWaitingListId(Long courseWaitingListId) {
 		Optional<CourseWaitingList> opCourseWaitingList = courseWaitingListRepository.findById(courseWaitingListId);
-		if (opCourseWaitingList.isPresent()) {
-			return opCourseWaitingList.get().getCourse();
-		} else {
-			return null;
-		}
+		return opCourseWaitingList.map(CourseWaitingList::getCourse).orElse(null);
 	}
 	
 	public List<CourseOfStudentInWaitingListDTO> getWaitingListsOfStudent(Long studentId){

@@ -43,27 +43,17 @@ public class EventWaitingListService {
 
 	public EventWaitingList getEventWaitingListById(Long eventWaitingListId) {
 		Optional<EventWaitingList> opEventWaitingList = eventWaitingListRepository.findById(eventWaitingListId);
-		if (opEventWaitingList.isPresent()) {
-			return opEventWaitingList.get();
-		} else {
-			return null;
-		}
+		return opEventWaitingList.orElse(null);
 	}
 
 	public boolean addEventWaitingList(EventWaitingList eventWaitingList) {
-		if (eventWaitingListRepository.save(eventWaitingList) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		eventWaitingListRepository.save(eventWaitingList);
+		return true;
 	}
 
 	public boolean updateEventWaitingList(EventWaitingList eventWaitingList) {
-		if (eventWaitingListRepository.save(eventWaitingList) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		eventWaitingListRepository.save(eventWaitingList);
+		return true;
 	}
 
 	public boolean deleteEventWaitingList(Long eventWaitingListId) {
@@ -98,20 +88,12 @@ public class EventWaitingListService {
 
 	public Student getStudentByEventWaitingListId(Long eventWaitingListId) {
 		Optional<EventWaitingList> opEventWaitingList = eventWaitingListRepository.findById(eventWaitingListId);
-		if (opEventWaitingList.isPresent()) {
-			return opEventWaitingList.get().getStudent();
-		} else {
-			return null;
-		}
+		return opEventWaitingList.map(EventWaitingList::getStudent).orElse(null);
 	}
 
 	public Event getEventByEventWaitingListId(Long eventWaitingListId) {
 		Optional<EventWaitingList> opEventWaitingList = eventWaitingListRepository.findById(eventWaitingListId);
-		if (opEventWaitingList.isPresent()) {
-			return opEventWaitingList.get().getEvent();
-		} else {
-			return null;
-		}
+		return opEventWaitingList.map(EventWaitingList::getEvent).orElse(null);
 	}
 	
 	public Integer getNumberOfStudentInQueue(EventWaitingList ew) {

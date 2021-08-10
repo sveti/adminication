@@ -8,7 +8,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import f54148.adminication.dto.DisplayUserDTO;
+
 import f54148.adminication.dto.NotificationDTO;
 import f54148.adminication.entity.Draft;
 import f54148.adminication.entity.MessageStatus;
@@ -27,7 +27,7 @@ public class NotificationService {
 
 	private final UserService userService;
 	
-	private final ModelMapper modelMapper;;
+	private final ModelMapper modelMapper;
 	
 
 	public List<Notification> getNotifications() {
@@ -38,19 +38,12 @@ public class NotificationService {
 
 	public Notification getNotificationById(Long notificationId) {
 		Optional<Notification> opNotification = notificationRepository.findById(notificationId);
-		if (opNotification.isPresent()) {
-			return opNotification.get();
-		} else {
-			return null;
-		}
+		return opNotification.orElse(null);
 	}
 
 	public boolean addNotification(Notification notification) {
-		if (notificationRepository.save(notification) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		notificationRepository.save(notification);
+		return true;
 	}
 	
 	public Notification addNotificationAndGetNotification(Notification notification) {
@@ -58,11 +51,8 @@ public class NotificationService {
 	}
 
 	public boolean updateNotification(Notification notification) {
-		if (notificationRepository.save(notification) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		notificationRepository.save(notification);
+		return true;
 	}
 
 	public boolean deleteNotification(Long notificationId) {
@@ -88,7 +78,7 @@ public class NotificationService {
 	public List<Notification> getNotificationsSendByUserID(Long id) {
 		List<Notification> notificationList = getNotifications();
 
-		List<Notification> fromUser = new ArrayList<Notification>();
+		List<Notification> fromUser = new ArrayList<>();
 
 		for (Notification n : notificationList) {
 
@@ -100,7 +90,7 @@ public class NotificationService {
 		return fromUser;
 	}
 	
-	public boolean sendDraft(Long draftId,Long userId) {
+	public void sendDraft(Long draftId, Long userId) {
 		
 		try {
 		Notification n = new Notification();
@@ -112,11 +102,9 @@ public class NotificationService {
 		
 		Notification saved = addNotificationAndGetNotification(n);
 		draftService.addNotification(d,saved);
-		
-		return true;
+
 		}
 		catch(Exception e) {
-			return false;
 		}
 		
 		

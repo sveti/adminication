@@ -43,27 +43,17 @@ public class AttendanceService {
 
 	public Attendance getAttendanceById(Long attendanceId) {
 		Optional<Attendance> opAttendance = attendanceRepository.findById(attendanceId);
-		if (opAttendance.isPresent()) {
-			return opAttendance.get();
-		} else {
-			return null;
-		}
+		return opAttendance.orElse(null);
 	}
 
 	public boolean addAttendance(Attendance attendance) {
-		if (attendanceRepository.save(attendance) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		attendanceRepository.save(attendance);
+		return true;
 	}
 
 	public boolean updateAttendance(Attendance attendance) {
-		if (attendanceRepository.save(attendance) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		attendanceRepository.save(attendance);
+		return true;
 	}
 
 	public boolean deleteAttendance(Long attendanceId) {
@@ -87,8 +77,7 @@ public class AttendanceService {
 	}
 	
 	public Attendance convertToAttendance(AttendanceDTO attDTO) {
-		Attendance attendace =  modelMapper.map(attDTO, Attendance.class);
-		return attendace;
+		return modelMapper.map(attDTO, Attendance.class);
 		
 	
 	}

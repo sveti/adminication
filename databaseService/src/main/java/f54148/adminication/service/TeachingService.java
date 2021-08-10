@@ -2,6 +2,7 @@ package f54148.adminication.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -45,16 +46,12 @@ public class TeachingService {
 
 	public Teaching getTeachingById(Long teachingId) {
 		Optional<Teaching> opTeaching = teachingRepository.findById(teachingId);
-		if (opTeaching.isPresent()) {
-			return opTeaching.get();
-		} else {
-			return null;
-		}
+		return opTeaching.orElse(null);
 	}
 
 	public List<Teaching> getTeachingsByCourseId(Long courseId) {
 		List<Teaching> teachings = getTeachings();
-		teachings.removeIf(teaching->teaching.getCourse().getId()!=courseId);
+		teachings.removeIf(teaching-> !Objects.equals(teaching.getCourse().getId(), courseId));
 		return teachings;
 
 	}
@@ -68,19 +65,13 @@ public class TeachingService {
 	}
 
 	public boolean addTeaching(Teaching teaching) {
-		if (teachingRepository.save(teaching) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		teachingRepository.save(teaching);
+		return true;
 	}
 
 	public boolean updateTeaching(Teaching teaching) {
-		if (teachingRepository.save(teaching) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		teachingRepository.save(teaching);
+		return true;
 	}
 
 	public boolean deleteTeaching(Long teachingId) {
@@ -136,7 +127,7 @@ public class TeachingService {
 		if(teaching.getId() != null) {
 			
 			Teaching t = getTeachingById(teaching.getId());
-			if(t.getSalaryPerStudent() == teaching.getSalary()) {
+			if(Objects.equals(t.getSalaryPerStudent(), teaching.getSalary())) {
 				return t;
 			}
 			else {

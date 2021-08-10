@@ -38,7 +38,7 @@ public class EventController {
 	@PostMapping(path = "/addEvent")
 	public @ResponseBody String addNewEvent(@RequestBody Event event) {
 
-		Set<Schedule> schedules = new HashSet<Schedule>();
+		Set<Schedule> schedules = new HashSet<>();
 
 		for (Schedule s : event.getEventSchedule()) {
 

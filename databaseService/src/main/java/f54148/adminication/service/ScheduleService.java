@@ -1,5 +1,6 @@
 package f54148.adminication.service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,6 @@ import f54148.adminication.dto.EditCourseScheduleDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Schedule;
-import f54148.adminication.entity.Teaching;
 import f54148.adminication.repository.ScheduleRepository;
 
 @Service
@@ -45,27 +45,16 @@ public class ScheduleService {
 
 	public Schedule getScheduleById(Long scheduleId) {
 		Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
-		if (opSchedule.isPresent()) {
-			return opSchedule.get();
-		} else {
-			return null;
-		}
+		return opSchedule.orElse(null);
 	}
 
 	public boolean addSchedule(Schedule schedule) {
-		if (scheduleRepository.save(schedule) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		scheduleRepository.save(schedule);
+		return true;
 	}
 
-	public boolean updateSchedule(Schedule schedule) {
-		if (scheduleRepository.save(schedule) != null) {
-			return true;
-		} else {
-			return false;
-		}
+	public void updateSchedule(Schedule schedule) {
+		scheduleRepository.save(schedule);
 	}
 
 	public boolean deleteSchedule(Long scheduleId) {
@@ -93,39 +82,19 @@ public class ScheduleService {
 
 	public Set<Course> getCoursesbyScheduleId(Long scheduleId) {
 		Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
-		if (opSchedule.isPresent()) {
-			return opSchedule.get().getScheduledCourses();
-		} else {
-			return null;
-		}
+		return opSchedule.map(Schedule::getScheduledCourses).orElse(null);
 	}
 
 	public Set<Event> getEventsbyScheduleId(Long scheduleId) {
 		Optional<Schedule> opSchedule = scheduleRepository.findById(scheduleId);
-		if (opSchedule.isPresent()) {
-			return opSchedule.get().getScheduledEvents();
-		} else {
-			return null;
-		}
+		return opSchedule.map(Schedule::getScheduledEvents).orElse(null);
 	}
 
 	public Schedule findOrCreateSchedule(AddCourseScheduleDTO schedule) {
-		
-		Optional<Schedule> opSchedule = scheduleRepository.findByStartTimeAndEndTimeAndStartDate(schedule.getStartTime(),schedule.getEndTime(),schedule.getStartDate());
-		
-		if (opSchedule.isPresent()) {
-			return opSchedule.get();
-		} else {
-			
-			Schedule s = new Schedule();
-			s.setStartTime(schedule.getStartTime());
-			s.setEndTime(schedule.getEndTime());
-			s.setStartDate(schedule.getStartDate());
-			
-			return scheduleRepository.save(s);
-		}
+
+		return getScheduleByParameters(schedule.getStartTime(), schedule.getEndTime(), schedule.getStartDate());
 	}
-	
+
 
 	public Schedule findOrCreateSchedule(EditCourseScheduleDTO schedule) {
 		
@@ -135,21 +104,25 @@ public class ScheduleService {
 				return s;
 			}
 		}
-		
 
-			Optional<Schedule> opSchedule = scheduleRepository.findByStartTimeAndEndTimeAndStartDate(schedule.getStartTime(),schedule.getEndTime(),schedule.getStartDate());
-			
-			if (opSchedule.isPresent()) {
-				return opSchedule.get();
-			} else {
-				Schedule s = new Schedule();
-				s.setStartTime(schedule.getStartTime());
-				s.setEndTime(schedule.getEndTime());
-				s.setStartDate(schedule.getStartDate());
-				
-				return scheduleRepository.save(s);
-			}
-		
+
+		return getScheduleByParameters(schedule.getStartTime(), schedule.getEndTime(), schedule.getStartDate());
+
+	}
+
+	private Schedule getScheduleByParameters(LocalTime startTime, LocalTime endTime, LocalDate startDate) {
+		Optional<Schedule> opSchedule = scheduleRepository.findByStartTimeAndEndTimeAndStartDate(startTime, endTime, startDate);
+
+		if (opSchedule.isPresent()) {
+			return opSchedule.get();
+		} else {
+			Schedule s = new Schedule();
+			s.setStartTime(startTime);
+			s.setEndTime(endTime);
+			s.setStartDate(startDate);
+
+			return scheduleRepository.save(s);
+		}
 	}
 
 	public void removeScheduleFromCourse(Schedule sch, Course c) {

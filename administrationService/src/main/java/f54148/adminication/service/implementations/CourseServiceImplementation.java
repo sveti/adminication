@@ -34,8 +34,7 @@ public class CourseServiceImplementation implements CourseService {
 
 	@Override
 	public DisplayEditCourseDTO getEditCourseDTO(Long idCourse) {
-		DisplayEditCourseDTO course = restTemplate.getForObject("http://databaseService/courses/edit/{idCourse}",DisplayEditCourseDTO.class, idCourse);
-		return course;
+		return restTemplate.getForObject("http://databaseService/courses/edit/{idCourse}",DisplayEditCourseDTO.class, idCourse);
 	}
 
 	@Override
@@ -49,7 +48,8 @@ public class CourseServiceImplementation implements CourseService {
 
 	@Override
 	public List<CourseTitles> getCourseTitles() {
-		CourseTitles courses[] = restTemplate.getForObject("http://databaseService/courses/titles",CourseTitles[].class);
+		CourseTitles[] courses = restTemplate.getForObject("http://databaseService/courses/titles",CourseTitles[].class);
+		assert courses != null;
 		return Arrays.asList(courses);
 	}
 }

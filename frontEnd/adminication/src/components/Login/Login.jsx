@@ -27,8 +27,10 @@ export default function Login(props) {
     } catch (ex) {
       if (ex.response && ex.response.data.status === 401) {
         setErrormessage("Invalid username or password!");
-      } else {
+      } else if (ex.response) {
         setErrormessage(ex.response.data.status);
+      } else {
+        setErrormessage("An error has occured! Try again later");
       }
     }
   }

@@ -20,14 +20,14 @@ public class NotificationServiceImplementation implements NotificationService {
 	
 	@Override
 	public List<NotificationDTO> getAllNotificationOfUser(Long userid) {
-		NotificationDTO notifications[] = restTemplate.getForObject("http://databaseService/users/notifications/user/{userid}",NotificationDTO[].class,userid);
+		NotificationDTO[] notifications = restTemplate.getForObject("http://databaseService/users/notifications/user/{userid}",NotificationDTO[].class,userid);
+		assert notifications != null;
 		return Arrays.asList(notifications);
 	}
 
 	@Override
 	public String dismissNotification(Long id) {
-		String exists = restTemplate.getForObject("http://databaseService/users/notifications/{id}/dismiss",String.class, id);
-		return exists;
+		return restTemplate.getForObject("http://databaseService/users/notifications/{id}/dismiss",String.class, id);
 	}
 
 }

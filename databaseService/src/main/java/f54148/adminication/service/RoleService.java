@@ -19,34 +19,21 @@ public class RoleService {
 	private final RoleRepository roleRepository;
 	
 	public List<Role> getRoles() {
-		List<Role> roleList = new ArrayList<>();
-		roleRepository.findAll().forEach(roleList::add);
-		return roleList;
+		return new ArrayList<>(roleRepository.findAll());
 	}
 
 	public Role getRoleById(Long roleId) {
 		Optional<Role> opRole = roleRepository.findById(roleId);
-		if (opRole.isPresent()) {
-			return opRole.get();
-		} else {
-			return null;
-		}
+		return opRole.orElse(null);
 	}
 
 	public boolean addRole(Role role) {
-		if (roleRepository.save(role) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		roleRepository.save(role);
+		return true;
 	}
 
-	public boolean updateRole(Role role) {
-		if (roleRepository.save(role) != null) {
-			return true;
-		} else {
-			return false;
-		}
+	public void updateRole(Role role) {
+		roleRepository.save(role);
 	}
 
 	public boolean deleteRole(Long roleId) {
@@ -61,11 +48,7 @@ public class RoleService {
 
 	public Set<Privilege> getRolePrivileges(Long roleId) {
 		Optional<Role> opRole = roleRepository.findById(roleId);
-		if (opRole.isPresent()) {
-			return opRole.get().getPrivileges();
-		} else {
-			return null;
-		}
+		return opRole.map(Role::getPrivileges).orElse(null);
 	}
 
 	public Role getRoleByName(String roleName) {

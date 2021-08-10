@@ -1,7 +1,6 @@
 package f54148.adminication.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -41,36 +40,21 @@ public class CourseDetailService {
 
 	public CourseDetail getCourseDetailsById(Long courseId) {
 		Optional<CourseDetail> opcourseDetails = repo.findById(courseId);
-		if (opcourseDetails.isPresent()) {
-			return opcourseDetails.get();
-		} else {
-			return null;
-		}
+		return opcourseDetails.orElse(null);
 	}
 
 	public Set<Course> getCourses(Long courseId) {
 		Optional<CourseDetail> opcourseDetails = repo.findById(courseId);
-		if (opcourseDetails.isPresent()) {
-			return opcourseDetails.get().getCourses();
-		} else {
-			return null;
-		}
+		return opcourseDetails.map(CourseDetail::getCourses).orElse(null);
 	}
 
 	public boolean addCourseDetail(CourseDetail courseDetail) {
-		if (repo.save(courseDetail) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		repo.save(courseDetail);
+		return true;
 	}
 
-	public boolean updateCourseDetails(CourseDetail courseDetails) {
-		if (repo.save(courseDetails) != null) {
-			return true;
-		} else {
-			return false;
-		}
+	public void updateCourseDetails(CourseDetail courseDetails) {
+		repo.save(courseDetails);
 	}
 
 	public boolean deleteCourseDetails(Long courseDetailsId) {
@@ -93,8 +77,7 @@ public class CourseDetailService {
 	}
 	
 	public CourseDetailsDTO convertToCourseDetailsDTO(CourseDetail cd) {
-		CourseDetailsDTO dto = modelMapper.map(cd, CourseDetailsDTO.class);
-		return dto;
+		return modelMapper.map(cd, CourseDetailsDTO.class);
 	}
 
 	public List<CourseDetailsDTO> getCourseDetailsDTO() {
@@ -110,8 +93,7 @@ public class CourseDetailService {
 		
 		CourseDetail courseDetail = new CourseDetail();
 		courseDetail.setDescription(newDetail);
-		CourseDetail saved = repo.save(courseDetail);
-		return saved;
+		return repo.save(courseDetail);
 	}
 
 	public void removeDetailFromCourse(CourseDetail cs, Course c) {

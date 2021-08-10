@@ -24,19 +24,22 @@ public class StudentServiceImplementation implements StudentService {
 
 	@Override
 	public List<StudentAttendanceDTO> getStudentsOfCourse(@Min(1) long idCourse) {
-		StudentAttendanceDTO students[] = restTemplate.getForObject("http://databaseService/courses/{idCourse}/students",StudentAttendanceDTO[].class, idCourse);
+		StudentAttendanceDTO[] students = restTemplate.getForObject("http://databaseService/courses/{idCourse}/students",StudentAttendanceDTO[].class, idCourse);
+		assert students != null;
 		return Arrays.asList(students);
 	}
 
 	@Override
 	public List<StudentGradesDTO> getGradesOfStudentsOfCourse(@Min(1) Long courseId) {
-		StudentGradesDTO students[] = restTemplate.getForObject("http://databaseService/enrollments/{courseId}/grades",StudentGradesDTO[].class, courseId);
+		StudentGradesDTO[] students = restTemplate.getForObject("http://databaseService/enrollments/{courseId}/grades",StudentGradesDTO[].class, courseId);
+		assert students != null;
 		return Arrays.asList(students);
 	}
 
 	@Override
 	public List<GradesOfStudentDTO> getGradesOfStudent(@Min(1) Long studentId) {
-		GradesOfStudentDTO students[] = restTemplate.getForObject("http://databaseService/students/{studentId}/grades",GradesOfStudentDTO[].class, studentId);
+		GradesOfStudentDTO[] students = restTemplate.getForObject("http://databaseService/students/{studentId}/grades",GradesOfStudentDTO[].class, studentId);
+		assert students != null;
 		return Arrays.asList(students);
 	}
 

@@ -17,34 +17,22 @@ public class PrivilegeService {
 private final PrivilegeRepository privilegeRepository;
 	
 	public List<Privilege> getPrivileges() {
-		List<Privilege> privilegeList = new ArrayList<>();
-		privilegeRepository.findAll().forEach(privilegeList::add);
-		return privilegeList;
+		return new ArrayList<>(privilegeRepository.findAll());
 	}
 
 	public Privilege getPrivilegeById(Long privilegeId) {
 		Optional<Privilege> opPrivilege = privilegeRepository.findById(privilegeId);
-		if (opPrivilege.isPresent()) {
-			return opPrivilege.get();
-		} else {
-			return null;
-		}
+		return opPrivilege.orElse(null);
 	}
 
 	public boolean addPrivilege(Privilege privilege) {
-		if (privilegeRepository.save(privilege) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		privilegeRepository.save(privilege);
+		return true;
 	}
 
 	public boolean updatePrivilege(Privilege privilege) {
-		if (privilegeRepository.save(privilege) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		privilegeRepository.save(privilege);
+		return true;
 	}
 
 	public boolean deletePrivilege(Long privilegeId) {

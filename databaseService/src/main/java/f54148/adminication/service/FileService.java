@@ -40,27 +40,17 @@ public class FileService {
 
 	public File getFileById(Long fileId) {
 		Optional<File> opFile = fileRepository.findById(fileId);
-		if (opFile.isPresent()) {
-			return opFile.get();
-		} else {
-			return null;
-		}
+		return opFile.orElse(null);
 	}
 
 	public boolean addFile(File file) {
-		if (fileRepository.save(file) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		fileRepository.save(file);
+		return true;
 	}
 
 	public boolean updateFile(File file) {
-		if (fileRepository.save(file) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		fileRepository.save(file);
+		return true;
 	}
 
 	public boolean deleteFile(Long fileId) {

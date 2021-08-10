@@ -20,7 +20,8 @@ public class StudentServiceImplementation implements StudentService {
 
 	@Override
 	public List<StudentMonthlyAttendanceDTO> getStudentReport(Long studentId, Integer month, Integer year) {
-		StudentMonthlyAttendanceDTO statistics[] = restTemplate.getForObject("http://databaseService/students/{teacherId}/{month}/{year}",StudentMonthlyAttendanceDTO[].class, studentId,month,year);
+		StudentMonthlyAttendanceDTO[] statistics = restTemplate.getForObject("http://databaseService/students/{teacherId}/{month}/{year}",StudentMonthlyAttendanceDTO[].class, studentId,month,year);
+		assert statistics != null;
 		return Arrays.asList(statistics);
 	}
 

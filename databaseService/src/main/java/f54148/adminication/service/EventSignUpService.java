@@ -47,27 +47,17 @@ public class EventSignUpService {
 
 	public EventSignUp getEventSignUpById(Long eventSignUpId) {
 		Optional<EventSignUp> opEventSignUp = eventSignUpRepository.findById(eventSignUpId);
-		if (opEventSignUp.isPresent()) {
-			return opEventSignUp.get();
-		} else {
-			return null;
-		}
+		return opEventSignUp.orElse(null);
 	}
 
 	public boolean addEventSignUp(EventSignUp eventSignUp) {
-		if (eventSignUpRepository.save(eventSignUp) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		eventSignUpRepository.save(eventSignUp);
+		return true;
 	}
 
 	public boolean updateEventSignUp(EventSignUp eventSignUp) {
-		if (eventSignUpRepository.save(eventSignUp) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		eventSignUpRepository.save(eventSignUp);
+		return true;
 	}
 
 	public boolean deleteEventSignUp(Long eventSignUpId) {
@@ -133,10 +123,8 @@ public class EventSignUpService {
 		
 		Student s = studentService.getStudentById(studentId);
 		Event e = eventService.getEventById(eventId);
-		
-		EventSignUp esu = eventSignUpRepository.findByStudentAndEvent(s,e);
-		
-		return esu;
+
+		return eventSignUpRepository.findByStudentAndEvent(s,e);
 	}
 	
 	public boolean deleteEventSignUpByStudentIdAndEventId(Long studentId, Long eventId) {

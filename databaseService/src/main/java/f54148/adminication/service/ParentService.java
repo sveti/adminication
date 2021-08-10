@@ -30,34 +30,24 @@ public class ParentService {
 
 	public Parent getParentById(Long parentId) {
 		Optional<Parent> opParent = parentRepository.findById(parentId);
-		if (opParent.isPresent()) {
-			return opParent.get();
-		} else {
-			return null;
-		}
+		return opParent.orElse(null);
 	}
 
 	public boolean addParent(Parent parent) {
 		
 		//parent.setPassword(encoder.encode(parent.getPassword()));
-		
-		if (parentRepository.save(parent) != null) {
-			return true;
-		} else {
-			return false;
-		}
+
+		parentRepository.save(parent);
+		return true;
 	}
 
 	public boolean updateParent(Parent parent) {
-		if (parentRepository.save(parent) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		parentRepository.save(parent);
+		return true;
 	}
 
 	public boolean deleteParent(Long parentId) {
-		if (parentRepository.findById(parentId) != null) {
+		if (parentRepository.findById(parentId).isPresent()) {
 			parentRepository.deleteById(parentId);
 			return true;
 		} else {
@@ -67,18 +57,8 @@ public class ParentService {
 
 	public Set<Student> getChildrenByParentId(Long parentId) {
 		Optional<Parent> opParent = parentRepository.findById(parentId);
-		if (opParent.isPresent()) {
-			return opParent.get().getChildren();
-		} else {
-			return null;
-		}
+		return opParent.map(Parent::getChildren).orElse(null);
 	}
-	
-//	public String encodePassword(String pass) {
-//		
-//		return encoder.encode(pass);
-//		
-//	}
 	
 	public List<StudentOfParentDTO> getStudentOfParentDTO(Long parentId){
 		Set<Student> students = getChildrenByParentId(parentId);

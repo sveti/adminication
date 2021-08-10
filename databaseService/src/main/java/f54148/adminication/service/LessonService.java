@@ -1,10 +1,6 @@
 package f54148.adminication.service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
@@ -54,7 +50,7 @@ public class LessonService {
 	public List<Lesson> getLessonsByCourseId(Long courseID) {
 		List<Lesson> lessonList = new ArrayList<>();
 		lessonRepository.findAll().forEach(lessonList::add);
-		lessonList.removeIf(lesson->lesson.getCourse().getId()!=courseID);
+		lessonList.removeIf(lesson-> !Objects.equals(lesson.getCourse().getId(), courseID));
 		return lessonList;
 	}
 	
@@ -68,27 +64,17 @@ public class LessonService {
 
 	public Lesson getLessonById(Long lessonId) {
 		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
-		if (opLesson.isPresent()) {
-			return opLesson.get();
-		} else {
-			return null;
-		}
+		return opLesson.orElse(null);
 	}
 
 	public boolean addLesson(Lesson lesson) {
-		if (lessonRepository.save(lesson) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		lessonRepository.save(lesson);
+		return true;
 	}
 
 	public boolean updateLesson(Lesson lesson) {
-		if (lessonRepository.save(lesson) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		lessonRepository.save(lesson);
+		return true;
 	}
 
 	public boolean deleteLesson(Long lessonId) {
@@ -117,18 +103,14 @@ public class LessonService {
 
 	public Set<Attendance> getAttendancesByLessonId(Long lessonId) {
 		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
-		if (opLesson.isPresent()) {
-			return opLesson.get().getAttendances();
-		} else {
-			return null;
-		}
+		return opLesson.map(Lesson::getAttendances).orElse(null);
 	}
 
 	public Set<Student> getPresentAttendancesByLessonId(Long lessonId) {
 		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
 		if (opLesson.isPresent()) {
 			Set<Attendance> allAttendances = opLesson.get().getAttendances();
-			Set<Student> students = new HashSet<Student>();
+			Set<Student> students = new HashSet<>();
 			
 			for(Attendance a: allAttendances) {
 				if(a.getAttended()) {
@@ -146,7 +128,7 @@ public class LessonService {
 		Optional<Lesson> opLesson = lessonRepository.findById(lessonId);
 		if (opLesson.isPresent()) {
 			Set<Attendance> allAttendances = opLesson.get().getAttendances();
-			Set<Student> students = new HashSet<Student>();
+			Set<Student> students = new HashSet<>();
 			
 			for(Attendance a: allAttendances) {
 				if(!a.getAttended()) {
@@ -160,8 +142,7 @@ public class LessonService {
 	}
 	
 	public LessonDTO convertToLessonDTO(Lesson lesson) {
-		LessonDTO lessonDTO =  modelMapper.map(lesson, LessonDTO.class);
-		return lessonDTO;
+		return modelMapper.map(lesson, LessonDTO.class);
 	}
 	
 	public StudentLessonDTO convertToStudentLessonDTO(Lesson lesson, Long studentId) {
@@ -180,8 +161,7 @@ public class LessonService {
 	
 	
 	public Lesson convertToLesson(LessonDTO lessonDTO) {
-		Lesson lesson =  modelMapper.map(lessonDTO, Lesson.class);
-		return lesson;
+		return modelMapper.map(lessonDTO, Lesson.class);
 	}
 	
 	
@@ -206,8 +186,7 @@ public class LessonService {
 	}
 	
 	public AttendanceDTO convertToAttendanceDTO(Attendance a) {
-		AttendanceDTO attendanceDTO =  modelMapper.map(a, AttendanceDTO.class);
-		return attendanceDTO;
+		return modelMapper.map(a, AttendanceDTO.class);
 	}
 	
 
@@ -260,7 +239,7 @@ public class LessonService {
 		
 		LessonSalaryDTO dto = modelMapper.map(l,LessonSalaryDTO.class);
 		Set<Attendance> att= getAttendancesByLessonId(l.getId());
-		att.removeIf(a->a.getAttended()==false);
+		att.removeIf(a-> !a.getAttended());
 		dto.setAttended(att.size());
 		return dto;
 	}

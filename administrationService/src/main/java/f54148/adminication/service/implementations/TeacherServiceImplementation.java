@@ -24,19 +24,20 @@ public class TeacherServiceImplementation implements TeacherService {
 
 	@Override
 	public MonthlyTeacherSalaryDTO getTeacherStatistics(Long teacherId, Integer month, Integer year) {
-		MonthlyTeacherSalaryDTO statistics = restTemplate.getForObject("http://databaseService/teachers/{teacherId}/{month}/{year}",MonthlyTeacherSalaryDTO.class, teacherId,month,year);
-		return statistics;
+		return restTemplate.getForObject("http://databaseService/teachers/{teacherId}/{month}/{year}",MonthlyTeacherSalaryDTO.class, teacherId,month,year);
 	}
 
 	@Override
 	public List<TeacherForCourseDTO> getAllTeacherForCourseDTO() {
-		TeacherForCourseDTO teachers[] = restTemplate.getForObject("http://databaseService/teachers/teachersForCourse",TeacherForCourseDTO[].class);
+		TeacherForCourseDTO[] teachers = restTemplate.getForObject("http://databaseService/teachers/teachersForCourse",TeacherForCourseDTO[].class);
+		assert teachers != null;
 		return Arrays.asList(teachers);
 	}
 
 	@Override
 	public List<DisplayTeacherDTO> getAllDisplayTeacherDTO() {
-		DisplayTeacherDTO teachers[] = restTemplate.getForObject("http://databaseService/teachers/admin/teachers",DisplayTeacherDTO[].class);
+		DisplayTeacherDTO[] teachers = restTemplate.getForObject("http://databaseService/teachers/admin/teachers",DisplayTeacherDTO[].class);
+		assert teachers != null;
 		return Arrays.asList(teachers);
 	}
 

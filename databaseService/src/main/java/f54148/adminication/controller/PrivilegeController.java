@@ -32,9 +32,9 @@ public class PrivilegeController {
 	    public @ResponseBody String createPrivilege(@RequestBody Privilege privilege) {
 		 
 		 Set<Role> roles = privilege.getRoles();
-		 Set<Role> updatedWithPrivilege = new HashSet<Role>();
+		 Set<Role> updatedWithPrivilege = new HashSet<>();
 		 
-		 privilege.setRoles(new HashSet<Role>());
+		 privilege.setRoles(new HashSet<>());
 		 privilegeService.addPrivilege(privilege);
 		 
 		 for(Role r: roles) {

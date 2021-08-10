@@ -36,20 +36,13 @@ public class DraftService {
 
 	public Draft getDraftById(Long draftId) {
 		Optional<Draft> opDraft = draftRepository.findById(draftId);
-		if (opDraft.isPresent()) {
-			return opDraft.get();
-		} else {
-			return null;
-		}
+		return opDraft.orElse(null);
 	}
 
 	public boolean addDraft(Draft draft) {
-		
-		if (draftRepository.save(draft) != null) {
-			return true;
-		} else {
-			return false;
-		}
+
+		draftRepository.save(draft);
+		return true;
 	}
 	
 	public Long addDraftAndGetId(Draft draft) {
@@ -57,12 +50,8 @@ public class DraftService {
 		return d.getId();
 	}
 	
-	public boolean updateDraft(Draft draft) {
-		if (draftRepository.save(draft) != null) {
-			return true;
-		} else {
-			return false;
-		}
+	public void updateDraft(Draft draft) {
+		draftRepository.save(draft);
 	}
 
 	public boolean deleteDraft(Long draftId) {

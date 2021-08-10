@@ -22,7 +22,8 @@ public class ScheduleServiceImplementation implements ScheduleService{
 	
 	@Override
 	public List<StudentScheduleDTO> getStudentSchedule(@Min(1) Long studentId) {
-		StudentScheduleDTO schedules[] = restTemplate.getForObject("http://databaseService/students/{studentId}/schedule",StudentScheduleDTO[].class,studentId);
+		StudentScheduleDTO[] schedules = restTemplate.getForObject("http://databaseService/students/{studentId}/schedule",StudentScheduleDTO[].class,studentId);
+		assert schedules != null;
 		return Arrays.asList(schedules);
 	}
 

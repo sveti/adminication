@@ -20,13 +20,15 @@ public class EventServiceImplementation implements EventService{
 	
 	@Override
 	public List<EventDTO> getEvents() {
-		EventDTO events[] = restTemplate.getForObject("http://databaseService/events/events",EventDTO[].class);
+		EventDTO[] events = restTemplate.getForObject("http://databaseService/events/events",EventDTO[].class);
+		assert events != null;
 		return Arrays.asList(events);
 	}
 
 	@Override
 	public List<EventDTO> getEventsOfStudent(Long studentId) {
-		EventDTO events[] = restTemplate.getForObject("http://databaseService/events/student/{studentId}",EventDTO[].class,studentId);
+		EventDTO[] events = restTemplate.getForObject("http://databaseService/events/student/{studentId}",EventDTO[].class,studentId);
+		assert events != null;
 		return Arrays.asList(events);
 	}
 

@@ -60,24 +60,17 @@ public class TeacherService {
 
 	public Teacher getTeacherById(Long teacherId) {
 		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
-		if (opTeacher.isPresent()) {
-			return opTeacher.get();
-		} else {
-			return null;
-		}
+		return opTeacher.orElse(null);
 	}
 
 	public boolean addTeacher(Teacher teacher) {
-		
-		if (teacherRepository.save(teacher) != null) {
-			return true;
-		} else {
-			return false;
-		}
+
+		teacherRepository.save(teacher);
+		return true;
 	}
 
 	public boolean deleteTeacher(Long teacherId) {
-		if (teacherRepository.findById(teacherId) != null) {
+		if (teacherRepository.findById(teacherId).isPresent()) {
 			teacherRepository.deleteById(teacherId);
 			return true;
 		} else {
@@ -87,11 +80,8 @@ public class TeacherService {
 
 	public boolean updateTeacher(Teacher t) {
 
-		if (teacherRepository.save(t) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		teacherRepository.save(t);
+		return true;
 	}
 
 	public List<Course> getCoursesByTeacherId(Long teacherId) {
@@ -99,7 +89,7 @@ public class TeacherService {
 		if (opTeacher.isPresent()) {
 			Teacher t = opTeacher.get();
 
-			List<Course> courses = new ArrayList<Course>();
+			List<Course> courses = new ArrayList<>();
 
 			for (Teaching teach : t.getTeaching()) {
 
@@ -119,7 +109,7 @@ public class TeacherService {
 		if (opTeacher.isPresent()) {
 			Teacher t = opTeacher.get();
 
-			List<Course> courses = new ArrayList<Course>();
+			List<Course> courses = new ArrayList<>();
 
 			for (Teaching teach : t.getSubstituting()) {
 
@@ -136,7 +126,7 @@ public class TeacherService {
 
 		List<Teaching> teachings = teachingService.getTeachingsByCourseId(courseId);
 
-		List<Teacher> substitutes = new ArrayList<Teacher>();
+		List<Teacher> substitutes = new ArrayList<>();
 
 		for (Teaching t : teachings) {
 			substitutes.add(t.getSubstitute());
@@ -147,20 +137,12 @@ public class TeacherService {
 
 	public Set<Lesson> getLessonsByTeacherId(Long teacherId) {
 		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
-		if (opTeacher.isPresent()) {
-			return opTeacher.get().getLessons();
-		} else {
-			return null;
-		}
+		return opTeacher.map(Teacher::getLessons).orElse(null);
 	}
 
 	public Set<File> getFilesyTeacherId(Long teacherId) {
 		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
-		if (opTeacher.isPresent()) {
-			return opTeacher.get().getFiles();
-		} else {
-			return null;
-		}
+		return opTeacher.map(Teacher::getFiles).orElse(null);
 	}
 
 	public Teacher convertToTeacher(DisplayUserDTO userDTO) {
@@ -243,7 +225,7 @@ public class TeacherService {
 	public List<DisplayTeacherDTO> getAllDisplayTeacherDTO() {
 		List<Teacher> teachers = getTeachers();
 		
-		List<DisplayTeacherDTO> dtos = new ArrayList<DisplayTeacherDTO>();
+		List<DisplayTeacherDTO> dtos = new ArrayList<>();
 		for(Teacher t: teachers) {
 			dtos.add(convertToDisplayTeacherDTO(t));
 		}

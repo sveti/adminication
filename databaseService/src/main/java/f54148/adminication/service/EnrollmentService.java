@@ -2,6 +2,7 @@ package f54148.adminication.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import f54148.adminication.dto.AddEnrollmentDTO;
 import f54148.adminication.dto.StudentGradesDTO;
 import f54148.adminication.entity.Course;
-import f54148.adminication.entity.Draft;
 import f54148.adminication.entity.Enrollment;
 import f54148.adminication.entity.Student;
 import f54148.adminication.repository.EnrollmentRepository;
@@ -45,7 +45,7 @@ public class EnrollmentService {
 		
 		List<Enrollment> courseEnrollment = new ArrayList<>();
 		for(Enrollment e:enrollmentList) {
-			if(e.getCourse().getId()==courseId) {
+			if(Objects.equals(e.getCourse().getId(), courseId)) {
 				courseEnrollment.add(e);
 			}
 		}
@@ -55,19 +55,12 @@ public class EnrollmentService {
 
 	public Enrollment getEnrollmentById(Long enrollmentId) {
 		Optional<Enrollment> opEnrollment = enrollmentRepository.findById(enrollmentId);
-		if (opEnrollment.isPresent()) {
-			return opEnrollment.get();
-		} else {
-			return null;
-		}
+		return opEnrollment.orElse(null);
 	}
 
 	public boolean addEnrollment(Enrollment enrollment) {
-		if (enrollmentRepository.save(enrollment) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		enrollmentRepository.save(enrollment);
+		return true;
 	}
 	
 	public boolean addEnrollmentDTO(AddEnrollmentDTO enrollment) {
@@ -90,11 +83,8 @@ public class EnrollmentService {
 	}
 
 	public boolean updateEnrollment(Enrollment enrollment) {
-		if (enrollmentRepository.save(enrollment) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		enrollmentRepository.save(enrollment);
+		return true;
 	}
 
 	public boolean deleteEnrollment(Long enrollmentId) {
@@ -138,26 +128,17 @@ public class EnrollmentService {
 
 	public Student getStudentByEnrollmentById(Long enrollmentId) {
 		Optional<Enrollment> opEnrollment = enrollmentRepository.findById(enrollmentId);
-		if (opEnrollment.isPresent()) {
-			return opEnrollment.get().getStudent();
-		} else {
-			return null;
-		}
+		return opEnrollment.map(Enrollment::getStudent).orElse(null);
 	}
 
 	public Course getCourseByEnrollmentById(Long enrollmentId) {
 		Optional<Enrollment> opEnrollment = enrollmentRepository.findById(enrollmentId);
-		if (opEnrollment.isPresent()) {
-			return opEnrollment.get().getCourse();
-		} else {
-			return null;
-		}
+		return opEnrollment.map(Enrollment::getCourse).orElse(null);
 	}
 	
 	public StudentGradesDTO convertToStudentAttendanceDTO(Enrollment enrollment) {
-		
-		StudentGradesDTO studentDTO =  modelMapper.map(enrollment, StudentGradesDTO.class);
-		return studentDTO;
+
+		return modelMapper.map(enrollment, StudentGradesDTO.class);
 	}
 	
 	public List<StudentGradesDTO> getStudentGradesDTOOfCourse(Long courseId){
@@ -219,10 +200,8 @@ public class EnrollmentService {
 		
 		Student s = studentService.getStudentById(studentId);
 		Course c = courseService.getCourseById(courseId);
-		
-		Enrollment e = enrollmentRepository.findByStudentAndCourse(s,c);
-		
-		return e;	
+
+		return enrollmentRepository.findByStudentAndCourse(s,c);
 	}
 	
 	public boolean deleteEnrollmentByStudentAndCourse(Long studentId, Long courseId) {

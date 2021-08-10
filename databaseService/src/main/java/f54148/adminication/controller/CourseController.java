@@ -60,8 +60,8 @@ public class CourseController {
 		Set<Schedule> shedule = course.getCourseSchedule();
 		Set<CourseDetail> details = course.getDetails();
 
-		Set<Schedule> pshedule = new HashSet<Schedule>();
-		Set<CourseDetail> pdetails = new HashSet<CourseDetail>();
+		Set<Schedule> pshedule = new HashSet<>();
+		Set<CourseDetail> pdetails = new HashSet<>();
 
 		course.setCourseSchedule(null);
 		course.setDetails(null);

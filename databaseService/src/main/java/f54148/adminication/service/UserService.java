@@ -45,9 +45,7 @@ public class UserService {
 	}
 
 	public List<User> getUsers() {
-		List<User> userList = new ArrayList<>();
-		userRepository.findAll().forEach(userList::add);
-		return userList;
+		return new ArrayList<>(userRepository.findAll());
 	}
 
 	public User getUserById(Long userId) {
@@ -79,20 +77,13 @@ public class UserService {
 
 	public boolean addUser(User user) {
 
-		if (userRepository.save(user) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		userRepository.save(user);
+		return true;
 	}
 	
-	public boolean updateUser(User user) {
+	public void updateUser(User user) {
 
-		if (userRepository.save(user) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		userRepository.save(user);
 	}
 
 
@@ -109,11 +100,8 @@ public class UserService {
 			if(dto.getChangedPassword()) {
 				u.setPassword(encoder.encode(dto.getPassword()));
 			}
-			if (userRepository.save(u) != null) {
-				return true;
-			} else {
-				return false;
-			}
+			userRepository.save(u);
+			return true;
 
 		} else {
 			return false;
@@ -121,7 +109,7 @@ public class UserService {
 	}
 
 	public boolean deleteUser(Long userId) {
-		if (userRepository.findById(userId) != null) {
+		if (userRepository.findById(userId).isPresent()) {
 			userRepository.deleteById(userId);
 			return true;
 		} else {
@@ -131,11 +119,7 @@ public class UserService {
 
 	public List<Notification> getNotificationsReceivedByUser(Long userId) {
 		Optional<User> opUser = userRepository.findById(userId);
-		if (opUser.isPresent()) {
-			return opUser.get().getNotificationsReceived();
-		} else {
-			return null;
-		}
+		return opUser.map(User::getNotificationsReceived).orElse(null);
 	}
 
 	public List<Notification> getNotificationsSendByUser(Long id) {
@@ -144,20 +128,12 @@ public class UserService {
 
 	public List<Draft> getDraftsByUser(Long userId) {
 		Optional<User> opUser = userRepository.findById(userId);
-		if (opUser.isPresent()) {
-			return opUser.get().getDrafts();
-		} else {
-			return null;
-		}
+		return opUser.map(User::getDrafts).orElse(null);
 	}
 
 	public Role getUserRole(Long userId) {
 		Optional<User> opUser = userRepository.findById(userId);
-		if (opUser.isPresent()) {
-			return opUser.get().getRole();
-		} else {
-			return null;
-		}
+		return opUser.map(User::getRole).orElse(null);
 	}
 
 	public DisplayUserDTO convertToCreateUserDTO(User user) {
@@ -168,7 +144,7 @@ public class UserService {
 		
 		nots.removeIf(not->not.getStatus()!=MessageStatus.SEND);
 		
-		List<NotificationDTO> dtoNots = new ArrayList<NotificationDTO>();
+		List<NotificationDTO> dtoNots = new ArrayList<>();
 		
 		for(Notification n : nots) {
 			dtoNots.add(notificationService.convertToNotificationDTO(n));
@@ -185,20 +161,12 @@ public class UserService {
 
 	public boolean emailExists(String email) {
 		Optional<User> opUser = userRepository.findByEmail(email);
-		if (opUser.isPresent()) {
-			return true;
-		} else {
-			return false;
-		}
+		return opUser.isPresent();
 	}
 
 	public boolean usernameExists(String username) {
 		Optional<User> opUser = userRepository.findByUsername(username);
-		if (opUser.isPresent()) {
-			return true;
-		} else {
-			return false;
-		}
+		return opUser.isPresent();
 	}
 
 	public boolean encodeAllPassowords() {

@@ -22,7 +22,6 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     protected ResponseEntity<String> handleUsernameException(UsernameTakenException exception) {
-    	System.out.println("===gotcha===");
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
     

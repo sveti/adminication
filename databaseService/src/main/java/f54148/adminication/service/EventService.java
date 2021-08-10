@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.EventDTO;
 import f54148.adminication.entity.CourseStatus;
-import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.EventSignUp;
 import f54148.adminication.entity.EventWaitingList;
@@ -37,31 +36,20 @@ public class EventService {
 
 	public Event getEventById(Long eventId) {
 		Optional<Event> opEvent = eventRepository.findById(eventId);
-		if (opEvent.isPresent()) {
-			return opEvent.get();
-		} else {
-			return null;
-		}
+		return opEvent.orElse(null);
 	}
 
 	public boolean addEvent(Event event) {
-		if (eventRepository.save(event) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		eventRepository.save(event);
+		return true;
 	}
 
-	public boolean updateEvent(Event event) {
-		if (eventRepository.save(event) != null) {
-			return true;
-		} else {
-			return false;
-		}
+	public void updateEvent(Event event) {
+		eventRepository.save(event);
 	}
 
 	public boolean deleteEvent(Long eventId) {
-		if (eventRepository.findById(eventId) != null) {
+		if (eventRepository.findById(eventId).isPresent()) {
 			eventRepository.deleteById(eventId);
 			return true;
 		} else {
@@ -72,11 +60,7 @@ public class EventService {
 	public Set<EventWaitingList> getEventWaitingList(Long eventId) {
 
 		Optional<Event> opEvent = eventRepository.findById(eventId);
-		if (opEvent.isPresent()) {
-			return opEvent.get().getWaitingList();
-		} else {
-			return null;
-		}
+		return opEvent.map(Event::getWaitingList).orElse(null);
 
 	}
 
@@ -85,7 +69,7 @@ public class EventService {
 		if (opEvent.isPresent()) {
 			Event e = opEvent.get();
 
-			List<Student> students = new ArrayList<Student>();
+			List<Student> students = new ArrayList<>();
 
 			for (EventWaitingList ew : e.getWaitingList()) {
 				students.add(ew.getStudent());
@@ -103,7 +87,7 @@ public class EventService {
 		if (opEvent.isPresent()) {
 			Event e = opEvent.get();
 
-			List<Student> students = new ArrayList<Student>();
+			List<Student> students = new ArrayList<>();
 
 			for (EventSignUp es : e.getEventSignedUps()) {
 				students.add(es.getStudent());
@@ -118,16 +102,11 @@ public class EventService {
 
 	public Set<Schedule> getScheduleByEventId(Long eventId) {
 		Optional<Event> opEvent = eventRepository.findById(eventId);
-		if (opEvent.isPresent()) {
-			return opEvent.get().getEventSchedule();
-		} else {
-			return null;
-		}
+		return opEvent.map(Event::getEventSchedule).orElse(null);
 	}
 	
 	public EventDTO convertToEventDTO(Event e) {
-		EventDTO dto = modelMapper.map(e,EventDTO.class);
-		return dto;
+		return modelMapper.map(e,EventDTO.class);
 	}
 	
 	

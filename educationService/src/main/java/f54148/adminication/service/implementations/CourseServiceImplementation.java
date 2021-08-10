@@ -34,62 +34,66 @@ public class CourseServiceImplementation  implements CourseService{
 	
 	@Override
 	public UpcommingCourseDTO getUpcommingCourseById(long idCourse) {
-		UpcommingCourseDTO upcommingCourse = restTemplate.getForObject("http://databaseService/courses/upcomming/{idCourse}",UpcommingCourseDTO.class,idCourse);
-		return upcommingCourse;
+		return restTemplate.getForObject("http://databaseService/courses/upcomming/{idCourse}",UpcommingCourseDTO.class,idCourse);
 	}
 
 	@Override
 	public List<UpcommingCourseDTO> getUpcommingCoursesOfTeacher(@Min(1) long idTeacher) {
-		UpcommingCourseDTO upcommingCourses[] = restTemplate.getForObject("http://databaseService/courses/teacher/{idTeacher}/upcomming",UpcommingCourseDTO[].class, idTeacher);
+		UpcommingCourseDTO[] upcommingCourses = restTemplate.getForObject("http://databaseService/courses/teacher/{idTeacher}/upcomming",UpcommingCourseDTO[].class, idTeacher);
+		assert upcommingCourses != null;
 		return Arrays.asList(upcommingCourses);
 	}
 	
 	@Override
 	public List<UpcommingCourseDTO> getUpcommingCoursesByStudentId(@Min(1) Long studentId) {
-		UpcommingCourseDTO upcommingCourses[] = restTemplate.getForObject("http://databaseService/courses/student/{studentId}/upcomming",UpcommingCourseDTO[].class, studentId);
+		UpcommingCourseDTO[] upcommingCourses = restTemplate.getForObject("http://databaseService/courses/student/{studentId}/upcomming",UpcommingCourseDTO[].class, studentId);
+		assert upcommingCourses != null;
 		return Arrays.asList(upcommingCourses);
 	}
 
 	@Override
 	public CourseWithDetailsDTO getCourseWithDetails(@Min(1) long idCourse) {
-		CourseWithDetailsDTO courseWithDetails = restTemplate.getForObject("http://databaseService/courses/details/{idCourse}",CourseWithDetailsDTO.class,idCourse);
-		return courseWithDetails;
+		return restTemplate.getForObject("http://databaseService/courses/details/{idCourse}",CourseWithDetailsDTO.class,idCourse);
 	}
 	
 	@Override
 	public List<CourseWithDetailsDTO> getAllCourseWithDetailsDTO() {
-		CourseWithDetailsDTO courses[] = restTemplate.getForObject("http://databaseService/courses/allCourses",CourseWithDetailsDTO[].class);
+		CourseWithDetailsDTO[] courses = restTemplate.getForObject("http://databaseService/courses/allCourses",CourseWithDetailsDTO[].class);
+		assert courses != null;
 		return Arrays.asList(courses);
 	}
 
 
 	@Override
 	public StartedCourseDTO getStartedCourse(@Min(1) long idCourse) {
-		StartedCourseDTO startedCourse = restTemplate.getForObject("http://databaseService/courses/started/{idCourse}",StartedCourseDTO.class,idCourse);
-		return startedCourse;
+		return restTemplate.getForObject("http://databaseService/courses/started/{idCourse}",StartedCourseDTO.class,idCourse);
 	}
 
 	@Override
 	public List<StartedCourseDTO> getStartedCoursesOfTeacher(@Min(1) Long teacherId) {
-		StartedCourseDTO startedCourses[] = restTemplate.getForObject("http://databaseService/courses/teacher/{teacherId}/started",StartedCourseDTO[].class, teacherId);
+		StartedCourseDTO[] startedCourses = restTemplate.getForObject("http://databaseService/courses/teacher/{teacherId}/started",StartedCourseDTO[].class, teacherId);
+		assert startedCourses != null;
 		return Arrays.asList(startedCourses);
 	}
 	
 	@Override
 	public List<StartedCourseStudentDTO> getStartedCoursesOfStudent(@Min(1) Long studentId) {
-		StartedCourseStudentDTO startedCourses[] = restTemplate.getForObject("http://databaseService/courses/student/{studentId}/started",StartedCourseStudentDTO[].class, studentId);
+		StartedCourseStudentDTO[] startedCourses = restTemplate.getForObject("http://databaseService/courses/student/{studentId}/started",StartedCourseStudentDTO[].class, studentId);
+		assert startedCourses != null;
 		return Arrays.asList(startedCourses);
 	}
 
 	@Override
 	public List<StartedCourseDTO> getSubStartedCoursesByTeacherId(@Min(1) Long teacherId) {
-		StartedCourseDTO subStartedCourses[] = restTemplate.getForObject("http://databaseService/courses/{idTeacher}/sub/started",StartedCourseDTO[].class, teacherId);
+		StartedCourseDTO[] subStartedCourses = restTemplate.getForObject("http://databaseService/courses/{idTeacher}/sub/started",StartedCourseDTO[].class, teacherId);
+		assert subStartedCourses != null;
 		return Arrays.asList(subStartedCourses);
 	}
 
 	@Override
 	public List<FinshedCourseDTO> getFinishedCoursesOfTeacher(@Min(1) Long teacherId) {
-		FinshedCourseDTO finishedCourses[] = restTemplate.getForObject("http://databaseService/courses/{idTeacher}/finished",FinshedCourseDTO[].class, teacherId);
+		FinshedCourseDTO[] finishedCourses = restTemplate.getForObject("http://databaseService/courses/{idTeacher}/finished",FinshedCourseDTO[].class, teacherId);
+		assert finishedCourses != null;
 		return Arrays.asList(finishedCourses);
 	}
 
@@ -104,13 +108,15 @@ public class CourseServiceImplementation  implements CourseService{
 
 	@Override
 	public List<CourseDetailsDTO> getAllCourseDetails() {
-		CourseDetailsDTO details[] = restTemplate.getForObject("http://databaseService/courses/courseDetails/all",CourseDetailsDTO[].class);
+		CourseDetailsDTO[] details = restTemplate.getForObject("http://databaseService/courses/courseDetails/all",CourseDetailsDTO[].class);
+		assert details != null;
 		return Arrays.asList(details);
 	}
 
 	@Override
 	public List<AdminAllCoursesDTO> getAllCourses() {
-		AdminAllCoursesDTO dto[] = restTemplate.getForObject("http://databaseService/courses/admin/courses",AdminAllCoursesDTO[].class);
+		AdminAllCoursesDTO[] dto = restTemplate.getForObject("http://databaseService/courses/admin/courses",AdminAllCoursesDTO[].class);
+		assert dto != null;
 		return Arrays.asList(dto);
 	}
 

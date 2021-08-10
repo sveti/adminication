@@ -27,13 +27,15 @@ public class AttendanceServiceImplementation implements AttendanceService {
 	
 	@Override
 	public List<AttendanceDTO> getAttendancesOfLesson(@Min(1) long idLesson) {
-		AttendanceDTO lessons[] = restTemplate.getForObject("http://databaseService/courses/lessons/{idLesson}/attendance",AttendanceDTO[].class,idLesson);
+		AttendanceDTO[] lessons = restTemplate.getForObject("http://databaseService/courses/lessons/{idLesson}/attendance",AttendanceDTO[].class,idLesson);
+		assert lessons != null;
 		return Arrays.asList(lessons);
 	}
 
 	@Override
 	public List<AttendanceDTO> getAttendancesOfCourse(@Min(1) long idCourse) {
-		AttendanceDTO lessons[] = restTemplate.getForObject("http://databaseService/courses/{idCourse}/attendance",AttendanceDTO[].class,idCourse);
+		AttendanceDTO[] lessons = restTemplate.getForObject("http://databaseService/courses/{idCourse}/attendance",AttendanceDTO[].class,idCourse);
+		assert lessons != null;
 		return Arrays.asList(lessons);
 	}
 
