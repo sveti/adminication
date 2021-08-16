@@ -1,8 +1,8 @@
 {
-    "gateway": "http://localhost:8090",
-    "administrationServiceName":"administrationService",
-    "educationServiceName":"educationService",
-    "authenticationServiceName":"authenticationService",
-    "notificationServiceName":"notificationService"
+    "gateway": "http://localhost:8091",
+    "administrationServiceName":"administrationservice",
+    "educationServiceName":"educationservice",
+    "authenticationServiceName":"authenticationservice",
+    "notificationServiceName":"notificationservice"
   }
   

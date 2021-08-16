@@ -1,11 +1,12 @@
 package f54148.adminication.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
+import f54148.adminication.dto.AddParentDTO;
+import f54148.adminication.dto.AddStudentDTO;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.StudentOfParentDTO;
@@ -20,7 +21,9 @@ public class ParentService {
 
 	private final ParentRepository parentRepository;
 	private final ModelMapper modelMapper;
-	//private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
+	private final StudentService studentService;
+	private final RoleService roleService;
+	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
 
 	public List<Parent> getParents() {
 		List<Parent> parentsList = new ArrayList<>();
@@ -70,4 +73,23 @@ public class ParentService {
 	}
 
 
+    public String addAddParentDTO(AddParentDTO parent) {
+
+		Set<Student> students = new HashSet<>();
+		for(AddStudentDTO s: parent.getStudents()){
+
+			students.add(studentService.createStudent(s));
+
+		}
+
+		Parent p = modelMapper.map(parent,Parent.class);
+		p.setRole(roleService.getRoleByName("ROLE_PARENT"));
+		p.setPassword(encoder.encode(p.getPassword()));
+
+		Parent saved = parentRepository.save(p);
+		saved.setChildren(students);
+		parentRepository.save(saved);
+
+		return "Added Parent!";
+    }
 }

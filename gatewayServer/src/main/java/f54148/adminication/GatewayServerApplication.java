@@ -21,7 +21,6 @@ public class GatewayServerApplication {
 
 	    @Bean
 	public org.springframework.web.filter.CorsFilter corsFilter() {
-		System.out.println("wololo");
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		final CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);

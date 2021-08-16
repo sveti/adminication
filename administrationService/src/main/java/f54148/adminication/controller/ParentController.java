@@ -2,11 +2,9 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import f54148.adminication.dto.AddParentDTO;
+import f54148.adminication.dto.EditUserDTO;
+import org.springframework.web.bind.annotation.*;
 
 import f54148.adminication.dto.StudentOfParentDTO;
 import f54148.adminication.service.ParentService;
@@ -24,4 +22,8 @@ public class ParentController {
 		return parentService.getStudentOfParentDTO(id);
 	}
 
+	@PostMapping (path = "/add")
+	public  @ResponseBody String addParent(@RequestBody AddParentDTO addParentDTO){
+		return parentService.addParent(addParentDTO);
+	}
 }

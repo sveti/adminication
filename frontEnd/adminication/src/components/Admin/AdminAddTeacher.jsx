@@ -154,7 +154,6 @@ class AdminAddTeacher extends Component {
       teacher.teachings[courseIndex].substitute = selectedOption.label;
       teacher.teachings[courseIndex].substituteId = selectedOption.value;
     }
-    console.log(teacher);
     this.setState({ teacher });
   };
 

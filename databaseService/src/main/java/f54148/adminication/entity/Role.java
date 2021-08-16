@@ -63,7 +63,3 @@ public class Role {
 	
 	
 }
-//за базата
-//role -> id, име, 1 Role -> Many Priviledges
-//one to many -> User
-//Priviledges -> до кой домейн има достъп

@@ -1,0 +1,10 @@
+{
+    "realm": "Adminication",
+    "auth-server-url": "http://localhost:8555/auth/",
+    "ssl-required": "external",
+    "resource": "frontEnd",
+    "public-client": true,
+    "confidential-port": 0,
+    "enable-cors": true,
+    "registrationAllowed" : true
+  }

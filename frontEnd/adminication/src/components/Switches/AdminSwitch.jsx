@@ -1,7 +1,6 @@
 import React from "react";
 import { Redirect, Switch, withRouter } from "react-router-dom";
 import ProtectedRoute from "../../common/ProtectedRoute";
-import Logout from "../Login/Logout";
 import NotFound from "../notFound";
 import IndexPage from "../Homepage/IndexPage";
 import AdminAllCourses from "../Admin/AdminAllCourses";
@@ -15,7 +14,6 @@ const AdminSwitch = ({ user, increase, decrease }) => {
   }
   return (
     <Switch>
-      <ProtectedRoute path="/logout" component={Logout} />
       <ProtectedRoute
         path="/home"
         render={(params) => (
@@ -65,8 +63,6 @@ const AdminSwitch = ({ user, increase, decrease }) => {
           <AdminAddTeacher {...params} mode={"edit"}></AdminAddTeacher>
         )}
       />
-
-      <Redirect from="/" exact to="/login" />
       <ProtectedRoute path="/not-found" component={NotFound} />
       <Redirect to="/not-found" />
     </Switch>

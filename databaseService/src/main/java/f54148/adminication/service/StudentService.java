@@ -5,24 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import f54148.adminication.dto.*;
+import f54148.adminication.entity.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import f54148.adminication.dto.GradesOfStudentDTO;
-import f54148.adminication.dto.StudentAttendanceReportDTO;
-import f54148.adminication.dto.StudentMonthlyAttendanceDTO;
-import f54148.adminication.dto.StudentScheduleDTO;
-import f54148.adminication.entity.Attendance;
-import f54148.adminication.entity.Course;
-import f54148.adminication.entity.CourseStatus;
-import f54148.adminication.entity.CourseWaitingList;
-import f54148.adminication.entity.Enrollment;
-import f54148.adminication.entity.Event;
-import f54148.adminication.entity.EventSignUp;
-import f54148.adminication.entity.EventWaitingList;
-import f54148.adminication.entity.Lesson;
-import f54148.adminication.entity.Schedule;
-import f54148.adminication.entity.Student;
 import f54148.adminication.repository.StudentRepository;
 import lombok.AllArgsConstructor;
 
@@ -32,7 +21,8 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 	private final ModelMapper modelMapper;
-	//private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
+	private final RoleService roleService;
+	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
 
 	public List<Student> getStudents() {
 		List<Student> studentList = new ArrayList<>();
@@ -221,5 +211,13 @@ public class StudentService {
 		
 		return dto;
 	}
-	
+
+	public Student createStudent(AddStudentDTO s) {
+
+		Student student  = modelMapper.map(s,Student.class);
+		student.setPassword(encoder.encode(student.getPassword()));
+		student.setRole(roleService.getRoleByName("ROLE_STUDENT"));
+
+		return studentRepository.save(student);
+	}
 }

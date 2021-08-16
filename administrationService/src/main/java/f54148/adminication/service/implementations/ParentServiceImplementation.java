@@ -3,6 +3,8 @@ package f54148.adminication.service.implementations;
 import java.util.Arrays;
 import java.util.List;
 
+import f54148.adminication.dto.AddParentDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +25,12 @@ public class ParentServiceImplementation implements ParentService {
 		StudentOfParentDTO[] users = restTemplate.getForObject("http://databaseService/parents/{parentId}/students",StudentOfParentDTO[].class,parentId);
 		assert users != null;
 		return Arrays.asList(users);
+	}
+
+	@Override
+	public String addParent(AddParentDTO addParentDTO) {
+		ResponseEntity<String> response = restTemplate.postForEntity("http://databaseService/parents/add", addParentDTO, String.class);
+		return response.getBody();
 	}
 
 }

@@ -52,6 +52,11 @@ public class RoleController {
 		public @ResponseBody Role getRole(@PathVariable("id") Long id) {
 			return roleService.getRoleById(id);
 		}
+
+		@GetMapping(path = "/role/byName/{rolename}")
+		public @ResponseBody Role getRoleByString(@PathVariable("rolename") String rolename) {
+			return roleService.getRoleByName(rolename);
+		}
 		
 		@GetMapping(path = "/role/{id}/privileges")
 		public @ResponseBody Set<Privilege> getRolePrivileges(@PathVariable("id") Long id) {

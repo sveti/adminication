@@ -3,6 +3,7 @@ package f54148.adminication.controller;
 import java.util.List;
 import java.util.Set;
 
+import f54148.adminication.dto.AddParentDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,6 +67,11 @@ public class ParentController {
 	public @ResponseBody List<StudentOfParentDTO> getStudentOfParentDTO(@PathVariable("id") Long id) {
 		return parentService.getStudentOfParentDTO(id);
 	}
-	
 
+	@PostMapping(path = "/add")
+	public @ResponseBody String addAddParentDTO(@RequestBody AddParentDTO parent) {
+
+		return parentService.addAddParentDTO(parent);
+
+	}
 }

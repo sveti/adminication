@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./navbar.css";
 import Logo from "./../../assets/images/adminication.svg";
+import keycloakService from "../../services/keycloakService";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -341,16 +342,22 @@ class Navbar extends Component {
               {role === "parent" ? parentNav : null}
               {role === "admin" ? adminNav : null}
               <li className="nav-item">
-                <Link className="nav-link logoutMobile" to={"/logout/"}>
+                <button
+                  className="btn nav-link logoutMobile"
+                  onClick={keycloakService.doLogout}
+                >
                   Log out
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
 
-          <Link className="nav-link logoutDesktop" to={"/logout/"}>
+          <button
+            className="btn nav-link logoutDesktop"
+            onClick={keycloakService.doLogout}
+          >
             Log out
-          </Link>
+          </button>
         </nav>
       </header>
     );
