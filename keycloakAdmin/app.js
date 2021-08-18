@@ -65,12 +65,57 @@ let addUser = async function (user) {
   }
 };
 
+let updateUser = async function (user) {
+  const authenticated = await authenticate().catch((error) =>
+    console.log(error)
+  );
+  if (authenticated) {
+    await adminClient.users
+      .find({
+        username: user.originalUsername,
+      })
+      .then((userInKeycloak) => {
+        const userId = userInKeycloak[0].id;
+        let userForKeycloak = {
+          firstName: user.name,
+          lastName: user.lastName,
+          email: user.email,
+          username: user.username,
+        };
+        adminClient.users
+          .update({ id: userId }, userForKeycloak)
+          .catch((error) => console.log(error));
+        if (user.changedPassword) {
+          adminClient.users
+            .resetPassword({
+              id: userId,
+              credential: {
+                temporary: false,
+                type: "password",
+                value: user.password,
+              },
+            })
+            .then((result) => {
+              return result;
+            })
+            .catch((error) => console.log(error));
+        }
+      })
+      .catch((error) => console.log(error));
+  }
+};
+
 app.get("/hi", (req, res) => {
   res.send("Hello");
 });
 
 app.post("/add", async (req, res) => {
   const result = await addUser(req.body);
+  res.send(result);
+});
+
+app.put("/update", async (req, res) => {
+  const result = await updateUser(req.body);
   res.send(result);
 });
 

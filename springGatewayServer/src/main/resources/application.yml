@@ -20,6 +20,8 @@ spring:
                         allowedMethods:
                             - GET
                             - POST
+                            - PUT
+                            - DELETE
             discovery:
                 locator:
                     enabled: true
@@ -45,6 +47,8 @@ spring:
                 predicates:
                 - Path=/keycloakadminserver
                 uri: lb://keycloakadminserver
+
+
 
 
 #    main:

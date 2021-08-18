@@ -155,6 +155,8 @@ class UserProfile extends Component {
       user.changedPassword = false;
     }
 
+    user.originalUsername = this.state.originalUsername;
+    console.log(user);
     const { data } = await updateUser(user);
     if (data) {
       toast.success("Update successfull!", {
@@ -182,14 +184,8 @@ class UserProfile extends Component {
   };
 
   render() {
-    const {
-      givenId,
-      user,
-      avatar,
-      editMode,
-      diasbleButton,
-      password,
-    } = this.state;
+    const { givenId, user, avatar, editMode, diasbleButton, password } =
+      this.state;
 
     const displayTable = (
       <div className="col-sm-12 col-lg-9 textSection">

@@ -55,6 +55,9 @@ public class UserServiceImplementation implements UserService{
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<EditUserDTO> requestEntity = new HttpEntity<>(editUserDTO, headers);
 		ResponseEntity<String> response = restTemplate.exchange("http://databaseService/users/updateUser", HttpMethod.PUT,requestEntity,String.class);
+
+		restTemplate.exchange("http://keycloakadminserver/update", HttpMethod.PUT,requestEntity,String.class);
+
 		return response.getBody();
 	}
 	

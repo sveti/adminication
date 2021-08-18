@@ -11,6 +11,7 @@ public class EditUserDTO {
 	
 	private long id;
 	private String username;
+	private String originalUsername;
 	private String name;
 	private String lastName;
 	private String email;
