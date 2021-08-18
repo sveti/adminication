@@ -70,7 +70,9 @@ class Register extends Component {
       }
     } else {
       parent.gender = parent.gender.toUpperCase();
+      parent.role = "ROLE_PARENT";
       parent.students.forEach((st) => (st.gender = st.gender.toUpperCase()));
+      parent.students.forEach((st) => (st.role = "ROLE_STUDENT"));
 
       let uniqueChildren = true;
       for (const child of parent.students) {
@@ -85,7 +87,7 @@ class Register extends Component {
         let that = this;
         registerParent(parent)
           .then(function (response) {
-            toast.success(response.data, {
+            toast.success("You have been succesfully registered!", {
               position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,

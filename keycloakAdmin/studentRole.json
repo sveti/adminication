@@ -1,0 +1,8 @@
+{
+    "id": "c4763a56-e88a-42b4-b1c7-cacad574ec7f",
+    "name": "STUDENT",
+    "description": "Adminication Student",
+    "composite": false,
+    "clientRole": false,
+    "containerId": "Adminication"
+}

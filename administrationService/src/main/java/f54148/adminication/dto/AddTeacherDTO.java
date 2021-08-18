@@ -19,6 +19,7 @@ public class AddTeacherDTO {
 	private String password;
 	private String email;
 	private String gender;
+	private String role;
 	private List<AddTeacherTeachingDTO> teachings;
 	
 

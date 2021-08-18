@@ -44,6 +44,8 @@ public class TeacherServiceImplementation implements TeacherService {
 	@Override
 	public String adminAddTeacher(AddTeacherDTO teacher) {
 		ResponseEntity<String> response = restTemplate.postForEntity("http://databaseService/teachers/add", teacher, String.class);
+		restTemplate.postForEntity("http://keycloakadminserver/add", teacher, String.class);
+
 		return response.getBody();
 	}
 		

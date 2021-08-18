@@ -41,6 +41,11 @@ spring:
                 predicates:
                 - Path=/notificationservice
                 uri: lb://notificationservice
+            -   id: keycloakadminserver
+                predicates:
+                - Path=/keycloakadminserver
+                uri: lb://keycloakadminserver
+
 
 #    main:
 #        allow-bean-definition-overriding: true

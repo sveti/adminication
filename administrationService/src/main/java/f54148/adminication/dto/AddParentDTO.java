@@ -19,4 +19,5 @@ public class AddParentDTO {
     private String email;
     private String gender;
     private List<AddStudentDTO> students;
+    private String role;
 }

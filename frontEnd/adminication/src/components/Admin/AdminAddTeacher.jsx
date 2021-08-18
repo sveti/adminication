@@ -267,6 +267,7 @@ class AdminAddTeacher extends Component {
     if (unique) {
       teacher.teachings = this.convertTeachingsToEntity(teacher.teachings);
       teacher.gender = teacher.gender.toUpperCase();
+      teacher.role = "ROLE_TEACHER";
       let that = this;
       addTeacher(teacher)
         .then(function (response) {

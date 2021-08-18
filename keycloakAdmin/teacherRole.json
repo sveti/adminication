@@ -1,0 +1,8 @@
+{
+    "id": "d2d979cf-5538-47b6-ab0a-d6ff0a130f6a",
+    "name": "TEACHER",
+    "description": "Adminication Teacher",
+    "composite": false,
+    "clientRole": false,
+    "containerId": "Adminication"
+}
