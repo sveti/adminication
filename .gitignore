@@ -1,3 +1,4 @@
+@@ -1,2087 +1 @@
 # Compiled class file
 *.class
 
@@ -2085,3 +2086,5 @@ keyloak/themes/README.txt
 keyloak/version.txt
 keyloak/welcome-content/index.html
 keyloak/welcome-content/robots.txt
+
+keycloakAdmin/node_modules/*
