@@ -293,6 +293,16 @@ class Navbar extends Component {
           <Link
             className="nav-link"
             to={{
+              pathname: "/events/all",
+            }}
+          >
+            Events
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            className="nav-link"
+            to={{
               pathname: "/teachers/all",
             }}
           >

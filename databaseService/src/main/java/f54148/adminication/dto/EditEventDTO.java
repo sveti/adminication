@@ -5,17 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class AdminAllEventsDTO {
-
+public class EditEventDTO {
     private Long id;
     private String title;
     private Integer minAge;
     private Integer maxAge;
     private Integer maxNumberOfPeople;
     private CourseStatus status;
-    private Integer signedUp;
-    private Integer waitingList;
+    private String description;
+    List<EditCourseScheduleDTO> schedules;
 }

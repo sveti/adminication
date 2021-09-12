@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import f54148.adminication.dto.*;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -13,15 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
-import f54148.adminication.dto.AdminAllCoursesDTO;
-import f54148.adminication.dto.CourseWithDetailsDTO;
-import f54148.adminication.dto.DisplayUserDTO;
-import f54148.adminication.dto.EventDTO;
-import f54148.adminication.dto.FinshedCourseDTO;
-import f54148.adminication.dto.StartedCourseDTO;
-import f54148.adminication.dto.StudentGradesDTO;
-import f54148.adminication.dto.TeacherForCourseDTO;
-import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.entity.Enrollment;
@@ -48,8 +40,9 @@ public class ModelMapperConfig {
 		 	ModelMapper modelMapper = new ModelMapper();
 		 	
 		 	modelMapper.addMappings(convertUserToCreateUserDTO);
-		 	modelMapper.addMappings(convertUserToAdminAllCoursesDTO);
-		 	
+		 	modelMapper.addMappings(convertCourseToAdminAllCoursesDTO);
+		 	modelMapper.addMappings(convertEventToAdminAllEventsDTO);
+
 		 	modelMapper.addConverter(convertCoursetoUpcommingCourseDTO);
 		 	modelMapper.addConverter(convertCoursetoCourseWithDetailsDTO);
 		 	modelMapper.addConverter(convertCoursetoStartedCourseDTO);
@@ -276,12 +269,19 @@ public class ModelMapperConfig {
 	            return destination;
 	        }
 	    };
-	    PropertyMap<Course, AdminAllCoursesDTO> convertUserToAdminAllCoursesDTO = new PropertyMap<Course,AdminAllCoursesDTO>()
+	    PropertyMap<Course, AdminAllCoursesDTO> convertCourseToAdminAllCoursesDTO = new PropertyMap<Course,AdminAllCoursesDTO>()
 	    {
 		 protected void configure() {
 			 	map().setSignedUp(source.getEnrollments().size());
 			 	map().setWaitingList(source.getCourseWaitingList().size());
 			  }
 	    };
+	PropertyMap<Event, AdminAllEventsDTO> convertEventToAdminAllEventsDTO = new PropertyMap<Event,AdminAllEventsDTO>()
+	{
+		protected void configure() {
+			map().setSignedUp(source.getEventSignedUps().size());
+			map().setWaitingList(source.getWaitingList().size());
+		}
+	};
 }
 

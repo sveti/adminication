@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import f54148.adminication.dto.*;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import f54148.adminication.dto.EventDTO;
 import f54148.adminication.entity.Event;
 import f54148.adminication.entity.Schedule;
 import f54148.adminication.entity.Student;
@@ -105,5 +105,27 @@ public class EventController {
 		return eventService.getEventsOfStudent(studentId);
 	}
 
-	
+	@GetMapping(path = "/admin/events")
+	public @ResponseBody List<AdminAllEventsDTO> getAllEventsAdmin() {
+		return eventService.getAllEventsAdmin();
+	}
+
+	@PostMapping(path = "/add")
+	public @ResponseBody String addNewEventDTO(@RequestBody AddEventDTO event) {
+
+		return eventService.addAddEventDTO(event);
+	}
+
+	@PutMapping(path = "/edit")
+	public @ResponseBody String editEvent(@RequestBody EditEventDTO event) {
+
+		return eventService.editEvent(event);
+	}
+
+	@GetMapping(path = "/edit/{idEvent}")
+	public @ResponseBody EditEventDTO getEditCourseDTO(@PathVariable("idEvent") Long idEvent) {
+		return eventService.getEditEventDTO(idEvent);
+	}
+
+
 }

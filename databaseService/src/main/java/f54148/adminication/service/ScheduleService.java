@@ -138,4 +138,14 @@ public class ScheduleService {
 		
 	}
 
+    public void removeScheduleFromEvent(Schedule sch, Event e) {
+		sch.getScheduledEvents().remove(e);
+		updateSchedule(sch);
+		e.getEventSchedule().remove(sch);
+		eventService.updateEvent(e);
+
+		if(sch.getScheduledCourses().size()==0 && sch.getScheduledEvents().size() == 0) {
+			scheduleRepository.deleteById(sch.getId());
+		}
+    }
 }

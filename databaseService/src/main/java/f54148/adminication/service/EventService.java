@@ -1,20 +1,12 @@
 package f54148.adminication.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
+import f54148.adminication.dto.*;
+import f54148.adminication.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import f54148.adminication.dto.EventDTO;
-import f54148.adminication.entity.CourseStatus;
-import f54148.adminication.entity.Event;
-import f54148.adminication.entity.EventSignUp;
-import f54148.adminication.entity.EventWaitingList;
-import f54148.adminication.entity.Schedule;
-import f54148.adminication.entity.Student;
 import f54148.adminication.repository.EventRepository;
 import lombok.AllArgsConstructor;
 
@@ -25,6 +17,7 @@ public class EventService {
 	
 	private final EventRepository eventRepository;
 	private final StudentService studentService;
+	private final ScheduleService scheduleService;
 	private final EventWaitingListService eventWaitingListService;
 	private final ModelMapper modelMapper;
 
@@ -150,5 +143,116 @@ public class EventService {
 		eventWaitingListService.deleteEventWaitingList(esu.getId());
 		
 		return s;
+	}
+
+	public List<AdminAllEventsDTO> getAllEventsAdmin() {
+		List<Event> events = getEvents();
+
+		List<AdminAllEventsDTO>  dto = new ArrayList<>();
+
+		for(Event e: events) {
+			dto.add(convertToAdminAllEventsDTO(e));
+		}
+
+		return dto;
+	}
+
+	private AdminAllEventsDTO convertToAdminAllEventsDTO(Event e) {
+		return modelMapper.map(e, AdminAllEventsDTO.class);
+	}
+
+	public String addAddEventDTO(AddEventDTO event) {
+		try {
+			Event e = new Event();
+			e.setTitle(event.getTitle());
+			e.setDescription(event.getDescription());
+			e.setMinAge(event.getMinAge());
+			e.setMaxAge(event.getMaxAge());
+			e.setMaxNumberOfPeople(event.getMaxNumberOfPeople());
+			e.setStatus(CourseStatus.UPCOMMING);
+
+			Set<Schedule> schedules = new HashSet<>();
+
+			for(AddCourseScheduleDTO schedule: event.getSchedules()) {
+
+				schedules.add(scheduleService.findOrCreateSchedule(schedule));
+			}
+
+			e.setEventSchedule(schedules);
+
+			eventRepository.save(e);
+
+			return "Event have been successfully saved!";
+		}
+		catch(Exception e) {
+			return "An error has occurred!";
+		}
+
+	}
+
+	public String editEvent(EditEventDTO event) {
+		try {
+
+			Event e = getEventById(event.getId());
+			e.setTitle(event.getTitle());
+			e.setDescription(event.getDescription());
+			e.setStatus(event.getStatus());
+			e.setMaxAge(event.getMaxAge());
+			e.setMinAge(event.getMinAge());
+			e.setMaxNumberOfPeople(event.getMaxNumberOfPeople());
+
+			Set<Schedule> schedules = new HashSet<>();
+
+			for(EditCourseScheduleDTO schedule: event.getSchedules()) {
+				schedules.add(scheduleService.findOrCreateSchedule(schedule));
+			}
+
+			Set <Schedule> toRemove = new HashSet<>();
+
+			for(Schedule sch : e.getEventSchedule()) {
+
+				if(!schedules.contains(sch)) {
+					toRemove.add(sch);
+				}
+
+			}
+
+			e.setEventSchedule(schedules);
+
+
+			eventRepository.save(e);
+
+			for(Schedule sch: toRemove) {
+				scheduleService.removeScheduleFromEvent(sch, e);
+			}
+
+			return "Okay";
+
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+			return "Nope";
+		}
+	}
+
+	public EditEventDTO getEditEventDTO(Long idEvent) {
+		Event e = getEventById(idEvent);
+		EditEventDTO dto = new EditEventDTO();
+		dto.setId(e.getId());
+		dto.setTitle(e.getTitle());
+		dto.setDescription(e.getDescription());
+		dto.setStatus(e.getStatus());
+		dto.setMinAge(e.getMinAge());
+		dto.setMaxAge(e.getMaxAge());
+		dto.setMaxNumberOfPeople(e.getMaxNumberOfPeople());
+
+		List<EditCourseScheduleDTO> schedules = new ArrayList<>();
+		for(Schedule s: e.getEventSchedule()) {
+			schedules.add(modelMapper.map(s,EditCourseScheduleDTO.class));
+		}
+
+		dto.setSchedules(schedules);
+
+		return dto;
 	}
 }

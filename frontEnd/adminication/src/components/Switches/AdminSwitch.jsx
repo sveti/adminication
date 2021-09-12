@@ -4,7 +4,9 @@ import ProtectedRoute from "../../common/ProtectedRoute";
 import NotFound from "../notFound";
 import IndexPage from "../Homepage/IndexPage";
 import AdminAllCourses from "../Admin/AdminAllCourses";
+import AdminAllEvents from "../Admin/AdminAllEvents";
 import AdminAddCourse from "../Admin/AdminAddCourse";
+import AdminAddEvent from "../Admin/AdminAddEvent";
 import AdminAllTeachers from "../Admin/AdminAllTeachers";
 import AdminAddTeacher from "../Admin/AdminAddTeacher";
 
@@ -41,6 +43,26 @@ const AdminSwitch = ({ user, increase, decrease }) => {
         path="/courses/:courseId"
         render={(params) => (
           <AdminAddCourse {...params} mode={"edit"}></AdminAddCourse>
+        )}
+      />
+
+      <ProtectedRoute
+        path="/events/all"
+        render={(params) => (
+          <AdminAllEvents {...params} user={user}></AdminAllEvents>
+        )}
+      />
+      <ProtectedRoute
+        path="/events/add"
+        render={(params) => (
+          <AdminAddEvent {...params} mode={"save"}></AdminAddEvent>
+        )}
+      />
+
+      <ProtectedRoute
+        path="/events/:eventId"
+        render={(params) => (
+          <AdminAddEvent {...params} mode={"edit"}></AdminAddEvent>
         )}
       />
 

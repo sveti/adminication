@@ -409,8 +409,6 @@ public class CourseService {
 
 	public String addAddCourseDTO(AddCourseDTO course) {
 		
-		System.out.println(course);
-		
 		try {
 		Course c = new Course();
 		c.setTitle(course.getTitle());

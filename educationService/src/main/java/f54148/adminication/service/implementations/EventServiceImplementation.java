@@ -3,6 +3,8 @@ package f54148.adminication.service.implementations;
 import java.util.Arrays;
 import java.util.List;
 
+import f54148.adminication.dto.AdminAllCoursesDTO;
+import f54148.adminication.dto.AdminAllEventsDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
@@ -30,6 +32,15 @@ public class EventServiceImplementation implements EventService{
 		EventDTO[] events = restTemplate.getForObject("http://databaseService/events/student/{studentId}",EventDTO[].class,studentId);
 		assert events != null;
 		return Arrays.asList(events);
+	}
+
+	@Override
+	public List<AdminAllEventsDTO> getAllEvents() {
+
+		AdminAllEventsDTO[] dto = restTemplate.getForObject("http://databaseService/events/admin/events",AdminAllEventsDTO[].class);
+			assert dto != null;
+			return Arrays.asList(dto);
+
 	}
 
 }

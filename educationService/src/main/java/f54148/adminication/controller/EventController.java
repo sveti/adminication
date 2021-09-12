@@ -2,6 +2,8 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
+import f54148.adminication.dto.AdminAllCoursesDTO;
+import f54148.adminication.dto.AdminAllEventsDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,4 +30,10 @@ public class EventController {
 	public @ResponseBody List<EventDTO> getEventsOfStudent(@PathVariable("studentId") Long studentId) {
 		return eventService.getEventsOfStudent(studentId);
 	}
+	@GetMapping(path = "/admin/events")
+	public @ResponseBody List<AdminAllEventsDTO> getAllEvents() {
+		return eventService.getAllEvents();
+	}
+
+
 }

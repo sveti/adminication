@@ -1,27 +1,39 @@
-.adminAllCoursesContainer {
+.adminAllCoursesContainer,
+.adminAllEventsContainer {
   margin: 8rem 2rem;
 }
 .allCoursesTable,
-.allTeachersTable {
+.allTeachersTable,
+.allEventsTable {
   width: 100%;
   border-collapse: collapse;
 }
 
 .allCoursesTh,
-.allTeachersTh {
+.allTeachersTh,
+.allEventsTh {
   padding-left: 20px;
 }
 .allCoursesTableHead,
-.allTeachersTableHead {
+.allTeachersTableHead,
+.allEventsTableHead {
   border-bottom: 1px solid #9e9796;
 }
 
 .allCoursesRow:nth-of-type(2n) {
   background-color: #f0eeee;
 }
+.allEventsRow:nth-of-type(2n) {
+  background-color: #cbe8f1;
+}
+
+.allTeachersRow:nth-of-type(2n) {
+  background-color: #fcf7d8;
+}
 
 .allCoursesTd,
-.allTeachersTd {
+.allTeachersTd,
+.allEventsTd {
   word-wrap: break-word;
 }
 
@@ -75,10 +87,6 @@ div[role="columnheader"] {
   padding: 10px;
 }
 
-.allTeachersRow:nth-of-type(2n) {
-  background-color: #fcf7d8;
-}
-
 .addTeacherButton {
   background-color: #eedd6d !important;
   color: #000040 !important;
@@ -92,7 +100,8 @@ div[role="columnheader"] {
 } */
 
 @media only screen and (max-width: 768px) {
-  .adminAllCoursesContainer {
+  .adminAllCoursesContainer,
+  .adminAllEventsContainer {
     margin: 4rem 1rem;
   }
 
@@ -108,33 +117,45 @@ div[role="columnheader"] {
   .allTeachersTableBody,
   .allTeachersTh,
   .allTeachersTd,
-  .allTeachersRow {
+  .allTeachersRow,
+  .allEventsTable,
+  .allEventsTableHead,
+  .allEventsTableBody,
+  .allEventsTh,
+  .allEventsTd,
+  .allEventsRow {
     display: block;
   }
 
   /* Hide table headers (but not display: none;, for accessibility) */
   .allCoursesTableHead tr,
-  .allTeachersTableHead tr {
+  .allTeachersTableHead tr,
+  .allEventsTableHead tr {
     position: absolute;
     top: -9999px;
     left: -9999px;
   }
 
   .allCoursesRow,
-  .allTeachersRow {
+  .allTeachersRow,
+  .allEventsRow {
     border: 1px solid #ccc;
   }
 
   .allCoursesTd,
+  .allEventsTd,
   .allTeachersTd {
     /* Behave  like a "row" */
     border: none;
     border-bottom: 1px solid #eee;
     position: relative;
     padding-left: 50%;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   .allCoursesTd:before,
+  .allEventsTd:before,
   .allTeachersTd:before {
     /* Now like a table header */
     position: absolute;
@@ -157,9 +178,11 @@ div[role="columnheader"] {
   }
   .allCoursesTd:nth-of-type(3):before {
     content: "Status";
+    margin-top: 0.5rem;
   }
   .allCoursesTd:nth-of-type(4):before {
     content: "Level";
+    margin-top: 0.5rem;
   }
   .allCoursesTd:nth-of-type(5):before {
     content: "Price/Student";
@@ -183,5 +206,28 @@ div[role="columnheader"] {
   }
   .allTeachersTd:nth-of-type(5):before {
     content: "Substituting courses";
+  }
+
+  .allEventsTd:nth-of-type(1):before {
+    content: "Event ID";
+  }
+  .allEventsTd:nth-of-type(2):before {
+    content: "Titile";
+  }
+  .allEventsTd:nth-of-type(3):before {
+    content: "Status";
+    margin-top: 0.5rem;
+  }
+  .allEventsTd:nth-of-type(4):before {
+    content: "Min age";
+  }
+  .allEventsTd:nth-of-type(5):before {
+    content: "Max age";
+  }
+  .allEventsTd:nth-of-type(6):before {
+    content: "Capacity";
+  }
+  .allEventsTd:nth-of-type(7):before {
+    content: "Details";
   }
 }
