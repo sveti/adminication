@@ -4,6 +4,7 @@ import java.util.*;
 
 import f54148.adminication.dto.AddParentDTO;
 import f54148.adminication.dto.AddStudentDTO;
+import f54148.adminication.dto.DisplayParentDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -91,5 +92,18 @@ public class ParentService {
 		parentRepository.save(saved);
 
 		return "Added Parent!";
+    }
+
+    public List<DisplayParentDTO> getAllParentsAdmin() {
+		List<Parent> parentsList = new ArrayList<>();
+		parentRepository.findAll().forEach(parentsList::add);
+		List<DisplayParentDTO> dto = new ArrayList<>();
+		for (Parent parent : parentsList) {
+			DisplayParentDTO dtoP = new DisplayParentDTO();
+			dtoP.setLabel(parent.getName()+ ' '+ parent.getLastName());
+			dtoP.setValue(parent.getId());
+			dto.add(dtoP);
+		}
+		return dto;
     }
 }

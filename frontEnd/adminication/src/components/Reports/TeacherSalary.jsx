@@ -15,11 +15,19 @@ class TeacherSalary extends Component {
       showStats: false,
       totalSalaryForPeriod: 0,
       totalLessonsForPeriod: 0,
+      name: null,
     };
     if (props.location && props.location.statisticsProps) {
       this.state.teacherId = props.location.statisticsProps.teacherId;
     } else {
       this.state.teacherId = props.teacherId;
+    }
+    if (
+      props.location &&
+      props.location.statisticsProps &&
+      props.location.statisticsProps.teacherName
+    ) {
+      this.state.name = props.location.statisticsProps.teacherName;
     }
   }
 
@@ -71,11 +79,17 @@ class TeacherSalary extends Component {
   };
 
   render() {
-    const { stats, showStats, totalSalaryForPeriod, totalLessonsForPeriod } =
-      this.state;
+    const {
+      stats,
+      showStats,
+      totalSalaryForPeriod,
+      totalLessonsForPeriod,
+      name,
+    } = this.state;
 
     return (
       <div className="salaryDiv container">
+        {name ? <h3 className="mb-5">Report for {name}</h3> : null}
         <MonthYearSelector
           handleSubmit={(selectedPeriod) => this.handleSubmit(selectedPeriod)}
         ></MonthYearSelector>

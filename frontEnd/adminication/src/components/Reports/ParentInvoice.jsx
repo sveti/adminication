@@ -12,12 +12,25 @@ class ParentInvoice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      parentId: props.user.id,
+      parentId: null,
       students: [],
       selectedIds: [],
       stats: [],
       showStats: false,
+      name: null,
     };
+    if (props.location && props.location.statisticsProps) {
+      this.state.parentId = props.location.statisticsProps.parentId;
+    } else {
+      this.state.parentId = props.parentId;
+    }
+    if (
+      props.location &&
+      props.location.statisticsProps &&
+      props.location.statisticsProps.parentName
+    ) {
+      this.state.name = props.location.statisticsProps.parentName;
+    }
   }
 
   onPeriodChange = () => {
@@ -86,10 +99,11 @@ class ParentInvoice extends Component {
   };
 
   render() {
-    const { showStats, selectedIds, stats, students } = this.state;
+    const { showStats, selectedIds, stats, students, name } = this.state;
 
     return (
       <div className="salaryDiv container">
+        {name ? <h3>Report for {name}</h3> : null}
         <MultipleStudentSelection
           students={this.state.students}
           selectedIds={this.state.selectedIds}

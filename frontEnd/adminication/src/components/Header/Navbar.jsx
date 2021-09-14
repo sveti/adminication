@@ -309,6 +309,61 @@ class Navbar extends Component {
             Teachers
           </Link>
         </li>
+        <li className="nav-item dropdown">
+          <div className="dropdown">
+            <button
+              className="btn dropdown-toggle nav-link"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+            >
+              Reports
+            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <Link
+                className="nav-link nested"
+                to={{
+                  pathname: "/reports/teachers",
+                }}
+              >
+                Teachers
+              </Link>
+              <Link
+                className="nav-link nested"
+                to={{
+                  pathname: "/reports/students",
+                }}
+              >
+                Students
+              </Link>
+              <Link
+                className="nav-link nested"
+                to={{
+                  pathname: "/reports/parents",
+                }}
+              >
+                Parents
+              </Link>
+              <Link
+                className="nav-link nested"
+                to={{
+                  pathname: "/reports/courses",
+                }}
+              >
+                Courses
+              </Link>
+              <Link
+                className="nav-link nested"
+                to={{
+                  pathname: "/reports/events",
+                }}
+              >
+                Events
+              </Link>
+            </div>
+          </div>
+        </li>
       </React.Fragment>
     );
 

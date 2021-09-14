@@ -5,6 +5,11 @@
   margin-top: 2rem;
   text-align: left;
 }
+
+.selectBtn {
+  background: #e74c3c !important;
+}
+
 .editButton.showMore {
   margin-top: 0px;
   background: #e74c3c;

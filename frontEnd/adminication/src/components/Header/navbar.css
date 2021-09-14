@@ -84,6 +84,24 @@ header.navbar.scrolled a:hover {
   outline: 0;
 }
 
+.logoutMobile,
+.logoutDesktop {
+  color: #1a396b !important;
+}
+.dropdown-toggle {
+  color: #1a396b !important;
+}
+.dropdown-menu {
+  background-color: #949494 !important;
+  border: none !important;
+}
+#dropdownMenuButton {
+  margin: auto;
+}
+.nested {
+  text-align: center;
+}
+
 .navbar-toggler span {
   display: block;
   background-color: #1a396b;
@@ -144,7 +162,7 @@ header.navbar.scrolled a:hover {
 }
 .brandName {
   position: relative;
-  top: 2.5px;
+  bottom: 2.5px;
 }
 
 .mailIcon {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import f54148.adminication.dto.AddParentDTO;
 import f54148.adminication.dto.AddStudentDTO;
+import f54148.adminication.dto.DisplayParentDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +40,13 @@ public class ParentServiceImplementation implements ParentService {
 		restTemplate.postForEntity("http://keycloakadminserver/add", addParentDTO, String.class);
 
 		return response.getBody();
+	}
+
+	@Override
+	public List<DisplayParentDTO> getAllParentsAdmin() {
+		DisplayParentDTO[] users = restTemplate.getForObject("http://databaseService/parents/admin/parents",DisplayParentDTO[].class);
+		assert users != null;
+		return Arrays.asList(users);
 	}
 
 }

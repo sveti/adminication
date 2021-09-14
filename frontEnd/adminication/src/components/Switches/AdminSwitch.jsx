@@ -9,6 +9,10 @@ import AdminAddCourse from "../Admin/AdminAddCourse";
 import AdminAddEvent from "../Admin/AdminAddEvent";
 import AdminAllTeachers from "../Admin/AdminAllTeachers";
 import AdminAddTeacher from "../Admin/AdminAddTeacher";
+import TeacherSelection from "../Reports/TeacherSelection";
+import ParentSelection from "../Reports/ParentSelection";
+import TeacherSalary from "../Reports/TeacherSalary";
+import ParentInvoice from "../Reports/ParentInvoice";
 
 const AdminSwitch = ({ user, increase, decrease }) => {
   function editedUser(passedUser) {
@@ -85,6 +89,25 @@ const AdminSwitch = ({ user, increase, decrease }) => {
           <AdminAddTeacher {...params} mode={"edit"}></AdminAddTeacher>
         )}
       />
+
+      <ProtectedRoute
+        path="/reports/teachers/:teacherId"
+        render={(params) => <TeacherSalary {...params}></TeacherSalary>}
+      />
+      <ProtectedRoute
+        path="/reports/teachers"
+        render={(params) => <TeacherSelection {...params}></TeacherSelection>}
+      />
+
+      <ProtectedRoute
+        path="/reports/parents/:parentId"
+        render={(params) => <ParentInvoice {...params}></ParentInvoice>}
+      />
+      <ProtectedRoute
+        path="/reports/parents"
+        render={(params) => <ParentSelection {...params}></ParentSelection>}
+      />
+
       <ProtectedRoute path="/not-found" component={NotFound} />
       <Redirect to="/not-found" />
     </Switch>

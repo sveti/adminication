@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import f54148.adminication.dto.*;
+import f54148.adminication.entity.*;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -14,14 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
-import f54148.adminication.entity.Course;
-import f54148.adminication.entity.CourseDetail;
-import f54148.adminication.entity.Enrollment;
-import f54148.adminication.entity.Event;
-import f54148.adminication.entity.Gender;
-import f54148.adminication.entity.Schedule;
-import f54148.adminication.entity.Teacher;
-import f54148.adminication.entity.User;
 import f54148.adminication.service.CourseService;
 
 @Configuration
@@ -42,6 +35,7 @@ public class ModelMapperConfig {
 		 	modelMapper.addMappings(convertUserToCreateUserDTO);
 		 	modelMapper.addMappings(convertCourseToAdminAllCoursesDTO);
 		 	modelMapper.addMappings(convertEventToAdminAllEventsDTO);
+		 	modelMapper.addMappings(convertParentToDisplayParentDTO);
 
 		 	modelMapper.addConverter(convertCoursetoUpcommingCourseDTO);
 		 	modelMapper.addConverter(convertCoursetoCourseWithDetailsDTO);
@@ -276,12 +270,19 @@ public class ModelMapperConfig {
 			 	map().setWaitingList(source.getCourseWaitingList().size());
 			  }
 	    };
-	PropertyMap<Event, AdminAllEventsDTO> convertEventToAdminAllEventsDTO = new PropertyMap<Event,AdminAllEventsDTO>()
-	{
-		protected void configure() {
-			map().setSignedUp(source.getEventSignedUps().size());
-			map().setWaitingList(source.getWaitingList().size());
-		}
-	};
+		PropertyMap<Event, AdminAllEventsDTO> convertEventToAdminAllEventsDTO = new PropertyMap<Event,AdminAllEventsDTO>()
+		{
+			protected void configure() {
+				map().setSignedUp(source.getEventSignedUps().size());
+				map().setWaitingList(source.getWaitingList().size());
+			}
+		};
+		PropertyMap<Parent, DisplayParentDTO> convertParentToDisplayParentDTO = new PropertyMap<Parent,DisplayParentDTO>()
+		{
+			protected void configure() {
+				map().setLabel(source.getName()+" "+source.getLastName());
+				map().setValue(source.getId());
+			}
+		};
 }
 

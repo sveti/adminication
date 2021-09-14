@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import f54148.adminication.dto.AddParentDTO;
+import f54148.adminication.dto.DisplayParentDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +63,13 @@ public class ParentController {
 	public @ResponseBody List<Parent> getAllParents() {
 		return parentService.getParents();
 	}
-	
+
+	@GetMapping(path = "/admin/parents")
+	public @ResponseBody List<DisplayParentDTO> getAllParentsAdmin() {
+		return parentService.getAllParentsAdmin();
+	}
+
+
 	@GetMapping(path = "/{id}/students")
 	public @ResponseBody List<StudentOfParentDTO> getStudentOfParentDTO(@PathVariable("id") Long id) {
 		return parentService.getStudentOfParentDTO(id);
