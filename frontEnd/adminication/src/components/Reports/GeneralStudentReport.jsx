@@ -49,14 +49,19 @@ export default function GeneralStudentReport(props) {
     return message;
   }
 
+  let parentViewClasses = "col-sm-12 col-md-9";
+  let studenttViewClasses = "col-sm-12 col-md-12";
+
   return (
     <div className="row singleStudent">
-      <div className="col-sm-12 col-md-3">
-        <h5>
-          {student.name} {student.lastName}
-        </h5>
-      </div>
-      <div className="col-sm-12 col-md-9">
+      {student ? (
+        <div className="col-sm-12 col-md-3">
+          <h5>
+            {student.name} {student.lastName}
+          </h5>
+        </div>
+      ) : null}
+      <div className={student ? parentViewClasses : studenttViewClasses}>
         {data ? (
           data.lessons.map((lesson) => (
             <div className="row mb-5 coursesStats" key={lesson.courseId}>

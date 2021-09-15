@@ -1,7 +1,7 @@
 import React from "react";
-import { Route, Redirect } from "react-router";
-
-import keycloakService from "../services/keycloakService";
+//import { Route, Redirect } from "react-router";
+import { Route } from "react-router";
+//import keycloakService from "../services/keycloakService";
 
 const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
   return (

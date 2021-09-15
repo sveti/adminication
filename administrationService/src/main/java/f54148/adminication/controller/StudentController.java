@@ -2,6 +2,8 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
+import f54148.adminication.dto.DisplayParentDTO;
+import f54148.adminication.dto.DisplayStudentDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +25,9 @@ public class StudentController {
 	public @ResponseBody List<StudentMonthlyAttendanceDTO> getTeacherStatistics(@PathVariable("studentId") Long studentId, @PathVariable("month") Integer month,@PathVariable("year") Integer year) {
 		return studentService.getStudentReport(studentId,month,year);
 	}
-	
+
+	@GetMapping(path = "/admin/students")
+	public @ResponseBody List<DisplayStudentDTO> getAllStudentsAdmin() {
+		return studentService.getAllStudentsAdmin();
+	}
 }

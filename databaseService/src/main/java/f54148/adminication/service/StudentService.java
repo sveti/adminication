@@ -8,21 +8,31 @@ import java.util.Set;
 import f54148.adminication.dto.*;
 import f54148.adminication.entity.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.repository.StudentRepository;
-import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
 public class StudentService {
 
 	private final StudentRepository studentRepository;
 	private final ModelMapper modelMapper;
 	private final RoleService roleService;
+	private final ParentService parentService;
 	private final PasswordEncoder encoder  = new BCryptPasswordEncoder();
+
+
+	public StudentService(StudentRepository repo, @Lazy RoleService roleService, @Lazy ModelMapper modelMapper,
+						  @Lazy ParentService parentService) {
+		super();
+		this.studentRepository = repo;
+		this.roleService = roleService;
+		this.parentService = parentService;
+		this.modelMapper = modelMapper;
+	}
 
 	public List<Student> getStudents() {
 		List<Student> studentList = new ArrayList<>();
@@ -219,5 +229,27 @@ public class StudentService {
 		student.setRole(roleService.getRoleByName("ROLE_STUDENT"));
 
 		return studentRepository.save(student);
+	}
+
+    public List<DisplayStudentDTO> getAllStudentsAdmin() {
+		List<Student> studentList = getStudents();
+		List<DisplayStudentDTO> dto = new ArrayList<>();
+		for (Student student : studentList) {
+			DisplayStudentDTO dtoS = new DisplayStudentDTO();
+			dtoS.setLabel(student.getName() + " " + student.getLastName());
+			dtoS.setValue(student.getId());
+			dto.add(dtoS);
+		}
+		return dto;
+	}
+
+
+	public void addParent(Student student, Parent parent) {
+		student.setParent(parent);
+		studentRepository.save(student);
+		Set<Student> children= parent.getChildren();
+		children.add(student);
+		parent.setChildren(children);
+		parentService.updateParent(parent);
 	}
 }

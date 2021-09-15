@@ -89,7 +89,10 @@ public class ParentService {
 
 		Parent saved = parentRepository.save(p);
 		saved.setChildren(students);
-		parentRepository.save(saved);
+		for (Student student : students) {
+			studentService.addParent(student,saved);
+		}
+		//parentRepository.save(saved);
 
 		return "Added Parent!";
     }
