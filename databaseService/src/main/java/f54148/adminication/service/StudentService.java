@@ -252,4 +252,36 @@ public class StudentService {
 		parent.setChildren(children);
 		parentService.updateParent(parent);
 	}
+
+    public CourseReportStudentsSignedUpDTO convertToCourseReportStudentsSignedUpDTO(Enrollment enrollment) {
+		CourseReportStudentsSignedUpDTO dto = new CourseReportStudentsSignedUpDTO();
+		dto.setEnrollmentId(enrollment.getId());
+		dto.setStudentId(enrollment.getStudent().getId());
+		dto.setStudentName(enrollment.getStudent().getName() + " " + enrollment.getStudent().getLastName());
+		return dto;
+    }
+
+	public CourseReportStudentsSignedUpDTO convertToCourseReportStudentsSignedUpDTO(CourseWaitingList courseWaitingList) {
+		CourseReportStudentsSignedUpDTO dto = new CourseReportStudentsSignedUpDTO();
+		dto.setEnrollmentId(courseWaitingList.getId());
+		dto.setStudentId(courseWaitingList.getStudent().getId());
+		dto.setStudentName(courseWaitingList.getStudent().getName() + " " + courseWaitingList.getStudent().getLastName());
+		return dto;
+	}
+
+    public CourseReportStudentsSignedUpDTO convertToCourseReportStudentsSignedUpDTO(EventSignUp eventSignedUp) {
+		CourseReportStudentsSignedUpDTO dto = new CourseReportStudentsSignedUpDTO();
+		dto.setEnrollmentId(eventSignedUp.getId());
+		dto.setStudentId(eventSignedUp.getStudent().getId());
+		dto.setStudentName(eventSignedUp.getStudent().getName() + " " + eventSignedUp.getStudent().getLastName());
+		return dto;
+    }
+
+	public CourseReportStudentsSignedUpDTO convertToCourseReportStudentsSignedUpDTO(EventWaitingList eventWaitingList) {
+		CourseReportStudentsSignedUpDTO dto = new CourseReportStudentsSignedUpDTO();
+		dto.setEnrollmentId(eventWaitingList.getId());
+		dto.setStudentId(eventWaitingList.getStudent().getId());
+		dto.setStudentName(eventWaitingList.getStudent().getName() + " " + eventWaitingList.getStudent().getLastName());
+		return dto;
+	}
 }

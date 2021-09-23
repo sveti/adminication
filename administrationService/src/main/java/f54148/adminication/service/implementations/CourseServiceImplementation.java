@@ -3,6 +3,7 @@ package f54148.adminication.service.implementations;
 import java.util.Arrays;
 import java.util.List;
 
+import f54148.adminication.dto.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,10 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
-import f54148.adminication.dto.AddCourseDTO;
-import f54148.adminication.dto.CourseTitles;
-import f54148.adminication.dto.DisplayEditCourseDTO;
-import f54148.adminication.dto.DisplayTeacherDTO;
 import f54148.adminication.service.CourseService;
 import lombok.AllArgsConstructor;
 
@@ -47,8 +44,21 @@ public class CourseServiceImplementation implements CourseService {
 	}
 
 	@Override
-	public List<CourseTitles> getCourseTitles() {
-		CourseTitles[] courses = restTemplate.getForObject("http://databaseService/courses/titles",CourseTitles[].class);
+	public List<CourseTitlesDTO> getCourseTitles() {
+		CourseTitlesDTO[] courses = restTemplate.getForObject("http://databaseService/courses/titles", CourseTitlesDTO[].class);
+		assert courses != null;
+		return Arrays.asList(courses);
+	}
+
+	@Override
+	public CourseReportDTO getCourseReport(Long idCourse) {
+		return restTemplate.getForObject("http://databaseService/courses/report/{idCourse}",CourseReportDTO.class, idCourse);
+
+	}
+
+	@Override
+	public List<CourseTitlesDTO> getAllCourseTitles() {
+		CourseTitlesDTO[] courses = restTemplate.getForObject("http://databaseService/courses/titles/all", CourseTitlesDTO[].class);
 		assert courses != null;
 		return Arrays.asList(courses);
 	}

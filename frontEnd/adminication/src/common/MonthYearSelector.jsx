@@ -67,11 +67,13 @@ class MonthYearSelector extends Component {
 
   showStatistics = () => {
     if (this.validate()) {
-      let { selectedPeriod } = this.state;
+      let newPeriod = { ...this.state.selectedPeriod };
+
       //Jan is 0 as index but 1 as month
-      const montAsANumber = this.state.months.indexOf(selectedPeriod.month) + 1;
-      selectedPeriod.month = montAsANumber;
-      this.props.handleSubmit(selectedPeriod);
+      const montAsANumber =
+        this.state.months.indexOf(this.state.selectedPeriod.month) + 1;
+      newPeriod.month = montAsANumber;
+      this.props.handleSubmit(newPeriod);
     }
   };
 

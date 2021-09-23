@@ -1,12 +1,11 @@
 package f54148.adminication.controller;
 
-import f54148.adminication.dto.AddCourseDTO;
-import f54148.adminication.dto.AddEventDTO;
-import f54148.adminication.dto.DisplayEditCourseDTO;
-import f54148.adminication.dto.EditEventDTO;
+import f54148.adminication.dto.*;
 import f54148.adminication.service.EventService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -32,4 +31,17 @@ public class EventController {
 
         return eventService.editEvent(event);
     }
+
+    @GetMapping(path = "/report/{idEvent}")
+    public @ResponseBody
+    EventReportDTO getEventReport(@PathVariable("idEvent") Long idEvent) {
+        return eventService.getEventReport(idEvent);
+    }
+
+    @GetMapping(path = "/titles/all")
+    public @ResponseBody
+    List<EventTitlesDTO> getAllEventTitles() {
+        return eventService.getAllEventTitles();
+    }
+
 }

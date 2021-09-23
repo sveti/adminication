@@ -31,3 +31,11 @@ export function editEvent(event) {
 export function getEditEvent(idEvent) {
   return http.get(adminEndpoint + "edit/" + idEvent);
 }
+
+export function getAllEventsTitles() {
+  return http.get(adminEndpoint + "titles/all");
+}
+
+export function getEventReport(idEvent) {
+  return http.get(adminEndpoint + "report/" + idEvent);
+}

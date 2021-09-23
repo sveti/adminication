@@ -15,7 +15,7 @@ class StudentReport extends Component {
     if (props.location && props.location.statisticsProps) {
       this.state.studentId = props.location.statisticsProps.studentId;
     } else {
-      this.state.studentId = props.parentId;
+      this.state.studentId = props.studentId;
     }
     if (
       props.location &&

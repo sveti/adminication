@@ -255,4 +255,44 @@ public class EventService {
 
 		return dto;
 	}
+
+    public EventReportDTO getEventReport(Long idEvent) {
+
+		Event e = getEventById(idEvent);
+		EventReportDTO dto = new EventReportDTO();
+		dto.setEventId(e.getId());
+		dto.setDescription(e.getDescription());
+		dto.setTitle(e.getTitle());
+		dto.setMaxAge(e.getMaxAge());
+		dto.setMinAge(e.getMinAge());
+		dto.setStatus(e.getStatus());
+		dto.setMaxNumberOfPeople(e.getMaxNumberOfPeople());
+
+		List<CourseReportStudentsSignedUpDTO> students = new ArrayList<>();
+		List<CourseReportStudentsSignedUpDTO> studentsWaiting = new ArrayList<>();
+
+		for (EventSignUp eventSignedUp : e.getEventSignedUps()) {
+			students.add(studentService.convertToCourseReportStudentsSignedUpDTO(eventSignedUp));
+		}
+
+		for (EventWaitingList eventWaitingList : e.getWaitingList()) {
+			studentsWaiting.add(studentService.convertToCourseReportStudentsSignedUpDTO(eventWaitingList));
+		}
+
+		dto.setStudentsSignedUp(students);
+		dto.setStudentsWaitingList(studentsWaiting);
+
+		return dto;
+    }
+
+    public List<EventTitlesDTO> getEventTitlesAll() {
+		List<Event> events = getEvents();
+		List<EventTitlesDTO> dtos = new ArrayList<>();
+		events.forEach(e->dtos.add(convertToEventTitlesDTO(e)));
+		return dtos;
+    }
+
+	private EventTitlesDTO convertToEventTitlesDTO(Event e) {
+		return modelMapper.map(e, EventTitlesDTO.class);
+	}
 }

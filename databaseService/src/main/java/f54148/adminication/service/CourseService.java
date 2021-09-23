@@ -7,26 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import f54148.adminication.dto.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import f54148.adminication.dto.AddCourseDTO;
-import f54148.adminication.dto.AddCourseScheduleDTO;
-import f54148.adminication.dto.AddCourseTeacherDTO;
-import f54148.adminication.dto.CourseTitles;
-import f54148.adminication.dto.AdminAllCoursesDTO;
-import f54148.adminication.dto.CourseDetailsDTO;
-import f54148.adminication.dto.CourseWithDetailsDTO;
-import f54148.adminication.dto.DisplayEditCourseDTO;
-import f54148.adminication.dto.EditCourseDTO;
-import f54148.adminication.dto.EditCourseScheduleDTO;
-import f54148.adminication.dto.EditCourseTeacherDTO;
-import f54148.adminication.dto.FinshedCourseDTO;
-import f54148.adminication.dto.StartedCourseDTO;
-import f54148.adminication.dto.StartedCourseStudentDTO;
-import f54148.adminication.dto.StudentAttendanceDTO;
-import f54148.adminication.dto.StudentLessonDTO;
-import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.entity.CourseStatus;
@@ -55,6 +39,7 @@ public class CourseService {
 	private final CourseDetailService courseDetailService;
 	private final ScheduleService scheduleService;
 	private final TeachingService teachingService;
+	private final EnrollmentService enrollmentService;
 	private final ModelMapper modelMapper;
 
 	public List<Course> getCourses() {
@@ -622,24 +607,73 @@ public class CourseService {
 		}
 	}
 
-	private CourseTitles convertToAddCourseToTeacherDTO(Course c) {
-		return modelMapper.map(c, CourseTitles.class);
+	private CourseTitlesDTO convertToAddCourseToTeacherDTO(Course c) {
+		return modelMapper.map(c, CourseTitlesDTO.class);
 	}
 	
-	public List<CourseTitles> getCourseTitles() {
+	public List<CourseTitlesDTO> getCourseTitles() {
 		List<Course> allCourses = this.getCourses();
 		allCourses.removeIf(course -> course.getStatus() == CourseStatus.FINISHED || course.getStatus() == CourseStatus.CANCELED);
-		List<CourseTitles> dtos = new ArrayList<>();
+		List<CourseTitlesDTO> dtos = new ArrayList<>();
 		allCourses.forEach(c->dtos.add(convertToAddCourseToTeacherDTO(c)));
 		return dtos;
 	}
 
 
+    public CourseReportDTO getCourseReport(Long idCourse) {
+
+		Course c = getCourseById(idCourse);
+		CourseReportDTO dto = new CourseReportDTO();
+		dto.setCourseId(c.getId());
+		dto.setDescription(c.getDescription());
+		dto.setTitle(c.getTitle());
+		dto.setPricePerStudent(c.getPricePerStudent());
+		dto.setStatus(c.getStatus());
+		List<FinalGradesDTO> finalGrades = new ArrayList<>();
+		List<CourseReportStudentsSignedUpDTO> students = new ArrayList<>();
+		List<CourseReportStudentsSignedUpDTO> studentsWaiting = new ArrayList<>();
+		if(c.getStatus().equals(CourseStatus.FINISHED)){
+			for (Enrollment enrollment : c.getEnrollments()) {
+				finalGrades.add(enrollmentService.convertToFinalGradesDTO(enrollment));
+				students.add(studentService.convertToCourseReportStudentsSignedUpDTO(enrollment));
+			}
+		}
+		else{
+			for (Enrollment enrollment : c.getEnrollments()) {
+				students.add(studentService.convertToCourseReportStudentsSignedUpDTO(enrollment));
+			}
+		}
+
+		for (CourseWaitingList courseWaitingList : c.getCourseWaitingList()) {
+			studentsWaiting.add(studentService.convertToCourseReportStudentsSignedUpDTO(courseWaitingList));
+		}
+
+		dto.setStudentsWaitingList(studentsWaiting);
+		dto.setStudentsSignedUp(students);
+		dto.setFinalGradesDTO(finalGrades);
+
+		List<CourseReportLesson> dtoList = new ArrayList<>();
+
+		for (Lesson lesson : c.getLessons()) {
+			dtoList.add(lessonService.convertToCourseReportLesson(lesson));
+		}
+
+		dto.setCourseReportLessons(dtoList);
+
+		List<CourseReportTeacherDTO> teachers = new ArrayList<>();
+		for (Teaching teaching : c.getTeaching()) {
+			teachers.add(teacherService.convertToCourseReportTeacherDTO(teaching.getTeacher(),teaching.getSubstitute(),teaching.getSalaryPerStudent()));
+		}
+		dto.setTeachers(teachers);
+
+		return dto;
+    }
 
 
-
-
-
-	
-	
+	public List<CourseTitlesDTO> getCourseTitlesAll() {
+		List<Course> allCourses = this.getCourses();
+		List<CourseTitlesDTO> dtos = new ArrayList<>();
+		allCourses.forEach(c->dtos.add(convertToAddCourseToTeacherDTO(c)));
+		return dtos;
+	}
 }

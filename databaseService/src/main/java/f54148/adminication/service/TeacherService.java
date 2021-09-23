@@ -239,4 +239,19 @@ public class TeacherService {
 	}
 
 
+    public CourseReportTeacherDTO convertToCourseReportTeacherDTO(Teacher teacher,Teacher sub, Double pricePerLesson) {
+		CourseReportTeacherDTO dto = new CourseReportTeacherDTO();
+		dto.setTeacherId(teacher.getId());
+		dto.setName(teacher.getName() + " " + teacher.getLastName());
+		dto.setPricePerLesson(pricePerLesson);
+		if(sub!=null){
+			dto.setSubId(sub.getId());
+			dto.setSubName(sub.getName() + " " + sub.getLastName());
+		}
+		else{
+			dto.setSubId(null);
+			dto.setSubName(null);
+		}
+		return dto;
+    }
 }

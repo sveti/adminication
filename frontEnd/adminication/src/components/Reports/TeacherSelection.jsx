@@ -55,7 +55,7 @@ const TeacherSelection = (props) => {
         </div>
         <div className="col-2">
           <Link
-            className="nav-link"
+            className=""
             to={{
               pathname: "/reports/teachers/" + selectedTeacherId,
               statisticsProps: {

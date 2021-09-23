@@ -81,3 +81,11 @@ export function getEditCourse(idCourse) {
 export function getCourseTitles() {
   return http.get(adminEndpoint + "titles");
 }
+
+export function getCourseTitlesAll() {
+  return http.get(adminEndpoint + "titles/all");
+}
+
+export function getCourseReport(idCourse) {
+  return http.get(adminEndpoint + "report/" + idCourse);
+}

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import f54148.adminication.dto.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,18 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import f54148.adminication.dto.AddCourseDTO;
-import f54148.adminication.dto.CourseTitles;
-import f54148.adminication.dto.AdminAllCoursesDTO;
-import f54148.adminication.dto.AttendanceDTO;
-import f54148.adminication.dto.CourseWithDetailsDTO;
-import f54148.adminication.dto.DisplayEditCourseDTO;
-import f54148.adminication.dto.EditCourseDTO;
-import f54148.adminication.dto.FinshedCourseDTO;
-import f54148.adminication.dto.StartedCourseDTO;
-import f54148.adminication.dto.StartedCourseStudentDTO;
-import f54148.adminication.dto.StudentAttendanceDTO;
-import f54148.adminication.dto.UpcommingCourseDTO;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.entity.File;
@@ -252,14 +241,25 @@ public class CourseController {
 	}
 	
 	@GetMapping(path = "/titles")
-	public @ResponseBody List<CourseTitles> getCourseTitles() {
+	public @ResponseBody List<CourseTitlesDTO> getCourseTitles() {
 		return courseService.getCourseTitles();
 	}
-	
-	
+
+	@GetMapping(path = "/titles/all")
+	public @ResponseBody List<CourseTitlesDTO> getCourseTitlesAll() {
+		return courseService.getCourseTitlesAll();
+	}
+
+
 	@PutMapping(path = "/edit")
 	public @ResponseBody String editCourse(@RequestBody EditCourseDTO course) {
 		
 		return courseService.editCourse(course);
 	}
+	@GetMapping(path = "/report/{idCourse}")
+	public @ResponseBody
+	CourseReportDTO getCourseReport(@PathVariable("idCourse") Long idCourse) {
+		return courseService.getCourseReport(idCourse);
+	}
+
 }

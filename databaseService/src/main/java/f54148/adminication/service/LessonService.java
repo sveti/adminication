@@ -2,15 +2,11 @@ package f54148.adminication.service;
 
 import java.util.*;
 
+import f54148.adminication.dto.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import f54148.adminication.dto.AttendanceDTO;
-import f54148.adminication.dto.LessonDTO;
-import f54148.adminication.dto.LessonSalaryDTO;
-import f54148.adminication.dto.StudentLessonDTO;
-import f54148.adminication.dto.UpdateLessonDescriptionDTO;
 import f54148.adminication.entity.Attendance;
 import f54148.adminication.entity.Course;
 import f54148.adminication.entity.Lesson;
@@ -243,5 +239,21 @@ public class LessonService {
 		dto.setAttended(att.size());
 		return dto;
 	}
-	
+
+    public CourseReportLesson convertToCourseReportLesson(Lesson lesson) {
+
+		CourseReportLesson dto = new CourseReportLesson();
+		dto.setLessonId(lesson.getId());
+		dto.setDate(lesson.getDate());
+		dto.setDescription(lesson.getDescription());
+		dto.setTeacherId(lesson.getTeacher().getId());
+		dto.setTeacherName(lesson.getTeacher().getName() + " " + lesson.getTeacher().getLastName());
+
+		List <CourseReportAttendance> dtoList = new ArrayList<>();
+		for (Attendance attendance : lesson.getAttendances()) {
+			dtoList.add(attendanceService.convertToCourseReportAttendance(attendance));
+		}
+		dto.setAttendanceList(dtoList);
+		return dto;
+    }
 }

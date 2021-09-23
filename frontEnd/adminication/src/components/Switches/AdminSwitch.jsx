@@ -15,6 +15,10 @@ import TeacherSalary from "../Reports/TeacherSalary";
 import ParentInvoice from "../Reports/ParentInvoice";
 import StudentSelection from "../Reports/StudentSelection";
 import StudentReport from "../Reports/StudentReport";
+import CourseSelection from "../Reports/CourseSelection";
+import CourseReport from "../Reports/CourseReport";
+import EventSelection from "../Reports/EventSelection";
+import EventReport from "../Reports/EventReport";
 
 const AdminSwitch = ({ user, increase, decrease }) => {
   function editedUser(passedUser) {
@@ -117,6 +121,24 @@ const AdminSwitch = ({ user, increase, decrease }) => {
       <ProtectedRoute
         path="/reports/students"
         render={(params) => <StudentSelection {...params}></StudentSelection>}
+      />
+
+      <ProtectedRoute
+        path="/reports/courses/:courseId"
+        render={(params) => <CourseReport {...params}></CourseReport>}
+      />
+      <ProtectedRoute
+        path="/reports/courses"
+        render={(params) => <CourseSelection {...params}></CourseSelection>}
+      />
+
+      <ProtectedRoute
+        path="/reports/events/:eventId"
+        render={(params) => <EventReport {...params}></EventReport>}
+      />
+      <ProtectedRoute
+        path="/reports/events"
+        render={(params) => <EventSelection {...params}></EventSelection>}
       />
 
       <ProtectedRoute path="/not-found" component={NotFound} />

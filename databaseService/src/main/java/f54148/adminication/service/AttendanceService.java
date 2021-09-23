@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import f54148.adminication.dto.CourseReportAttendance;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -127,7 +128,14 @@ public class AttendanceService {
 		
 		
 	}
-	
-	
 
+    public CourseReportAttendance convertToCourseReportAttendance(Attendance attendance) {
+
+		CourseReportAttendance dto = new CourseReportAttendance();
+		dto.setAttendanceId(attendance.getId());
+		dto.setStudentId(attendance.getStudent().getId());
+		dto.setStudentName(attendance.getStudent().getName() + " " + attendance.getStudent().getLastName());
+		dto.setAttended(attendance.getAttended());
+		return dto;
+    }
 }

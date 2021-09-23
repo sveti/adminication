@@ -1,13 +1,15 @@
 package f54148.adminication.service.implementations;
 
-import f54148.adminication.dto.AddEventDTO;
-import f54148.adminication.dto.EditEventDTO;
+import f54148.adminication.dto.*;
 import f54148.adminication.service.EventService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -33,5 +35,18 @@ public class EventServiceImplementation  implements EventService {
     public EditEventDTO getEditEventDTO(Long idEvent) {
         return restTemplate.getForObject("http://databaseService/events/edit/{idEvent}", EditEventDTO.class, idEvent);
 
+    }
+
+    @Override
+    public EventReportDTO getEventReport(Long idEvent) {
+        return restTemplate.getForObject("http://databaseService/events/report/{idCourse}",EventReportDTO.class, idEvent);
+
+    }
+
+    @Override
+    public List<EventTitlesDTO> getAllEventTitles() {
+        EventTitlesDTO[] events = restTemplate.getForObject("http://databaseService/events/titles/all", EventTitlesDTO[].class);
+        assert events != null;
+        return Arrays.asList(events);
     }
 }

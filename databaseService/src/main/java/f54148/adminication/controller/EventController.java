@@ -128,4 +128,17 @@ public class EventController {
 	}
 
 
+
+	@GetMapping(path = "/report/{idEvent}")
+	public @ResponseBody
+	EventReportDTO getEventReport(@PathVariable("idEvent") Long idEvent) {
+		return eventService.getEventReport(idEvent);
+	}
+
+	@GetMapping(path = "/titles/all")
+	public @ResponseBody List<EventTitlesDTO> getEventTitlesAll() {
+		return eventService.getEventTitlesAll();
+	}
+
+
 }

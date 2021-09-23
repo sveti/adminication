@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import f54148.adminication.dto.CourseReportStudentsSignedUpDTO;
+import f54148.adminication.entity.EventSignUp;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -126,6 +128,5 @@ public boolean addWaitingListSignUp(AddEventWaitingListDTO dto) {
 	eventWaitingList.setSigned(dto.getSigned());
 	return addEventWaitingList(eventWaitingList);
 }
-
 
 }

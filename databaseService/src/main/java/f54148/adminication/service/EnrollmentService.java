@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import f54148.adminication.dto.FinalGradesDTO;
+import f54148.adminication.repository.AttendanceRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import f54148.adminication.dto.AddEnrollmentDTO;
@@ -17,7 +20,6 @@ import f54148.adminication.repository.EnrollmentRepository;
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
 public class EnrollmentService {
 
 	
@@ -32,6 +34,18 @@ public class EnrollmentService {
 	private final NotificationService notificationService;
 	
 	private final ModelMapper modelMapper;
+
+	public EnrollmentService(EnrollmentRepository enrollmentRepository, @Lazy StudentService studentService,@Lazy CourseService courseService,
+							 @Lazy NotificationService notificationService,
+							 @Lazy DraftService draftService, ModelMapper modelMapper) {
+		super();
+		this.enrollmentRepository = enrollmentRepository;
+		this.studentService = studentService;
+		this.courseService = courseService;
+		this.notificationService = notificationService;
+		this.draftService = draftService;
+		this.modelMapper = modelMapper;
+	}
 
 	public List<Enrollment> getEnrollments() {
 		List<Enrollment> enrollmentList = new ArrayList<>();
@@ -211,7 +225,13 @@ public class EnrollmentService {
 		return deleteEnrollment(e.getId());
 	}
 
-
+	public FinalGradesDTO convertToFinalGradesDTO(Enrollment e){
+		FinalGradesDTO dto = new FinalGradesDTO();
+		dto.setGrade(e.getGrade());
+		dto.setStudentId(e.getStudent().getId());
+		dto.setStudentName(e.getStudent().getName() + " " + e.getStudent().getLastName());
+		return dto;
+	}
 	
 
 }
