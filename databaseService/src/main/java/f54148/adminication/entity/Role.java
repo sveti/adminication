@@ -38,16 +38,7 @@ public class Role {
 	@NotBlank
 	@Size(min = 5, max = 50, message="Min 5, Max 50")
 	private String name;
-	
-	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "roles_privileges", 
-        joinColumns = @JoinColumn(
-          name = "role_id", referencedColumnName = "id"), 
-        inverseJoinColumns = @JoinColumn(
-          name = "privilege_id", referencedColumnName = "id"))
-    private Set<Privilege> privileges = new HashSet<Privilege>();
-	
+
 	@OneToMany(mappedBy = "role")
 	@JsonIgnore
 	private Set<User> users  = new HashSet<User>();
@@ -55,7 +46,6 @@ public class Role {
 	public Role(@NotBlank @Size(min = 5, max = 50, message = "Min 5, Max 50") String name) {
 		super();
 		this.name = name;
-		this. privileges = new HashSet<Privilege>();
 		this.users  = new HashSet<User>();
 	}
 	

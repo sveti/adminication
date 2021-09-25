@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect, Switch, withRouter } from "react-router-dom";
 import ProtectedRoute from "../../common/ProtectedRoute";
-import NotFound from "../notFound";
+import NotFound from "../NotFound";
 import IndexPage from "../Homepage/IndexPage";
 import AdminAllCourses from "../Admin/AdminAllCourses";
 import AdminAllEvents from "../Admin/AdminAllEvents";
@@ -28,6 +28,7 @@ const AdminSwitch = ({ user, increase, decrease }) => {
     <Switch>
       <ProtectedRoute
         path="/home"
+        roles={["ADMIN"]}
         render={(params) => (
           <IndexPage
             {...params}
@@ -38,12 +39,14 @@ const AdminSwitch = ({ user, increase, decrease }) => {
       />
       <ProtectedRoute
         path="/courses/all"
+        roles={["ADMIN"]}
         render={(params) => (
           <AdminAllCourses {...params} user={user}></AdminAllCourses>
         )}
       />
       <ProtectedRoute
         path="/courses/add"
+        roles={["ADMIN"]}
         render={(params) => (
           <AdminAddCourse {...params} mode={"save"}></AdminAddCourse>
         )}
@@ -51,6 +54,7 @@ const AdminSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/courses/:courseId"
+        roles={["ADMIN"]}
         render={(params) => (
           <AdminAddCourse {...params} mode={"edit"}></AdminAddCourse>
         )}
@@ -58,12 +62,14 @@ const AdminSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/events/all"
+        roles={["ADMIN"]}
         render={(params) => (
           <AdminAllEvents {...params} user={user}></AdminAllEvents>
         )}
       />
       <ProtectedRoute
         path="/events/add"
+        roles={["ADMIN"]}
         render={(params) => (
           <AdminAddEvent {...params} mode={"save"}></AdminAddEvent>
         )}
@@ -71,6 +77,7 @@ const AdminSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/events/:eventId"
+        roles={["ADMIN"]}
         render={(params) => (
           <AdminAddEvent {...params} mode={"edit"}></AdminAddEvent>
         )}
@@ -78,12 +85,14 @@ const AdminSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/teachers/all"
+        roles={["ADMIN"]}
         render={(params) => (
           <AdminAllTeachers {...params} user={user}></AdminAllTeachers>
         )}
       />
       <ProtectedRoute
         path="/teachers/add"
+        roles={["ADMIN"]}
         render={(params) => (
           <AdminAddTeacher {...params} mode={"save"}></AdminAddTeacher>
         )}
@@ -91,6 +100,7 @@ const AdminSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/teachers/:teacherId"
+        roles={["ADMIN"]}
         render={(params) => (
           <AdminAddTeacher {...params} mode={"edit"}></AdminAddTeacher>
         )}
@@ -98,46 +108,56 @@ const AdminSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/reports/teachers/:teacherId"
+        roles={["ADMIN"]}
         render={(params) => <TeacherSalary {...params}></TeacherSalary>}
       />
       <ProtectedRoute
         path="/reports/teachers"
+        roles={["ADMIN"]}
         render={(params) => <TeacherSelection {...params}></TeacherSelection>}
       />
 
       <ProtectedRoute
         path="/reports/parents/:parentId"
+        roles={["ADMIN"]}
         render={(params) => <ParentInvoice {...params}></ParentInvoice>}
       />
       <ProtectedRoute
         path="/reports/parents"
+        roles={["ADMIN"]}
         render={(params) => <ParentSelection {...params}></ParentSelection>}
       />
 
       <ProtectedRoute
         path="/reports/students/:studentId"
+        roles={["ADMIN"]}
         render={(params) => <StudentReport {...params}></StudentReport>}
       />
       <ProtectedRoute
         path="/reports/students"
+        roles={["ADMIN"]}
         render={(params) => <StudentSelection {...params}></StudentSelection>}
       />
 
       <ProtectedRoute
         path="/reports/courses/:courseId"
+        roles={["ADMIN"]}
         render={(params) => <CourseReport {...params}></CourseReport>}
       />
       <ProtectedRoute
         path="/reports/courses"
+        roles={["ADMIN"]}
         render={(params) => <CourseSelection {...params}></CourseSelection>}
       />
 
       <ProtectedRoute
         path="/reports/events/:eventId"
+        roles={["ADMIN"]}
         render={(params) => <EventReport {...params}></EventReport>}
       />
       <ProtectedRoute
         path="/reports/events"
+        roles={["ADMIN"]}
         render={(params) => <EventSelection {...params}></EventSelection>}
       />
 

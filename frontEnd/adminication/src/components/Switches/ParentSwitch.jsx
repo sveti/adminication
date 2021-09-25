@@ -3,7 +3,7 @@ import { Redirect, Switch, withRouter } from "react-router-dom";
 import ProtectedRoute from "../../common/ProtectedRoute";
 import Logout from "../Login/Logout";
 import IndexPage from "../Homepage/IndexPage";
-import NotFound from "../notFound";
+import NotFound from "../NotFound";
 import StudentSelection from "../Courses/StudentSelection";
 import AllCoursesList from "../Courses/AllCoursesList";
 import StudentCoursesPage from "../Courses/StudentCoursesPage";
@@ -26,6 +26,7 @@ const ParentSwitch = ({ user, increase, decrease }) => {
       <ProtectedRoute path="/logout" component={Logout} />
       <ProtectedRoute
         path="/home"
+        roles={["PARENT"]}
         render={(params) => (
           <IndexPage
             {...params}
@@ -37,23 +38,27 @@ const ParentSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/courses/:courseId/lessons"
+        roles={["PARENT"]}
         render={(params) => (
           <StudentLessonsOfCourse {...params}></StudentLessonsOfCourse>
         )}
       />
       <ProtectedRoute
         path="/courses/all"
+        roles={["PARENT"]}
         render={(params) => (
           <AllCoursesList {...params} increase={increase}></AllCoursesList>
         )}
       />
       <ProtectedRoute
         path="/courses/:courseId"
+        roles={["PARENT"]}
         render={(params) => <Course {...params} parentView={true}></Course>}
       />
 
       <ProtectedRoute
         path="/courses"
+        roles={["PARENT"]}
         render={(params) => (
           <StudentCoursesPage {...params}></StudentCoursesPage>
         )}
@@ -61,11 +66,13 @@ const ParentSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/grades"
+        roles={["PARENT"]}
         render={(params) => <StudentGrades {...params}></StudentGrades>}
       />
 
       <ProtectedRoute
         path="/events/all"
+        roles={["PARENT"]}
         render={(params) => (
           <AllEventsList {...params} increase={increase}></AllEventsList>
         )}
@@ -73,16 +80,19 @@ const ParentSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/events/:eventId"
+        roles={["PARENT"]}
         render={(params) => <Event {...params} parentView={true}></Event>}
       />
 
       <ProtectedRoute
         path="/events"
+        roles={["PARENT"]}
         render={(params) => <StudentEventsPage {...params}></StudentEventsPage>}
       />
 
       <ProtectedRoute
         path="/selectStudent"
+        roles={["PARENT"]}
         render={(params) => (
           <StudentSelection {...params} user={user}></StudentSelection>
         )}
@@ -90,6 +100,7 @@ const ParentSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/reports"
+        roles={["PARENT"]}
         render={(params) => (
           <ParentInvoice {...params} user={user}></ParentInvoice>
         )}
@@ -97,6 +108,7 @@ const ParentSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/notifications"
+        roles={["PARENT"]}
         render={(params) => (
           <AllNotifications
             {...params}

@@ -3,11 +3,9 @@ package f54148.adminication.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import f54148.adminication.entity.Privilege;
 import f54148.adminication.entity.Role;
 import f54148.adminication.repository.RoleRepository;
 import lombok.AllArgsConstructor;
@@ -44,11 +42,6 @@ public class RoleService {
 		} else {
 			return false;
 		}
-	}
-
-	public Set<Privilege> getRolePrivileges(Long roleId) {
-		Optional<Role> opRole = roleRepository.findById(roleId);
-		return opRole.map(Role::getPrivileges).orElse(null);
 	}
 
 	public Role getRoleByName(String roleName) {

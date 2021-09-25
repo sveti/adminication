@@ -1,7 +1,6 @@
 package f54148.adminication.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import f54148.adminication.entity.Privilege;
 import f54148.adminication.entity.Role;
 import f54148.adminication.service.RoleService;
 import lombok.AllArgsConstructor;
@@ -57,9 +55,5 @@ public class RoleController {
 		public @ResponseBody Role getRoleByString(@PathVariable("rolename") String rolename) {
 			return roleService.getRoleByName(rolename);
 		}
-		
-		@GetMapping(path = "/role/{id}/privileges")
-		public @ResponseBody Set<Privilege> getRolePrivileges(@PathVariable("id") Long id) {
-			return roleService.getRolePrivileges(id);
-		}
+
 }

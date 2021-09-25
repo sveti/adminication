@@ -1,16 +1,13 @@
 import React from "react";
-//import { Route, Redirect } from "react-router";
 import { Route } from "react-router";
-//import keycloakService from "../services/keycloakService";
+import NotAllowed from "../components/NotAllowed";
+import keycloakService from "../services/keycloakService";
 
-const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
+const ProtectedRoute = ({ roles, children, ...rest }) => {
   return (
-    <Route
-      {...rest}
-      render={(props) => {
-        return Component ? <Component {...props} /> : render(props);
-      }}
-    ></Route>
+    <Route {...rest}>
+      {keycloakService.hasRole(roles) ? children : <NotAllowed></NotAllowed>}
+    </Route>
   );
 };
 

@@ -11,7 +11,7 @@ import GradingTable from "../Courses/Grading/GradingTable";
 import Grading from "../Courses/Grading/Grading";
 import TeacherSalary from "../Reports/TeacherSalary";
 import AllNotifications from "../Notifications/AllNotifications";
-import NotFound from "../notFound";
+import NotFound from "../NotFound";
 
 const TeacherSwitch = ({ user, increase, decrease }) => {
   function editedUser(passedUser) {
@@ -23,6 +23,7 @@ const TeacherSwitch = ({ user, increase, decrease }) => {
       <ProtectedRoute path="/logout" component={Logout} />
       <ProtectedRoute
         path="/home"
+        roles={["TEACHER"]}
         render={(params) => (
           <IndexPage
             {...params}
@@ -33,20 +34,24 @@ const TeacherSwitch = ({ user, increase, decrease }) => {
       />
       <ProtectedRoute
         path="/courses/:courseId"
+        roles={["TEACHER"]}
         render={(params) => <Course {...params} teacherView={true}></Course>}
       />
       <ProtectedRoute
         path="/courses"
+        roles={["TEACHER"]}
         render={() => <CoursesPage id={user.id}></CoursesPage>}
       />
       <ProtectedRoute
         path="/lessons/:courseId"
+        roles={["TEACHER"]}
         render={(params) => (
           <LessonsOfCoursePage {...params}></LessonsOfCoursePage>
         )}
       />
       <ProtectedRoute
         path="/lessons"
+        roles={["TEACHER"]}
         render={(params) => (
           <TeacherLessonsPage {...params}></TeacherLessonsPage>
         )}
@@ -54,14 +59,17 @@ const TeacherSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/grading/:courseId"
+        roles={["TEACHER"]}
         render={(params) => <GradingTable {...params}></GradingTable>}
       />
       <ProtectedRoute
         path="/grading"
+        roles={["TEACHER"]}
         render={(params) => <Grading teacherId={user.id} {...params}></Grading>}
       />
       <ProtectedRoute
         path="/reports"
+        roles={["TEACHER"]}
         render={(params) => (
           <TeacherSalary teacherId={user.id} {...params}></TeacherSalary>
         )}
@@ -69,6 +77,7 @@ const TeacherSwitch = ({ user, increase, decrease }) => {
 
       <ProtectedRoute
         path="/notifications"
+        roles={["TEACHER"]}
         render={(params) => (
           <AllNotifications
             {...params}
