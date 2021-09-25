@@ -215,8 +215,7 @@ public class ModelMapperConfig {
 	        	destination.setStudentId(source.getStudent().getId());
 	        	destination.setCourseId(source.getCourse().getId());
 	        	destination.setUsername(source.getStudent().getUsername());
-	        	destination.setName(source.getStudent().getName());
-	        	destination.setLastName(source.getStudent().getLastName());
+	        	destination.setName(source.getStudent().getName() + " " + source.getStudent().getLastName());
 	        	destination.setGrade(source.getGrade());
 	        	
 	            return destination;

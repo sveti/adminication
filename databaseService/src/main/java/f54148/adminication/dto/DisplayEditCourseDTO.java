@@ -7,10 +7,12 @@ import f54148.adminication.entity.Level;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class DisplayEditCourseDTO {
 
 	private Long id;

@@ -262,4 +262,14 @@ public class CourseController {
 		return courseService.getCourseReport(idCourse);
 	}
 
+	@PutMapping(path = "/begin/{idCourse}")
+	public @ResponseBody String beginCourse(@PathVariable("idCourse") Long idCourse) {
+		return courseService.beginCourse(idCourse);
+	}
+
+	@PutMapping(path = "/finish/{idCourse}")
+	public @ResponseBody String finishCourse(@PathVariable("idCourse") Long idCourse) {
+		return courseService.finishCourse(idCourse);
+	}
+
 }

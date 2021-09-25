@@ -3,17 +3,21 @@ import { getLessonsByCourseId } from "../../../services/lessonService";
 import {
   getStudentsByCourseId,
   getAttendanceByCourseId,
+  finishCourse,
 } from "../../../services/courseService";
+import { dynamicSort } from "../../../common/helper";
 import AddLesson from "./AddLesson";
 import LessonsList from "./LessonsList";
-import "./lessons.css";
 
-import { dynamicSort } from "../../../common/helper";
+import { withRouter } from "react-router-dom";
+import { toast } from "react-toastify";
+import "./lessons.css";
 
 class LessonsOfCoursePage extends Component {
   state = {
     teacherId: this.props.location.lessonProps.teacherId,
     courseId: this.props.location.lessonProps.courseId,
+    courseTitle: this.props.location.lessonProps.courseTitle,
     lessons: null,
     students: null,
     attendances: null,
@@ -44,10 +48,88 @@ class LessonsOfCoursePage extends Component {
     this.loadAttendaces();
   };
 
+  finishCourse = async () => {
+    const response = await finishCourse(this.state.courseId).catch(function (
+      error
+    ) {
+      if (error.response) {
+        // Request made and server responded
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("An error occured! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+
+    if (response && response.status === 200 && response.data === "ok") {
+      toast.success("The course has succesfully finish! Please grade it!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      this.props.history.goBack();
+    } else {
+      toast.error(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      this.props.history.push("/courses");
+    }
+  };
+
   render() {
-    const { teacherId, courseId, students, attendances, lessons } = this.state;
+    const { teacherId, courseId, students, attendances, lessons, courseTitle } =
+      this.state;
+
     return (
       <div className="lessonsOfCourseContainer">
+        <h2 className="mb-5">
+          Lessons of Coruse #{courseId} {courseTitle}
+          {lessons && lessons.length > 0 ? (
+            <button
+              className="btn beginCourseButton ml-4"
+              onClick={this.finishCourse}
+            >
+              Finish Course
+            </button>
+          ) : null}
+        </h2>
         {lessons && attendances ? (
           <LessonsList
             lessons={lessons}
@@ -55,7 +137,7 @@ class LessonsOfCoursePage extends Component {
             attendances={attendances}
           ></LessonsList>
         ) : (
-          <h1>There are no lessons of this course! Add some</h1>
+          <h4>There are no lessons of this course! Add some</h4>
         )}
         <AddLesson
           teacherId={teacherId}
@@ -66,4 +148,4 @@ class LessonsOfCoursePage extends Component {
     );
   }
 }
-export default LessonsOfCoursePage;
+export default withRouter(LessonsOfCoursePage);

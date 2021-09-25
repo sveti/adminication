@@ -89,3 +89,11 @@ export function getCourseTitlesAll() {
 export function getCourseReport(idCourse) {
   return http.get(adminEndpoint + "report/" + idCourse);
 }
+
+export function beginCourse(idCourse) {
+  return http.put(adminEndpoint + "begin/" + idCourse);
+}
+
+export function finishCourse(idCourse) {
+  return http.put(adminEndpoint + "finish/" + idCourse);
+}

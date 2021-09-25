@@ -16,6 +16,11 @@ class Navbar extends Component {
     };
     this.state.navBarClasses.push(this.state.role);
   }
+
+  logOut = () => {
+    keycloakService.doLogout();
+  };
+
   render() {
     const { user, navBarClasses, role } = this.state;
     const teacherNav = (
@@ -409,7 +414,7 @@ class Navbar extends Component {
               <li className="nav-item">
                 <button
                   className="btn nav-link logoutMobile"
-                  onClick={keycloakService.doLogout}
+                  onClick={this.logOut}
                 >
                   Log out
                 </button>
@@ -417,10 +422,7 @@ class Navbar extends Component {
             </ul>
           </div>
 
-          <button
-            className="btn nav-link logoutDesktop"
-            onClick={keycloakService.doLogout}
-          >
+          <button className="btn nav-link logoutDesktop" onClick={this.logOut}>
             Log out
           </button>
         </nav>

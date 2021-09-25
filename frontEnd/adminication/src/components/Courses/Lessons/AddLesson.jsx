@@ -8,6 +8,10 @@ class AddLesson extends Component {
   state = {
     teacherId: this.props.teacherId,
     courseId: this.props.courseId,
+    lesson: {
+      date: getTodaysDate(),
+      description: "",
+    },
   };
 
   async addLesson(lesson) {
@@ -64,10 +68,10 @@ class AddLesson extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const date = this.date.value;
-    const description = this.description.value;
 
-    if (description.length < 1) {
+    let { lesson } = this.state;
+
+    if (lesson.description.length < 1) {
       toast.error("Please enter a lesson description!", {
         position: "top-center",
         autoClose: 5000,
@@ -78,11 +82,8 @@ class AddLesson extends Component {
         progress: undefined,
       });
     } else {
-      let lesson = {};
       lesson.teacherId = this.state.teacherId;
       lesson.courseId = this.state.courseId;
-      lesson.date = date;
-      lesson.description = description;
       this.addLesson(lesson);
     }
   };
@@ -91,7 +92,15 @@ class AddLesson extends Component {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   };
 
+  handleInputChange = (event, property) => {
+    let lesson = { ...this.state.lesson };
+    lesson[property] = event.target.value;
+    this.setState({ lesson });
+  };
+
   render() {
+    const { lesson } = this.state;
+
     return (
       <div className="addLessonForm">
         <h2>Add Lesson</h2>
@@ -102,8 +111,8 @@ class AddLesson extends Component {
               type="date"
               className="form-control"
               id="date"
-              defaultValue={getTodaysDate()}
-              ref={(c) => (this.date = c)}
+              value={lesson.date || ""}
+              onChange={(event) => this.handleInputChange(event, "date")}
             />
           </div>
           <div className="form-group">
@@ -112,7 +121,8 @@ class AddLesson extends Component {
               className="form-control"
               id="description"
               rows="3"
-              ref={(c) => (this.description = c)}
+              value={lesson.description || ""}
+              onChange={(event) => this.handleInputChange(event, "description")}
             ></textarea>
           </div>
 

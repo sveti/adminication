@@ -2,10 +2,7 @@ package f54148.adminication.service;
 
 import java.util.List;
 
-import f54148.adminication.dto.AddCourseDTO;
-import f54148.adminication.dto.CourseReportDTO;
-import f54148.adminication.dto.CourseTitlesDTO;
-import f54148.adminication.dto.DisplayEditCourseDTO;
+import f54148.adminication.dto.*;
 
 public interface CourseService {
 
@@ -13,11 +10,15 @@ public interface CourseService {
 
 	DisplayEditCourseDTO getEditCourseDTO(Long idCourse);
 
-	String editCourse(DisplayEditCourseDTO course);
+	String editCourse(EditCourseDTO course);
 
 	List<CourseTitlesDTO> getCourseTitles();
 
     CourseReportDTO getCourseReport(Long idCourse);
 
     List<CourseTitlesDTO> getAllCourseTitles();
+
+    String beginCourse(Long idCourse);
+
+    String finishCourse(Long idCourse);
 }

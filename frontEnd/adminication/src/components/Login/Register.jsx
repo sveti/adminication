@@ -9,6 +9,7 @@ import {
   checkIfUsernameExists,
 } from "../../services/userService";
 import { registerParent } from "../../services/parentService";
+import keycloakService from "../../services/keycloakService";
 import "./login.css";
 
 class Register extends Component {
@@ -489,6 +490,12 @@ class Register extends Component {
                       services. Any sufficiently advanced magic is
                       indistinguishable from technology .
                     </p>
+                    <button
+                      className="btn login"
+                      onClick={keycloakService.doLogin}
+                    >
+                      Already a member? Log in
+                    </button>
                   </div>
                 </div>
               </div>

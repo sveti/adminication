@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import BackButton from "../../common/BackButton";
 import CourseDetailsBadge from "../../common/CourseDetailsBadge";
 import LevelBadge from "../../common/LevelBadge";
-import { getCourseWithDetails } from "../../services/courseService";
+import {
+  getCourseWithDetails,
+  beginCourse,
+} from "../../services/courseService";
 import { deleteEnrollment } from "../../services/enrollmentService";
 import { toast } from "react-toastify";
 
@@ -13,6 +16,7 @@ class Course extends Component {
     course: {},
     loading: true,
     parentView: this.props.parentView,
+    teacherView: this.props.teacherView,
     student: this.props.location.studentProps.student,
   };
 
@@ -100,12 +104,77 @@ class Course extends Component {
     }
   };
 
+  beginCourse = async () => {
+    const response = await beginCourse(this.state.course.id).catch(function (
+      error
+    ) {
+      if (error.response) {
+        // Request made and server responded
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("An error occured! Try again later", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+
+    if (response && response.status === 200 && response.data === "ok") {
+      toast.success("The course has succesfully been started!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      this.props.history.goBack();
+    } else {
+      toast.error(response.data, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      this.props.history.goBack();
+    }
+  };
+
   componentDidMount = () => {
     this.loadCourse();
   };
 
   render() {
-    const { course, parentView } = this.state;
+    const { course, parentView, teacherView } = this.state;
 
     if (this.state.loading) {
       return <h1>Loading...</h1>;
@@ -115,7 +184,17 @@ class Course extends Component {
           <div className="card courseContainer rounded-lg">
             <div className="card-body">
               <div className="card-title">
-                <h1>Course #{course.id}</h1>
+                <h1>
+                  Course #{course.id}
+                  {teacherView ? (
+                    <button
+                      className="btn beginCourseButton ml-4"
+                      onClick={this.beginCourse}
+                    >
+                      Begin Course
+                    </button>
+                  ) : null}
+                </h1>
                 <h2 className="courseTitle">{course.title}</h2>
                 {parentView ? (
                   <div>

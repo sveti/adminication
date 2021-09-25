@@ -12,6 +12,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
+
 public class EditCourseScheduleDTO {
 
 		private Long id;

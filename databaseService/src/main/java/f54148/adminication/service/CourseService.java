@@ -1,11 +1,7 @@
 package f54148.adminication.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 import f54148.adminication.dto.*;
 import org.modelmapper.ModelMapper;
@@ -40,6 +36,8 @@ public class CourseService {
 	private final ScheduleService scheduleService;
 	private final TeachingService teachingService;
 	private final EnrollmentService enrollmentService;
+	private final DraftService draftService;
+	private final NotificationService notificationService;
 	private final ModelMapper modelMapper;
 
 	public List<Course> getCourses() {
@@ -459,6 +457,7 @@ public class CourseService {
 		dto.setLessonsPerWeek(c.getCourseSchedule().size());
 		dto.setPricePerStudent(c.getPricePerStudent());
 		List<CourseDetailsDTO> details = new ArrayList<>();
+
 		for(CourseDetail cd : c.getDetails()) {
 			details.add(modelMapper.map(cd, CourseDetailsDTO.class));
 		}
@@ -494,7 +493,9 @@ public class CourseService {
 	public String editCourse(EditCourseDTO course) {
 		
 		try {
-		
+
+			System.out.println(course);
+
 		Course c = getCourseById(course.getId());
 		c.setTitle(course.getTitle());
 		c.setDescription(course.getDescription());
@@ -580,7 +581,6 @@ public class CourseService {
 		
 		}
 		catch(Exception e) {
-			System.out.println(e.getMessage());
 			return "Nope";
 		}
 
@@ -675,5 +675,76 @@ public class CourseService {
 		List<CourseTitlesDTO> dtos = new ArrayList<>();
 		allCourses.forEach(c->dtos.add(convertToAddCourseToTeacherDTO(c)));
 		return dtos;
+	}
+
+	private void messageStudentAndParents(String message, Set<Enrollment> enrollments){
+		Long draftId = draftService.createDraftFromAdmin(message);
+		Set<Long> parentIds = new HashSet<>();
+		for (Enrollment enrollment : enrollments) {
+			parentIds.add(enrollment.getStudent().getParent().getId());
+			notificationService.sendDraft(draftId, enrollment.getStudent().getId());
+		}
+
+		///Two students from the same parent might have been signed up for the same course
+		//minimize the spam
+		for (Long parentId : parentIds) {
+			notificationService.sendDraft(draftId, parentId);
+		}
+	}
+
+    public String beginCourse(Long idCourse) {
+		Course c = getCourseById(idCourse);
+
+		List<LocalDate> dates = new ArrayList<>();
+		for (Schedule schedule : c.getCourseSchedule()) {
+			dates.add(schedule.getStartDate());
+		}
+		LocalDate today = LocalDate.now();
+		LocalDate min =  dates.stream().min(LocalDate::compareTo).get();
+
+		if(min.isBefore(today)){
+
+			if(c.getStatus() == CourseStatus.UPCOMMING){
+				c.setStatus(CourseStatus.STARTED);
+				courseRepository.save(c);
+				messageStudentAndParents("The course #" + c.getId() + " "+ c.getTitle() + " has just started!",c.getEnrollments());
+
+				return "ok";
+			}
+			else{
+				return "The course has already started!";
+			}
+
+		}
+
+		return "It's too early to start the course!";
+
+    }
+
+    public String finishCourse(Long idCourse) {
+		Course c = getCourseById(idCourse);
+
+		boolean allAttendancesSet = true;
+
+		for (Lesson lesson : c.getLessons()) {
+			if(!lessonService.checkIfAllAttendancesAreSet(lesson)){
+				allAttendancesSet = false;
+				break;
+			}
+		}
+
+		if(!allAttendancesSet){
+			return "Not all attendances are set!";
+		}
+		else{
+			if(c.getStatus()==CourseStatus.STARTED){
+				c.setStatus(CourseStatus.FINISHED);
+				courseRepository.save(c);
+				messageStudentAndParents("The course #" + c.getId() + " "+ c.getTitle() + " has just finished! Expect final grades soon!",c.getEnrollments());
+				return "ok";
+			}
+			return "Course hasn't been started!";
+		}
+
 	}
 }

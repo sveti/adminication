@@ -31,7 +31,10 @@ const TeacherSwitch = ({ user, increase, decrease }) => {
           ></IndexPage>
         )}
       />
-      <ProtectedRoute path="/courses/:courseId" component={Course} />
+      <ProtectedRoute
+        path="/courses/:courseId"
+        render={(params) => <Course {...params} teacherView={true}></Course>}
+      />
       <ProtectedRoute
         path="/courses"
         render={() => <CoursesPage id={user.id}></CoursesPage>}

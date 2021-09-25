@@ -13,7 +13,6 @@ public class StudentGradesDTO {
 	private Long studentId;
 	private Long courseId;
 	private String name;
-	private String lastName;
 	private String username;
 	private float grade;
 

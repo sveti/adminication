@@ -277,6 +277,7 @@ class AdminAddCourse extends Component {
   };
 
   saveCourse = async () => {
+    console.log(this.state.newCourseDetails);
     let { course, mode } = this.state;
 
     let updatedCourse = { ...course };
@@ -427,7 +428,7 @@ class AdminAddCourse extends Component {
       newCourseDetails.push(currentNewDetail);
     }
 
-    this.setState({ currentNewDetail: "", newCourseDetails });
+    this.setState({ currentNewDetail: "", newCourseDetails: newCourseDetails });
   };
 
   handleTeacherSalaryUpdate = (event, teacherId) => {
@@ -580,8 +581,6 @@ class AdminAddCourse extends Component {
       allTeachers,
       mode,
     } = this.state;
-
-    console.log(course);
 
     const levelOptions = [
       { value: "A1", label: "A1" },

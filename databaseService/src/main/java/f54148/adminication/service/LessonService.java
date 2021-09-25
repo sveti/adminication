@@ -256,4 +256,11 @@ public class LessonService {
 		dto.setAttendanceList(dtoList);
 		return dto;
     }
+
+	public boolean checkIfAllAttendancesAreSet(Lesson lesson) {
+		if(lesson.getAttendances().size() == 0){
+			return false;
+		}
+		return true;
+	}
 }

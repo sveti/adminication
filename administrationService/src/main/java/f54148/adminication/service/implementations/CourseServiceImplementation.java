@@ -35,7 +35,7 @@ public class CourseServiceImplementation implements CourseService {
 	}
 
 	@Override
-	public String editCourse(DisplayEditCourseDTO course) {
+	public String editCourse(EditCourseDTO course) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<DisplayEditCourseDTO> requestEntity = new HttpEntity<>(course, headers);
@@ -61,5 +61,23 @@ public class CourseServiceImplementation implements CourseService {
 		CourseTitlesDTO[] courses = restTemplate.getForObject("http://databaseService/courses/titles/all", CourseTitlesDTO[].class);
 		assert courses != null;
 		return Arrays.asList(courses);
+	}
+
+	@Override
+	public String beginCourse(Long idCourse) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<Long> requestEntity = new HttpEntity<>(idCourse, headers);
+		ResponseEntity<String> response = restTemplate.exchange("http://databaseService/courses/begin/{idCourse}", HttpMethod.PUT,requestEntity,String.class,idCourse);
+		return response.getBody();
+	}
+
+	@Override
+	public String finishCourse(Long idCourse) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<Long> requestEntity = new HttpEntity<>(idCourse, headers);
+		ResponseEntity<String> response = restTemplate.exchange("http://databaseService/courses/finish/{idCourse}", HttpMethod.PUT,requestEntity,String.class,idCourse);
+		return response.getBody();
 	}
 }

@@ -25,7 +25,7 @@ class GradingTable extends Component {
 
   async loadStudents() {
     const { data } = await getStudentsWithGradesByCourseId(this.state.courseId);
-    this.setState({ studentsGrades: data.sort(dynamicSort("username")) });
+    this.setState({ studentsGrades: data.sort(dynamicSort("name")) });
   }
 
   componentDidMount = () => {
@@ -131,8 +131,9 @@ class GradingTable extends Component {
                 {this.state.studentsGrades.map((s) => {
                   return (
                     <Tr key={s.studentId} className="alternate">
+                      <Td>#{s.studentId}</Td>
                       <Td>{s.username}</Td>
-                      <Td>{s.name + " " + s.lastName}</Td>
+                      <Td>{s.name}</Td>
                       <Td>
                         {editMode ? (
                           s.grade === 0 ? (

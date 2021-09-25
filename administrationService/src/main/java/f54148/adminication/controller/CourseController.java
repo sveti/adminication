@@ -2,7 +2,7 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
-import f54148.adminication.dto.CourseReportDTO;
+import f54148.adminication.dto.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import f54148.adminication.dto.AddCourseDTO;
-import f54148.adminication.dto.CourseTitlesDTO;
-import f54148.adminication.dto.DisplayEditCourseDTO;
 import f54148.adminication.service.CourseService;
 import lombok.AllArgsConstructor;
 
@@ -36,7 +33,7 @@ public class CourseController {
 	}
 	
 	@PutMapping(path = "/edit")
-	public @ResponseBody String editCourse(@RequestBody DisplayEditCourseDTO course) {
+	public @ResponseBody String editCourse(@RequestBody EditCourseDTO course) {
 		
 		return courseService.editCourse(course);
 	}
@@ -58,6 +55,14 @@ public class CourseController {
 		return courseService.getCourseReport(idCourse);
 	}
 
+	@PutMapping(path = "/begin/{idCourse}")
+	public @ResponseBody String beginCourse(@PathVariable("idCourse") Long idCourse) {
+		return courseService.beginCourse(idCourse);
+	}
+	@PutMapping(path = "/finish/{idCourse}")
+	public @ResponseBody String finishCourse(@PathVariable("idCourse") Long idCourse) {
+		return courseService.finishCourse(idCourse);
+	}
 
 
 }

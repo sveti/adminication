@@ -54,6 +54,7 @@ export default function StartedCoursesTable(props) {
                       lessonProps: {
                         courseId: course.id,
                         teacherId: props.teacherId,
+                        courseTitle: course.title,
                       },
                     }}
                   >

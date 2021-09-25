@@ -80,7 +80,8 @@
   background-color: #dfcb4d !important;
 }
 
-.removeWaitingListButton {
+.removeWaitingListButton,
+.beginCourseButton {
   background-color: #e74c3c !important;
   color: #fff !important;
 }

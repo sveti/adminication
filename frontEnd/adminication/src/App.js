@@ -26,8 +26,8 @@ class App extends Component {
 
   componentDidMount = async () => {
     if (keycloakService.isLoggedIn()) {
-      await this.loadUser(keycloakService.getUsername());
       this.props.history.push("/home");
+      await this.loadUser(keycloakService.getUsername());
     }
   };
 

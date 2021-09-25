@@ -208,7 +208,7 @@ class UserProfile extends Component {
       <div className="col-sm-12 col-lg-9 textSection">
         <div className="info-group row">
           <div className="col-sm-12 col-md-3">
-            <p className="identity">Username:</p>
+            <p className="identity">Username: (min 5 symbols)</p>
           </div>
           <div className="col-sm-12 col-md-9">
             <input
@@ -304,7 +304,7 @@ class UserProfile extends Component {
     );
 
     return (
-      <div id={givenId} className="row wrapper mx-2">
+      <div id={givenId} className="row wrapper mx-2 mb-5">
         <div className="col-sm-12 col-lg-3">
           <img src={avatar} className="img-fluid userImage" alt="User Avatar" />
         </div>
