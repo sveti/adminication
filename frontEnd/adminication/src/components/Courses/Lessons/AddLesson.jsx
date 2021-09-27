@@ -63,6 +63,11 @@ class AddLesson extends Component {
         progress: undefined,
       });
       this.props.onAddedLesson();
+      let clearLesson = {
+        date: getTodaysDate(),
+        description: "",
+      };
+      this.setState({ lesson: clearLesson });
     }
   }
 

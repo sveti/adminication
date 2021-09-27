@@ -12,7 +12,7 @@ spring:
             uri: http://localhost:8888
         gateway:
             default-filters:
-                    - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+                    - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin TokenRelay
             globalcors:
                 corsConfigurations:
                     '[/**]':
@@ -48,21 +48,7 @@ spring:
                 - Path=/keycloakadminserver
                 uri: lb://keycloakadminserver
 
+    main:
+        web-application-type: reactive
 
-
-
-#    main:
-#        allow-bean-definition-overriding: true
-#    security:
-#        oauth2:
-#            client:
-#                provider:
-#                    keycloak:
-#                        issuer-uri: http://localhost:8555/auth/realms/Adminication
-#                registration:
-#                    springGatewayServer:
-#                        authorization-grant-type: authorization_code
-#                        client-id: springGatewayServer
-#                        client-secret: d97d98cb-0ec3-4212-b1a5-834c5a766887
-#                        provider: keycloak
-#                        scope: openid,profile,email,offline_access
+        allow-bean-definition-overriding: true

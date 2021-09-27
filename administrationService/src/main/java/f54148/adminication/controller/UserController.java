@@ -1,19 +1,17 @@
 package f54148.adminication.controller;
 
+import java.security.Principal;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
 
 import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.EditUserDTO;
 import f54148.adminication.service.UserService;
 import lombok.AllArgsConstructor;
+
+import javax.annotation.security.RolesAllowed;
 
 @RestController
 @AllArgsConstructor
@@ -31,13 +29,12 @@ public class UserController {
 	public @ResponseBody String editUser(@RequestBody EditUserDTO editUserDTO) {
 		return userService.editUser(editUserDTO);
 	}
-	
+
 	@GetMapping(path = "/{username}")
 	public @ResponseBody DisplayUserDTO getDisplayUserDTO(@PathVariable("username") String username) {
 		return userService.getUser(username);
 	}
-	
-	
+
 	@GetMapping(path = "/validateEmail/{email}")
 	public @ResponseBody String checkIfEmailExists(@PathVariable("email") String email) {
 		return userService.validateEmail(email);

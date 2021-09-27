@@ -17,6 +17,7 @@ import NonAuthenticatedUser from "./components/Login/NonAuthenticatedUser";
 import { getUser } from "./services/userService";
 import keycloakService from "./services/keycloakService";
 import GeneralSwich from "./components/Switches/GeneralSwich";
+import http from "./services/httpService";
 
 class App extends Component {
   state = {
@@ -26,6 +27,7 @@ class App extends Component {
 
   componentDidMount = async () => {
     if (keycloakService.isLoggedIn()) {
+      http.configure();
       this.props.history.push("/home");
       await this.loadUser(keycloakService.getUsername());
     }

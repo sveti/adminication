@@ -2,6 +2,7 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.Min;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,30 +38,36 @@ public class CourseController {
 	private final AttendanceService attendanceService;
 	
 	@GetMapping(path = "/upcomming/{courseId}")
+	@RolesAllowed({"TEACHER","STUDENT","PARENT"})
 	public @ResponseBody UpcommingCourseDTO getUpcommingCourseById(@PathVariable("courseId") @Min(1) Long courseId) {
 		return courseService.getUpcommingCourseById(courseId);
 	}
 	
 	@GetMapping(path = "/teacher/{teacherId}/upcomming")
+	@RolesAllowed({"TEACHER"})
 	public @ResponseBody List<UpcommingCourseDTO> getUpcommingCoursesByTeacherId(@PathVariable("teacherId") @Min(1) Long teacherId) {
 		return courseService.getUpcommingCoursesOfTeacher(teacherId);
 	}
 	@GetMapping(path = "/teacher/{teacherId}/finished")
+	@RolesAllowed({"TEACHER"})
 	public @ResponseBody List<FinshedCourseDTO> getFinishedCoursesByTeacherId(@PathVariable("teacherId") @Min(1) Long teacherId) {
 		return courseService.getFinishedCoursesOfTeacher(teacherId);
 	}
 
 	@GetMapping(path = "/teacher/{teacherId}/started")
+	@RolesAllowed({"TEACHER"})
 	public @ResponseBody List<StartedCourseDTO> getStartedCoursesByTeacherId(@PathVariable("teacherId") @Min(1) Long teacherId) {
 		return courseService.getStartedCoursesOfTeacher(teacherId);
 	}
 	
 	@GetMapping(path = "/student/{studentId}/started")
+	@RolesAllowed({"STUDENT","PARENT"})
 	public @ResponseBody List<StartedCourseStudentDTO> getStartedCoursesByStudentId(@PathVariable("studentId") @Min(1) Long studentId) {
 		return courseService.getStartedCoursesOfStudent(studentId);
 	}
 	
 	@GetMapping(path = "/student/{studentId}/upcomming")
+	@RolesAllowed({"STUDENT","PARENT"})
 	public @ResponseBody List<UpcommingCourseDTO> getUpcommingCoursesByStudentId(@PathVariable("studentId") @Min(1) Long studentId) {
 		return courseService.getUpcommingCoursesByStudentId(studentId);
 	}

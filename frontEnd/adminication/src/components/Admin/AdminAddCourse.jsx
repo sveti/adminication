@@ -277,7 +277,6 @@ class AdminAddCourse extends Component {
   };
 
   saveCourse = async () => {
-    console.log(this.state.newCourseDetails);
     let { course, mode } = this.state;
 
     let updatedCourse = { ...course };
@@ -320,7 +319,7 @@ class AdminAddCourse extends Component {
         });
       }
     } else {
-      console.log(updatedCourse);
+      // console.log(updatedCourse);
       const { data } = await editCourse(updatedCourse);
       if (data) {
         toast.success("The course has been updated!", {
@@ -725,7 +724,7 @@ class AdminAddCourse extends Component {
                       return (
                         <div
                           className="detailsBadgeDiv"
-                          key={detail.id}
+                          key={detail.id ? detail.id : detail}
                           onClick={() => this.removeCourseDetail(detail)}
                         >
                           <CourseDetailsBadge

@@ -19,6 +19,8 @@ import f54148.adminication.dto.EventOfStudentInWaitingListDTO;
 import f54148.adminication.service.WaitingListService;
 import lombok.AllArgsConstructor;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/waitingLists")
@@ -27,30 +29,36 @@ public class WaitingListController {
 	private final WaitingListService waitingListService;
 	
 	@PostMapping(path = "/add/course")
+	@RolesAllowed({"PARENT"})
 	public @ResponseBody String addSignUpToCourseWaitingList(@RequestBody AddWaitingListSignUp dto) {
 		return waitingListService.addWaitingListSignUp(dto);
 	}
 
 	@GetMapping(path = "/student/{studentId}/courses")
+	@RolesAllowed({"STUDENT","PARENT"})
 	public @ResponseBody List<CourseOfStudentInWaitingListDTO> getWaitingListCoursesOfStudent(@PathVariable("studentId") Long studentId) {
 		return waitingListService.getWaitingListCoursesOfStudent(studentId);
 	}
 	
 	@DeleteMapping(path = "/remove/{id}/course")
+	@RolesAllowed({"PARENT"})
 	public @ResponseBody String deteleCourseWaiting(@PathVariable("id") Long courseWaitingListId) {
 		return waitingListService.deleteCourseWaitingList(courseWaitingListId);
 	}
 	
 	@GetMapping(path = "/student/{studentId}/events")
+	@RolesAllowed({"STUDENT","PARENT"})
 	public @ResponseBody List<EventOfStudentInWaitingListDTO> getWaitingListEventsOfStudent(@PathVariable("studentId") Long studentId) {
 		return waitingListService.getWaitingListEventsOfStudent(studentId);
 	}
 
 	@PostMapping(path = "/add/event")
+	@RolesAllowed({"PARENT"})
 	public @ResponseBody String addSignUpToEventWaitingList(@RequestBody AddEventWaitingListDTO dto) {
 		return waitingListService.addAddEventWaitingListSignUp(dto);
 	}
 	@DeleteMapping(path = "/remove/{id}/event")
+	@RolesAllowed({"PARENT"})
 	public @ResponseBody String deteleEventWaiting(@PathVariable("id") Long eventWaitingListId) {
 		return waitingListService.deleteEventWaitingList(eventWaitingListId);
 	}

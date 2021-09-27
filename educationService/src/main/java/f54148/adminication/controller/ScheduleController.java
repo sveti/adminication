@@ -2,6 +2,7 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.Min;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ public class ScheduleController {
 	private final ScheduleService scheduleService;
 	
 	@GetMapping(path = "/student/{studentId}")
+	@RolesAllowed({"PARENT","STUDENT"})
 	public @ResponseBody List<StudentScheduleDTO> getStudentSchedule(@PathVariable("studentId") @Min(1) Long studentId) {
 		return scheduleService.getStudentSchedule(studentId);
 	}

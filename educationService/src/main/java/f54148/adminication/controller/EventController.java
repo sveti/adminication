@@ -14,6 +14,8 @@ import f54148.adminication.dto.EventDTO;
 import f54148.adminication.service.EventService;
 import lombok.AllArgsConstructor;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/events")
@@ -22,15 +24,18 @@ public class EventController {
 	private final EventService eventService;
 	
 	@GetMapping(path = "/events")
+	@RolesAllowed({"PARENT","STUDENT","TEACHER"})
 	public @ResponseBody List<EventDTO> getEventsDTO() {
 		return eventService.getEvents();
 	}
 
 	@GetMapping(path = "/student/{studentId}")
+	@RolesAllowed({"PARENT","STUDENT"})
 	public @ResponseBody List<EventDTO> getEventsOfStudent(@PathVariable("studentId") Long studentId) {
 		return eventService.getEventsOfStudent(studentId);
 	}
 	@GetMapping(path = "/admin/events")
+	@RolesAllowed({"ADMIN"})
 	public @ResponseBody List<AdminAllEventsDTO> getAllEvents() {
 		return eventService.getAllEvents();
 	}

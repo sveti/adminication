@@ -1,0 +1,10 @@
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka
+spring:
+    application:
+        name: notificationService
+    cloud:
+        config:
+            uri: http://localhost:8888

@@ -2,6 +2,7 @@ package f54148.adminication.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.Min;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,26 +30,31 @@ public class LessonController {
 	private final AttendanceService attedanceService;
 
 	@GetMapping(path = "/{lessonId}")
+	@RolesAllowed({"PARENT","TEACHER","STUDENT"})
 	public @ResponseBody LessonDTO getLessonDTOById(@PathVariable("lessonId") @Min(1) Long lessonId) {
 		return lessonService.getLessonDTO(lessonId);
 	}
 	
 	@GetMapping(path = "/{courseId}/lessons")
+	@RolesAllowed({"PARENT","TEACHER","STUDENT"})
 	public @ResponseBody List<LessonDTO> getLessonsByCourseId(@PathVariable("courseId") @Min(1) Long courseId) {
 		return lessonService.getLessonsByCourseId(courseId);
 	}
 	
 	@PostMapping(path = "/add")
+	@RolesAllowed({"TEACHER"})
 	public @ResponseBody String addLessonDTO(@RequestBody LessonDTO lessonDTO) {
 		return lessonService.addLesson(lessonDTO);
 	}
 
 	@GetMapping(path = "/{lessonId}/attendance")
+	@RolesAllowed({"PARENT","TEACHER","STUDENT"})
 	public @ResponseBody List<AttendanceDTO> getAttendanceDTOByLessonId(@PathVariable("lessonId") @Min(1) Long lessonId) {
 		return attedanceService.getAttendancesOfLesson(lessonId);
 	}
 	
 	@PutMapping(path = "/updateDescription")
+	@RolesAllowed({"TEACHER"})
 	public @ResponseBody String updateDescription(@RequestBody UpdateLessonDescriptionDTO updateLessonDTO) {
 		return lessonService.updateLessonDescription(updateLessonDTO);
 	}

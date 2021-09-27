@@ -17,6 +17,8 @@ import f54148.adminication.dto.TeacherForCourseDTO;
 import f54148.adminication.service.TeacherService;
 import lombok.AllArgsConstructor;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/teachers")
@@ -25,21 +27,25 @@ public class TeacherController {
 private final TeacherService teacherService;
 	
 @GetMapping(path = "/{teacherId}/{month}/{year}")
+@RolesAllowed({"ADMIN","TEACHER"})
 public @ResponseBody MonthlyTeacherSalaryDTO getTeacherStatistics(@PathVariable("teacherId") Long teacherId, @PathVariable("month") Integer month,@PathVariable("year") Integer year) {
 	return teacherService.getTeacherStatistics(teacherId,month,year);
 }
 
 @GetMapping(path = "/teachersForCourse")
+@RolesAllowed({"ADMIN","TEACHER"})
 public @ResponseBody List<TeacherForCourseDTO> getAllTeacherForCourseDTO() {
 	return teacherService.getAllTeacherForCourseDTO();
 }
 
 @GetMapping(path = "/all")
+@RolesAllowed({"ADMIN"})
 public @ResponseBody List<DisplayTeacherDTO> getAllDisplayTeacherDTO() {
 	return teacherService.getAllDisplayTeacherDTO();
 }
 
 @PostMapping(path = "/add")
+@RolesAllowed({"ADMIN"})
 public @ResponseBody
 String adminAddTeacher(@RequestBody AddTeacherDTO teacher) {
 

@@ -13,6 +13,8 @@ import f54148.adminication.dto.AttendanceDTO;
 import f54148.adminication.service.AttendanceService;
 import lombok.AllArgsConstructor;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/attendance")
@@ -21,12 +23,14 @@ public class AttendanceController {
 	public AttendanceService attendanceService;
 	
 	@PutMapping(path = "/update")
+	@RolesAllowed({"TEACHER"})
 	public @ResponseBody String updateAttendances(@RequestBody List<AttendanceDTO> attendances) {
 		return attendanceService.updateAttendances(attendances);
 	}
 
 	
 	@PostMapping(path = "/add")
+	@RolesAllowed({"TEACHER"})
 	public @ResponseBody String addAttendances(@RequestBody List<AttendanceDTO> attendances) {
 		return attendanceService.addAttendances(attendances);
 	}

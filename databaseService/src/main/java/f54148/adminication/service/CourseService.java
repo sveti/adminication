@@ -493,9 +493,6 @@ public class CourseService {
 	public String editCourse(EditCourseDTO course) {
 		
 		try {
-
-			System.out.println(course);
-
 		Course c = getCourseById(course.getId());
 		c.setTitle(course.getTitle());
 		c.setDescription(course.getDescription());
@@ -509,10 +506,9 @@ public class CourseService {
 		Set<CourseDetail> courseDetails = new HashSet<>();
 		
 		for(CourseDetailsDTO cd: course.getDetails()) {
-			
 			courseDetails.add(courseDetailService.getCourseDetailsById(cd.getId()));
-			
 		}
+
 		if(course.getNewCourseDetails()!=null) {
 			for(String newDetail: course.getNewCourseDetails()) {
 				CourseDetail newCD = courseDetailService.createNewDetail(newDetail);
@@ -520,16 +516,23 @@ public class CourseService {
 			}
 		}
 		
-		Set <CourseDetail> currectCd = c.getDetails();
+		Set <CourseDetail> currentCD = c.getDetails();
 		
-		for(CourseDetail cs : currectCd) {
-			
+		for(CourseDetail cs : currentCD) {
 			if(!courseDetails.contains(cs)) {
+				currentCD.remove(cs);
 				courseDetailService.removeDetailFromCourse(cs, c);
 			}
-			
 		}
-		
+
+
+			for(CourseDetail cs : courseDetails) {
+
+				if(!currentCD.contains(cs)) {
+					courseDetailService.addDetailToCourse(cs, c);
+				}
+
+			}
 
 		Set<Schedule> schedules = new HashSet<>();
 		
@@ -562,7 +565,8 @@ public class CourseService {
 			
 		}
 			
-		c.setDetails(courseDetails);
+		//c.setDetails(courseDetails);
+
 		c.setTeaching(teachings);
 		c.setCourseSchedule(schedules);
 		

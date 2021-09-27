@@ -11,6 +11,8 @@ import f54148.adminication.dto.StudentOfParentDTO;
 import f54148.adminication.service.ParentService;
 import lombok.AllArgsConstructor;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/parents")
@@ -19,11 +21,13 @@ public class ParentController {
 	private final ParentService parentService;
 	
 	@GetMapping(path = "/{id}/students")
+	@RolesAllowed({"ADMIN","PARENT","STUDENT"})
 	public @ResponseBody List<StudentOfParentDTO> getStudentOfParentDTO(@PathVariable("id") Long id) {
 		return parentService.getStudentOfParentDTO(id);
 	}
 
 	@GetMapping(path = "/admin/parents")
+	@RolesAllowed({"ADMIN"})
 	public @ResponseBody List<DisplayParentDTO> getAllParentsAdmin() {
 		return parentService.getAllParentsAdmin();
 	}

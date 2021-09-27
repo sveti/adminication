@@ -109,6 +109,12 @@ public class CourseDetailService {
 		}
 		
 	}
-	
 
+
+	public void addDetailToCourse(CourseDetail cs, Course c) {
+		cs.getCourses().add(c);
+		updateCourseDetails(cs);
+		c.getDetails().add(cs);
+		courseService.updateCourse(c);
+	}
 }
