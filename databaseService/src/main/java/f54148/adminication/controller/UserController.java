@@ -107,7 +107,6 @@ public class UserController {
 	
 	@GetMapping(path = "/validateUsername/{username}")
 	public @ResponseBody String validateUsername(@PathVariable("username") String username) {
-		System.out.println("???????");
 		if (userService.usernameExists(username)) {
 			return "true";
 		} else {

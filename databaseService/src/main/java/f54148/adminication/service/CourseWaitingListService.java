@@ -22,17 +22,20 @@ public class CourseWaitingListService {
 	private final CourseWaitingListRepository courseWaitingListRepository;
 
 	private final CourseService courseService;
-
+	private final DraftService draftService;
+	private final NotificationService notificationService;
 	private final StudentService studentService;
 	
 	
 
 	public CourseWaitingListService(CourseWaitingListRepository courseWaitingListRepository,
-			@Lazy CourseService courseService,@Lazy StudentService studentService) {
+			@Lazy CourseService courseService,@Lazy StudentService studentService,@Lazy DraftService draftService,@Lazy NotificationService notificationService) {
 		super();
 		this.courseWaitingListRepository = courseWaitingListRepository;
 		this.courseService = courseService;
 		this.studentService = studentService;
+		this.draftService = draftService;
+		this.notificationService = notificationService;
 	}
 
 	public List<CourseWaitingList> getCourseWaitingLists() {
@@ -56,7 +59,17 @@ public class CourseWaitingListService {
 		courseWaitingList.setStudent(studentService.getStudentById(dto.getStudentId()));
 		courseWaitingList.setCourse(courseService.getCourseById(dto.getCourseId()));
 		courseWaitingList.setSigned(dto.getSigned());
-		return addCourseWaitingList(courseWaitingList);
+		if(addCourseWaitingList(courseWaitingList)){
+			String message = courseWaitingList.getStudent().getName() + " " + courseWaitingList.getStudent().getLastName() + " has been successfully been added to course waiting list for course #" + courseWaitingList.getCourse().getId() + " : " + courseWaitingList.getCourse().getTitle();
+			Long draftId = draftService.createDraftFromAdmin(message);
+			Long parentId = courseWaitingList.getStudent().getParent().getId();
+			String studentMessage = "You been successfully been added to course waiting list for course #" + courseWaitingList.getCourse().getId() + " : " + courseWaitingList.getCourse().getTitle();
+			notificationService.sendDraft(draftId, parentId);
+			Long studentDraftId = draftService.createDraftFromAdmin(studentMessage);
+			notificationService.sendDraft(studentDraftId, courseWaitingList.getStudent().getId());
+			return true;
+		}
+		return false;
 	}
 
 	public boolean updateCourseWaitingList(CourseWaitingList courseWaitingList) {

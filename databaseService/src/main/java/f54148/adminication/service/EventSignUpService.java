@@ -104,8 +104,8 @@ public class EventSignUpService {
 		signUp.setEvent(eventService.getEventById(dto.getEventId()));
 		signUp.setSigned(LocalDateTime.now());
 		if( addEventSignUp(signUp)) {
-			
-			String message = signUp.getStudent().getName() + " " + signUp.getStudent().getLastName() + " has been successfully enrolled in course #" + signUp.getEvent().getId() + " : " + signUp.getEvent().getTitle();
+
+			String message = signUp.getStudent().getName() + " " + signUp.getStudent().getLastName() + " has been successfully signed up for event #" + signUp.getEvent().getId() + " : " + signUp.getEvent().getTitle();
 			Long draftId = draftService.createDraftFromAdmin(message);
 			Long parentId = signUp.getStudent().getParent().getId();
 			String studentMessage = "You been successfully been signed up for event #" + signUp.getEvent().getId() + " : " + signUp.getEvent().getTitle();

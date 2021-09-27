@@ -33,7 +33,7 @@ public class EventWaitingListController {
 		if (eventWaitingListService.addEventWaitingList(eventWaitingList)) {
 			return "Saved eventWaitingList";
 		} else {
-			return "An error has occured";
+			return "An error has occurred";
 		}
 
 	}
@@ -42,9 +42,9 @@ public class EventWaitingListController {
 	public @ResponseBody String addWaitingListSignUp(@RequestBody AddEventWaitingListDTO dto) {
 
 		if (eventWaitingListService.addWaitingListSignUp(dto)) {
-			return "Sucessfully added student to event waiting list!";
+			return "Successfully added student to event waiting list!";
 		} else {
-			return "An error has occured";
+			return "An error has occurred";
 		}
 
 	}
@@ -55,7 +55,7 @@ public class EventWaitingListController {
 		if (eventWaitingListService.addEventWaitingList(eventWaitingList)) {
 			return "Updated eventWaitingList";
 		} else {
-			return "An error has occured";
+			return "An error has occurred";
 		}
 
 	}
@@ -90,7 +90,7 @@ public class EventWaitingListController {
 		if (eventWaitingListService.deleteEventWaitingList(eventWaitingListId)) {
 			return "Deleted eventWaitingList";
 		} else {
-			return "An error has occured";
+			return "An error has occurred";
 		}
 	}
 

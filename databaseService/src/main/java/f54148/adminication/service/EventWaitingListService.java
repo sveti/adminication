@@ -24,17 +24,21 @@ public class EventWaitingListService {
 	private final EventWaitingListRepository eventWaitingListRepository;
 
 	private final EventService eventService;
+	private final DraftService draftService;
+	private final NotificationService notificationService;
 
 	private final StudentService studentService;
 	
 	
 
 	public EventWaitingListService(EventWaitingListRepository eventWaitingListRepository,@Lazy EventService eventService,
-			@Lazy StudentService studentService) {
+			@Lazy StudentService studentService,@Lazy DraftService draftService,@Lazy NotificationService notificationService) {
 		super();
 		this.eventWaitingListRepository = eventWaitingListRepository;
 		this.eventService = eventService;
 		this.studentService = studentService;
+		this.draftService = draftService;
+		this.notificationService = notificationService;
 	}
 
 	public List<EventWaitingList> getEventWaitingLists() {
@@ -126,7 +130,18 @@ public boolean addWaitingListSignUp(AddEventWaitingListDTO dto) {
 	eventWaitingList.setStudent(studentService.getStudentById(dto.getStudentId()));
 	eventWaitingList.setEvent(eventService.getEventById(dto.getEventId()));
 	eventWaitingList.setSigned(dto.getSigned());
-	return addEventWaitingList(eventWaitingList);
+
+	if(addEventWaitingList(eventWaitingList)){
+		String message = eventWaitingList.getStudent().getName() + " " + eventWaitingList.getStudent().getLastName() + " has been successfully added in the waiting list for event #" + eventWaitingList.getEvent().getId() + " : " + eventWaitingList.getEvent().getTitle();
+		Long draftId = draftService.createDraftFromAdmin(message);
+		Long parentId = eventWaitingList.getStudent().getParent().getId();
+		String studentMessage = "You been successfully been signed up for event #" + eventWaitingList.getEvent().getId() + " : " + eventWaitingList.getEvent().getTitle();
+		notificationService.sendDraft(draftId, parentId);
+		Long studentDraftId = draftService.createDraftFromAdmin(studentMessage);
+		notificationService.sendDraft(studentDraftId, eventWaitingList.getStudent().getId());
+		return true;
+	}
+	return false;
 }
 
 }

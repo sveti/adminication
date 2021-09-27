@@ -38,9 +38,9 @@ public class EventSignUpController {
 	@PostMapping(path = "/add")
 	public @ResponseBody String addEventSignUpDTO(@RequestBody AddEventSignUpDTO enrollment) {
 		if (eventSignUpservice.addEventSignUpDTO(enrollment)) {
-			return "Student was sucessfully signed up for the event!";
+			return "Student was successfully signed up for the event!";
 		} else {
-			return "An error has occured";
+			return "An error has occurred";
 		}
 	}
 
@@ -51,7 +51,7 @@ public class EventSignUpController {
 		if (eventSignUpservice.updateEventSignUp(eventSignUp)) {
 			return "Updated eventSignUp";
 		} else {
-			return "An error has occured";
+			return "An error has occurred";
 		}
 
 	}
@@ -66,7 +66,7 @@ public class EventSignUpController {
 		if (eventSignUpservice.deleteEventSignUp(id)) {
 			return "Deleted eventSignUp!";
 		} else {
-			return "An error has occured";
+			return "An error has occurred";
 		}
 	}
 
@@ -78,9 +78,9 @@ public class EventSignUpController {
 	@DeleteMapping(path = "/delete/{studentId}/{eventId}")
 	public @ResponseBody String deleteEventSignUpByStudentIdAndEventId(@PathVariable("studentId") Long studentId,@PathVariable("eventId") Long eventId) {
 		if (eventSignUpservice.deleteEventSignUpByStudentIdAndEventId(studentId,eventId)) {
-			return "You have sucessfully unsubscribed from this event!";
+			return "You have successfully unsubscribed from this event!";
 		} else {
-			return "An error has occured";
+			return "An error has occurred";
 		}
 	}
 }
