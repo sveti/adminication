@@ -26,3 +26,7 @@ export function checkIfUsernameExists(username) {
 export function updateUser(user) {
   return http.put(apiEndpoint + "edit", user);
 }
+
+export function registerParent(parent) {
+  return http.post(apiEndpoint + "add", parent);
+}

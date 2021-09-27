@@ -2,6 +2,7 @@ package f54148.adminication.service;
 
 import java.util.List;
 
+import f54148.adminication.dto.AddParentDTO;
 import f54148.adminication.dto.DisplayUserDTO;
 import f54148.adminication.dto.EditUserDTO;
 
@@ -16,6 +17,6 @@ public interface UserService {
 	String validateUsername(String username);
 
 	String editUser(EditUserDTO editUserDTO);
-	
 
+	String addParent(AddParentDTO addParentDTO);
 }

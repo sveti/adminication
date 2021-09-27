@@ -32,8 +32,5 @@ public class ParentController {
 		return parentService.getAllParentsAdmin();
 	}
 
-	@PostMapping (path = "/add")
-	public  @ResponseBody String addParent(@RequestBody AddParentDTO addParentDTO){
-		return parentService.addParent(addParentDTO);
-	}
+
 }

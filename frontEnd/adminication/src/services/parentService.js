@@ -10,7 +10,3 @@ export function getStudentsOfParent(parentId) {
 export function getAllParentsAdmin() {
   return http.get(apiEndpoint + "admin/parents");
 }
-
-export function registerParent(parent) {
-  return http.post(apiEndpoint + "add", parent);
-}

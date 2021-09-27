@@ -29,18 +29,6 @@ public class ParentServiceImplementation implements ParentService {
 		return Arrays.asList(users);
 	}
 
-	@Override
-	public String addParent(AddParentDTO addParentDTO) {
-
-		ResponseEntity<String> response = restTemplate.postForEntity("http://databaseService/parents/add", addParentDTO, String.class);
-
-		for(AddStudentDTO studentOfParentDTO : addParentDTO.getStudents()){
-			restTemplate.postForEntity("http://keycloakadminserver/add", studentOfParentDTO, String.class);
-		}
-		restTemplate.postForEntity("http://keycloakadminserver/add", addParentDTO, String.class);
-
-		return response.getBody();
-	}
 
 	@Override
 	public List<DisplayParentDTO> getAllParentsAdmin() {

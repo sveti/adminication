@@ -3,6 +3,8 @@ package f54148.adminication.service.implementations;
 import java.util.Arrays;
 import java.util.List;
 
+import f54148.adminication.dto.AddParentDTO;
+import f54148.adminication.dto.AddStudentDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -57,6 +59,19 @@ public class UserServiceImplementation implements UserService{
 		ResponseEntity<String> response = restTemplate.exchange("http://databaseService/users/updateUser", HttpMethod.PUT,requestEntity,String.class);
 
 		restTemplate.exchange("http://keycloakadminserver/update", HttpMethod.PUT,requestEntity,String.class);
+
+		return response.getBody();
+	}
+
+	@Override
+	public String addParent(AddParentDTO addParentDTO) {
+
+		ResponseEntity<String> response = restTemplate.postForEntity("http://databaseService/parents/add", addParentDTO, String.class);
+
+		for(AddStudentDTO studentOfParentDTO : addParentDTO.getStudents()){
+			restTemplate.postForEntity("http://keycloakadminserver/add", studentOfParentDTO, String.class);
+		}
+		restTemplate.postForEntity("http://keycloakadminserver/add", addParentDTO, String.class);
 
 		return response.getBody();
 	}

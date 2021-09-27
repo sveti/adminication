@@ -10,7 +10,5 @@ public interface ParentService {
 	
 	List<StudentOfParentDTO> getStudentOfParentDTO(Long parentId );
 
-    String addParent(AddParentDTO addParentDTO);
-
     List<DisplayParentDTO> getAllParentsAdmin();
 }

@@ -18,8 +18,10 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .anyRequest().authenticated() // OR .access("authenticated AND hasRole('product_read')")
+                .antMatchers("/users/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .oauth2ResourceServer()
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()));

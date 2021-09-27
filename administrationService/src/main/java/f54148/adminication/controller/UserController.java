@@ -3,6 +3,7 @@ package f54148.adminication.controller;
 import java.security.Principal;
 import java.util.List;
 
+import f54148.adminication.dto.AddParentDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,9 @@ public class UserController {
 	public @ResponseBody String checkIfUsernameExists(@PathVariable("username") String username) {
 		return userService.validateUsername(username);
 	}
-	
+	@PostMapping (path = "/add")
+	public  @ResponseBody String addParent(@RequestBody AddParentDTO addParentDTO){
+		return userService.addParent(addParentDTO);
+	}
 	
 }

@@ -8,7 +8,7 @@ import {
   checkIfEmailExists,
   checkIfUsernameExists,
 } from "../../services/userService";
-import { registerParent } from "../../services/parentService";
+import { registerParent } from "../../services/userService";
 import keycloakService from "../../services/keycloakService";
 import "./login.css";
 
