@@ -551,9 +551,14 @@ public class CourseService {
 		}
 			
 		Set<Teaching> teachings = new HashSet<>();
-		for(EditCourseTeacherDTO teaching: course.getTeachers()) {
+			System.out.println(course.getTeachers());
+			System.out.println(course.getTeachers().size());
+
+			List<EditCourseTeacherDTO> teachingsPassed = course.getTeachers();
+
+		for(EditCourseTeacherDTO teaching: teachingsPassed) {
+
 			teachings.add(teachingService.findOrCreateTeaching(teaching,c.getId()));
-			
 		}
 		
 		Set<Teaching> toDelete = new HashSet<>();
@@ -564,13 +569,10 @@ public class CourseService {
 				toDelete.add(teach);	}
 			
 		}
-			
-		//c.setDetails(courseDetails);
 
 		c.setTeaching(teachings);
 		c.setCourseSchedule(schedules);
-		
-		
+
 		courseRepository.save(c);
 		
 		for(Teaching teach : toDelete) {

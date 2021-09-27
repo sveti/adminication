@@ -1,7 +1,7 @@
 {
-    "id": "d2d979cf-5538-47b6-ab0a-d6ff0a130f6a",
+    "id": "211d7a5d-d3b0-4a5c-86c9-7e88207a5521",
     "name": "TEACHER",
-    "description": "Adminication Teacher",
+    "description": "Teacher in Adminication",
     "composite": false,
     "clientRole": false,
     "containerId": "Adminication"

@@ -1,7 +1,7 @@
 {
-    "id": "c4763a56-e88a-42b4-b1c7-cacad574ec7f",
+    "id": "73c4bf2a-6a91-4a63-b0f7-1518ac171200",
     "name": "STUDENT",
-    "description": "Adminication Student",
+    "description": "Student in Adminication",
     "composite": false,
     "clientRole": false,
     "containerId": "Adminication"

@@ -1,9 +1,6 @@
 package f54148.adminication.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
@@ -128,24 +125,42 @@ public class TeachingService {
 	}
 
 	public Teaching findOrCreateTeaching(EditCourseTeacherDTO teaching, Long courseId) {
-	
+
+
 		if(teaching.getId() != null) {
-			
+
 			Teaching t = getTeachingById(teaching.getId());
-			if(Objects.equals(t.getSalaryPerStudent(), teaching.getSalary()) && Objects.equals(t.getSubstitute().getId(),teaching.getSubstituteId())) {
-				return t;
+
+			if(Objects.equals(t.getSalaryPerStudent(), teaching.getSalary())){
+				long currentSubId = -1L;
+				if(t.getSubstitute()!=null){
+					currentSubId = t.getSubstitute().getId();
+				}
+				long givenSubId = -1L;
+				if(teaching.getSubstituteId()!=null){
+					givenSubId = teaching.getSubstituteId();
+				}
+				if(currentSubId == givenSubId){
+					return t;
+				}
 			}
 			else {
+
 				t.setSalaryPerStudent(teaching.getSalary());
 				if(teaching.getSubstituteId() != null){
-					t.setSubstitute(teacherService.getTeacherById(teaching.getSubstituteId()));
+
+					Teacher sub = teacherService.getTeacherById(teaching.getSubstituteId());
+					t.setSubstitute(sub);
+					Set<Teaching> teachings = sub.getTeaching();
+					teachings.add(t);
+					sub.setTeaching(teachings);
+					teacherService.updateTeacher(sub);
+					return teachingRepository.save(t);
 				}
 				else{
-					System.out.println("===No sub id found===");
 					deleteTeaching(t.getId());
 					return addTeaching(teaching.getTeacherId(),courseId, teaching.getSalary(), teaching.getSubstituteId());
 				}
-				return teachingRepository.save(t);
 			}
 			
 		}

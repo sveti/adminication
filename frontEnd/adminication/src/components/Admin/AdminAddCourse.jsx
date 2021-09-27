@@ -14,6 +14,7 @@ import {
   getTodaysDate,
   textToDayOfTheWeekNumber,
   addDays,
+  dynamicSort,
 } from "../../common/helper";
 import { getTeachersForCourse } from "../../services/teacherAdministrationService";
 import { addNewCourse } from "../../services/courseService";
@@ -145,6 +146,7 @@ class AdminAddCourse extends Component {
     const { data } = await getEditCourse(this.props.location.state.courseId);
     let converted = this.convertScheduleToDays(data);
     converted.teachers = this.convertFromTeacherIdToValue(converted.teachers);
+    converted.teachers = converted.teachers.sort(dynamicSort("label"));
     return converted;
   };
 
@@ -319,7 +321,7 @@ class AdminAddCourse extends Component {
         });
       }
     } else {
-      // console.log(updatedCourse);
+      console.log(updatedCourse);
       const { data } = await editCourse(updatedCourse);
       if (data) {
         toast.success("The course has been updated!", {
@@ -527,6 +529,9 @@ class AdminAddCourse extends Component {
     const { course, allTeachers } = this.state;
     let salaries = [];
 
+    console.log("in main");
+    console.log(course);
+
     course.teachers.forEach((teacher) => {
       salaries.push(
         <div className="form-group row mt-2 fadeIn" key={teacher.value}>
@@ -561,6 +566,8 @@ class AdminAddCourse extends Component {
               isClearable={true}
               options={allTeachers.filter((el) => el.value !== teacher.value)}
               maxMenuHeight={"9rem"}
+              menuPortalTarget={document.body}
+              menuPosition={"fixed"}
             />
           </div>
         </div>

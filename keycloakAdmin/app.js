@@ -21,7 +21,7 @@ let authenticate = async function () {
     password: "admin",
     grantType: "password",
     clientId: "keycloakAdmin",
-    clientSecret: "870b6149-913f-49b6-a81a-6f4051dc515e",
+    clientSecret: "001f80d3-1e11-46bb-9c1b-26c2f13725f2",
   });
   return true;
 };
@@ -51,15 +51,17 @@ let addUser = async function (user) {
       currentRole = teacherRole;
     }
 
-    const result = await adminClient.users.addRealmRoleMappings({
-      id: newUser.id,
-      roles: [
-        {
-          id: currentRole.id,
-          name: currentRole.name,
-        },
-      ],
-    });
+    const result = await adminClient.users
+      .addRealmRoleMappings({
+        id: newUser.id,
+        roles: [
+          {
+            id: currentRole.id,
+            name: currentRole.name,
+          },
+        ],
+      })
+      .catch((error) => console.log(error));
 
     return result;
   }

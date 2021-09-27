@@ -1,7 +1,7 @@
 {
-    "id": "d4b50017-5b03-4ed7-8a91-4197ed3c983f",
+    "id": "c071e0c6-fa00-4bf6-8124-095d9c08a8f8",
     "name": "PARENT",
-    "description": "Adminication Parent",
+    "description": "Parent in Adminication",
     "composite": false,
     "clientRole": false,
     "containerId": "Adminication"
