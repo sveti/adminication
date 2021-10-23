@@ -109,6 +109,9 @@ const CourseCard = ({
         ) : null}
       </div>
       <div className="card-body">
+        <h5 className="card-text my-2 pb-3">
+          Price: {course.pricePerStudent}$
+        </h5>
         <h6 className="card-subtitle mb-2 text-muted">
           {course.duration} Weeks x {course.startDate.length} Lessons
         </h6>

@@ -142,6 +142,7 @@ public class ModelMapperConfig {
 	        	destination.setTeachers(teachers);
 	        	
 	        	destination.setDescription(source.getDescription());
+	        	destination.setPricePerStudent(source.getPricePerStudent());
 	        	
 	            return destination;
 	        }

@@ -13,15 +13,19 @@ const StudentsEventsPage = (props) => {
     user = props.location.state.user;
   }
 
-  const [events, setEvents] = useState({ upcomming: [], passed: [] });
+  const [events, setEvents] = useState({
+    upcomming: [],
+    passed: [],
+    started: [],
+  });
 
   useEffect(() => {
     async function getEvents() {
       const { data } = await getEventsOfStudent(user.id);
 
-      let upcomming = data.filter(
-        (event) => event.status === "UPCOMMING" || event.status === "STARTED"
-      );
+      let upcomming = data.filter((event) => event.status === "UPCOMMING");
+
+      let started = data.filter((event) => event.status === "STARTED");
 
       let passed = data.filter(
         (event) => event.status !== "UPCOMMING" && event.status !== "STARTED"
@@ -29,6 +33,7 @@ const StudentsEventsPage = (props) => {
 
       setEvents({
         upcomming: upcomming.sort(dynamicSort("id")),
+        started: started.sort(dynamicSort("id")),
         passed: passed.sort(dynamicSort("id")),
       });
     }
@@ -44,6 +49,15 @@ const StudentsEventsPage = (props) => {
     ></EventsTable>
   );
 
+  const started = (
+    <EventsTable
+      message="Started events"
+      events={events.started}
+      student={user}
+      messageForDays={"Started on"}
+    ></EventsTable>
+  );
+
   const passed = (
     <EventsTable
       message="Past events"
@@ -55,6 +69,7 @@ const StudentsEventsPage = (props) => {
   return events.upcomming.length > 0 || events.passed.length > 0 ? (
     <div className="lessonsOfCourseContainer lessMargin">
       {events.upcomming.length > 0 ? upcomming : null}
+      {events.started.length > 0 ? started : null}
       {events.passed.length > 0 ? passed : null}
     </div>
   ) : (

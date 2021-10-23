@@ -271,7 +271,13 @@ class AllEventsList extends Component {
     });
 
     if (response && response.status === 200) {
-      toast.success(response.data, {
+      const message =
+        this.state.user.name +
+        " " +
+        this.state.user.lastName +
+        " has been successfully signed up for " +
+        event.title;
+      toast.success(message, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -328,7 +334,13 @@ class AllEventsList extends Component {
     });
 
     if (response && response.status === 200) {
-      toast.success(response.data, {
+      const message =
+        this.state.user.name +
+        " " +
+        this.state.user.lastName +
+        " has been successfully added in the waiting list for " +
+        event.title;
+      toast.success(message, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -382,7 +394,12 @@ class AllEventsList extends Component {
     });
 
     if (response && response.status === 200) {
-      toast.success(response.data, {
+      const message =
+        this.state.user.name +
+        " " +
+        this.state.user.lastName +
+        " has been successfully removed from the waiting list";
+      toast.success(message, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,

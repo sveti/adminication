@@ -152,7 +152,13 @@ class AllCoursesList extends Component {
     });
 
     if (response && response.status === 200) {
-      toast.success(response.data, {
+      const message =
+        this.state.user.name +
+        " " +
+        this.state.user.lastName +
+        " has been successfully enrolled in " +
+        course.title;
+      toast.success(message, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -209,7 +215,13 @@ class AllCoursesList extends Component {
     });
 
     if (response && response.status === 200) {
-      toast.success(response.data, {
+      const message =
+        this.state.user.name +
+        " " +
+        this.state.user.lastName +
+        " has been successfully added in the waiting list for " +
+        course.title;
+      toast.success(message, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,

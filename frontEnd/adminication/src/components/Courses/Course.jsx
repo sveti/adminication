@@ -91,7 +91,13 @@ class Course extends Component {
     });
 
     if (response && response.status === 200) {
-      toast.success(response.data, {
+      const message =
+        this.state.student.name +
+        " " +
+        this.state.student.lastName +
+        " has been successfully unsubscribed from " +
+        this.state.course.title;
+      toast.success(message, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,

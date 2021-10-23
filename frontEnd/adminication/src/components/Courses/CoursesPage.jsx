@@ -40,12 +40,8 @@ class CoursesPage extends Component {
   };
 
   render() {
-    const {
-      id,
-      startedCourses,
-      upCommingCourses,
-      subStartedCourses,
-    } = this.state;
+    const { id, startedCourses, upCommingCourses, subStartedCourses } =
+      this.state;
 
     let started,
       upcomming,

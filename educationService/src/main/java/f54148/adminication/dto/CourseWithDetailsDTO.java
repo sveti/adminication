@@ -25,5 +25,6 @@ public class CourseWithDetailsDTO {
 	private List<String> details;
 	private List<String> teachers;
 	private String level;
+	private double pricePerStudent;
 
 }

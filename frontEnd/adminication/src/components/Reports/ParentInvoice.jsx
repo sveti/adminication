@@ -19,10 +19,13 @@ class ParentInvoice extends Component {
       showStats: false,
       name: null,
     };
+
     if (props.location && props.location.statisticsProps) {
       this.state.parentId = props.location.statisticsProps.parentId;
-    } else {
+    } else if (props.parentId) {
       this.state.parentId = props.parentId;
+    } else {
+      this.state.parentId = props.user.id;
     }
     if (
       props.location &&

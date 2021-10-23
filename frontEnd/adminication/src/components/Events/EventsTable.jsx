@@ -18,7 +18,10 @@ const EventsTable = (props) => {
             <Th className="noBorder">Start Date</Th>
             <Th className="noBorder">Timeframe</Th>
             <Th className="noBorder">Participants</Th>
-            <Th className="noBorder">{props.messageForDays}</Th>
+            {props.messageForDays === "Date of event" ? null : (
+              <Th className="noBorder">{props.messageForDays}</Th>
+            )}
+
             <Th className="noBorder">Details</Th>
           </Tr>
         </Thead>
@@ -45,9 +48,7 @@ const EventsTable = (props) => {
                 <Td>
                   {event.signedUp}/{event.maxNumberOfPeople}
                 </Td>
-                {props.messageForDays === "Date of event" ? (
-                  <Td>{event.startDate}</Td>
-                ) : (
+                {props.messageForDays === "Date of event" ? null : (
                   <Td>{daysTillStart(event.startDate)}</Td>
                 )}
 

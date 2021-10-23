@@ -52,7 +52,13 @@ const Event = (props) => {
     );
 
     if (response && response.status === 200) {
-      toast.success(response.data, {
+      const message =
+        student.name +
+        " " +
+        student.lastName +
+        " has been successfully unsubscribed from " +
+        event.title;
+      toast.success(message, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
