@@ -24,6 +24,7 @@ class AttendanceTable extends Component {
 
   handleMarked = (attendance) => {
     let attendances = [...this.state.attendances];
+    console.log(attendances);
 
     let index = attendances.findIndex((member) => member.id === attendance.id);
     attendances[index].attended = !attendance.attended;
@@ -34,7 +35,7 @@ class AttendanceTable extends Component {
   getAttendance = (attendance) => {
     const { mode } = this.state;
 
-    if (attendance.attended) {
+    if (attendance && attendance.attended) {
       return (
         <button
           className="btn"

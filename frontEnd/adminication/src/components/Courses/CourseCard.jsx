@@ -32,7 +32,7 @@ const CourseCard = ({
   );
   const scheduleAlertBadge = (
     <span className="mx-3">
-      <FontAwesomeIcon icon={faBan}></FontAwesomeIcon> Shedule conflict
+      <FontAwesomeIcon icon={faBan}></FontAwesomeIcon> Schedule conflict
     </span>
   );
 

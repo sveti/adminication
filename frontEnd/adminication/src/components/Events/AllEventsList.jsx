@@ -11,6 +11,7 @@ import {
   textToDate,
   isAfterDate,
   textToDayOfTheWeekNumber,
+  getMaxDate,
 } from "../../common/helper";
 
 import {
@@ -49,13 +50,33 @@ class AllEventsList extends Component {
 
   scheduleOverlap = (dates, startTimes, endTimes) => {
     const { studentSchedule } = this.state;
+    let courseStartDate = getMaxDate(dates);
+    // courseStartDate = courseStartDate.replace(/\./g, "-");
+
+    //https://stackoverflow.com/questions/11343939/how-to-add-weeks-to-date-using-javascript#:~:text=You%20can%20do%20this%20%3A,7)%3B%20alert(now)%3B
+
+    let conflictingStudentShed = [];
+
+    studentSchedule.forEach((sched) => {
+      let endDateAsDate = new Date(sched.startDate);
+      endDateAsDate.setDate(endDateAsDate.getDate() + sched.duration * 7);
+      if (courseStartDate > endDateAsDate) {
+        //console.log(courseStartDate + " is after " + endDateAsDate);
+      } else {
+        //console.log(courseStartDate + " is before " + endDateAsDate);
+        conflictingStudentShed.push(sched);
+      }
+    });
+
+    if (conflictingStudentShed.length === 0) return false;
 
     let dayOfTheWeek = [];
 
     dates.forEach((element) => {
       dayOfTheWeek.push(textToDayOfTheWeekNumber(element));
     });
-    let sameDayOfTheWeek = studentSchedule.filter((schedule) =>
+
+    let sameDayOfTheWeek = conflictingStudentShed.filter((schedule) =>
       dayOfTheWeek.includes(textToDayOfTheWeekNumber(schedule.startDate))
     );
 
@@ -82,7 +103,6 @@ class AllEventsList extends Component {
       return indicator;
     }
   };
-
   getEvents = async () => {
     let { data } = await getEvents();
 

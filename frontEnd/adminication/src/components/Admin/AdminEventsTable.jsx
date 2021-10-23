@@ -120,7 +120,7 @@ function NumberRangeColumnFilter({
   return (
     <div className="row px-3">
       <input
-        className=" form-control my-2 col-5"
+        className=" form-control my-2 col-5 "
         value={filterValue[0] || ""}
         type="number"
         onChange={(e) => {
@@ -135,7 +135,7 @@ function NumberRangeColumnFilter({
           width: "90px",
         }}
       />
-      <span className="my-2 col-2">to</span>
+      <span className="my-2 mx-1"> to </span>
       <input
         className=" form-control my-2 col-5"
         value={filterValue[1] || ""}

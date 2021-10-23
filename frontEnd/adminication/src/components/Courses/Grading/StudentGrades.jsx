@@ -47,9 +47,11 @@ const StudentGrades = (props) => {
               <Tbody>
                 {grades.map((g) => {
                   return (
-                    <Tr key={g.courseId} className="alternate">
-                      <Td>{g.courseTitle}</Td>
-                      <Td>{g.grade > 2 ? g.grade : notGradedBadge}</Td>
+                    <Tr key={g.courseId} className="alternate py-3 my-5">
+                      <Td className="py-3 my-5">{g.courseTitle}</Td>
+                      <Td className="py-3 my-5">
+                        {g.grade > 2 ? g.grade : notGradedBadge}
+                      </Td>
                     </Tr>
                   );
                 })}

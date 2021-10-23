@@ -262,7 +262,7 @@ class Course extends Component {
               </div>
               <div className="row info-group space">
                 <div className="col-sm-12 col-md-3 dataLabel">
-                  <h5>Shedule: </h5>
+                  <h5>Schedule: </h5>
                 </div>
                 <div className="col-sm-12 col-md-9 courseData">
                   {course.startDate.map((startD, index) => {
@@ -292,7 +292,7 @@ class Course extends Component {
               </div>
 
               <div className="row info-group">
-                <div className="col-sm-12 col-md-3 dataLabel">
+                <div className="col-sm-12 col-md-3 dataLabel mt-3">
                   <h5>Tags: </h5>
                 </div>
                 <div className="col-sm-12 col-md-9 courseData">

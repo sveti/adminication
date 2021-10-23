@@ -151,14 +151,19 @@ public class StudentService {
 		
 		for(Course c: signedUpCourses) {
 			for(Schedule s:c.getCourseSchedule()) {
-				dtoList.add(convertToStudentScheduleDTO(s));
+				StudentScheduleDTO  dto = convertToStudentScheduleDTO(s);
+				dto.setDuration(c.getDuration());
+				dtoList.add(dto);
 			}
 		}
 		for(Event e: signedUpEvents) {
 			for(Schedule s:e.getEventSchedule()) {
-				dtoList.add(convertToStudentScheduleDTO(s));
+				StudentScheduleDTO  dto = convertToStudentScheduleDTO(s);
+				dto.setDuration(1);
+				dtoList.add(dto);
 			}
 		}
+
 		
 		return dtoList;
 	}

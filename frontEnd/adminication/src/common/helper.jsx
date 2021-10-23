@@ -82,6 +82,14 @@ export function isAfterDate(date1, date2) {
   return date1 >= date2;
 }
 
+export function dateAsString(date) {
+  let dd = String(date.getDate()).padStart(2, "0");
+  let mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = date.getFullYear();
+
+  return dd + "-" + mm + "-" + yyyy;
+}
+
 export function getMinDate(startDates) {
   const dates = startDates.map((dateStr) => {
     return new Date(dateStr);
@@ -92,6 +100,19 @@ export function getMinDate(startDates) {
   let yyyy = minDate.getFullYear();
 
   return dd + "." + mm + "." + yyyy;
+}
+
+export function getMaxDate(startDates) {
+  const dates = startDates.map((dateStr) => {
+    return new Date(dateStr);
+  });
+  let maxDate = new Date(Math.max.apply(null, dates));
+  // let dd = String(maxDate.getDate()).padStart(2, "0");
+  // let mm = String(maxDate.getMonth() + 1).padStart(2, "0"); //January is 0!
+  // let yyyy = maxDate.getFullYear();
+
+  // return dd + "-" + mm + "-" + yyyy;
+  return maxDate;
 }
 
 export function daysTillStart(startDate) {

@@ -116,7 +116,7 @@ TR.alternate:nth-child(2n) {
 .startTime,
 .endTime {
   display: inline-block;
-  margin: 10px;
+  margin: 5px;
 }
 
 .courseInfo {

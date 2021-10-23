@@ -40,11 +40,16 @@ const StudentsEventsPage = (props) => {
       message="Upcomming events"
       events={events.upcomming}
       student={user}
+      messageForDays={"Days till start"}
     ></EventsTable>
   );
 
   const passed = (
-    <EventsTable message="Past events" events={events.passed}></EventsTable>
+    <EventsTable
+      message="Past events"
+      events={events.passed}
+      messageForDays={"Date of event"}
+    ></EventsTable>
   );
 
   return events.upcomming.length > 0 || events.passed.length > 0 ? (

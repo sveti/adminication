@@ -90,7 +90,7 @@
   color: #000;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
   .courseContainer {
     width: 90%;
     margin: 5rem 1rem 10px 1rem;

@@ -19,7 +19,7 @@ const StudentLessonsOfCourse = (props) => {
       <div className="courseInfo">
         {course.days.map((date, index) => {
           return (
-            <div className="center my-3 " key={date}>
+            <div className="mx-auto my-2" key={date}>
               <h5 className="day">{textToDayOfTheWeek(date)}</h5>
               <h5 className="startTime">
                 {course.startTime[index].slice(0, -3)}

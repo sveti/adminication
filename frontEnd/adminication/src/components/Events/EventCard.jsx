@@ -117,7 +117,18 @@ const EventCard = ({
           <ul className="list-group list-group-flush">
             {event.startDate.map((d, index) => (
               <li className="list-group-item" key={d}>
-                <span>{d} </span>
+                <span>
+                  {d[8] +
+                    d[9] +
+                    "." +
+                    d[5] +
+                    d[6] +
+                    "." +
+                    d[0] +
+                    d[1] +
+                    d[2] +
+                    d[3]}{" "}
+                </span>
                 <span>({textToDayOfTheWeek(d)})</span>
                 <span> {event.startTime[index].slice(0, -3)} - </span>
                 <span>{event.endTime[index].slice(0, -3)} </span>

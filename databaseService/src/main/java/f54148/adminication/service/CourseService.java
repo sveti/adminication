@@ -233,7 +233,7 @@ public class CourseService {
 	
 	public List<CourseWithDetailsDTO> getAllCourseWithDetailsDTO() {
 		List<Course> allCourses = this.getCourses();
-		allCourses.removeIf(course -> course.getStatus() == CourseStatus.FINISHED || course.getStatus() == CourseStatus.CANCELED);
+		allCourses.removeIf(course -> course.getStatus() != CourseStatus.UPCOMMING);
 		
 		List<CourseWithDetailsDTO> dtoList = new ArrayList<>();
 		

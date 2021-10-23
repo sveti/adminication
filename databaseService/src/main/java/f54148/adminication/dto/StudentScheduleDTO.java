@@ -15,4 +15,5 @@ public class StudentScheduleDTO {
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private LocalDate startDate;
+	private int duration;
 }
