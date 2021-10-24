@@ -108,7 +108,9 @@ class TeacherSalary extends Component {
                 <div className="col-sm-12 col-md-4">
                   <h5>Total Salary</h5>
                 </div>
-                <div className="col-sm-12 col-md-2">{totalSalaryForPeriod}</div>
+                <div className="col-sm-12 col-md-2">
+                  {totalSalaryForPeriod}$
+                </div>
               </div>
 
               {/* //are there any lessons for this period */}

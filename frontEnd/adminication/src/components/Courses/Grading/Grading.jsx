@@ -32,7 +32,7 @@ export default function Grading(props) {
     </div>
   ) : (
     <div className="lessonsOfCourseContainer">
-      <h1>No graded courses!</h1>
+      <h1>No courses have been graded!</h1>
     </div>
   );
 }

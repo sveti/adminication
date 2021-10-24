@@ -21,7 +21,7 @@ function GeneralCourseSalary(props) {
             <p>Salary for this course:</p>
           </div>
           <div className="col-sm-12 col-md-3">
-            <p>{salaryForCourse}</p>
+            <p>{salaryForCourse}$</p>
           </div>
         </div>
       </div>

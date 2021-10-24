@@ -36,11 +36,6 @@ public class Teacher extends User {
 	@OneToMany(mappedBy = "teacher")
 	@JsonManagedReference(value = "lesson_teacher")
 	private Set<Lesson> lessons = new HashSet<Lesson>();
-	
-	@OneToMany(mappedBy = "teacher")
-	@JsonManagedReference(value = "file_teacher")
-	private Set<File> files = new HashSet<File>();
 
-	
 
 }

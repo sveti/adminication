@@ -11,8 +11,10 @@ function TeacherLessonsPage(props) {
   let teacherId;
   if (props.location && props.location.lessonProps) {
     teacherId = props.location.lessonProps.teacherId;
-  } else {
+  } else if (props.teacherId) {
     teacherId = props.teacherId;
+  } else {
+    teacherId = props.user.id;
   }
 
   const [courses, setCourses] = useState({

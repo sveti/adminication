@@ -53,7 +53,7 @@ const TeacherSwitch = ({ user, increase, decrease }) => {
         path="/lessons"
         roles={["TEACHER"]}
         render={(params) => (
-          <TeacherLessonsPage {...params}></TeacherLessonsPage>
+          <TeacherLessonsPage {...params} user={user}></TeacherLessonsPage>
         )}
       />
 

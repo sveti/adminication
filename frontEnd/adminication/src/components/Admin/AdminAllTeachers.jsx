@@ -7,9 +7,17 @@ class AdminAllTeachers extends Component {
   state = {
     teachers: [],
   };
+  toTitleCase = (str) => {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
 
   componentDidMount = async () => {
     const { data } = await getAllTeachersAdmin();
+    data.forEach((element) => {
+      element.gender = this.toTitleCase(element.gender);
+    });
     this.setState({ teachers: data });
   };
 

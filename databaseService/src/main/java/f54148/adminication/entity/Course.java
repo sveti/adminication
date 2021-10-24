@@ -98,11 +98,6 @@ public class Course {
 	@OneToMany(mappedBy = "course")
 	@JsonManagedReference(value = "lesson_course")
 	private Set<Lesson> lessons = new HashSet<Lesson>();
-	
-	@OneToMany(mappedBy = "course")
-	@JsonManagedReference(value = "file_course")
-	private Set<File> files = new HashSet<File>();
 
-	
 
 }

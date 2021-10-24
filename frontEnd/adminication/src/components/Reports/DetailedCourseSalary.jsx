@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 
+let formatDate = (d) => {
+  return d[8] + d[9] + "." + d[5] + d[6] + "." + d[0] + d[1] + d[2] + d[3];
+};
+
 function DetailedCourseSalary(props) {
   const { lessonsOfCourse, courseSignedUp, salaryPerStudent } = props;
   const [showMore, setShowMore] = useState(false);
@@ -28,12 +32,12 @@ function DetailedCourseSalary(props) {
             <Tbody>
               {lessonsOfCourse.map((lesson) => (
                 <Tr key={lesson.id} className="alternate">
-                  <Td>{lesson.date}</Td>
-                  <Td>
+                  <Td className="py-2">{formatDate(lesson.date)}</Td>
+                  <Td className="py-2">
                     {lesson.attended}/{courseSignedUp}
                   </Td>
-                  <Td>
-                    {parseInt(lesson.attended) * parseFloat(salaryPerStudent)}
+                  <Td className="py-2">
+                    {parseInt(lesson.attended) * parseFloat(salaryPerStudent)}$
                   </Td>
                 </Tr>
               ))}

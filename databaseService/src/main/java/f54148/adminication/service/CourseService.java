@@ -12,7 +12,6 @@ import f54148.adminication.entity.CourseDetail;
 import f54148.adminication.entity.CourseStatus;
 import f54148.adminication.entity.CourseWaitingList;
 import f54148.adminication.entity.Enrollment;
-import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Level;
 import f54148.adminication.entity.Schedule;
@@ -135,10 +134,6 @@ public class CourseService {
 		return opCourse.map(Course::getLessons).orElse(null);
 	}
 
-	public Set<File> getFilesByCourseId(Long courseId) {
-		Optional<Course> opCourse = courseRepository.findById(courseId);
-		return opCourse.map(Course::getFiles).orElse(null);
-	}
 
 	public Set<CourseDetail> getCourseDetailsByCourseId(Long courseId) {
 		Optional<Course> opCourse = courseRepository.findById(courseId);
@@ -319,7 +314,7 @@ public class CourseService {
 	}
 
 	public List<StartedCourseDTO> getSubStartedCourseDTOByTeacherId(Long idTeacher) {
-		List <Course> courses = teacherService.getsubstituteCoursesByTeacherId(idTeacher);
+		Set <Course> courses = teacherService.getsubstituteCoursesByTeacherId(idTeacher);
 		List<StartedCourseDTO> startedList = new ArrayList<>();
 		for(Course c: courses) {
 			if(c.getStatus()==CourseStatus.STARTED)

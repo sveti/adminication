@@ -553,7 +553,7 @@ class AdminAddCourse extends Component {
             />
           </div>
           <label htmlFor="level" className="col-sm-2 col-md-1 col-form-label">
-            SubStitute (optional)
+            Substitute (optional)
           </label>
           <div className="col-sm-10 col-md-4">
             <Select

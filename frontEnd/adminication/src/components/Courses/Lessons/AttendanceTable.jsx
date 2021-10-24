@@ -24,8 +24,6 @@ class AttendanceTable extends Component {
 
   handleMarked = (attendance) => {
     let attendances = [...this.state.attendances];
-    console.log(attendances);
-
     let index = attendances.findIndex((member) => member.id === attendance.id);
     attendances[index].attended = !attendance.attended;
 
@@ -104,7 +102,6 @@ class AttendanceTable extends Component {
           <Table>
             <Thead>
               <Tr>
-                <Th className="noBorder">Username</Th>
                 <Th className="noBorder">Name</Th>
                 <Th className="noBorder">Attended</Th>
               </Tr>
@@ -114,7 +111,6 @@ class AttendanceTable extends Component {
               {this.state.students.map((s) => {
                 return (
                   <Tr key={s.id} className="alternate">
-                    <Td className="">{s.username}</Td>
                     <Td className="">{s.name + " " + s.lastName}</Td>
                     <Td className="">
                       {this.getAttendance(

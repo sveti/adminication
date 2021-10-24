@@ -36,6 +36,10 @@ class CourseReport extends Component {
     }
   }
 
+  formatDate = (d) => {
+    return d[8] + d[9] + "." + d[5] + d[6] + "." + d[0] + d[1] + d[2] + d[3];
+  };
+
   loadCourseStats = async () => {
     let { data } = await getCourseReport(this.state.courseId);
     data.teachers = data.teachers.sort(dynamicSort("teacherName"));
@@ -112,7 +116,7 @@ class CourseReport extends Component {
       <div key={lesson.lessonId}>
         <div className="row">
           <h5 className="col-sm-6 col-md-6">
-            Lesson# {index + 1} on {lesson.date}
+            Lesson# {index + 1} on {this.formatDate(lesson.date)}
           </h5>
           <h5 className="col-sm-6 col-md-6">by {lesson.teacherName}</h5>
           <p className="col-sm-12 col-md-12 my-3">{lesson.description}</p>
@@ -133,7 +137,9 @@ class CourseReport extends Component {
         <div className="row">
           <p className="col-2">#{grading.studentId}</p>
           <p className="col-8">{grading.studentName}</p>
-          <p className="col-2">{grading.grade}</p>
+          <p className="col-2">
+            {grading.grade > 0 ? grading.grade : "Not set"}
+          </p>
         </div>
         <hr></hr>
       </div>

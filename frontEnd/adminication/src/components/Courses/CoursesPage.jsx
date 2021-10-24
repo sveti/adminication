@@ -54,6 +54,7 @@ class CoursesPage extends Component {
             message={"Started courses"}
             courses={startedCourses}
             teacherId={id}
+            isSubstitute={false}
           ></StartedCoursesTable>
         </div>
       );
@@ -65,6 +66,7 @@ class CoursesPage extends Component {
           <UpcommingCoursesTable
             message={"Upcomming courses"}
             courses={upCommingCourses}
+            isSubstitute={false}
           ></UpcommingCoursesTable>
         </div>
       );
@@ -76,6 +78,8 @@ class CoursesPage extends Component {
           <StartedCoursesTable
             message={"Substituting courses"}
             courses={subStartedCourses}
+            teacherId={id}
+            isSubstitute={true}
           ></StartedCoursesTable>
         </div>
       );

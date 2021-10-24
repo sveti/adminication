@@ -11,7 +11,7 @@ export default function FinisedCoursesTable(props) {
   );
   const nonGraded = (
     <div className="alert alert-danger" role="alert">
-      Non graded
+      Awaits grading
     </div>
   );
 
@@ -51,7 +51,7 @@ export default function FinisedCoursesTable(props) {
                           },
                         }}
                       >
-                        <button className="editButton lessons">Grading</button>
+                        <button className="editButton lessons">Grade</button>
                       </Link>
                     </Td>
                   </Tr>

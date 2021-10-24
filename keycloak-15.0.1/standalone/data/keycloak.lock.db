@@ -1,6 +1,6 @@
 #FileLock
-#Sat Oct 23 07:52:59 EEST 2021
-server=192.168.0.100\:51564
+#Sun Oct 24 09:34:18 EEST 2021
+server=192.168.0.102\:63225
 hostName=DESKTOP-VB3HQ47
 method=file
-id=17cab7eaadc92ba4fd32ac1be4a220043ec4457ddfe
+id=17cb101c5d71021cb3152904d281e6715ebb3cf070d

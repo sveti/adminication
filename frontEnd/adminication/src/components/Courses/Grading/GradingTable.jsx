@@ -109,7 +109,7 @@ class GradingTable extends Component {
 
     const notGradedBadge = (
       <div className="alert alert-danger notGraded" role="alert">
-        Not graded
+        Not set
       </div>
     );
 
@@ -121,20 +121,17 @@ class GradingTable extends Component {
             <Table>
               <Thead>
                 <Tr>
-                  <Th className="noBorder">Username</Th>
-                  <Th className="noBorder">Name</Th>
-                  <Th className="noBorder">Final grade</Th>
+                  <Th className="noBorder pb-2">Name</Th>
+                  <Th className="noBorder pb-2">Final grade</Th>
                 </Tr>
               </Thead>
 
               <Tbody>
                 {this.state.studentsGrades.map((s) => {
                   return (
-                    <Tr key={s.studentId} className="alternate">
-                      <Td>#{s.studentId}</Td>
-                      <Td>{s.username}</Td>
-                      <Td>{s.name}</Td>
-                      <Td>
+                    <Tr key={s.studentId} className="alternate ">
+                      <Td className="py-3">{s.name}</Td>
+                      <Td className="py-3">
                         {editMode ? (
                           s.grade === 0 ? (
                             notGradedBadge
@@ -168,7 +165,7 @@ class GradingTable extends Component {
         </div>
       </div>
     ) : (
-      <h1>No studentsGrades</h1>
+      <h1>No student grades</h1>
     );
   }
 }

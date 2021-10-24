@@ -18,9 +18,14 @@ class LessonsOfCoursePage extends Component {
     teacherId: this.props.location.lessonProps.teacherId,
     courseId: this.props.location.lessonProps.courseId,
     courseTitle: this.props.location.lessonProps.courseTitle,
+    isSubstitute: this.props.location.lessonProps.isSubstitute,
     lessons: null,
     students: null,
     attendances: null,
+  };
+
+  formatDate = (d) => {
+    return d[8] + d[9] + "." + d[5] + d[6] + "." + d[0] + d[1] + d[2] + d[3];
   };
 
   async loadAttendaces() {
@@ -35,6 +40,9 @@ class LessonsOfCoursePage extends Component {
 
   async loadLessons() {
     const { data } = await getLessonsByCourseId(this.state.courseId);
+    data.forEach((element) => {
+      element.date = this.formatDate(element.date);
+    });
     this.setState({ lessons: data });
   }
 
@@ -114,14 +122,24 @@ class LessonsOfCoursePage extends Component {
   };
 
   render() {
-    const { teacherId, courseId, students, attendances, lessons, courseTitle } =
-      this.state;
+    const {
+      teacherId,
+      courseId,
+      students,
+      attendances,
+      lessons,
+      courseTitle,
+      isSubstitute,
+    } = this.state;
 
     return (
       <div className="lessonsOfCourseContainer">
         <h2 className="mb-5">
           Lessons of Coruse #{courseId} {courseTitle}
-          {lessons && lessons.length > 0 ? (
+          {lessons &&
+          lessons.length > 0 &&
+          !isSubstitute &&
+          isSubstitute !== undefined ? (
             <button
               className="btn beginCourseButton ml-4"
               onClick={this.finishCourse}

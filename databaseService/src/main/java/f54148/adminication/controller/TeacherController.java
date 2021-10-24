@@ -3,10 +3,6 @@ package f54148.adminication.controller;
 import java.util.List;
 import java.util.Set;
 
-import f54148.adminication.exceptions.EmailTakenException;
-import f54148.adminication.exceptions.UsernameTakenException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +17,6 @@ import f54148.adminication.dto.DisplayTeacherDTO;
 import f54148.adminication.dto.MonthlyTeacherSalaryDTO;
 import f54148.adminication.dto.TeacherForCourseDTO;
 import f54148.adminication.entity.Course;
-import f54148.adminication.entity.File;
 import f54148.adminication.entity.Lesson;
 import f54148.adminication.entity.Teacher;
 import f54148.adminication.service.TeacherService;
@@ -72,14 +67,9 @@ public class TeacherController {
 	public @ResponseBody Set<Lesson> getLessonsByTeacherId(@PathVariable("id") Long id) {
 		return teacherService.getLessonsByTeacherId(id);
 	}
-	
-	@GetMapping(path = "/teacher/{id}/files")
-	public @ResponseBody Set<File> getFilesyTeacherId(@PathVariable("id") Long id) {
-		return teacherService.getFilesyTeacherId(id);
-	}
 
 	@GetMapping(path = "/teacher/{id}/substituteCourses")
-	public @ResponseBody List<Course> getsubstituteCoursesByTeacherId(@PathVariable("id") Long id) {
+	public @ResponseBody Set<Course> getsubstituteCoursesByTeacherId(@PathVariable("id") Long id) {
 		return teacherService.getsubstituteCoursesByTeacherId(id);
 	}
 

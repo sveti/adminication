@@ -42,19 +42,7 @@ public class User extends BaseEntity{
 	@NotBlank
 	@Size(min = 5, message="Min 5")
 	private String password;
-	
-	@Column(columnDefinition="tinyint(1) default 1")
-    private boolean isAccountNonExpired;
 
-    @Column(columnDefinition="tinyint(1) default 1")
-    private boolean isAccountNonLocked;
-
-    @Column(columnDefinition="tinyint(1) default 1")
-    private boolean isCredentialsNonExpired;
-
-    @Column(columnDefinition="tinyint(1) default 1")
-    private boolean isEnabled;
-	
 	@ManyToOne
 	@JoinColumn(name = "role_id", nullable = false)
 	private Role role;

@@ -131,7 +131,6 @@ class AddAttendesTable extends Component {
             <Table>
               <Thead>
                 <Tr>
-                  <Th className="noBorder">Username</Th>
                   <Th className="noBorder">Name</Th>
                   <Th className="noBorder">Attended</Th>
                 </Tr>
@@ -141,7 +140,6 @@ class AddAttendesTable extends Component {
                 {this.state.students.map((s, index) => {
                   return (
                     <Tr key={s.id} className="alternate">
-                      <Td>{s.username}</Td>
                       <Td>{s.name + " " + s.lastName}</Td>
                       <Td>
                         <button

@@ -11,10 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TeacherService {
@@ -91,13 +88,13 @@ public class TeacherService {
 	}
 
 
-	public List<Course> getsubstituteCoursesByTeacherId(Long teacherId) {
+	public Set<Course> getsubstituteCoursesByTeacherId(Long teacherId) {
 
 		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
 		if (opTeacher.isPresent()) {
 			Teacher t = opTeacher.get();
 
-			List<Course> courses = new ArrayList<>();
+			Set<Course> courses = new HashSet<>();
 
 			for (Teaching teach : t.getSubstituting()) {
 
@@ -126,11 +123,6 @@ public class TeacherService {
 	public Set<Lesson> getLessonsByTeacherId(Long teacherId) {
 		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
 		return opTeacher.map(Teacher::getLessons).orElse(null);
-	}
-
-	public Set<File> getFilesyTeacherId(Long teacherId) {
-		Optional<Teacher> opTeacher = teacherRepository.findById(teacherId);
-		return opTeacher.map(Teacher::getFiles).orElse(null);
 	}
 
 
@@ -228,10 +220,6 @@ public class TeacherService {
 	private Teacher convertAddTeacherDTOToTeacher(AddTeacherDTO teacher) {
 		
 		Teacher t = modelMapper.map(teacher, Teacher.class);
-		t.setAccountNonExpired(true);
-		t.setAccountNonLocked(true);
-		t.setCredentialsNonExpired(true);
-		t.setEnabled(true);
 		t.setRole(roleService.getRoleByName("ROLE_TEACHER"));
 		t.setPassword(encoder.encode(teacher.getPassword()));
 		
